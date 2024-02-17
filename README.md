@@ -1,6 +1,6 @@
 
 <div style="text-align:center;">
-  <img src="assets/logo.jpg" alt="logo" width="50" height="70" >
+  <img src="assets/logo.jpg" alt="logo">
 </div>
 
 # Customer Service Web Application for Amazon Connect
