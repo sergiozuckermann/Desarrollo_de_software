@@ -1,4 +1,4 @@
-<img src="assets/logo.jpg" alt="logo" width="50" height="70" style="position:absolute; top:30; right:0; left:0; margin:auto;">
+<img src="assets/logo.jpg" alt="logo" width="50" height="70" >
 
 
 # Customer Service Web Application for Amazon Connect
