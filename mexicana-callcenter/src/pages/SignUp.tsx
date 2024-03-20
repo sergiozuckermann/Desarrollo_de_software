@@ -9,6 +9,7 @@ const SignUp: FunctionComponent = () => {
   const [emailTextValue, setEmailTextValue] = useState("");
   const [passwordTextValue, setPasswordTextValue] = useState("");
   const [confirmPasswordTextValue, setConfirmPasswordTextValue] = useState("");
+  const [jobLevel, setJobLevel] = useState(""); // JOB LEVEL
 
 
   const handleSignUp = async (e:Event) => {
@@ -38,6 +39,7 @@ const SignUp: FunctionComponent = () => {
     }
 
   }
+
 
 
   return (
@@ -110,17 +112,23 @@ const SignUp: FunctionComponent = () => {
               onChange={(event) => setConfirmPasswordTextValue(event.target.value)}
             />
           </div>
+          
+          {/* DROPDOWN JOB LEVEL */}
           <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.600000000000364px] px-[21px] pb-2.5 relative max-w-full border-[1px] border-solid border-marco">
-            <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full z-[0] border-[1px] border-solid border-marco" />
-            <div className="h-[17px] w-[227px] relative leading-[17px] flex items-end shrink-0 z-[1]">
-              Job level
+            <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
+            <div className="relative flex-1">
+              <select
+                className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[19] w-[90%] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
+                value={jobLevel}
+                onChange={(event) => setJobLevel(event.target.value)}
+              >
+                  <option value="" disabled selected>Job Level</option>
+                  <option value="Agent">Agent</option>
+                  <option value="Supervisor">Supervisor</option>
+              </select>
             </div>
-            <img
-              className="h-12 w-12 absolute my-0 mx-[!important] right-[4px] bottom-[-6px] overflow-hidden shrink-0 z-[2]"
-              alt=""
-              src="/iconparkoutlinedown.svg"
-            />
           </div>
+
         </div>
 
           {/* button */}
