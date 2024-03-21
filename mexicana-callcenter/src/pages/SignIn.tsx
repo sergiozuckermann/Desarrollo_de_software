@@ -1,6 +1,8 @@
 import { FunctionComponent, useState } from "react";
 import { CognitoIdentityProviderClient, InitiateAuthCommand } from "@aws-sdk/client-cognito-identity-provider" // ES Modules import
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const SignIn: FunctionComponent = () => {
   const [emailTextValue, setEmailTextValue] = useState("");
@@ -38,8 +40,26 @@ const SignIn: FunctionComponent = () => {
     }
   } catch(err) {
     console.log("this is ERR", err)
+      // Use toast to show the error message
+      toast.error("🚨 Invalid username or password. Please try again.", {
+        position: "top-center",
+        icon:false,
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        style: { width: "620px", fontSize: "25px", color: "white", backgroundColor: "black", fontFamily:"Inter"},
+        // style: {
+        //   position: 'fixed', // or 'absolute' if relative to a specific container
+        //   top: '50%', // Example coordinate
+        //   left: '50%', // Example coordinate
+        //   transform: 'translate(-50%, -50%)', // Adjust to center the toast at the desired position
+        //   width: 'auto' // Ensure the width is auto or set to your preference
+        // }
+      });
   }
-  
     
   }
   return (
@@ -82,6 +102,7 @@ const SignIn: FunctionComponent = () => {
           alt=""
           src="/sign-in-label.svg"
         />
+
         <div className="self-stretch w-[553px] flex flex-col items-start justify-start pt-[114px] px-0 pb-0 box-border max-w-full mq450:pt-[74px] mq450:box-border">
           <form
            onSubmit={handleLogin}
@@ -142,6 +163,7 @@ const SignIn: FunctionComponent = () => {
                 <div className="h-[22px] w-[58px] relative text-lg font-paragraph text-tertiary text-center inline-block min-w-[58px]">
                   Sign in
                 </div>
+                <ToastContainer />
               </button>
             </div>
           </form>
