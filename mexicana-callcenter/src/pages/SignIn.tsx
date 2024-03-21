@@ -1,12 +1,13 @@
 import { FunctionComponent, useState } from "react";
 import { CognitoIdentityProviderClient, InitiateAuthCommand } from "@aws-sdk/client-cognito-identity-provider" // ES Modules import
 import { useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import useCustomToast from "../assets/notificationComponent";
 
 const SignIn: FunctionComponent = () => {
   const [emailTextValue, setEmailTextValue] = useState("");
   const [passwordTextValue, setPasswordTextValue] = useState("");
+  const { showError } = useCustomToast();
+  const { showSuccess } = useCustomToast();
   const navigate = useNavigate()
 
   const handleLogin = async (e:Event) => {
@@ -29,39 +30,32 @@ const SignIn: FunctionComponent = () => {
     if(response.ChallengeName == "NEW_PASSWORD_REQUIRED") {
       // redirect to signup page for new password and additional information of the user trying to authenticate
       console.log("User must change the temporary password.") // notify user
-    
       // add session to local storage
       localStorage.setItem("session", response.Session)
-
+    
       // redirect
       setTimeout(() => {
         navigate("/signup")
       }, 2000)
     }
+    else {
+      // redirect to dashboard
+      console.log("User is authenticated.")
+      // add session to local storage
+      localStorage.setItem("session", response.Session)
+      // redirect
+      setTimeout(() => {
+        showSuccess("🎉 You are now signed in.")
+        
+      }, 2000)
+    }
   } catch(err) {
     console.log("this is ERR", err)
-      // Use toast to show the error message
-      toast.error("🚨 Invalid username or password. Please try again.", {
-        position: "top-center",
-        icon:false,
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        style: { width: "620px", fontSize: "25px", color: "white", backgroundColor: "black", fontFamily:"Inter"},
-        // style: {
-        //   position: 'fixed', // or 'absolute' if relative to a specific container
-        //   top: '50%', // Example coordinate
-        //   left: '50%', // Example coordinate
-        //   transform: 'translate(-50%, -50%)', // Adjust to center the toast at the desired position
-        //   width: 'auto' // Ensure the width is auto or set to your preference
-        // }
-      });
+    const errorMessage = err instanceof Error ? err.message : "An unexpected error occurred.";
+    showError(`🚨 ${errorMessage}`);
+    };
   }
-    
-  }
+
   return (
     <div className="w-full relative bg-white overflow-hidden flex flex-col items-start justify-start gap-[35px] tracking-[normal] text-right text-41xl text-primary font-paragraph mq750:gap-[17px]">
       <header className="self-stretch h-[100px] relative bg-tertiary shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)] hidden" />
@@ -163,7 +157,7 @@ const SignIn: FunctionComponent = () => {
                 <div className="h-[22px] w-[58px] relative text-lg font-paragraph text-tertiary text-center inline-block min-w-[58px]">
                   Sign in
                 </div>
-                <ToastContainer />
+               
               </button>
             </div>
           </form>

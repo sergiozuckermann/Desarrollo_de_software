@@ -1,41 +1,48 @@
-import React, { createContext, useContext, ReactNode } from 'react';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 
-type NotificationContextType = {
-  showMessage: (message: string, options?: object) => React.ReactText;
+const useCustomToast = () => {
+  const showError = (message: string) => {
+    toast.error(message, {
+      position: "top-center",
+      icon: false,
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      style: { 
+        width: "620px", 
+        fontSize: "25px", 
+        color: "white", 
+        backgroundColor: "black", 
+        fontFamily: "Inter"
+      },
+    });
+  };
+
+  const showSuccess = (message: string) => {
+    toast.success(message, {
+      position: "top-center",
+      icon: false,
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      style: { 
+        width: "620px", 
+        fontSize: "25px", 
+        color: "white", 
+        backgroundColor: "#4BB543", // Green background for success
+        fontFamily: "Inter"
+      },
+    });
+  };
+
+  return { showError, showSuccess };
+
 };
 
-const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
-
-export const useNotification = () => {
-  const context = useContext(NotificationContext);
-  if (!context) {
-    throw new Error('useNotification must be used within a NotificationProvider');
-  }
-  return context;
-};
-
-export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  // Toastify provides its own state management, so no need for useState here
-  
-  const showMessage = (message: string, options = {}) => toast(message, options);
-
-  return (
-    <NotificationContext.Provider value={{ showMessage }}>
-      {children}
-      <ToastContainer 
-        position="bottom-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
-      
-    </NotificationContext.Provider>
-  );
-};
+export default useCustomToast;
