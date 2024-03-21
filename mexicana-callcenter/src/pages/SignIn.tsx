@@ -1,41 +1,27 @@
 import { FunctionComponent, useState } from "react";
-import { CognitoIdentityProviderClient, InitiateAuthCommand } from "@aws-sdk/client-cognito-identity-provider" // ES Modules import
-import { useNavigate } from 'react-router-dom'
+import { CognitoIdentityProviderClient, InitiateAuthCommand, AuthFlowType } from "@aws-sdk/client-cognito-identity-provider" // ES Modules import
 
 const SignIn: FunctionComponent = () => {
   const [emailTextValue, setEmailTextValue] = useState("");
   const [passwordTextValue, setPasswordTextValue] = useState("");
-  const navigate = useNavigate()
 
-  const handleLogin = async (e:Event) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     const client = new CognitoIdentityProviderClient({region: "us-east-1"})
 
     const input = { // InitiateAuthRequest
-      AuthFlow: "USER_PASSWORD_AUTH", // required
+      AuthFlow: AuthFlowType.USER_PASSWORD_AUTH, // required
       AuthParameters: { // AuthParametersType
         USERNAME: emailTextValue,
         PASSWORD: passwordTextValue
       },
-      ClientId: "3m9tmh05gmofr41tfkg4vsu1d0" // required
+      ClientId: "7n1pkdlieo0jnsl5uht0vpd5pj" // required
     }
     const command = new InitiateAuthCommand(input);
     
   try {
     const response = await client.send(command);
     console.log("This is RESPONSE", response)
-    if(response.ChallengeName == "NEW_PASSWORD_REQUIRED") {
-      // redirect to signup page for new password and additional information of the user trying to authenticate
-      console.log("User must change the temporary password.") // notify user
-    
-      // add session to local storage
-      localStorage.setItem("session", response.Session)
-
-      // redirect
-      setTimeout(() => {
-        navigate("/signup")
-      }, 2000)
-    }
   } catch(err) {
     console.log("this is ERR", err)
   }

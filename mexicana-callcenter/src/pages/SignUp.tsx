@@ -1,46 +1,43 @@
-import { FunctionComponent, useState } from "react";
-import { CognitoIdentityProviderClient, RespondToAuthChallengeCommand  } from "@aws-sdk/client-cognito-identity-provider" // ES Modules import
+import React, { useState } from 'react';
+import { CognitoIdentityProviderClient, SignUpCommand } from "@aws-sdk/client-cognito-identity-provider";
+
+const SignUp: React.FC = () => {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [jobLevel, setJobLevel] = useState('');
+
+  const handleSignUp = async (e: React.FormEvent) => {
+    e.preventDefault();
 
 
-const SignUp: FunctionComponent = () => {
-
-  const [firstNamesTextValue, setFirstNamesTextValue] = useState("");
-  const [surnameTextValue, setSurnameTextValue] = useState("");
-  const [emailTextValue, setEmailTextValue] = useState("");
-  const [passwordTextValue, setPasswordTextValue] = useState("");
-  const [confirmPasswordTextValue, setConfirmPasswordTextValue] = useState("");
-  const [jobLevel, setJobLevel] = useState(""); // JOB LEVEL
-
-
-  const handleSignUp = async (e:Event) => {
-    e.preventDefault()
-
-    const client = new CognitoIdentityProviderClient({region: "us-east-1"})
-
-    const input = { // InitiateAuthRequest
-      ChallengeName: "NEW_PASSWORD_REQUIRED",
-      ChallengeResponses: {
-        USERNAME: emailTextValue,
-        NEW_PASSWORD: passwordTextValue,
-        "userAttributes.given_name": firstNamesTextValue,
-        "userAttributes.family_name": surnameTextValue
-      },
-      Session: localStorage.getItem("session"),
-      ClientId: "3m9tmh05gmofr41tfkg4vsu1d0" // required
+    if (password !== confirmPassword) {
+      alert("Passwords do not match!");
+      return;
     }
-    const command = new RespondToAuthChallengeCommand(input);
+
+    const client = new CognitoIdentityProviderClient({ region: "us-east-1" });
+
+    const command = new SignUpCommand({
+      ClientId: "7n1pkdlieo0jnsl5uht0vpd5pj",
+      Username: email,
+      Password: password,
+      UserAttributes: [
+        { Name: 'given_name', Value: firstName },
+        { Name: 'family_name', Value: lastName },
+        { Name: 'custom:job_level', Value: jobLevel },
+      ],
+    });
 
     try {
-      console.log("type of first name ", typeof(firstNamesTextValue))
-      const response = await client.send(command)
-      console.log("This signup res: ", response)
-    } catch(err) {
-      console.log("this signup err: ", err)
+      const response = await client.send(command);
+      console.log("Signup response: ", response);
+    } catch (err) {
+      console.log("Signup error: ", err);
     }
-
-  }
-
-
+  };
 
   return (
     <div className="w-full relative bg-white overflow-hidden flex flex-col items-end justify-start gap-[64px] tracking-[normal] mq450:gap-[16px] mq700:gap-[32px]">
@@ -68,8 +65,8 @@ const SignUp: FunctionComponent = () => {
               className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[18px] w-[148px] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
               placeholder="First Name(s)"
               type="text"
-              value={firstNamesTextValue}
-              onChange={(event) => setFirstNamesTextValue(event.target.value)}
+              value={firstName}
+              onChange={(event) => setFirstName(event.target.value)}
             />
           </div>
           <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.899999999999636px] px-[21px] pb-[9.700000000000728px] max-w-full border-[1px] border-solid border-marco">
@@ -78,8 +75,8 @@ const SignUp: FunctionComponent = () => {
               className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[17px] w-[168px] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
               placeholder="Surname"
               type="text"
-              value={surnameTextValue}
-              onChange={(event) => setSurnameTextValue(event.target.value)}
+              value={lastName}
+              onChange={(event) => setLastName(event.target.value)}
             />
           </div>
           <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.5px] px-[19.699999999999815px] pb-[10.100000000000364px] max-w-full border-[1px] border-solid border-marco">
@@ -88,8 +85,8 @@ const SignUp: FunctionComponent = () => {
               className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[17px] w-[65.2px] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
               placeholder="Email"
               type="text"
-              value={emailTextValue}
-              onChange={(event) => setEmailTextValue(event.target.value)}
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
             />
           </div>
           <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.800000000000182px] px-[21px] pb-[9.800000000000182px] max-w-full border-[1px] border-solid border-marco">
@@ -97,9 +94,9 @@ const SignUp: FunctionComponent = () => {
             <input
               className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[17px] w-[142px] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
               placeholder="Password"
-              type="text"
-              value={passwordTextValue}
-              onChange={(event) => setPasswordTextValue(event.target.value)}
+              type="password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
             />
           </div>
           <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.699999999999818px] px-5 pb-[9.900000000000546px] max-w-full border-[1px] border-solid border-marco">
@@ -107,9 +104,9 @@ const SignUp: FunctionComponent = () => {
             <input
               className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[17px] w-[371px] relative text-marco text-left flex items-end shrink-0 max-w-full p-0 z-[1]"
               placeholder="Confirm Password"
-              type="text"
-              value={confirmPasswordTextValue}
-              onChange={(event) => setConfirmPasswordTextValue(event.target.value)}
+              type="password"
+              value={confirmPassword}
+              onChange={(event) => setConfirmPassword(event.target.value)}
             />
           </div>
           
@@ -120,9 +117,9 @@ const SignUp: FunctionComponent = () => {
               <select
                 className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[19] w-[90%] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
                 value={jobLevel}
-                onChange={(event) => setJobLevel(event.target.value)}
+                onChange={(event) => setJobLevel(event.currentTarget.value)}
               >
-                  <option value="" disabled selected>Job Level</option>
+                  <option value="" disabled>Job Level</option>
                   <option value="Agent">Agent</option>
                   <option value="Supervisor">Supervisor</option>
               </select>
