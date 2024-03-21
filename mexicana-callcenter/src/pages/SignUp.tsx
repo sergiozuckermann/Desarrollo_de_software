@@ -1,17 +1,22 @@
-import React, { useState } from 'react';
-import { CognitoIdentityProviderClient, SignUpCommand } from "@aws-sdk/client-cognito-identity-provider";
+import React, { useState } from "react";
+import {
+  CognitoIdentityProviderClient,
+  SignUpCommand,
+} from "@aws-sdk/client-cognito-identity-provider";
+import useCustomToast from "../components/notificationComponent";
 
 const SignUp: React.FC = () => {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [jobLevel, setJobLevel] = useState('');
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [jobLevel, setJobLevel] = useState("");
+  const { showError } = useCustomToast();
+  const { showSuccess } = useCustomToast();
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
-
 
     if (password !== confirmPassword) {
       alert("Passwords do not match!");
@@ -25,17 +30,27 @@ const SignUp: React.FC = () => {
       Username: email,
       Password: password,
       UserAttributes: [
-        { Name: 'given_name', Value: firstName },
-        { Name: 'family_name', Value: lastName },
-        { Name: 'custom:job_level', Value: jobLevel },
+        { Name: "given_name", Value: firstName },
+        { Name: "family_name", Value: lastName },
+        { Name: "custom:job_level", Value: jobLevel },
       ],
     });
 
     try {
       const response = await client.send(command);
-      console.log("Signup response: ", response);
+      const { $metadata } = response;
+
+      // check if user was registered
+      if ($metadata.httpStatusCode === 200) {
+        showSuccess(
+          "🎉 User is registered but confirmation is needed by Admin.\n You will be notified via email when confirmation is done."
+        );
+      }
     } catch (err) {
-      console.log("Signup error: ", err);
+      // check if there was an error signing up and notify the user
+      const errorMessage =
+        err instanceof Error ? err.message : "An unexpected error occurred.";
+      showError(`🚨 ${errorMessage}`);
     }
   };
 
@@ -48,89 +63,96 @@ const SignUp: React.FC = () => {
         </h1>
       </header>
       <main className="w-[1210px] flex flex-row items-start justify-start py-0 pr-0 pl-5 box-border gap-[67px] max-w-full mq450:gap-[17px] mq700:gap-[33px] mq975:flex-wrap">
-        <form onSubmit={handleSignUp} className="m-0 flex-1 flex flex-col items-end justify-start gap-[50px] min-w-[383px] max-w-full mq450:min-w-full mq700:gap-[25px]">
+        <form
+          onSubmit={handleSignUp}
+          className="m-0 flex-1 flex flex-col items-end justify-start gap-[50px] min-w-[383px] max-w-full mq450:min-w-full mq700:gap-[25px]"
+        >
           {/* signup form */}
           <div className="self-stretch h-[479px] flex flex-col items-start justify-start gap-[15.57px] max-w-full text-left text-lg text-marco font-paragraph">
-          <div className="w-[573px] flex-1 flex flex-row items-start justify-start py-0 px-[42px] box-border max-w-full mq700:pl-[21px] mq700:pr-[21px] mq700:box-border">
-            <img
-              className="h-[130px] flex-1 relative max-w-full overflow-hidden object-cover"
-              loading="lazy"
-              alt=""
-              src="/untitled-design-2-2@2x.png"
-            />
-          </div>
-          <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15px] px-5 pb-[9.600000000000364px] max-w-full border-[1px] border-solid border-marco">
-            <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
-            <input
-              className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[18px] w-[148px] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
-              placeholder="First Name(s)"
-              type="text"
-              value={firstName}
-              onChange={(event) => setFirstName(event.target.value)}
-            />
-          </div>
-          <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.899999999999636px] px-[21px] pb-[9.700000000000728px] max-w-full border-[1px] border-solid border-marco">
-            <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
-            <input
-              className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[17px] w-[168px] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
-              placeholder="Surname"
-              type="text"
-              value={lastName}
-              onChange={(event) => setLastName(event.target.value)}
-            />
-          </div>
-          <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.5px] px-[19.699999999999815px] pb-[10.100000000000364px] max-w-full border-[1px] border-solid border-marco">
-            <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
-            <input
-              className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[17px] w-[65.2px] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
-              placeholder="Email"
-              type="text"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-            />
-          </div>
-          <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.800000000000182px] px-[21px] pb-[9.800000000000182px] max-w-full border-[1px] border-solid border-marco">
-            <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
-            <input
-              className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[17px] w-[142px] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
-              placeholder="Password"
-              type="password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-            />
-          </div>
-          <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.699999999999818px] px-5 pb-[9.900000000000546px] max-w-full border-[1px] border-solid border-marco">
-            <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
-            <input
-              className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[17px] w-[371px] relative text-marco text-left flex items-end shrink-0 max-w-full p-0 z-[1]"
-              placeholder="Confirm Password"
-              type="password"
-              value={confirmPassword}
-              onChange={(event) => setConfirmPassword(event.target.value)}
-            />
-          </div>
-          
-          {/* DROPDOWN JOB LEVEL */}
-          <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.600000000000364px] px-[21px] pb-2.5 relative max-w-full border-[1px] border-solid border-marco">
-            <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
-            <div className="relative flex-1">
-              <select
-                className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[19] w-[90%] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
-                value={jobLevel}
-                onChange={(event) => setJobLevel(event.currentTarget.value)}
-              >
-                  <option value="" disabled>Job Level</option>
+            <div className="w-[573px] flex-1 flex flex-row items-start justify-start py-0 px-[42px] box-border max-w-full mq700:pl-[21px] mq700:pr-[21px] mq700:box-border">
+              <img
+                className="h-[130px] flex-1 relative max-w-full overflow-hidden object-cover"
+                loading="lazy"
+                alt=""
+                src="/untitled-design-2-2@2x.png"
+              />
+            </div>
+            <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15px] px-5 pb-[9.600000000000364px] max-w-full border-[1px] border-solid border-marco">
+              <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
+              <input
+                className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[18px] w-[148px] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
+                placeholder="First Name(s)"
+                type="text"
+                value={firstName}
+                onChange={(event) => setFirstName(event.target.value)}
+              />
+            </div>
+            <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.899999999999636px] px-[21px] pb-[9.700000000000728px] max-w-full border-[1px] border-solid border-marco">
+              <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
+              <input
+                className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[17px] w-[168px] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
+                placeholder="Surname"
+                type="text"
+                value={lastName}
+                onChange={(event) => setLastName(event.target.value)}
+              />
+            </div>
+            <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.5px] px-[19.699999999999815px] pb-[10.100000000000364px] max-w-full border-[1px] border-solid border-marco">
+              <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
+              <input
+                className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[17px] w-[65.2px] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
+                placeholder="Email"
+                type="text"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+              />
+            </div>
+            <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.800000000000182px] px-[21px] pb-[9.800000000000182px] max-w-full border-[1px] border-solid border-marco">
+              <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
+              <input
+                className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[17px] w-[142px] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
+                placeholder="Password"
+                type="password"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+              />
+            </div>
+            <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.699999999999818px] px-5 pb-[9.900000000000546px] max-w-full border-[1px] border-solid border-marco">
+              <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
+              <input
+                className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[17px] w-[371px] relative text-marco text-left flex items-end shrink-0 max-w-full p-0 z-[1]"
+                placeholder="Confirm Password"
+                type="password"
+                value={confirmPassword}
+                onChange={(event) => setConfirmPassword(event.target.value)}
+              />
+            </div>
+
+            {/* DROPDOWN JOB LEVEL */}
+            <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.600000000000364px] px-[21px] pb-2.5 relative max-w-full border-[1px] border-solid border-marco">
+              <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
+              <div className="relative flex-1">
+                <select
+                  className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[19] w-[90%] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
+                  value={jobLevel}
+                  onChange={(event) => setJobLevel(event.currentTarget.value)}
+                >
+                  <option value="" disabled>
+                    Job Level
+                  </option>
                   <option value="Agent">Agent</option>
                   <option value="Supervisor">Supervisor</option>
-              </select>
+                </select>
+              </div>
             </div>
           </div>
 
-        </div>
-
           {/* button */}
           <div className="self-stretch flex flex-row items-start justify-center py-0 pr-5 pl-[30px]">
-            <button type="submit" className="cursor-pointer [border:none] py-2.5 px-5 bg-primary w-[300px] rounded-3xs flex flex-row items-start justify-center box-border hover:bg-slategray">
+            <button
+              type="submit"
+              className="cursor-pointer [border:none] py-2.5 px-5 bg-primary w-[300px] rounded-3xs flex flex-row items-start justify-center box-border hover:bg-slategray"
+            >
               <div className="h-[22px] w-[58px] relative text-lg font-paragraph text-tertiary text-center inline-block min-w-[58px]">
                 Create
               </div>
@@ -158,4 +180,3 @@ const SignUp: React.FC = () => {
 };
 
 export default SignUp;
-
