@@ -1,6 +1,10 @@
 import { FunctionComponent, useState } from "react";
-import { CognitoIdentityProviderClient, InitiateAuthCommand, AuthFlowType } from "@aws-sdk/client-cognito-identity-provider" // ES Modules import
-import useCustomToast from "../assets/notificationComponent";
+import {
+  CognitoIdentityProviderClient,
+  InitiateAuthCommand,
+  AuthFlowType,
+} from "@aws-sdk/client-cognito-identity-provider"; // ES Modules import
+import useCustomToast from "../components/notificationComponent";
 
 const SignIn: FunctionComponent = () => {
   const [emailTextValue, setEmailTextValue] = useState("");
@@ -10,27 +14,35 @@ const SignIn: FunctionComponent = () => {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    const client = new CognitoIdentityProviderClient({region: "us-east-1"})
+    const client = new CognitoIdentityProviderClient({ region: "us-east-1" });
 
-    const input = { // InitiateAuthRequest
+    const input = {
+      // InitiateAuthRequest
       AuthFlow: AuthFlowType.USER_PASSWORD_AUTH, // required
-      AuthParameters: { // AuthParametersType
+      AuthParameters: {
+        // AuthParametersType
         USERNAME: emailTextValue,
-        PASSWORD: passwordTextValue
+        PASSWORD: passwordTextValue,
       },
-      ClientId: "7n1pkdlieo0jnsl5uht0vpd5pj" // required
-    }
+      ClientId: "7n1pkdlieo0jnsl5uht0vpd5pj", // required
+    };
     const command = new InitiateAuthCommand(input);
-    
-  try {
-    const response = await client.send(command);
-    console.log("This is RESPONSE", response)
-  } catch(err) {
-    console.log("this is ERR", err)
-    const errorMessage = err instanceof Error ? err.message : "An unexpected error occurred.";
-    showError(`🚨 ${errorMessage}`);
+
+    try {
+      const response = await client.send(command);
+      const { $metadata } = response;
+
+      // check if user was successfully logged in
+      if ($metadata.httpStatusCode === 200) {
+        showSuccess("🎉 You are now signed in.");
+      }
+    } catch (err) {
+      // check if there was an error logging in and notify the user
+      const errorMessage =
+        err instanceof Error ? err.message : "An unexpected error occurred.";
+      showError(`🚨 ${errorMessage}`);
     }
-  }
+  };
 
   return (
     <div className="w-full relative bg-white overflow-hidden flex flex-col items-start justify-start gap-[35px] tracking-[normal] text-right text-41xl text-primary font-paragraph mq750:gap-[17px]">
@@ -75,8 +87,9 @@ const SignIn: FunctionComponent = () => {
 
         <div className="self-stretch w-[553px] flex flex-col items-start justify-start pt-[114px] px-0 pb-0 box-border max-w-full mq450:pt-[74px] mq450:box-border">
           <form
-           onSubmit={handleLogin}
-           className="m-0 self-stretch flex-1 flex flex-col items-end justify-start gap-[46px] shrink-0 [debug_commit:1cbd860] mq750:gap-[23px]">
+            onSubmit={handleLogin}
+            className="m-0 self-stretch flex-1 flex flex-col items-end justify-start gap-[46px] shrink-0 [debug_commit:1cbd860] mq750:gap-[23px]"
+          >
             <div className="self-stretch flex-1 flex flex-col items-start justify-start gap-[16.2px] max-w-full">
               <div className="w-[501px] flex-1 flex flex-row items-start justify-start relative max-w-full">
                 <div className="h-[697px] w-[632px] absolute my-0 mx-[!important] bottom-[-453px] left-[-620px]">
@@ -129,11 +142,13 @@ const SignIn: FunctionComponent = () => {
               </div>
             </div>
             <div className="w-[508px] flex flex-row items-start justify-center py-0 px-5 box-border max-w-full">
-              <button type="submit" className="cursor-pointer [border:none] py-2.5 px-5 bg-primary w-[300px] rounded-3xs flex flex-row items-start justify-center box-border whitespace-nowrap hover:bg-slategray">
+              <button
+                type="submit"
+                className="cursor-pointer [border:none] py-2.5 px-5 bg-primary w-[300px] rounded-3xs flex flex-row items-start justify-center box-border whitespace-nowrap hover:bg-slategray"
+              >
                 <div className="h-[22px] w-[58px] relative text-lg font-paragraph text-tertiary text-center inline-block min-w-[58px]">
                   Sign in
                 </div>
-               
               </button>
             </div>
           </form>
