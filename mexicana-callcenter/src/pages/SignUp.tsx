@@ -119,7 +119,7 @@ const SignUp: React.FC = () => {
                 value={jobLevel}
                 onChange={(event) => setJobLevel(event.currentTarget.value)}
               >
-                  <option value="" disabled selected>Job Level</option>
+                  <option value="" disabled>Job Level</option>
                   <option value="Agent">Agent</option>
                   <option value="Supervisor">Supervisor</option>
               </select>
