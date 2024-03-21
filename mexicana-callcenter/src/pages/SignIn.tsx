@@ -17,7 +17,7 @@ const SignIn: FunctionComponent = () => {
         USERNAME: emailTextValue,
         PASSWORD: passwordTextValue
       },
-      ClientId: "3m9tmh05gmofr41tfkg4vsu1d0" // required
+      ClientId: "7n1pkdlieo0jnsl5uht0vpd5pj" // required
     }
     const command = new InitiateAuthCommand(input);
     
