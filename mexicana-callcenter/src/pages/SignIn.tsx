@@ -119,7 +119,7 @@ const SignIn: FunctionComponent = () => {
               <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-4 px-[18px] pb-[10.800000000000182px] max-w-full border-[1px] border-solid border-marco">
                 <div className="h-[44.8px] w-[553px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
                 <input
-                  className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[18px] w-[159px] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
+                  className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[18px] w-[100%] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
                   placeholder="Email"
                   type="text"
                   value={emailTextValue}
@@ -129,9 +129,9 @@ const SignIn: FunctionComponent = () => {
               <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.800000000000182px] px-[19px] pb-[11px] max-w-full border-[1px] border-solid border-marco">
                 <div className="h-[44.8px] w-[553px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
                 <input
-                  className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[18px] w-[145px] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
+                  className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[18px] w-[100%] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
                   placeholder="Password"
-                  type="text"
+                  type="password"
                   value={passwordTextValue}
                   onChange={(event) => setPasswordTextValue(event.target.value)}
                 />
