@@ -65,7 +65,7 @@ const SignUp: FunctionComponent = () => {
           <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15px] px-5 pb-[9.600000000000364px] max-w-full border-[1px] border-solid border-marco">
             <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
             <input
-              className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[18px] w-[148px] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
+              className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[18px] w-[100%] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
               placeholder="First Name(s)"
               type="text"
               value={firstNamesTextValue}
@@ -75,7 +75,7 @@ const SignUp: FunctionComponent = () => {
           <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.899999999999636px] px-[21px] pb-[9.700000000000728px] max-w-full border-[1px] border-solid border-marco">
             <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
             <input
-              className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[17px] w-[168px] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
+              className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[18px] w-[100%] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
               placeholder="Surname"
               type="text"
               value={surnameTextValue}
@@ -85,7 +85,7 @@ const SignUp: FunctionComponent = () => {
           <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.5px] px-[19.699999999999815px] pb-[10.100000000000364px] max-w-full border-[1px] border-solid border-marco">
             <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
             <input
-              className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[17px] w-[65.2px] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
+              className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[18px] w-[100%] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
               placeholder="Email"
               type="text"
               value={emailTextValue}
@@ -95,9 +95,9 @@ const SignUp: FunctionComponent = () => {
           <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.800000000000182px] px-[21px] pb-[9.800000000000182px] max-w-full border-[1px] border-solid border-marco">
             <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
             <input
-              className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[17px] w-[142px] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
+              className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[18px] w-[100%] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
               placeholder="Password"
-              type="text"
+              type="password"
               value={passwordTextValue}
               onChange={(event) => setPasswordTextValue(event.target.value)}
             />
@@ -105,9 +105,9 @@ const SignUp: FunctionComponent = () => {
           <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.699999999999818px] px-5 pb-[9.900000000000546px] max-w-full border-[1px] border-solid border-marco">
             <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
             <input
-              className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[17px] w-[371px] relative text-marco text-left flex items-end shrink-0 max-w-full p-0 z-[1]"
+              className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[18px] w-[100%] relative text-marco text-left flex items-end shrink-0 max-w-full p-0 z-[1]"
               placeholder="Confirm Password"
-              type="text"
+              type="password"
               value={confirmPasswordTextValue}
               onChange={(event) => setConfirmPasswordTextValue(event.target.value)}
             />
