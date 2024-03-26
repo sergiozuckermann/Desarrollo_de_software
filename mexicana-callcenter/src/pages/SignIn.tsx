@@ -123,6 +123,7 @@ const SignIn: FunctionComponent = () => {
               <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-4 px-[18px] pb-[10.800000000000182px] max-w-full border-[1px] border-solid border-marco">
                 <div className="h-[44.8px] w-[553px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
                 <input
+                  data-cy="email-input" // Added to do cypress testing
                   className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[18px] w-[159px] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
                   placeholder="Email"
                   type="text"
@@ -133,9 +134,10 @@ const SignIn: FunctionComponent = () => {
               <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.800000000000182px] px-[19px] pb-[11px] max-w-full border-[1px] border-solid border-marco">
                 <div className="h-[44.8px] w-[553px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
                 <input
+                  data-cy="password-input" // Added to do cypress testing
                   className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[18px] w-[145px] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
                   placeholder="Password"
-                  type="text"
+                  type="password" // Changed from text to password
                   value={passwordTextValue}
                   onChange={(event) => setPasswordTextValue(event.target.value)}
                 />
@@ -143,6 +145,7 @@ const SignIn: FunctionComponent = () => {
             </div>
             <div className="w-[508px] flex flex-row items-start justify-center py-0 px-5 box-border max-w-full">
               <button
+               data-cy="submit-button" // Added to do cypress testing
                 type="submit"
                 className="cursor-pointer [border:none] py-2.5 px-5 bg-primary w-[300px] rounded-3xs flex flex-row items-start justify-center box-border whitespace-nowrap hover:bg-slategray"
               >
