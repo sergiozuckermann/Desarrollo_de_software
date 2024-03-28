@@ -6,6 +6,7 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import AgentOnCall from "./pages/AgentOnCall";
 
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
     <Routes>
       <Route path="/signup" element={<SignUp />} />
       <Route path="/" element={<SignIn />} />
+      <Route path="/oncall" element={<AgentOnCall />} />
     </Routes>
      <ToastContainer />
      </>
