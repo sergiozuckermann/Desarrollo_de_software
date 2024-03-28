@@ -12,13 +12,13 @@ const CCPComponent = () => {
         ccpUrl: instanceURL,
         loginPopup: true,
         loginPopupAutoClose: true,
-        loginOptions: {
-          autoClose: true,
-          height: 600,
-          width: 400,
-          top: 0,
-          left: 0
-        },
+        // loginOptions: {
+        //   autoClose: true,
+        //   height: 600,
+        //   width: 400,
+        //   top: 0,
+        //   left: 0
+        // },
         softphone: {
           allowFramedSoftphone: true,
           disableRingtone: false,
@@ -42,7 +42,7 @@ const CCPComponent = () => {
   }, []); // Empty dependency array to run only once on mount
 
   return (
-    <div id="ccp-container">
+    <div id="ccp-container" className = "h-[100%] w-[100%]">
       {/* This is where the CCP iframe will be rendered */}
     </div>
   );
