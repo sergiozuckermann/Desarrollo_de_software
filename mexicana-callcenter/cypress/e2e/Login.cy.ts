@@ -1,3 +1,5 @@
+/// <reference types="cypress" />
+
 describe('Login Tests', () => {
   beforeEach(() => {
     cy.visit('/'); 
