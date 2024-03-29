@@ -7,12 +7,10 @@ import SignUp from "./pages/SignUp";
 import ProfileComponent from "./pages/ProfileTest";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { AuthProvider } from "./components/authContext";
 
 function App() {
 
   return (
-    <AuthProvider>
     <>
     <Routes>
       <Route path="/signup" element={<SignUp />} />
@@ -21,7 +19,6 @@ function App() {
     </Routes>
      <ToastContainer />
      </>
-    </AuthProvider>
   );
 
 }

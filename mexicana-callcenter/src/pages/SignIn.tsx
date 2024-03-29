@@ -6,7 +6,7 @@ import {
 } from "@aws-sdk/client-cognito-identity-provider"; // ES Modules import
 import { jwtDecode } from 'jwt-decode';
 import useCustomToast from "../components/notificationComponent";
-import { useAuth } from "../components/authContext";
+import { useAuth, CustomTokenPayload } from "../components/authContext";
 import { useNavigate } from "react-router-dom";
 
 const SignIn: FunctionComponent = () => {
@@ -38,22 +38,19 @@ const SignIn: FunctionComponent = () => {
       const { $metadata } = response;
       const { AuthenticationResult } = response;
 
-      if (AuthenticationResult) {
-        const { IdToken } = AuthenticationResult;
-        const decodedToken = jwtDecode(IdToken);
-        if (decodedToken['custom:job_level']) {
-          const jobLevel = decodedToken['custom:job_level'];
-
-          setJobLevel(jobLevel);
-          navigate("/profileTest");
-        }
-      }
-
       // check if user was successfully logged in
       if ($metadata.httpStatusCode === 200) {
         showSuccess("🎉 You are now signed in.");
-
-      }
+        if (AuthenticationResult && AuthenticationResult.IdToken) {
+          const decodedToken = jwtDecode<CustomTokenPayload>(AuthenticationResult.IdToken);
+          if (decodedToken['custom:job_level']) {
+            const jobLevel = decodedToken['custom:job_level'];
+            
+            setJobLevel(jobLevel);
+            navigate("/profileTest");
+          }
+        }
+      }      
     } catch (err) {
       // check if there was an error logging in and notify the user
       const errorMessage =
