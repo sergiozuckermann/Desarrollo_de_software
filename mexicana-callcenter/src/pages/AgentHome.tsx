@@ -2,7 +2,7 @@ import { FunctionComponent } from "react";
 import FrameComponent from "../components/FrameComponent";
 import CCPComponent from "../components/CCPComponent";
 
-const AgentOnCall: FunctionComponent = () => {
+const AgentHome: FunctionComponent = () => {
 
   return (
     <div className="w-full relative bg-white overflow-hidden flex flex-col items-start justify-start pt-0 px-0 pb-[7px] box-border gap-[30px] tracking-[normal]">
@@ -187,5 +187,5 @@ const AgentOnCall: FunctionComponent = () => {
   );
 };
 
-export default AgentOnCall;
+export default AgentHome;
 
