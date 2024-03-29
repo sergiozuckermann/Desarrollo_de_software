@@ -7,6 +7,7 @@ import {
 import { jwtDecode } from 'jwt-decode';
 import useCustomToast from "../components/notificationComponent";
 import { useAuth } from "../components/authContext";
+import { useNavigate } from "react-router-dom";
 
 const SignIn: FunctionComponent = () => {
   const [emailTextValue, setEmailTextValue] = useState("");
@@ -14,6 +15,7 @@ const SignIn: FunctionComponent = () => {
   const { showError } = useCustomToast();
   const { showSuccess } = useCustomToast();
   const { setJobLevel } = useAuth();
+  const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,12 +45,14 @@ const SignIn: FunctionComponent = () => {
           const jobLevel = decodedToken['custom:job_level'];
 
           setJobLevel(jobLevel);
+          navigate("/profileTest");
         }
       }
 
       // check if user was successfully logged in
       if ($metadata.httpStatusCode === 200) {
         showSuccess("🎉 You are now signed in.");
+
       }
     } catch (err) {
       // check if there was an error logging in and notify the user
