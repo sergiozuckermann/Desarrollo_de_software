@@ -4,13 +4,16 @@ import {
   InitiateAuthCommand,
   AuthFlowType,
 } from "@aws-sdk/client-cognito-identity-provider"; // ES Modules import
+import { jwtDecode } from 'jwt-decode';
 import useCustomToast from "../components/notificationComponent";
+import { useAuth } from "../components/authContext";
 
 const SignIn: FunctionComponent = () => {
   const [emailTextValue, setEmailTextValue] = useState("");
   const [passwordTextValue, setPasswordTextValue] = useState("");
   const { showError } = useCustomToast();
   const { showSuccess } = useCustomToast();
+  const { setJobLevel } = useAuth();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,6 +34,17 @@ const SignIn: FunctionComponent = () => {
     try {
       const response = await client.send(command);
       const { $metadata } = response;
+      const { AuthenticationResult } = response;
+
+      if (AuthenticationResult) {
+        const { IdToken } = AuthenticationResult;
+        const decodedToken = jwtDecode(IdToken);
+        if (decodedToken['custom:job_level']) {
+          const jobLevel = decodedToken['custom:job_level'];
+
+          setJobLevel(jobLevel);
+        }
+      }
 
       // check if user was successfully logged in
       if ($metadata.httpStatusCode === 200) {
@@ -42,6 +56,7 @@ const SignIn: FunctionComponent = () => {
         err instanceof Error ? err.message : "An unexpected error occurred.";
       showError(`🚨 ${errorMessage}`);
     }
+
   };
 
   return (
