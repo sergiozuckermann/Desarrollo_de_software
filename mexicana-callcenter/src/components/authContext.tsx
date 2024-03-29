@@ -11,7 +11,7 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-export const AuthProvider: FunctionComponent<PropsWithChildren<{}>> = ({ children }) => {
+export const AuthProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
   const [jobLevel, setJobLevel] = useState<string | undefined>();
 
   const value = { jobLevel, setJobLevel };
