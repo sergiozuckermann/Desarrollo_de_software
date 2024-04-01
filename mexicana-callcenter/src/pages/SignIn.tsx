@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 const SignIn: FunctionComponent = () => {
   const [emailTextValue, setEmailTextValue] = useState("");
   const [passwordTextValue, setPasswordTextValue] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const { showError } = useCustomToast();
   const { showSuccess } = useCustomToast();
   const { setJobLevel } = useAuth();
@@ -57,7 +58,11 @@ const SignIn: FunctionComponent = () => {
         err instanceof Error ? err.message : "An unexpected error occurred.";
       showError(`🚨 ${errorMessage}`);
     }
+  }
+ 
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   return (
@@ -139,24 +144,29 @@ const SignIn: FunctionComponent = () => {
               <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-4 px-[18px] pb-[10.800000000000182px] max-w-full border-[1px] border-solid border-marco">
                 <div className="h-[44.8px] w-[553px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
                 <input
+                  className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[18px] w-[100%] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
                   data-cy="email-input" // Added to do cypress testing
-                  className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[18px] w-[159px] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
                   placeholder="Email"
                   type="text"
                   value={emailTextValue}
                   onChange={(event) => setEmailTextValue(event.target.value)}
                 />
               </div>
-              <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.800000000000182px] px-[19px] pb-[11px] max-w-full border-[1px] border-solid border-marco">
-                <div className="h-[44.8px] w-[553px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
-                <input
-                  data-cy="password-input" // Added to do cypress testing
-                  className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[18px] w-[145px] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
-                  placeholder="Password"
-                  type="password" // Changed from text to password
-                  value={passwordTextValue}
-                  onChange={(event) => setPasswordTextValue(event.target.value)}
-                />
+              <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.800000000000182px] px-[19px] pb-[11px] max-w-full border-[1px] border-solid border-marco relative">
+                  <input
+                      className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[18px] w-[calc(100% - 10%)] relative text-marco text-left flex items-end shrink-0 p-0 z-[1] "
+                      data-cy="password-input" // Added to do cypress testing
+                      placeholder="Password"
+                      type={showPassword ? "text" : "password"}
+                      value={passwordTextValue}
+                      onChange={(event) => setPasswordTextValue(event.target.value)}
+                  />
+                  <img
+                      className="cursor-pointer absolute top-1/2 right-2 transform -translate-y-1/2 h-[30px] w-[30px]"
+                      src="/eye_password.png"
+                      alt="toggle password visibility"
+                      onClick={togglePasswordVisibility}
+                  />
               </div>
             </div>
             <div className="w-[508px] flex flex-row items-start justify-center py-0 px-5 box-border max-w-full">
@@ -175,6 +185,7 @@ const SignIn: FunctionComponent = () => {
       </main>
     </div>
   );
-};
+}
+
 
 export default SignIn;
