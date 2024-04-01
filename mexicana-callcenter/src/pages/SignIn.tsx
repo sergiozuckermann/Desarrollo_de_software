@@ -1,48 +1,65 @@
 import { FunctionComponent, useState } from "react";
-import { CognitoIdentityProviderClient, InitiateAuthCommand } from "@aws-sdk/client-cognito-identity-provider" // ES Modules import
-import { useNavigate } from 'react-router-dom'
+import {
+  CognitoIdentityProviderClient,
+  InitiateAuthCommand,
+  AuthFlowType,
+} from "@aws-sdk/client-cognito-identity-provider"; // ES Modules import
+import { jwtDecode } from 'jwt-decode';
+import useCustomToast from "../components/notificationComponent";
+import { useAuth, CustomTokenPayload } from "../components/authContext";
+import { useNavigate } from "react-router-dom";
 
 const SignIn: FunctionComponent = () => {
   const [emailTextValue, setEmailTextValue] = useState("");
   const [passwordTextValue, setPasswordTextValue] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate()
+  const { showError } = useCustomToast();
+  const { showSuccess } = useCustomToast();
+  const { setJobLevel } = useAuth();
+  const navigate = useNavigate();
 
-  const handleLogin = async (e:Event) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    const client = new CognitoIdentityProviderClient({region: "us-east-1"})
+    const client = new CognitoIdentityProviderClient({ region: "us-east-1" });
 
-    const input = { // InitiateAuthRequest
-      AuthFlow: "USER_PASSWORD_AUTH", // required
-      AuthParameters: { // AuthParametersType
+    const input = {
+      // InitiateAuthRequest
+      AuthFlow: AuthFlowType.USER_PASSWORD_AUTH, // required
+      AuthParameters: {
+        // AuthParametersType
         USERNAME: emailTextValue,
-        PASSWORD: passwordTextValue
+        PASSWORD: passwordTextValue,
       },
-      ClientId: "3m9tmh05gmofr41tfkg4vsu1d0" // required
-    }
+      ClientId: "7n1pkdlieo0jnsl5uht0vpd5pj", // required
+    };
     const command = new InitiateAuthCommand(input);
-    
-  try {
-    const response = await client.send(command);
-    console.log("This is RESPONSE", response)
-    if(response.ChallengeName == "NEW_PASSWORD_REQUIRED") {
-      // redirect to signup page for new password and additional information of the user trying to authenticate
-      console.log("User must change the temporary password.") // notify user
-    
-      // add session to local storage
-      localStorage.setItem("session", response.Session)
 
-      // redirect
-      setTimeout(() => {
-        navigate("/signup")
-      }, 2000)
+    try {
+      const response = await client.send(command);
+      const { $metadata } = response;
+      const { AuthenticationResult } = response;
+
+      // check if user was successfully logged in
+      if ($metadata.httpStatusCode === 200) {
+        showSuccess("🎉 You are now signed in.");
+        if (AuthenticationResult && AuthenticationResult.IdToken) {
+          const decodedToken = jwtDecode<CustomTokenPayload>(AuthenticationResult.IdToken);
+          if (decodedToken['custom:job_level']) {
+            const jobLevel = decodedToken['custom:job_level'];
+            
+            setJobLevel(jobLevel);
+            navigate("/profileTest");
+          }
+        }
+      }      
+    } catch (err) {
+      // check if there was an error logging in and notify the user
+      const errorMessage =
+        err instanceof Error ? err.message : "An unexpected error occurred.";
+      showError(`🚨 ${errorMessage}`);
     }
-  } catch(err) {
-    console.log("this is ERR", err)
   }
-  
-    
-  }
+ 
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -88,10 +105,12 @@ const SignIn: FunctionComponent = () => {
           alt=""
           src="/sign-in-label.svg"
         />
+
         <div className="self-stretch w-[553px] flex flex-col items-start justify-start pt-[114px] px-0 pb-0 box-border max-w-full mq450:pt-[74px] mq450:box-border">
           <form
-           onSubmit={handleLogin}
-           className="m-0 self-stretch flex-1 flex flex-col items-end justify-start gap-[46px] shrink-0 [debug_commit:1cbd860] mq750:gap-[23px]">
+            onSubmit={handleLogin}
+            className="m-0 self-stretch flex-1 flex flex-col items-end justify-start gap-[46px] shrink-0 [debug_commit:1cbd860] mq750:gap-[23px]"
+          >
             <div className="self-stretch flex-1 flex flex-col items-start justify-start gap-[16.2px] max-w-full">
               <div className="w-[501px] flex-1 flex flex-row items-start justify-start relative max-w-full">
                 <div className="h-[697px] w-[632px] absolute my-0 mx-[!important] bottom-[-453px] left-[-620px]">
@@ -126,6 +145,7 @@ const SignIn: FunctionComponent = () => {
                 <div className="h-[44.8px] w-[553px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
                 <input
                   className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[18px] w-[100%] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
+                  data-cy="email-input" // Added to do cypress testing
                   placeholder="Email"
                   type="text"
                   value={emailTextValue}
@@ -135,6 +155,7 @@ const SignIn: FunctionComponent = () => {
               <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.800000000000182px] px-[19px] pb-[11px] max-w-full border-[1px] border-solid border-marco relative">
                   <input
                       className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[18px] w-[calc(100% - 10%)] relative text-marco text-left flex items-end shrink-0 p-0 z-[1] "
+                      data-cy="password-input" // Added to do cypress testing
                       placeholder="Password"
                       type={showPassword ? "text" : "password"}
                       value={passwordTextValue}
@@ -149,7 +170,11 @@ const SignIn: FunctionComponent = () => {
               </div>
             </div>
             <div className="w-[508px] flex flex-row items-start justify-center py-0 px-5 box-border max-w-full">
-              <button type="submit" className="cursor-pointer [border:none] py-2.5 px-5 bg-primary w-[300px] rounded-3xs flex flex-row items-start justify-center box-border whitespace-nowrap hover:bg-slategray">
+              <button
+               data-cy="submit-button" // Added to do cypress testing
+                type="submit"
+                className="cursor-pointer [border:none] py-2.5 px-5 bg-primary w-[300px] rounded-3xs flex flex-row items-start justify-center box-border whitespace-nowrap hover:bg-slategray"
+              >
                 <div className="h-[22px] w-[58px] relative text-lg font-paragraph text-tertiary text-center inline-block min-w-[58px]">
                   Sign in
                 </div>
@@ -160,6 +185,7 @@ const SignIn: FunctionComponent = () => {
       </main>
     </div>
   );
-};
+}
+
 
 export default SignIn;
