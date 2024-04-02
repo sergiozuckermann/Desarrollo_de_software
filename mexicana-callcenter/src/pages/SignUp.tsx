@@ -1,21 +1,30 @@
 import { FunctionComponent, useState } from "react";
-import { CognitoIdentityProviderClient, RespondToAuthChallengeCommand  } from "@aws-sdk/client-cognito-identity-provider" // ES Modules import
-
+import { CognitoIdentityProviderClient, RespondToAuthChallengeCommand } from "@aws-sdk/client-cognito-identity-provider"; // ES Modules import
 
 const SignUp: FunctionComponent = () => {
-
   const [firstNamesTextValue, setFirstNamesTextValue] = useState("");
   const [surnameTextValue, setSurnameTextValue] = useState("");
   const [emailTextValue, setEmailTextValue] = useState("");
   const [passwordTextValue, setPasswordTextValue] = useState("");
   const [confirmPasswordTextValue, setConfirmPasswordTextValue] = useState("");
+  const [passwordValid, setPasswordValid] = useState(false);
   const [jobLevel, setJobLevel] = useState(""); // JOB LEVEL
 
+  const checkPasswordRequirements = (password: string) => {
+    return /[a-z]/.test(password) && /[A-Z]/.test(password) && /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{8,}$/.test(password);
+  };
 
-  const handleSignUp = async (e:Event) => {
-    e.preventDefault()
+  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newPassword = event.target.value;
+    const isValid = checkPasswordRequirements(newPassword);
+    setPasswordTextValue(newPassword);
+    setPasswordValid(isValid);
+  };
 
-    const client = new CognitoIdentityProviderClient({region: "us-east-1"})
+  const handleSignUp = async (e: Event) => {
+    e.preventDefault();
+
+    const client = new CognitoIdentityProviderClient({ region: "us-east-1" });
 
     const input = { // InitiateAuthRequest
       ChallengeName: "NEW_PASSWORD_REQUIRED",
@@ -27,7 +36,8 @@ const SignUp: FunctionComponent = () => {
       },
       Session: localStorage.getItem("session"),
       ClientId: "3m9tmh05gmofr41tfkg4vsu1d0" // required
-    }
+    };
+
     const command = new RespondToAuthChallengeCommand(input);
 
     try {
@@ -37,10 +47,7 @@ const SignUp: FunctionComponent = () => {
     } catch(err) {
       console.log("this signup err: ", err)
     }
-
-  }
-
-
+  };
 
   return (
     <div className="w-full relative bg-white overflow-hidden flex flex-col items-end justify-start gap-[64px] tracking-[normal] mq450:gap-[16px] mq700:gap-[32px]">
@@ -54,92 +61,98 @@ const SignUp: FunctionComponent = () => {
         <form onSubmit={handleSignUp} className="m-0 flex-1 flex flex-col items-end justify-start gap-[50px] min-w-[383px] max-w-full mq450:min-w-full mq700:gap-[25px]">
           {/* signup form */}
           <div className="self-stretch h-[479px] flex flex-col items-start justify-start gap-[15.57px] max-w-full text-left text-lg text-marco font-paragraph">
-          <div className="w-[573px] flex-1 flex flex-row items-start justify-start py-0 px-[42px] box-border max-w-full mq700:pl-[21px] mq700:pr-[21px] mq700:box-border">
-            <img
-              className="h-[130px] flex-1 relative max-w-full overflow-hidden object-cover"
-              loading="lazy"
-              alt=""
-              src="/untitled-design-2-2@2x.png"
-            />
-          </div>
-          <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15px] px-5 pb-[9.600000000000364px] max-w-full border-[1px] border-solid border-marco">
-            <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
-            <input
-              className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[18px] w-[100%] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
-              placeholder="First Name(s)"
-              type="text"
-              value={firstNamesTextValue}
-              onChange={(event) => setFirstNamesTextValue(event.target.value)}
-            />
-          </div>
-          <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.899999999999636px] px-[21px] pb-[9.700000000000728px] max-w-full border-[1px] border-solid border-marco">
-            <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
-            <input
-              className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[18px] w-[100%] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
-              placeholder="Surname"
-              type="text"
-              value={surnameTextValue}
-              onChange={(event) => setSurnameTextValue(event.target.value)}
-            />
-          </div>
-          <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.5px] px-[19.699999999999815px] pb-[10.100000000000364px] max-w-full border-[1px] border-solid border-marco">
-            <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
-            <input
-              className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[18px] w-[100%] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
-              placeholder="Email"
-              type="text"
-              value={emailTextValue}
-              onChange={(event) => setEmailTextValue(event.target.value)}
-            />
-          </div>
-          <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.800000000000182px] px-[21px] pb-[9.800000000000182px] max-w-full border-[1px] border-solid border-marco">
-            <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
-            <input
-              className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[18px] w-[100%] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
-              placeholder="Password"
-              type="password"
-              value={passwordTextValue}
-              onChange={(event) => setPasswordTextValue(event.target.value)}
-            />
-          </div>
-          <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.699999999999818px] px-5 pb-[9.900000000000546px] max-w-full border-[1px] border-solid border-marco">
-            <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
-            <input
-              className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[18px] w-[100%] relative text-marco text-left flex items-end shrink-0 max-w-full p-0 z-[1]"
-              placeholder="Confirm Password"
-              type="password"
-              value={confirmPasswordTextValue}
-              onChange={(event) => setConfirmPasswordTextValue(event.target.value)}
-            />
-          </div>
-          
-          {/* DROPDOWN JOB LEVEL */}
-          <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.600000000000364px] px-[21px] pb-2.5 relative max-w-full border-[1px] border-solid border-marco">
-            <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
-            <div className="relative flex-1">
-              <select
-                className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[19] w-[90%] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
-                value={jobLevel}
-                onChange={(event) => setJobLevel(event.target.value)}
-              >
+            <div className="w-[573px] flex-1 flex flex-row items-start justify-start py-0 px-[42px] box-border max-w-full mq700:pl-[21px] mq700:pr-[21px] mq700:box-border">
+              <img
+                className="h-[130px] flex-1 relative max-w-full overflow-hidden object-cover"
+                loading="lazy"
+                alt=""
+                src="/untitled-design-2-2@2x.png"
+              />
+            </div>
+            <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15px] px-5 pb-[9.600000000000364px] max-w-full border-[1px] border-solid border-marco">
+              <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
+              <input
+                className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[18px] w-[100%] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
+                placeholder="First Name(s)"
+                type="text"
+                value={firstNamesTextValue}
+                onChange={(event) => setFirstNamesTextValue(event.target.value)}
+              />
+            </div>
+            <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.899999999999636px] px-[21px] pb-[9.700000000000728px] max-w-full border-[1px] border-solid border-marco">
+              <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
+              <input
+                className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[18px] w-[100%] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
+                placeholder="Surname"
+                type="text"
+                value={surnameTextValue}
+                onChange={(event) => setSurnameTextValue(event.target.value)}
+              />
+            </div>
+            <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.5px] px-[19.699999999999815px] pb-[10.100000000000364px] max-w-full border-[1px] border-solid border-marco">
+              <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
+              <input
+                className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[18px] w-[100%] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
+                placeholder="Email"
+                type="text"
+                value={emailTextValue}
+                onChange={(event) => setEmailTextValue(event.target.value)}
+              />
+            </div>
+            <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.800000000000182px] px-[21px] pb-[9.800000000000182px] max-w-full border-[1px] border-solid border-marco">
+              <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
+              <input
+                className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[18px] w-[100%] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
+                placeholder="Password"
+                type="password"
+                value={passwordTextValue}
+                onChange={handlePasswordChange}
+                style={{ color: passwordValid ? 'green' : 'red' }}
+              />
+            </div>
+            <p  style={{ color: 'gray', fontSize: '12px' }}>Must contain one upper and lowercase letter, one special character and be at least 8 characters long</p>
+
+            <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.699999999999818px] px-5 pb-[9.900000000000546px] max-w-full border-[1px] border-solid border-marco">
+              <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
+              <input
+                className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[18px] w-[100%] relative text-marco text-left flex items-end shrink-0 max-w-full p-0 z-[1]"
+                placeholder="Confirm Password"
+                type="password"
+                value={confirmPasswordTextValue}
+                onChange={(event) => setConfirmPasswordTextValue(event.target.value)}
+                style={{ color: confirmPasswordTextValue === passwordTextValue ? 'green' : 'red' }}
+              />
+            </div>
+            <p  style={{ color: 'gray', fontSize: '12px' }}>The password must match</p>
+
+            {/* DROPDOWN JOB LEVEL */}
+            <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.600000000000364px] px-[21px] pb-2.5 relative max-w-full border-[1px] border-solid border-marco">
+              <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
+              <div className="relative flex-1">
+                <select
+                  className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[19] w-[90%] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
+                  value={jobLevel}
+                  onChange={(event) => setJobLevel(event.target.value)}
+                >
                   <option value="" disabled selected>Job Level</option>
                   <option value="Agent">Agent</option>
                   <option value="Supervisor">Supervisor</option>
-              </select>
-            </div>
-          </div>
-
-        </div>
-
-          {/* button */}
-          <div className="self-stretch flex flex-row items-start justify-center py-0 pr-5 pl-[30px]">
-            <button type="submit" className="cursor-pointer [border:none] py-2.5 px-5 bg-primary w-[300px] rounded-3xs flex flex-row items-start justify-center box-border hover:bg-slategray">
-              <div className="h-[22px] w-[58px] relative text-lg font-paragraph text-tertiary text-center inline-block min-w-[58px]">
-                Create
+                </select>
               </div>
-            </button>
+            </div>
+
+            {/* Botón */}
+            <div className="self-stretch flex flex-row items-start justify-center py-0 pr-5 pl-[30px]">
+              <button type="submit" className="cursor-pointer [border:none] py-2.5 px-5 bg-primary w-[300px] rounded-3xs flex flex-row items-start justify-center box-border hover:bg-slategray">
+                <div className="h-[22px] w-[58px] relative text-lg font-paragraph text-tertiary text-center inline-block min-w-[58px]">
+                  Create
+                </div>
+              </button>
+            </div>
+
           </div>
         </form>
+
         <div className="w-[533px] flex flex-col items-start justify-start pt-3.5 px-0 pb-0 box-border min-w-[533px] max-w-full mq700:min-w-full mq975:flex-1">
           <div className="self-stretch h-[654px] relative">
             <img
