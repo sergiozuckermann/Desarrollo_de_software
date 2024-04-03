@@ -110,7 +110,7 @@ const SignUp: FunctionComponent = () => {
                 style={{ color: passwordValid ? 'green' : 'red' }}
               />
             </div>
-            <p  style={{ color: 'gray', fontSize: '12px' }}>Must contain one upper and lowercase letter, one special character and be at least 8 characters long</p>
+            <p  style={{ color: 'gray', fontSize: '12px', margin: '0' }}>Must contain one upper and lowercase letter, one special character and be at least 8 characters long</p>
 
             <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.699999999999818px] px-5 pb-[9.900000000000546px] max-w-full border-[1px] border-solid border-marco">
               <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
@@ -123,7 +123,7 @@ const SignUp: FunctionComponent = () => {
                 style={{ color: confirmPasswordTextValue === passwordTextValue ? 'green' : 'red' }}
               />
             </div>
-            <p  style={{ color: 'gray', fontSize: '12px' }}>The password must match</p>
+            <p  style={{ color: 'gray', fontSize: '12px', margin: '0' }}>The password must match</p>
 
             {/* DROPDOWN JOB LEVEL */}
             <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.600000000000364px] px-[21px] pb-2.5 relative max-w-full border-[1px] border-solid border-marco">
