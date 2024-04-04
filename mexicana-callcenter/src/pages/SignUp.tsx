@@ -11,11 +11,13 @@ const SignUp: React.FC = () => {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
   const [jobLevel, setJobLevel] = useState("");
-  const [passwordValid, setPasswordValid] = useState(false); // Nuevo estado
-  const [confirmPasswordTextValue, setConfirmPasswordTextValue] = useState(""); // Nuevo estado
-  const [passwordTextValue, setPasswordTextValue] = useState(""); // Nuevo estado
+  const [passwordValid, setPasswordValid] = useState(false);
+  const [confirmPasswordTextValue, setConfirmPasswordTextValue] = useState("");
+  const [passwordTextValue, setPasswordTextValue] = useState("");
+  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false); // Nuevo estado
   const { showError, showSuccess } = useCustomToast();
 
   const checkPasswordRequirements = (password: string) => {
@@ -58,6 +60,14 @@ const SignUp: React.FC = () => {
       const errorMessage =
         err instanceof Error ? err.message : "An unexpected error occurred.";
       showError(`🚨 ${errorMessage}`);
+    }
+  };
+
+  const togglePasswordVisibility = (field: string) => { // Modificado para aceptar un parámetro adicional
+    if (field === "password") {
+      setShowPassword(!showPassword);
+    } else if (field === "confirmPassword") {
+      setShowPasswordConfirm(!showPasswordConfirm);
     }
   };
 
@@ -114,35 +124,47 @@ const SignUp: React.FC = () => {
                 onChange={(event) => setEmail(event.target.value)}
               />
             </div>
-            <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.800000000000182px] px-[21px] pb-[9.800000000000182px] max-w-full border-[1px] border-solid border-marco">
+            <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.800000000000182px] px-[19px] pb-[11px] max-w-full border-[1px] border-solid border-marco relative">
               <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
-              <input
-                className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[18px] w-[100%] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
-                placeholder="Password"
-                type="password"
-                value={password}
-                onChange={(event) => {
-                  setPassword(event.target.value);
-                  setPasswordValid(checkPasswordRequirements(event.target.value)); // Validación de contraseña
-                  setPasswordTextValue(event.target.value); // Establecer el valor de la contraseña
-                }}
-                style={{ color: passwordValid ? 'green' : 'red' }}
-              />
+                <input
+                  className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[18px] w-[(100%-10%)] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
+                  placeholder="Password"
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(event) => {
+                    setPassword(event.target.value);
+                    setPasswordValid(checkPasswordRequirements(event.target.value));
+                    setPasswordTextValue(event.target.value);
+                  }}
+                  style={{ color: passwordValid ? 'green' : 'red' }}
+                />
+                <img
+                  className="cursor-pointer absolute top-1/2 right-2 transform -translate-y-1/2 h-[30px] w-[30px]"
+                  src="/eye_password.png"
+                  alt="toggle password visibility"
+                  onClick={() => togglePasswordVisibility("password")} // Modificado para especificar qué campo de contraseña debe manipularse
+                />
             </div>
             <p  style={{ color: 'gray', fontSize: '12px', margin: '0' }}>Must contain one upper and lowercase letter, one special character and be at least 8 characters long</p>
 
-            <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.699999999999818px] px-5 pb-[9.900000000000546px] max-w-full border-[1px] border-solid border-marco">
+            <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.800000000000182px] px-[19px] pb-[11px] max-w-full border-[1px] border-solid border-marco relative">
               <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
               <input
-                className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[18px] w-[100%] relative text-marco text-left flex items-end shrink-0 max-w-full p-0 z-[1]"
+                className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[18px] w-[(100%-10%)] relative text-marco text-left flex items-end shrink-0 max-w-full p-0 z-[1]"
                 placeholder="Confirm Password"
-                type="password"
+                type={showPasswordConfirm ? "text" : "password"} 
                 value={confirmPassword}
                 onChange={(event) => {
                   setConfirmPassword(event.target.value);
-                  setConfirmPasswordTextValue(event.target.value); // Establecer el valor de la confirmación de la contraseña
+                  setConfirmPasswordTextValue(event.target.value);
                 }}
                 style={{ color: confirmPasswordTextValue === passwordTextValue ? 'green' : 'red' }}
+              />
+              <img
+                className="cursor-pointer absolute top-1/2 right-2 transform -translate-y-1/2 h-[30px] w-[30px]"
+                src="/eye_password.png"
+                alt="toggle password visibility"
+                onClick={() => togglePasswordVisibility("confirmPassword")} 
               />
             </div>
             <p  style={{ color: 'gray', fontSize: '12px', margin: '0' }}>The password must match</p>
