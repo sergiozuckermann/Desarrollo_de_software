@@ -30,7 +30,7 @@ const SignIn: FunctionComponent = () => {
         USERNAME: emailTextValue,
         PASSWORD: passwordTextValue,
       },
-      ClientId: "7n1pkdlieo0jnsl5uht0vpd5pj", // required
+      ClientId: "2gdenkjjd809jojhh7ojfqslf1", // required
     };
     const command = new InitiateAuthCommand(input);
 

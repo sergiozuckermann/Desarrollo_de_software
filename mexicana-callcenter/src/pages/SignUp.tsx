@@ -35,7 +35,7 @@ const SignUp: React.FC = () => {
     const client = new CognitoIdentityProviderClient({ region: "us-east-1" });
 
     const command = new SignUpCommand({
-      ClientId: "7n1pkdlieo0jnsl5uht0vpd5pj",
+      ClientId: "2gdenkjjd809jojhh7ojfqslf1",
       Username: email,
       Password: password,
       UserAttributes: [
