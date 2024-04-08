@@ -131,7 +131,7 @@ const SignIn: FunctionComponent = () => {
                     className="h-[130px] flex-1 relative max-w-full overflow-hidden object-cover z-[4]"
                     loading="lazy"
                     alt=""
-                    src="/untitled-design-2-1@2x.png"
+                    src="/callCenterLogo.png"
                   />
                 </div>
               </div>
