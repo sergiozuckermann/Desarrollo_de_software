@@ -30,7 +30,7 @@ const SignIn: FunctionComponent = () => {
         USERNAME: emailTextValue,
         PASSWORD: passwordTextValue,
       },
-      ClientId: "7n1pkdlieo0jnsl5uht0vpd5pj", // required
+      ClientId: "2gdenkjjd809jojhh7ojfqslf1", // required
     };
     const command = new InitiateAuthCommand(input);
 
@@ -93,12 +93,6 @@ const SignIn: FunctionComponent = () => {
         </div>
         <div className="absolute top-[10.67%] left-[12.64%]">Call Center</div>
       </div>
-      <div className="self-stretch bg-tertiary shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)] flex flex-row items-start justify-end pt-[15px] px-[41px] pb-3 box-border max-w-full z-[2]">
-        <div className="h-[100px] w-[1280px] relative bg-tertiary shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)] hidden max-w-full" />
-        <h1 className="m-0 h-[73px] w-[339px] relative text-inherit font-medium font-inherit inline-block shrink-0 max-w-full z-[3] mq450:text-[36px] mq1050:text-[48px]">
-          Sign In
-        </h1>
-      </div>
       <main className="self-stretch h-[697px] flex flex-row items-start justify-start pt-0 pb-[243px] pr-[107px] pl-[620px] box-border gap-[35px] max-w-full lg:pl-[310px] lg:pr-[53px] lg:box-border mq450:pl-5 mq450:pb-[103px] mq450:box-border mq750:gap-[17px] mq750:pl-[155px] mq750:pr-[26px] mq750:box-border mq1050:pb-[158px] mq1050:box-border">
         <img
           className="ml-[-829px] h-[732px] w-[794px] relative shrink-0 [debug_commit:1cbd860] max-w-[144%] z-[2]"
@@ -137,7 +131,7 @@ const SignIn: FunctionComponent = () => {
                     className="h-[130px] flex-1 relative max-w-full overflow-hidden object-cover z-[4]"
                     loading="lazy"
                     alt=""
-                    src="/untitled-design-2-1@2x.png"
+                    src="/callCenterLogo.png"
                   />
                 </div>
               </div>
