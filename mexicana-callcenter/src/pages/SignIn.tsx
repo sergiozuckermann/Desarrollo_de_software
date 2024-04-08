@@ -119,9 +119,11 @@ const SignIn: FunctionComponent = () => {
               <div className="flex gap-5 max-md:flex-col max-md:gap-0"></div>
                <div className="flex gap-5 max-md:flex-col max-md:gap-0">
                 <div className="flex flex-col w-6/12 max-md:ml-0 max-md:w-full">
-                  <div className="flex overflow-hidden relative flex-col grow justify-center border border-black border-none fill-gray-50 fill-opacity-0 max-w-[654px] min-h-[697px] stroke-[1px] stroke-black max-md:hidden max-md:max-w-full max-sm:hidden max-sm:min-h-0">
-                    <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/95d42361535047c5ec4de20830a9f16e4cec66c779b4b96be8065a0d972af13a?apiKey=c75bef4eb26d40e482592a37bfd0f8b8&" alt="" className="object-contain object-top absolute inset-0 size-full" />
-                    <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/b06560911a75a79371c04aeb38bab9a9d98d504b65d92288f44a293d57f3c87b?apiKey=c75bef4eb26d40e482592a37bfd0f8b8&" alt="" className="object-contain -ml-0.5 w-full border border-white border-solid aspect-[0.81] fill-[linear-gradient(133deg,#178448_20.16%,#19253E_91.74%)] max-w-[619px] max-md:flex max-md:max-w-full max-sm:hidden" />
+                  <div className="flex overflow-hidden relative flex-col grow justify-center border border-black border-none fill-gray-50 fill-opacity-0 max-w-[700px] min-h-[697px] stroke-[1px] stroke-black max-md:hidden max-md:max-w-full max-sm:hidden max-sm:min-h-0">
+                  <img loading="lazy"
+                    src="/SignInBlob.png"></img>
+                    {/* <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/95d42361535047c5ec4de20830a9f16e4cec66c779b4b96be8065a0d972af13a?apiKey=c75bef4eb26d40e482592a37bfd0f8b8&" alt="" className="object-contain object-top absolute inset-0 size-full" />
+                    <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/b06560911a75a79371c04aeb38bab9a9d98d504b65d92288f44a293d57f3c87b?apiKey=c75bef4eb26d40e482592a37bfd0f8b8&" alt="" className="object-contain -ml-0.5 w-full border border-white border-solid aspect-[0.81] fill-[linear-gradient(133deg,#178448_20.16%,#19253E_91.74%)] max-w-[619px] max-md:flex max-md:max-w-full max-sm:hidden" /> */}
                    </div>
                  </div>
                  <div className="flex flex-col ml-5 w-6/12 max-md:ml-0 max-md:w-full">
