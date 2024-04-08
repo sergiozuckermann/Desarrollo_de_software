@@ -7,7 +7,7 @@ import {
 import { jwtDecode } from 'jwt-decode';
 import useCustomToast from "../components/notificationComponent";
 import { useAuth, CustomTokenPayload } from "../components/authContext";
-import { useNavigate } from "react-router-dom";
+import { Form, useNavigate } from "react-router-dom";
 import { FormInputProps } from "../types"; // Import FormInputProps type
 
 const FormInput: React.FC<FormInputProps> = ({
@@ -18,9 +18,11 @@ const FormInput: React.FC<FormInputProps> = ({
     required,
     value,
     onChange,
+    icon,
+    onIconClick,
   }) => {
     return (
-      <div className={className}>
+      <div className={className=" relative mb-4"}>
         <label htmlFor={name} className="sr-only">
           {placeholder}
         </label>
@@ -32,7 +34,16 @@ const FormInput: React.FC<FormInputProps> = ({
           required={required}
           value={value}
           onChange={onChange}
+          className="border-2 border-gray-300 rounded-lg py-4 px-6 w-full text-lg pr-10 ${className}" 
         />
+        {icon && (
+          <img
+            className="cursor-pointer absolute inset-y-0 right-1 my-auto h-6 w-6" 
+            src={icon}
+            alt="toggle password visibility"
+            onClick={onIconClick}
+          />
+        )}
       </div>
     );
   };
@@ -111,13 +122,54 @@ const SignIn: FunctionComponent = () => {
                  <div className="flex flex-col ml-5 w-6/12 max-md:ml-0 max-md:w-full">
                    <section className="flex flex-col mt-28 mr-auto text-lg text-slate-800 text-opacity-50 max-md:mt-10 max-md:max-w-full">
                      <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/f9b49ac30b1360c78aaee84af182c069847bf947406edfc0f8e4a1d3a3605a86?apiKey=c75bef4eb26d40e482592a37bfd0f8b8&" alt="" className="ml-3 max-w-full aspect-[3.7] w-[489px]" />
-            <form onSubmit={handleLogin}>
+                  
+                    <form onSubmit={handleLogin} className="flex flex-col gap-4 p-8">
+                      <FormInput 
+                        type="email"
+                        placeholder="Email"
+                        name="email"
+                        data-cy="email-input" // Added to do cypress testings
+                        // className="border-none outline-none font-paragraph text-lg bg-transparent h-18px w-full relative text-marco text-left flex items-end shrink-0 p-0 z-1"
+                        required={true}
+                        value={emailTextValue}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmailTextValue(e.target.value)}/>
+
+                      <div className="relative mb-4">
+                      <FormInput
+                           data-cy="password-input" // Added to do cypress testing
+                           placeholder="Password"
+                           type={showPassword ? "text" : "password"}
+                           value={passwordTextValue}
+                           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPasswordTextValue(e.target.value)}
+                           className="pr-10"
+                           icon="/eye_password.png"
+                           onIconClick={togglePasswordVisibility}
+                       />
+                       {/* <img
+                           className="cursor-pointer absolute inset-y-0 right-0 mr-3 my-auto h-[30px] w-[30px]"
+                          //  className="cursor-pointer absolute inset-y-0 right-0 mr-6 my-auto h-[30px] w-[30px]
+                           src="/eye_password.png"
+                           alt="toggle password visibility"
+                           onClick={togglePasswordVisibility}
+                       /> */}
+                      </div>
+                       <button
+                        type="submit"
+                        className="bg-primary hover:bg-secondary text-white rounded-lg py-6 px-6 w-full text-lg content-center">
+                        Sign in
+                      </button>
+                    </form>
+               
+                     {/* <form
+                      onSubmit={handleLogin}
+                      className="flex flex-col gap-4 p-4 rounded-lg shadow-md bg-white max-w-md mx-auto my-8"
+                        >
               <FormInput
                 type="email"
                 data-cy="email-input" // Added to do cypress testing
                 placeholder="Email"
                 name="email"
-                className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[18px] w-[100%] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
+                className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[18px] w-[100%] relative text-marco text-left flex items-end shrink-0 p-0 z-[1] "
                 required={true}
                 value={emailTextValue}
                 onChange={(e:React.ChangeEvent<HTMLInputElement>) => setEmailTextValue(e.target.value)}
@@ -137,7 +189,7 @@ const SignIn: FunctionComponent = () => {
               >
                 Sign In
                 </button>
-              </form>
+              </form> */}
             </section>
          </div>
       </div>
