@@ -146,5 +146,3 @@ const SignIn: FunctionComponent = () => {
         );
       };
 export default SignIn;
-
-/
