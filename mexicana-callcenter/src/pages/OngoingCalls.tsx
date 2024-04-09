@@ -1,14 +1,22 @@
 import { FunctionComponent } from "react";
+import "../onGoingCalls.css";
 
 const OngoingCalls: FunctionComponent = () => {
   return (
-    <div className="relative w-full min-h-screen">
+    <div className="flex flex-col h-screen overflow-hidden"> {/* Prevent overflow at the root level */}
       {/* Top bar with background */}
-      <div className="absolute top-0 left-0 right-0 h-28 bg-tertiary shadow-lg flex justify-between items-center p-4">
-        {/* Title on the right */}
-        <h1 className="text-2xl font-bold">Agents Overview</h1>
-        {/* Home text on the right */}
-        <h1 className="text-2xl font-bold">Map</h1>
+      <div className="h-20 bg-tertiary shadow-lg flex justify-between items-center p-4">
+        <div className="ml-auto">
+          <h1 className="font">| Map</h1>
+        </div>
+      </div>
+      {/* Main content */}
+      <div className="flex-grow overflow-auto"> {/* Allow scrolling only within the main content if necessary */}
+        <h1 className="font1">Agents Overview</h1>
+      </div>
+      {/* Bottom bar */}
+      <div className="h-20 bg-tertiary shadow-lg flex justify-center items-center p-4">
+          <p> Timestamp!! </p>
       </div>
     </div>
   );
