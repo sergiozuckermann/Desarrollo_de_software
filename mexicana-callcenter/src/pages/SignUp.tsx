@@ -73,11 +73,6 @@ const SignUp: React.FC = () => {
 
   return (
     <div className="w-full relative bg-white overflow-hidden flex flex-col items-end justify-start gap-[64px] tracking-[normal] mq450:gap-[16px] mq700:gap-[32px]">      
-      <header className="self-stretch bg-tertiary shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)] flex flex-row items-start justify-end pt-[15px] px-[38px] pb-3 box-border top-[0] z-[99] sticky max-w-full text-right text-41xl text-primary font-paragraph">
-        <h1 className="m-0 h-[73px] w-[550px] relative text-inherit font-medium font-inherit inline-block shrink-0 whitespace-nowrap max-w-full z-[1]">
-            Sign up
-        </h1>
-      </header>
       <main className="w-[1210px] flex flex-row items-start justify-start py-0 pr-0 pl-5 box-border gap-[67px] max-w-full mq450:gap-[17px] mq700:gap-[33px] mq975:flex-wrap">
         <form
           onSubmit={handleSignUp}
