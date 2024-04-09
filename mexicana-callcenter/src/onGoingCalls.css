@@ -1,0 +1,20 @@
+.media-container {
+  width: 100vw;
+  height: 100vh; /* This defines the viewport height */
+  position: relative; /* Needed for absolute positioning of children */
+  overflow: hidden;
+  font-size: 1.25rem; /* equivalent to text-xl in Tailwind */
+  color: var(--color-primary); /* Define this in your root CSS */
+  font-family: 'Your Font', sans-serif; /* equivalent to font-paragraph in Tailwind */
+}
+
+.footer-bar {
+  position: absolute;
+  bottom: 0; /* Anchors to the bottom */
+  width: 100%; /* Stretches across the full width */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.625rem; /* equivalent to py-2.5 in Tailwind */
+  box-shadow: 0 -4px 4px rgba(0, 0, 0, 0.25);
+}
