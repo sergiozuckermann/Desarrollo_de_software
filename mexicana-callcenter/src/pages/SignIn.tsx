@@ -21,7 +21,6 @@ const FormInput: React.FC<FormInputProps> = ({
     icon,
     onIconClick,
   }) => {
-    const inputPaddingRight = icon ? "pr-12" : "pr-4";
     return (
       <div className={className=" relative mb-4"}>
         <label htmlFor={name} className="sr-only">
@@ -35,11 +34,11 @@ const FormInput: React.FC<FormInputProps> = ({
           required={required}
           value={value}
           onChange={onChange}
-          className="border-2 border-gray-300 rounded-lg py-3 px-4 w-full text-lg pr-10 ${className}" 
+          className="border-2 border-gray-300 rounded-lg py-3 px-4 w-full text-lg pr-12 pl-4 ${className} " 
         />
         {icon && (
           <img
-            className="cursor-pointer absolute inset-y-0 right-1 my-auto h-6 w-6" 
+            className="cursor-pointer absolute inset-y-0 my-auto h-6 w-6 pr-10 right-3" 
             src={icon}
             alt="toggle password visibility"
             onClick={onIconClick}
@@ -122,15 +121,13 @@ const SignIn: FunctionComponent = () => {
                   <div className="flex overflow-hidden relative flex-col grow justify-center border border-black border-none fill-gray-50 fill-opacity-0 max-w-[700px] min-h-[697px] stroke-[1px] stroke-black max-md:hidden max-md:max-w-full max-sm:hidden max-sm:min-h-0">
                   <img loading="lazy"
                     src="/SignInBlob.png"></img>
-                    {/* <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/95d42361535047c5ec4de20830a9f16e4cec66c779b4b96be8065a0d972af13a?apiKey=c75bef4eb26d40e482592a37bfd0f8b8&" alt="" className="object-contain object-top absolute inset-0 size-full" />
-                    <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/b06560911a75a79371c04aeb38bab9a9d98d504b65d92288f44a293d57f3c87b?apiKey=c75bef4eb26d40e482592a37bfd0f8b8&" alt="" className="object-contain -ml-0.5 w-full border border-white border-solid aspect-[0.81] fill-[linear-gradient(133deg,#178448_20.16%,#19253E_91.74%)] max-w-[619px] max-md:flex max-md:max-w-full max-sm:hidden" /> */}
                    </div>
                  </div>
                  <div className="flex flex-col ml-5 w-6/12 max-md:ml-0 max-md:w-full">
                    <section className="flex flex-col mt-28 mr-auto text-lg text-slate-800 text-opacity-50 max-md:mt-10 max-md:max-w-full">
                      <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/f9b49ac30b1360c78aaee84af182c069847bf947406edfc0f8e4a1d3a3605a86?apiKey=c75bef4eb26d40e482592a37bfd0f8b8&" alt="" className="ml-3 max-w-full aspect-[3.7] w-[489px]" />
                   
-                    <form onSubmit={handleLogin} className="flex flex-col gap-4 p-8">
+                    <form onSubmit={handleLogin} className=" gap-4 p-8">
                       <FormInput 
                         type="email"
                         placeholder="Email"
