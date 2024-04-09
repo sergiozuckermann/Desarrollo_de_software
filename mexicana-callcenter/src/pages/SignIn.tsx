@@ -8,7 +8,7 @@ import { jwtDecode } from 'jwt-decode';
 import useCustomToast from "../components/notificationComponent";
 import { useAuth, CustomTokenPayload } from "../components/authContext";
 import {useNavigate } from "react-router-dom";
-import { FormInputProps } from "../types";/
+import { FormInputProps } from "../types";
 
 const FormInput: React.FC<FormInputProps> = ({
   type,
