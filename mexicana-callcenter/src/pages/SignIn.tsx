@@ -38,7 +38,7 @@ const FormInput: React.FC<FormInputProps> = ({
         />
         {icon && (
           <img
-            className="cursor-pointer absolute inset-y-0 my-auto h-6 w-6 pr-10 right-3" 
+            className="cursor-pointer absolute inset-y-0 my-auto h-6 w-6 right-3" 
             src={icon}
             alt="toggle password visibility"
             onClick={onIconClick}
@@ -103,102 +103,59 @@ const SignIn: FunctionComponent = () => {
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
-
-  return (
-          <div className="flex flex-col bg-white h-screen w-screen overflow-hidden">
-            <header className="flex items-center justify-between px-4 py-5  w-full">
+    return (
+    <div className="flex flex-col bg-white h-screen w-screen overflow-hidden">
+       <header className="flex items-center justify-between px-4 py-5  w-full">
                 <div className="w-[339px] h-[73px] relative font-medium hidden max-w-full">
                   Sign In
                 </div>
                 </header>
-            {/* <header className="items-end px-16 pt-7 pb-4 w-full text-6xl font-medium text-right bg-gray-50 shadow-sm text-slate-800 max-md:px-5 max-md:max-w-full max-md:text-4xl">
-               Sign In
-             </header> */}
-            <main className="mt-9 w-full max-md:max-w-full">
-              <div className="flex gap-5 max-md:flex-col max-md:gap-0"></div>
-               <div className="flex gap-5 max-md:flex-col max-md:gap-0">
-                <div className="flex flex-col w-6/12 max-md:ml-0 max-md:w-full">
-                  <div className="flex overflow-hidden relative flex-col grow justify-center border border-black border-none fill-gray-50 fill-opacity-0 max-w-[700px] min-h-[697px] stroke-[1px] stroke-black max-md:hidden max-md:max-w-full max-sm:hidden max-sm:min-h-0">
-                  <img loading="lazy"
+      <main className="mt-9 w-full max-md:max-w-full">
+        <div className="flex gap-5 max-md:flex-col max-md:gap-0">
+        <div className="flex flex-col w-6/12 max-md:ml-0 max-md:w-full">
+                   <div className="flex overflow-hidden relative flex-col grow justify-center border border-black border-none fill-gray-50 fill-opacity-0 max-w-[700px] min-h-[697px] stroke-[1px] stroke-black max-md:hidden max-md:max-w-full max-sm:hidden max-sm:min-h-0">
+                   <img loading="lazy"
                     src="/SignInBlob.png"></img>
                    </div>
                  </div>
-                 <div className="flex flex-col ml-5 w-6/12 max-md:ml-0 max-md:w-full">
-                   <section className="flex flex-col mt-28 mr-auto text-lg text-slate-800 text-opacity-50 max-md:mt-10 max-md:max-w-full">
-                     <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/f9b49ac30b1360c78aaee84af182c069847bf947406edfc0f8e4a1d3a3605a86?apiKey=c75bef4eb26d40e482592a37bfd0f8b8&" alt="" className="ml-3 max-w-full aspect-[3.7] w-[489px]" />
-                  
-                    <form onSubmit={handleLogin} className=" gap-4 p-8">
-                      <FormInput 
-                        type="email"
-                        placeholder="Email"
-                        name="email"
-                        data-cy="email-input" // Added to do cypress testings
-                        // className="border-none outline-none font-paragraph text-lg bg-transparent h-18px w-full relative text-marco text-left flex items-end shrink-0 p-0 z-1"
-                        required={true}
-                        value={emailTextValue}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmailTextValue(e.target.value)}/>
-
-                      <div className="relative mb-4">
-                      <FormInput
-                           data-cy="password-input" // Added to do cypress testing
-                           placeholder="Password"
-                           type={showPassword ? "text" : "password"}
-                           value={passwordTextValue}
-                           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPasswordTextValue(e.target.value)}
-                           className="pr-10"
-                           icon="/eye_password.png"
-                           onIconClick={togglePasswordVisibility}
-                       />
-                       {/* <img
-                           className="cursor-pointer absolute inset-y-0 right-0 mr-3 my-auto h-[30px] w-[30px]"
-                          //  className="cursor-pointer absolute inset-y-0 right-0 mr-6 my-auto h-[30px] w-[30px]
-                           src="/eye_password.png"
-                           alt="toggle password visibility"
-                           onClick={togglePasswordVisibility}
-                       /> */}
-                      </div>
-                       <button
-                        type="submit"
-                        className="bg-primary hover:bg-secondary text-white rounded-lg py-3 px-6 w-3/4 mx-auto text-lg">
-                        Sign in
-                      </button>
-                    </form>
-               
-                     {/* <form
-                      onSubmit={handleLogin}
-                      className="flex flex-col gap-4 p-4 rounded-lg shadow-md bg-white max-w-md mx-auto my-8"
-                        >
-              <FormInput
-                type="email"
-                data-cy="email-input" // Added to do cypress testing
-                placeholder="Email"
-                name="email"
-                className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[18px] w-[100%] relative text-marco text-left flex items-end shrink-0 p-0 z-[1] "
-                required={true}
-                value={emailTextValue}
-                onChange={(e:React.ChangeEvent<HTMLInputElement>) => setEmailTextValue(e.target.value)}
-              />
-              <FormInput
-                type="password"
-                placeholder="Password"
-                name="password"
-                className="your-input-class"
-                required={true}
-                value={passwordTextValue}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPasswordTextValue(e.target.value)}
-              />
-              <button
-                type="submit"
-                className="your-button-class"
-              >
-                Sign In
-                </button>
-              </form> */}
+          <div className="flex flex-col ml-5 w-6/12 max-md:ml-0 max-md:w-full">
+            <section className="flex flex-col mt-28 mr-auto text-lg text-slate-800 text-opacity-50 max-md:mt-10 max-md:max-w-full">
+              <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/f9b49ac30b1360c78aaee84af182c069847bf947406edfc0f8e4a1d3a3605a86?apiKey=c75bef4eb26d40e482592a37bfd0f8b8&" alt="" className="ml-3 max-w-full aspect-[3.7] w-[489px]" />
+              <div className="w-full flex flex-col items-center">
+                <form onSubmit={handleLogin} className="border-2 border-gray-300 rounded-lg py-4 px-4 w-full text-lg pr-4 pl-4 ${className}">
+                  <FormInput 
+                    type="email"
+                    placeholder="Email"
+                    name="email"
+                    data-cy="email-input"
+                    required={true}
+                    value={emailTextValue}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmailTextValue(e.target.value)}
+                  />
+                  <FormInput
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Password"
+                    name="password"
+                    data-cy="password-input"
+                    required={true}
+                    value={passwordTextValue}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPasswordTextValue(e.target.value)}
+                    icon="/eye_password.png"
+                    onIconClick={togglePasswordVisibility}
+                  />
+                  <button
+                    type="submit"
+                    className="bg-primary hover:bg-secondary text-white rounded-lg py-4 px-16 pr-40 pl-40 max-w-sm mx-auto text-lg block">
+                    Sign in
+                  </button>
+                </form>
+              </div>
             </section>
-         </div>
-      </div>
+          </div>
+        </div>
       </main>
-      </div>
-        );
-      };
+    </div>
+  );
+};
+
 export default SignIn;
