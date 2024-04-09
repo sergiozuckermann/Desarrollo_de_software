@@ -72,7 +72,7 @@ const SignUp: React.FC = () => {
   };
 
   return (
-    <div className="w-full relative bg-white overflow-hidden flex flex-col items-end justify-start gap-[64px] tracking-[normal] mq450:gap-[16px] mq700:gap-[32px]">
+    <div className="w-full relative bg-white overflow-hidden flex flex-col items-end justify-start gap-[64px] tracking-[normal] mq450:gap-[16px] mq700:gap-[32px]">      
       <main className="w-[1210px] flex flex-row items-start justify-start py-0 pr-0 pl-5 box-border gap-[67px] max-w-full mq450:gap-[17px] mq700:gap-[33px] mq975:flex-wrap">
         <form
           onSubmit={handleSignUp}
@@ -80,12 +80,12 @@ const SignUp: React.FC = () => {
         >
           {/* signup form */}
           <div className="self-stretch h-[479px] flex flex-col items-start justify-start gap-[15.57px] max-w-full text-left text-lg text-marco font-paragraph">
-            <div className="w-[573px] flex-1 flex flex-row items-start justify-start py-0 px-[42px] box-border max-w-full mq700:pl-[21px] mq700:pr-[21px] mq700:box-border">
+            <div className="w-full md:w-[573px] flex-1 flex flex-row items-start justify-start py-0 px-4 box-border max-w-full md:pl-4 md:pr-4">
               <img
-                className="h-[130px] flex-1 relative max-w-full overflow-hidden object-cover"
-                loading="lazy"
-                alt=""
-                src="/callCenterLogo.png"
+                  className="h-auto w-full object-cover"
+                  loading="lazy"
+                  alt=""
+                  src="/untitled-design-2-2@2x.png"
               />
             </div>
             <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15px] px-5 pb-[9.600000000000364px] max-w-full border-[1px] border-solid border-marco">
@@ -193,24 +193,28 @@ const SignUp: React.FC = () => {
             </button>
           </div>
           </div>
-
         </form>
-        <div className="w-[533px] flex flex-col items-start justify-start pt-3.5 px-0 pb-0 box-border min-w-[533px] max-w-full mq700:min-w-full mq975:flex-1">
-          <div className="self-stretch h-[654px] relative">
-            <img
-              className="absolute top-[9px] left-[21px] w-[676px] h-[644px]"
-              loading="lazy"
-              alt=""
-              src="/vector.svg"
-            />
-            <img
-              className="absolute top-[0px] left-[21px] w-[676px] h-[644px] z-[1]"
-              alt=""
-              src="/vector-1.svg"
-            />
+
+        <div>
+          <div className="w-[533px] flex flex-col items-start justify-start pt-3.5 px-0 pb-0 box-border min-w-[533px] max-w-full mq700:min-w-full mq975:flex-1">
+            <div className="self-stretch h-[654px] relative">
+              <img
+                className="absolute top-[0px] left-[21px] w-[676px] h-[644px]"
+                loading="lazy"
+                alt=""
+                src="/vector.svg"
+              />
+              <img
+                className="absolute top-[36px] left-[0px] w-[719px] h-[666px] z-[1] md:hidden"
+                alt=""
+                src="/vector-1.svg"
+              />
+            </div>
           </div>
         </div>
+        
       </main>
+
     </div>
   );
 };
