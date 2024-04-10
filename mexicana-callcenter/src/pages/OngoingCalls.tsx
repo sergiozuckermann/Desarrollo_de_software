@@ -1,7 +1,27 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, useState, useEffect } from "react";
 import "../onGoingCalls.css";
 
 const OngoingCalls: FunctionComponent = () => {
+  const [timestamp, setTimestamp] = useState("");
+
+  useEffect(() => {
+    const updateTimestamp = () => {
+      const now = new Date();
+      const date = now.toLocaleDateString();
+      const time = now.toLocaleTimeString();
+      const currentTimestamp = `${date} ${time}`;
+      setTimestamp(currentTimestamp);
+    };
+
+    updateTimestamp(); // Actualizar el timestamp inicialmente
+
+    const intervalId = setInterval(updateTimestamp, 1000); // Actualizar el timestamp cada segundo
+
+    return () => {
+      clearInterval(intervalId); // Limpiar el intervalo cuando el componente se desmonte
+    };
+  }, []);
+
   return (
     <div className="flex flex-col h-screen overflow-hidden"> {/* Prevent overflow at the root level */}
       {/* Top bar with background */}
@@ -37,7 +57,7 @@ const OngoingCalls: FunctionComponent = () => {
       </div>
       {/* Bottom bar */}
       <div className="h-20 bg-tertiary shadow-lg flex justify-center items-center p-4">
-          <p> Timestamp!! </p>
+          <p className = "font2" > {timestamp} </p>
       </div>
     </div>
   );

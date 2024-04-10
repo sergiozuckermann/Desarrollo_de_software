@@ -44,6 +44,14 @@ html, body {
 
 }
 
+.font2{
+  font-family: 'Inter', sans-serif, light;
+  padding: 20px;
+  font-weight: 100;
+  font-size: 20px;
+
+}
+
 .ml-auto {
   margin-left: auto;
 }
