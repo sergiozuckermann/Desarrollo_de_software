@@ -55,3 +55,10 @@ html, body {
 .ml-auto {
   margin-left: auto;
 }
+
+
+
+.hover-shrink-button:hover {
+    transform: scale(0.95); /* Scales down to 95% of its original size */
+    transition: transform 0.2s ease-in-out; /* Smooth transition for the scaling effect */
+}
