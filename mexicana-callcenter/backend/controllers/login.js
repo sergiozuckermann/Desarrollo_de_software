@@ -22,7 +22,10 @@ loginRouter.post('/', async (req, res) => {
     let cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
 
     cognitoUser.authenticateUser(authDetails, {
-        onSuccess: (res) => console.log("result of success op: ", res),
+        onSuccess: (result) => {
+        console.log("result of success op: ", result)
+        res.status(200).json({"token": result.idToken.jwtToken})
+      },
         onFailure: (err) => console.log("failed op: ", err)
     })
     
