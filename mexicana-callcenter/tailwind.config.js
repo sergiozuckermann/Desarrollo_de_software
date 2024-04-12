@@ -38,7 +38,11 @@ module.exports = {
       mq450: {
         raw: "screen and (max-width: 450px)",
       },
-    },
+      cellphone: 
+      { max: "450px" },
+      tablet: 
+      { max: "1024px" },
+  },
   },
   corePlugins: {
     preflight: false,
