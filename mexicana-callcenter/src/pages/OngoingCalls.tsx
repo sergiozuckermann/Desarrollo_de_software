@@ -30,13 +30,20 @@ const OngoingCalls: FunctionComponent = () => {
         cells.push(
           <td key={`${i}-${j}`} className="px-8 py-4" style={{ backgroundColor: "#F8F9FA", border: "1px solid"}}>
             <div className="flex flex-col">
-              <p style={{fontFamily: "Arial, Helvetica, sans-serif", fontSize: "20px"}}>Nombre del agente</p>
               <div className="flex">
-              <button style={{backgroundColor: "#3C72FC", borderRadius: 10, height: "40px", width: "65px", color: "white" }}>On Call</button>
-                <div className="w-8 h-8 rounded-full ml-12" style={{backgroundColor: "#06CB52"}}></div>
+                <p style={{fontFamily: "Arial, Helvetica, sans-serif", fontSize: "20px"}}>Nombre del agente</p>
+                <img 
+                  src="/i_icon.png"  
+                  alt="i_icon" 
+                  style={{width: "20px", height: "20px", cursor: 'pointer'}}
+                />
+              </div>
+              <div className="flex">
+                <button style={{backgroundColor: "#3C72FC", borderRadius: 10, height: "35px", width: "100px", color: "white", fontSize: "25px" , cursor: 'pointer'}}>On Call</button>
+                <div className="w-9 h-9 rounded-full ml-12" style={{backgroundColor: "#06CB52"}}></div>
               </div>
               <br />
-              <button style={{background: "none"}}>Barge in</button>
+              <button style={{background: "none", fontSize: "15px", cursor: 'pointer'}}>Barge in</button>
             </div>
 
           </td>
@@ -94,7 +101,7 @@ const OngoingCalls: FunctionComponent = () => {
           <h1 className="font1">Agents Overview</h1>
         </div>
         
-        <div className="col-span-2 flex justify-center items-center mb-[40px]">
+        <div className="col-span-2 flex justify-center items-center mb-[30px]">
           <table className="border-collapse">
             <tbody>{generateCells()}</tbody>
           </table>
