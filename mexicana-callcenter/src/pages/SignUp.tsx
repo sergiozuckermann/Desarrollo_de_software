@@ -28,7 +28,7 @@ const SignUp: React.FC = () => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
-      alert("Passwords do not match!");
+      showError(`🚨 Passwords do not match!`);
       return;
     }
 
@@ -96,6 +96,7 @@ const SignUp: React.FC = () => {
                 type="text"
                 value={firstName}
                 onChange={(event) => setFirstName(event.target.value)}
+                data-cy="first-name-input"
               />
             </div>
             <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.899999999999636px] px-[21px] pb-[9.700000000000728px] max-w-full border-[1px] border-solid border-marco">
@@ -106,6 +107,7 @@ const SignUp: React.FC = () => {
                 type="text"
                 value={lastName}
                 onChange={(event) => setLastName(event.target.value)}
+                data-cy="sur-name-input"
               />
             </div>
             <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.5px] px-[19.699999999999815px] pb-[10.100000000000364px] max-w-full border-[1px] border-solid border-marco">
@@ -116,6 +118,7 @@ const SignUp: React.FC = () => {
                 type="text"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
+                data-cy="email-input"
               />
             </div>
             <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.800000000000182px] px-[19px] pb-[11px] max-w-full border-[1px] border-solid border-marco relative">
@@ -131,6 +134,7 @@ const SignUp: React.FC = () => {
                     setPasswordTextValue(event.target.value);
                   }}
                   style={{ color: passwordValid ? 'green' : 'red' }}
+                  data-cy="password-input"
                 />
                 <img
                   className="cursor-pointer absolute top-1/2 right-2 transform -translate-y-1/2 h-[30px] w-[30px]"
@@ -153,6 +157,7 @@ const SignUp: React.FC = () => {
                   setConfirmPasswordTextValue(event.target.value);
                 }}
                 style={{ color: confirmPasswordTextValue === passwordTextValue ? 'green' : 'red' }}
+                data-cy="password-confirm-input"
               />
               <img
                 className="cursor-pointer absolute top-1/2 right-2 transform -translate-y-1/2 h-[30px] w-[30px]"
@@ -182,16 +187,17 @@ const SignUp: React.FC = () => {
               </div>
             </div>
             {/* button */}
-            <div className="self-stretch flex flex-row items-start justify-center py-0 pr-5 pl-[30px]">
-              <button
-                type="submit"
-                className="cursor-pointer [border:none] py-2.5 px-5 bg-primary w-[300px] rounded-3xs flex flex-row items-start justify-center box-border hover:bg-slategray"
-              >
-                <div className="h-[22px] w-[58px] relative text-lg font-paragraph text-tertiary text-center inline-block min-w-[58px]">
-                  Create
-                </div>
-              </button>
-            </div>
+          <div className="self-stretch flex flex-row items-start justify-center py-0 pr-5 pl-[30px]">
+            <button
+              type="submit"
+              className="cursor-pointer [border:none] py-2.5 px-5 bg-primary w-[300px] rounded-3xs flex flex-row items-start justify-center box-border hover:bg-slategray"
+              data-cy="submit-button"
+            >
+              <div className="h-[22px] w-[58px] relative text-lg font-paragraph text-tertiary text-center inline-block min-w-[58px]">
+                Create
+              </div>
+            </button>
+          </div>
           </div>
         </form>
         
