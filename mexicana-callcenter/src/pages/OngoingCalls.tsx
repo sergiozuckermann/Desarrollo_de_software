@@ -1,5 +1,7 @@
 import { FunctionComponent, useState, useEffect } from "react";
 import "../onGoingCalls.css";
+import Button from "../components/Buttons";
+
 
 const OngoingCalls: FunctionComponent = () => {
   const [timestamp, setTimestamp] = useState("");
@@ -115,31 +117,17 @@ const OngoingCalls: FunctionComponent = () => {
       <div className="flex h-20 bg-tertiary shadow-lg justify-between items-center p-4">
         <div>
           {/* LA RUTA ESTA A LA PÁGINA DE HELLO POR QUE TODAVÍA NO TENEMOS HOME */}
-        <button 
-          onClick={() => window.location.href = '/'} 
-          className="flex items-center border-none bg-transparent hover-shrink-button"
-          style={{ cursor: 'pointer' }}
-        >
-          <img 
-            src="/logo_callCenter_color.png"  
-            alt="" 
-            className="w-[230px] ml-3"
-          />
-        </button>
+          <Button onClick={() => window.location.href = '/'}>
+            <img src="/logo_callCenter_color.png" alt="" className="w-[230px] ml-3" />
+          </Button>
+       
         </div>
         <div className="flex items-center">
           {/* LA RUTA ESTA A UNA PÁGINA VACIA */}
-        <button 
-          onClick={() => window.location.href = '/Notifications'} 
-          className="flex items-center border-none bg-transparent hover-shrink-button"
-          style={{ cursor: 'pointer' }}
-        >
-          <img 
-            src="/notifications_iconn.png" 
-            alt="" 
-            className="w-[45px] mr-2"
-          />
-        </button>
+          <Button onClick={() => window.location.href = '/Notifications'} className="hover-shrink-button">
+            <img src="/notifications_iconn.png" alt="" className="w-[45px] mr-2" />
+          </Button>
+        
           <h1 className="font">| Map</h1>
         </div>
       </div>

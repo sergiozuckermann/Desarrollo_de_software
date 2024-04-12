@@ -15,7 +15,6 @@ html, body {
   position: relative; 
   overflow: hidden;
   font-size: 1.25rem; 
-  color: var(--color-primary);
   font-family: 'Your Font', sans-serif; 
 }
 
@@ -59,6 +58,6 @@ html, body {
 
 
 .hover-shrink-button:hover {
-    transform: scale(0.95); /* Scales down to 95% of its original size */
-    transition: transform 0.2s ease-in-out; /* Smooth transition for the scaling effect */
+    transform: scale(0.95); 
+    transition: transform 0.2s ease-in-out; 
 }
