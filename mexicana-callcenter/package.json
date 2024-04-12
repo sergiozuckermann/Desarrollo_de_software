@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "npx cypress run --record --key 9b6f7fa2-f5d6-4f69-9a52-5c56583ab36c"
   },
   "dependencies": {
     "@aws-sdk/client-cognito-identity-provider": "^3.535.0",
