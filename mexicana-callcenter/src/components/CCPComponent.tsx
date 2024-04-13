@@ -6,7 +6,7 @@ import "amazon-connect-streams"
 const CCPComponent = () => {
   useEffect(() => {
     const containerDiv = document.getElementById("ccp-container")!;
-    const instanceURL = "https://mexicana-airline.my.connect.aws/ccp-v2/";
+    const instanceURL = "https://tc3005b-mexicana.my.connect.aws/ccp-v2/";
 
     const init = () => {
         connect.core.initCCP(containerDiv, {
