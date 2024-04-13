@@ -10,7 +10,6 @@ export default defineConfig({
       toConsole: true,
     },
     setupNodeEvents(on, config) {
-      // implement node event listeners here
     },
   },
 });

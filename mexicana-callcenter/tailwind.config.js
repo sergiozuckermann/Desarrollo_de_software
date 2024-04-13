@@ -8,6 +8,7 @@ module.exports = {
         primary: "#20253f",
         slategray: "#545973",
         tertiary: "#f8f9fa",
+        secondary: "#4A8B51",
         marco: "rgba(32, 37, 63, 0.5)",
         black: "#000",
       },
@@ -37,7 +38,11 @@ module.exports = {
       mq450: {
         raw: "screen and (max-width: 450px)",
       },
-    },
+      cellphone: 
+      { max: "450px" },
+      tablet: 
+      { max: "1024px" },
+  },
   },
   corePlugins: {
     preflight: false,
