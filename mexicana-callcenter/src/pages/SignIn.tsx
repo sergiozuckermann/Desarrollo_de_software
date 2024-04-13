@@ -7,6 +7,7 @@ import {
 import { jwtDecode } from 'jwt-decode';
 import useCustomToast from "../components/notificationComponent";
 import { useAuth, CustomTokenPayload } from "../components/authContext";
+import authProvider from '../authProvider';
 import { useNavigate } from "react-router-dom";
 
 const SignIn: FunctionComponent = () => {
@@ -46,7 +47,7 @@ const SignIn: FunctionComponent = () => {
           const decodedToken = jwtDecode<CustomTokenPayload>(AuthenticationResult.IdToken);
           if (decodedToken['custom:job_level']) {
             const jobLevel = decodedToken['custom:job_level'];
-            
+            authProvider.setAuthentication({ userIdentity: decodedToken }) // set user identity data 
             setJobLevel(jobLevel);
             navigate("/profileTest");
           }
