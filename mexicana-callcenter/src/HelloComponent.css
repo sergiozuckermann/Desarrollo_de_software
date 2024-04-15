@@ -11,10 +11,14 @@
     padding-left: 21px;
   }
   
-  .frameComponent-header {
-    font-size: 10rem; 
-    margin: 0;
-  }
+
+  /* Start with the largest size for desktops */
+.frameComponent-header {
+  font-size: 12rem; 
+  text-align: center;
+  margin: 0 auto;
+}
+
 
   .main-container {
     position: relative;
@@ -56,6 +60,8 @@
   }
 
   .frameComponent-buttons {
+    display: flex;
+    flex-direction: row;
     gap: 25px; 
   }
   
@@ -67,12 +73,14 @@
     font-size: 1rem;
     color: white; 
     transition: background-color 0.3s ease; 
+    width: 100%; 
+    box-sizing: border-box;
   }
   
   .frameComponent-button:hover {
     background-color: #4A8B51; 
   }
-  
+  /* laptop screens */
   @media (max-width: 1200px) {
     .blur-left, .blur-right {
       width: 40%; 
@@ -80,6 +88,20 @@
       top: 0; 
       bottom: 0; 
       transform: scale(1); 
+    }
+  }
+
+    /* tablet screens */
+  @media (max-width: 768px) {
+    .frameComponent-header {
+      font-size: 8rem; /* Smaller size for tablets */
+    }
+  }
+
+  /* mobile screens */
+  @media (max-width: 480px) {
+    .frameComponent-header {
+      font-size: 4rem; 
     }
   }
 
@@ -94,3 +116,5 @@
 .frameComponent-container {
     overflow: visible; 
 }
+
+

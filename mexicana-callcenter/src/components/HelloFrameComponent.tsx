@@ -15,12 +15,10 @@ const FrameComponent: FunctionComponent = () => {
     <div className="frameComponent-container flex flex-row items-center justify-center py-0 box-border max-w-full text-center text-primary font-paragraph">
     <div className="w-[625px] flex flex-col items-center justify-center max-w-full">
       <div className="flex flex-row items-center justify-center py-0 px-[30px] box-border max-w-full">
-        <h1 
-          style={{ fontSize: '10rem' }} 
-          className="frameComponent-header m-0 relative text-inherit font-bold font-inherit inline-block max-w-full"
-        >
-          Hello!
-        </h1>
+      <h1 className="frameComponent-header">
+        Hello!
+      </h1>
+
       </div>
 
       <div className="frameComponent-buttons self-stretch flex flex-row items-center justify-center">

@@ -22,6 +22,11 @@ module.exports = {
     },
     fontSize: {
       lg: "18px",
+      "181xl": "200px",
+      "31xl": "50px",
+      "61xl": "80px",
+      base: "16px",
+      xl: "20px",
       "41xl": "60px",
       inherit: "inherit",
     },
@@ -48,3 +53,5 @@ module.exports = {
     preflight: false,
   },
 };
+
+
