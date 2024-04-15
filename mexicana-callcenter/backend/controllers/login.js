@@ -24,7 +24,12 @@ loginRouter.post('/', async (req, res) => {
     cognitoUser.authenticateUser(authDetails, {
         onSuccess: (result) => {
         console.log("result of success op: ", result)
-        res.status(200).json({"token": result.idToken.jwtToken})
+        const response = {
+            name: result.idToken.payload.given_name,
+            role: result.idToken.payload['custom:job_level'],
+            token: result.idToken.jwtToken
+        }
+        res.status(200).json(response)
       },
         onFailure: (err) => console.log("failed op: ", err)
     })

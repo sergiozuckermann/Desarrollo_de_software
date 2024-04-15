@@ -1,6 +1,7 @@
 // Imports
 const express = require('express');
 const path = require('path');
+const cors = require('cors');
 const setToken = require('./middleware/setToken')
 const verifyToken = require('./middleware/verifyToken')
 const verifyRole = require('./middleware/verifyRole')
@@ -13,6 +14,8 @@ const agentRouter = require('./controllers/agent')
 // Create an Express application
 const app = express();
 
+app.use(cors())
+
 // Middleware to parse JSON bodies
 app.use(express.json());
 
@@ -24,7 +27,7 @@ app.use(express.static(path.join(__dirname, 'dist')));
 
 app.use(setToken)
 
-// controllers
+// controllers  
 app.use('/api/signup', signupRouter)
 app.use('/api/login', loginRouter)
 app.use('/supervisor', verifyToken, verifyRole(roles.supervisor), supervisorRouter)

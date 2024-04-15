@@ -6,8 +6,8 @@ import {
 } from "@aws-sdk/client-cognito-identity-provider"; // ES Modules import
 import { jwtDecode } from 'jwt-decode';
 import useCustomToast from "../components/notificationComponent";
-import { useAuth, CustomTokenPayload } from "../components/authContext";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from '../Provider/AuthProvider'
 
 const SignIn: FunctionComponent = () => {
   const [emailTextValue, setEmailTextValue] = useState("");
@@ -15,49 +15,55 @@ const SignIn: FunctionComponent = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { showError } = useCustomToast();
   const { showSuccess } = useCustomToast();
-  const { setJobLevel } = useAuth();
   const navigate = useNavigate();
+  
+  const { login } = useAuth()
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    const client = new CognitoIdentityProviderClient({ region: "us-east-1" });
 
-    const input = {
-      // InitiateAuthRequest
-      AuthFlow: AuthFlowType.USER_PASSWORD_AUTH, // required
-      AuthParameters: {
-        // AuthParametersType
-        USERNAME: emailTextValue,
-        PASSWORD: passwordTextValue,
-      },
-      ClientId: "2gdenkjjd809jojhh7ojfqslf1", // required
-    };
-    const command = new InitiateAuthCommand(input);
+    const credentials = {username: emailTextValue, password: passwordTextValue}
 
-    try {
-      const response = await client.send(command);
-      const { $metadata } = response;
-      const { AuthenticationResult } = response;
+    login(credentials)
 
-      // check if user was successfully logged in
-      if ($metadata.httpStatusCode === 200) {
-        showSuccess("🎉 You are now signed in.");
-        if (AuthenticationResult && AuthenticationResult.IdToken) {
-          const decodedToken = jwtDecode<CustomTokenPayload>(AuthenticationResult.IdToken);
-          if (decodedToken['custom:job_level']) {
-            const jobLevel = decodedToken['custom:job_level'];
+    // const client = new CognitoIdentityProviderClient({ region: "us-east-1" });
+
+    // const input = {
+    //   // InitiateAuthRequest
+    //   AuthFlow: AuthFlowType.USER_PASSWORD_AUTH, // required
+    //   AuthParameters: {
+    //     // AuthParametersType
+    //     USERNAME: emailTextValue,
+    //     PASSWORD: passwordTextValue,
+    //   },
+    //   ClientId: "2gdenkjjd809jojhh7ojfqslf1", // required
+    // };
+    // const command = new InitiateAuthCommand(input);
+
+    // try {
+    //   const response = await client.send(command);
+    //   const { $metadata } = response;
+    //   const { AuthenticationResult } = response;
+
+    //   // check if user was successfully logged in
+    //   if ($metadata.httpStatusCode === 200) {
+    //     showSuccess("🎉 You are now signed in.");
+    //     if (AuthenticationResult && AuthenticationResult.IdToken) {
+    //       const decodedToken = jwtDecode<CustomTokenPayload>(AuthenticationResult.IdToken);
+    //       if (decodedToken['custom:job_level']) {
+    //         const jobLevel = decodedToken['custom:job_level'];
             
-            setJobLevel(jobLevel);
-            navigate("/profileTest");
-          }
-        }
-      }      
-    } catch (err) {
-      // check if there was an error logging in and notify the user
-      const errorMessage =
-        err instanceof Error ? err.message : "An unexpected error occurred.";
-      showError(`🚨 ${errorMessage}`);
-    }
+    //         setJobLevel(jobLevel);
+    //         navigate("/profileTest");
+    //       }
+    //     }
+    //   }      
+    // } catch (err) {
+    //   // check if there was an error logging in and notify the user
+    //   const errorMessage =
+    //     err instanceof Error ? err.message : "An unexpected error occurred.";
+    //   showError(`🚨 ${errorMessage}`);
+    // }
   }
  
 
