@@ -73,13 +73,13 @@ const SignUp: React.FC = () => {
 
   return (
     <div className="w-full relative bg-white overflow-hidden flex flex-col items-center justify-start gap-[64px] tracking-[normal] mq450:gap-[16px] mq700:gap-[32px] mt-[10%]">      
-      <main className="w-[1210px] flex flex-row items-start justify-start py-0 pr-0 box-border gap-[67px] max-w-full mq450:gap-[17px] mq700:gap-[33px] mq975:flex-wrap">
+      <main className="w-[1210px] flex flex-row items-start justify-start py-0 pr-0 box-border gap-[67px] max-w-full cellphone:items-center cellphone:grid cellphone:justify-center">
         <form
           onSubmit={handleSignUp}
-          className="ml-20 flex-1 flex flex-col items-end justify-start gap-[50px] min-w-[383px] max-w-full mq450:min-w-full mq700:gap-[25px]"
+          className="flex-1 flex flex-col items-end justify-start gap-[50px] min-w-[383px] max-w-full mq450:min-w-full mq700:gap-[25px] cellphone:text-gray-700 cellphone:py-0 cellphone:px-0"
         >
           {/* signup form */}
-          <div className="self-stretch flex flex-col items-start justify-start gap-[15.57px] max-w-full text-left text-lg text-marco font-paragraph">
+          <div className="self-stretch flex flex-col items-start justify-start gap-[15.57px] max-w-full text-left text-lg text-marco font-paragraph cellphone:items-center cellphone:grid cellphone:justify-center">
             <div className="w-full md:w-[573px] flex-1 flex flex-row items-start justify-start py-0 px-4 box-border max-w-full md:pl-4 md:pr-4">
               <img
                   className="h-auto w-full object-cover"
@@ -182,25 +182,25 @@ const SignUp: React.FC = () => {
               </div>
             </div>
             {/* button */}
-          <div className="self-stretch flex flex-row items-start justify-center py-0 pr-5 pl-[30px]">
-            <button
-              type="submit"
-              className="cursor-pointer [border:none] py-2.5 px-5 bg-primary w-[300px] rounded-3xs flex flex-row items-start justify-center box-border hover:bg-slategray"
-            >
-              <div className="h-[22px] w-[58px] relative text-lg font-paragraph text-tertiary text-center inline-block min-w-[58px]">
-                Create
-              </div>
-            </button>
-          </div>
+            <div className="self-stretch flex flex-row items-start justify-center py-0 pr-5 pl-[30px]">
+              <button
+                type="submit"
+                className="cursor-pointer [border:none] py-2.5 px-5 bg-primary w-[300px] rounded-3xs flex flex-row items-start justify-center box-border hover:bg-slategray"
+              >
+                <div className="h-[22px] w-[58px] relative text-lg font-paragraph text-tertiary text-center inline-block min-w-[58px]">
+                  Create
+                </div>
+              </button>
+            </div>
           </div>
         </form>
         
-        <div className="w-[533px] flex flex-col items-start justify-start px-0 pb-0 box-border min-w-[533px] max-w-full mq700:min-w-full mq975:flex-1 pl-[15%]">
+        <div className="w-[533px] flex flex-col items-start justify-start px-0 pb-0 box-border min-w-[533px] max-w-full mq700:min-w-full mq975:flex-1 cellphone:hidden pl-[10%]">
           <div className="self-stretch h-[654px]">
             <img
               className="absolute h-[644px]"
               alt=""
-              src="/blurb_signupp.png"
+              src= "/signup_blurb.png"
             />
           </div>
         </div>
