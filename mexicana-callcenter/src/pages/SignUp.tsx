@@ -79,7 +79,7 @@ const SignUp: React.FC = () => {
           className="flex-1 flex flex-col items-end justify-start gap-[50px] min-w-[383px] max-w-full mq450:min-w-full mq700:gap-[25px] cellphone:text-gray-700 cellphone:py-0 cellphone:px-0"
         >
           {/* signup form */}
-          <div className="self-stretch flex flex-col items-start justify-start gap-[15.57px] max-w-full text-left text-lg text-marco font-paragraph cellphone:items-center cellphone:grid cellphone:justify-center">
+          <div className="self-stretch flex flex-col items-start justify-start gap-[15.57px] max-w-full text-left text-lg text-marco font-paragraph cellphone:items-center cellphone:grid cellphone:justify-center pl-[20px] pr-[20px]">
             <div className="w-full md:w-[573px] flex-1 flex flex-row items-start justify-start py-0 px-4 box-border max-w-full md:pl-4 md:pr-4">
               <img
                   className="h-auto w-full object-cover"
