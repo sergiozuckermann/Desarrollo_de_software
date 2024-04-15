@@ -1,54 +1,78 @@
-import { createContext, useContext, useState, FunctionComponent, PropsWithChildren } from "react";
 import axios from "axios";
+import { createContext, useState, FunctionComponent, PropsWithChildren, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-interface Credentials {
-  username: string;
-  password: string;
-}
+import { AuthContextType, Credentials } from "../utils/interfaces";
+import useCustomToast from "../components/notificationComponent";
 
+const baseUrl = 'http://localhost:3000'
 
-interface AuthContextType {
-  isAuthenticated: boolean,
-  user: string | null,
-  role: string | null,
-  token: string | null,
-  login: (credentials: Credentials) => Promise<void>;
-}
-
-const AuthContext = createContext<AuthContextType | null>(null);
+export const AuthContext = createContext<AuthContextType | null>(null);
 
 const AuthProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
-  // State to hold the authentication token
-  const [token, setToken] = useState<string | null>(localStorage.getItem("token"));
-  const [user, setUser] = useState<string | null>(localStorage.getItem("user"));
-  const [role, setRole] = useState<string | null>(localStorage.getItem("role"));
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(Boolean(localStorage.getItem("authenticated")));
+  // State to hold the user authentication information
+  const [token, setToken] = useState<string | null>(null);
+  const [user, setUser] = useState<string | null>(null);
+  const [role, setRole] = useState<string | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const { showError } = useCustomToast();
+  const { showSuccess } = useCustomToast();
   const navigate = useNavigate()
+
+  useEffect(() => {
+        // Retrieve the user data from localStorage
+    const userDataString = localStorage.getItem('userData');
+
+    // Parse the JSON string back into an object
+    const userData = userDataString ? JSON.parse(userDataString) : null;
+
+    if(userData) {
+      setToken(userData.token)
+      setUser(userData.user)
+      setRole(userData.role)
+      setIsAuthenticated(Boolean(userData.authenticated))
+    }
+  }, [])
 
   const login = async (credentials: Credentials) => {
     return axios
-      .post('http://localhost:3000/api/login', credentials)
+      .post(`${baseUrl}/auth/login`, credentials)
       .then(res => {
         if(res.status === 200) {
-          const { token, name, role} = res.data
-          localStorage.setItem('token', token)
-          localStorage.setItem('user', name)
-          localStorage.setItem('role', role)
-          localStorage.setItem('authenticated', 'true')
+          const { token, name, role } = res.data;
+
+          // Create an object to hold the user information
+          const userData = {
+              token,
+              role,
+              user: name,
+              authenticated: true
+          };
+
+          // Store the combined user data object in localStorage
+          localStorage.setItem('userData', JSON.stringify(userData));
+
+          // update state
           setIsAuthenticated(true)
           setToken(token)
           setUser(name)
           setRole(role)
+
+          // navigate to the hme page based on the user's role
+          showSuccess(`🎉 Welcome ${name}!\nYou are now signed in.`);
           navigate(`/${role}/home`)
-          
         }
       })
-      .catch(error => 
-        console.log("error logging in: ", error)
+      .catch(error =>  {
+        //check if there was an error logging in and notify the user
+        console.log(error)
+        const err = error.response.data.message // extract error message from axios response
+        const errorMessage = err ? err : "An unexpected error ocurred. Try again later."
+        showError(`🚨 ${errorMessage}`);
+      }
       )
   }
 
-  // Memoized value of the authentication context
+  //  value of the authentication context
   const contextValue ={
       isAuthenticated,
       user,
@@ -60,14 +84,6 @@ const AuthProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
   // Provide the authentication context to the children components
   return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;
 
-};
-
-export const useAuth = (): AuthContextType => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-  return context;
 };
 
 export default AuthProvider;

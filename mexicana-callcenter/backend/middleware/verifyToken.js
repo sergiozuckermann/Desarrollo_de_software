@@ -18,10 +18,8 @@ const verifyToken = async (req, res, next) => {
         next()
     } catch {
         console.log("Token not valid!");
-        // res.status(401).json({error: 'You need to login'})
-        let error = new Error('You need to log in')
-        error.status = 401
-        next(error)
+        res.status(401).json({error: 'You need to login'})
+     
     }
   
 

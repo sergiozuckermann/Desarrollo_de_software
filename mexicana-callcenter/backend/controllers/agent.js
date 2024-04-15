@@ -1,9 +1,8 @@
 const express = require('express');
 const agentRouter = express.Router();
 
-agentRouter.get('/home', (req, res, next) => {
-    console.log("agent home !!")
-    next()
+agentRouter.get('/', (req, res, next) => {
+
 })
 
 module.exports = agentRouter

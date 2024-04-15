@@ -1,13 +1,15 @@
+// middleware to verify tha the user accessing the resource has permission to do so
+
 const verifyRole = role => {
+    // receive the request and verify that the user's role coming in from the request matches the target role
     return (req, res, next) => {
         const { userRole } = req
+        // if it matches, continue to the next middleware
         if(userRole === role) {
             next() 
         } else {
-            // Create a new Error object with status code 404
-            const error = new Error('Not Found')
-            error.status = 404
-            next(error) // Pass the error to the Express error handling middleware
+            // return an error message if the role is a no match
+            return res.status(401).json({error: 'You do not have access.'})
         }
     }
 }
