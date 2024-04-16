@@ -5,6 +5,7 @@ import {
   SignUpCommand,
 } from "@aws-sdk/client-cognito-identity-provider";
 import useCustomToast from "../components/notificationComponent";
+import "../global.css";
 
 const SignUp: React.FC = () => {
   const [firstName, setFirstName] = useState("");
@@ -168,19 +169,16 @@ const SignUp: React.FC = () => {
             <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.600000000000364px] px-[21px] pb-2.5 relative max-w-full border-[1px] border-solid border-marco">
               <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
               <div className="relative flex-1">
-                <select
-                  className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[19] w-[90%] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
-                  value={jobLevel}
-                  onChange={(event) => setJobLevel(event.currentTarget.value)}
-                >
-                  <option value="" disabled>
-                    Job Level
-                  </option>
+              <div className="custom-select-wrapper">
+                <select className="custom-select " value={jobLevel} onChange={(event) => setJobLevel(event.currentTarget.value)}>
+                  <option value="" disabled>Job Level</option>
                   <option value="Agent">Agent</option>
                   <option value="Supervisor">Supervisor</option>
                 </select>
               </div>
+              </div>
             </div>
+
             
             {/* button */}
             <div className="self-stretch flex flex-row items-start justify-center py-0 pr-5 pl-[30px]">
