@@ -39,6 +39,7 @@ const CCPComponent = () => {
       connect.contact(contact => {
         const attributes = contact.getAttributes();
         const selectedQueueNameStr = attributes.selectedQueue.value;
+        const clientPhoneNumber = attributes.ClientPhoneNumber.value;
         const popupWindow = window.open("", "Contact Attributes", "width=400,height=300");
         if (popupWindow) {
           popupWindow.document.write(`
@@ -78,6 +79,7 @@ const CCPComponent = () => {
               <body>
                 <header>Call Preview</header>
                 <pre>Customer selecter queue: ${JSON.stringify(selectedQueueNameStr)}</pre>
+                <pre>Customer callback number: ${JSON.stringify(clientPhoneNumber)}</pre>
               </body>
             </html>
           `);
