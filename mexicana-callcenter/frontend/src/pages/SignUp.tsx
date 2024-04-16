@@ -5,6 +5,7 @@ import {
   SignUpCommand,
 } from "@aws-sdk/client-cognito-identity-provider";
 import useCustomToast from "../components/notificationComponent";
+import "../global.css";
 
 const SignUp: React.FC = () => {
   const [firstName, setFirstName] = useState("");
@@ -79,7 +80,7 @@ const SignUp: React.FC = () => {
           className="flex-1 flex flex-col items-end justify-start gap-[50px] min-w-[383px] max-w-full mq450:min-w-full mq700:gap-[25px] cellphone:text-gray-700 cellphone:py-0 cellphone:px-0"
         >
           {/* signup form */}
-          <div className="self-stretch flex flex-col items-start justify-start gap-[15.57px] max-w-full text-left text-lg text-marco font-paragraph cellphone:items-center cellphone:grid cellphone:justify-center">
+          <div className="self-stretch flex flex-col items-start justify-start gap-[15.57px] max-w-full text-left text-lg text-marco font-paragraph cellphone:items-center cellphone:grid cellphone:justify-center pl-[20px] pr-[20px]">
             <div className="w-full md:w-[573px] flex-1 flex flex-row items-start justify-start py-0 px-4 box-border max-w-full md:pl-4 md:pr-4">
               <img
                   className="h-auto w-full object-cover"
@@ -91,7 +92,7 @@ const SignUp: React.FC = () => {
             <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15px] px-5 pb-[9.600000000000364px] max-w-full border-[1px] border-solid border-marco">
               <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
               <input
-                className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[18px] w-[100%] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
+                className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[25px] w-[100%] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
                 placeholder="First Name(s)"
                 type="text"
                 value={firstName}
@@ -102,7 +103,7 @@ const SignUp: React.FC = () => {
             <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.899999999999636px] px-[21px] pb-[9.700000000000728px] max-w-full border-[1px] border-solid border-marco">
               <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
               <input
-                className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[18px] w-[100%] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
+                className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[25px] w-[100%] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
                 placeholder="Surname"
                 type="text"
                 value={lastName}
@@ -113,7 +114,7 @@ const SignUp: React.FC = () => {
             <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.5px] px-[19.699999999999815px] pb-[10.100000000000364px] max-w-full border-[1px] border-solid border-marco">
               <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
               <input
-                className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[18px] w-[100%] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
+                className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[25px] w-[100%] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
                 placeholder="Email"
                 type="text"
                 value={email}
@@ -124,7 +125,7 @@ const SignUp: React.FC = () => {
             <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.800000000000182px] px-[19px] pb-[11px] max-w-full border-[1px] border-solid border-marco relative">
               <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
                 <input
-                  className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[18px] w-[(100%-10%)] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
+                  className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[25px] w-[(100%-10%)] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
                   placeholder="Password"
                   type={showPassword ? "text" : "password"}
                   value={password}
@@ -148,7 +149,7 @@ const SignUp: React.FC = () => {
             <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.800000000000182px] px-[19px] pb-[11px] max-w-full border-[1px] border-solid border-marco relative">
               <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
               <input
-                className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[18px] w-[(100%-10%)] relative text-marco text-left flex items-end shrink-0 max-w-full p-0 z-[1]"
+                className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[25px] w-[(100%-10%)] relative text-marco text-left flex items-end shrink-0 max-w-full p-0 z-[1]"
                 placeholder="Confirm Password"
                 type={showPasswordConfirm ? "text" : "password"} 
                 value={confirmPassword}
@@ -173,19 +174,17 @@ const SignUp: React.FC = () => {
             <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.600000000000364px] px-[21px] pb-2.5 relative max-w-full border-[1px] border-solid border-marco">
               <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
               <div className="relative flex-1">
-                <select
-                  className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[19] w-[90%] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
-                  value={jobLevel}
-                  onChange={(event) => setJobLevel(event.currentTarget.value)}
-                >
-                  <option value="" disabled>
-                    Job Level
-                  </option>
+              <div className="custom-select-wrapper">
+                <select className="custom-select " value={jobLevel} onChange={(event) => setJobLevel(event.currentTarget.value)}>
+                  <option value="" disabled>Job Level</option>
                   <option value="Agent">Agent</option>
                   <option value="Supervisor">Supervisor</option>
                 </select>
               </div>
+              </div>
             </div>
+
+            
             {/* button */}
           <div className="self-stretch flex flex-row items-start justify-center py-0 pr-5 pl-[30px]">
             <button
