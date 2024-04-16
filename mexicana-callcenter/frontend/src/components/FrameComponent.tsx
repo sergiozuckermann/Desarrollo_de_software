@@ -1,6 +1,8 @@
 import { FunctionComponent } from "react";
+import { useAuth } from "../hooks/useAuth";
 
 const FrameComponent: FunctionComponent = () => {
+  const { logout } = useAuth()
   return (
     <header className="self-stretch bg-tertiary shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)] flex flex-row items-start justify-between pt-[15px] pb-2.5 pr-[41px] pl-2.5 box-border top-[0] z-[99] sticky max-w-full gap-[20px] text-center text-lg text-black font-paragraph">
       <div className="h-[100px] w-[1280px] relative bg-tertiary shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)] hidden max-w-full" />
@@ -46,6 +48,7 @@ const FrameComponent: FunctionComponent = () => {
           On Call
         </h1>
       </div>
+        <button onClick={() => logout()}>Logout</button>
     </header>
   );
 };

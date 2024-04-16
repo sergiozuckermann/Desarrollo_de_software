@@ -7,10 +7,12 @@ import Hello from "./pages/Hello";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import AgentHome from "./pages/AgentHome";
+import OngoingCalls from "./pages/OngoingCalls";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAuth } from "./hooks/useAuth";
 import ProtectedRoute from "./components/ProtectedRoute";
+import SupervisorHomeTest from "./pages/SupervisorHomeTest";
 
 function App() {
 
@@ -29,7 +31,8 @@ function App() {
           <Route path="/agent/home" element={<AgentHome />} />
       </Route>
       <Route element={<ProtectedRoute isAllowed={isAuthenticated && role === 'Supervisor'} />}>
-          <Route path="/supervisor/home" element={<h1>Supervisor</h1>} />
+          <Route path="/supervisor/home" element={<SupervisorHomeTest />} />
+          <Route path="/supervisor/ongoingcalls" element={<OngoingCalls />} />
       </Route>
 
       {/* Any other route which is not found */}

@@ -9,5 +9,6 @@ export interface AuthContextType {
     user: string | null,
     role: string | null,
     token: string | null,
-    login: (credentials: Credentials) => Promise<void>;
+    login: (credentials: Credentials) => Promise<void>,
+    logout: () => void
   }
