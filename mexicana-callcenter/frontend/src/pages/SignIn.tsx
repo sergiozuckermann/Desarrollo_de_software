@@ -1,52 +1,21 @@
 import { FunctionComponent, useState } from "react";
-import {
-  CognitoIdentityProviderClient,
-  InitiateAuthCommand,
-  AuthFlowType,
-} from "@aws-sdk/client-cognito-identity-provider";
-import { jwtDecode } from 'jwt-decode';
-import useCustomToast from "../components/notificationComponent";
-import { useAuth, CustomTokenPayload } from "../components/authContext";
-import { useNavigate } from "react-router-dom";
+import { useAuth } from '../hooks/useAuth'
 import FormInput from "../components/FormInput";
 
 const SignIn: FunctionComponent = () => {
   const [emailTextValue, setEmailTextValue] = useState("");
   const [passwordTextValue, setPasswordTextValue] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const { showError, showSuccess } = useCustomToast(); 
-  const { setJobLevel } = useAuth();
-  const navigate = useNavigate();
+  const { login } = useAuth()
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    const client = new CognitoIdentityProviderClient({ region: "us-east-1" });
 
-    const input = {
-      AuthFlow: AuthFlowType.USER_PASSWORD_AUTH,
-      AuthParameters: {
-        USERNAME: emailTextValue,
-        PASSWORD: passwordTextValue,
-      },
-      ClientId: "2gdenkjjd809jojhh7ojfqslf1", // required
-    };
-    const command = new InitiateAuthCommand(input);
+    const credentials = {username: emailTextValue, password: passwordTextValue}
 
-    try {
-      const response = await client.send(command);
-      if (response.$metadata.httpStatusCode === 200 && response.AuthenticationResult?.IdToken) {
-        const decodedToken = jwtDecode<CustomTokenPayload>(response.AuthenticationResult.IdToken);
-        if (decodedToken['custom:job_level']) {
-          setJobLevel(decodedToken['custom:job_level']);
-          navigate("/profileTest");
-          showSuccess("🎉 You are now signed in.");
-        }
-      }
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : "An unexpected error occurred.";
-      showError(`🚨 ${errorMessage}`);
-    }
-  };
+    login(credentials) // call login function defined in the AuthProvider
+  }
+ 
 
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
