@@ -10,7 +10,6 @@ const Hello: FunctionComponent = () => {
         <div className="blur-right"></div>
         
         <div className="content">
-          {/* Ensure this div doesn't have overflow hidden or a background set */}
           <div className="flex flex-col h-screen justify-center">
             <FrameComponent1 />
             <div className="flex items-center justify-center">
