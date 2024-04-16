@@ -13,4 +13,38 @@ body {
   border-width: 0;
 }
 
+.custom-select-wrapper {
+  display: block;
+  position: relative;
+  width: 100%; 
 
+}
+
+.custom-select {
+  appearance: none;         /* Removes default style for other browsers */
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 1.1rem;
+  color: gray; 
+  padding-right: 30px; 
+  position: relative;
+  font: Iter, sans-serif;
+  width: 100%;
+}
+
+.custom-select-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.custom-select-wrapper::after {
+  content: '▼';
+  font-size: 1.5em; /* Adjust the size of the arrow */
+  color: #666; /* Adjust arrow color */
+  position: absolute;
+  right: 10px; /* Adjust as necessary to place the arrow on the far right */
+  top: 50%; /* Center the arrow vertically */
+  transform: translateY(-50%); /* Ensures the arrow is perfectly centered */
+  pointer-events: none;
+}
