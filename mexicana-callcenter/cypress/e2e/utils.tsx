@@ -1,6 +1,17 @@
-export const testValidNewEmail = 'EmailValid@mail.com';
-export const testValidExistingEmail = 'ExistingEmailValid@mail.com';
-export const testValidPassword = 'ValidPassword10!';
+// First name
 export const testFirstName = 'Jorge';
-export const testLastName = 'Durgan';
+
+// Surname
+export const testSurName = 'Durgan';
+
+// Email
+export const testEmailExisting = 'ExistingEmailValid@mail.com';
+export const testEmailValid = 'EmailValid@mail.com';
+export const testEmailWithoutDomainName = 'invalidemail@';
+
+// Password
+export const testPasswordValid = 'ValidPassword10!';
+export const testPasswordValid2 = 'ValidPassword10!!';
+
+// Job level
 export const testJobLevel = 'Supervisor';
