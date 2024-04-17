@@ -7,14 +7,14 @@ const signupRouter = express.Router();
 signupRouter.post('/', async (req, res) => {
 
     // data received from the client
-    const { username, password, userAttributes } = req.body
+    const { preferred_username, password, userAttributes } = req.body
 
     // attribute list needed 
     const attributeList = userAttributes.map(a => new AmazonCognitoIdentity.CognitoUserAttribute(a))
 
     // register user
     userPool.signUp(
-            username,
+            preferred_username,
             password,
             attributeList,
             null, 

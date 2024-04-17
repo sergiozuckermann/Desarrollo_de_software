@@ -43,7 +43,7 @@ const SignIn: FunctionComponent = () => {
           <section className="flex flex-col items-center mt-10 tablet:p-10 cellphone:items-center"> 
             <form onSubmit={handleLogin} className="border-2 border-gray-300 rounded-lg py-4 px-4 w-full max-w-md mx-auto text-lg cellphone:text-gray-700 cellphone:py-0 cellphone:px-0">
               <FormInput 
-                type="email"
+                type="text"
                 placeholder="Email"
                 name="email"
                 data-cy="email-input"
