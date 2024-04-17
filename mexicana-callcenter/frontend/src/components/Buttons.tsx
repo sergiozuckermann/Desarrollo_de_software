@@ -1,7 +1,13 @@
-import React from 'react';
+import { ReactNode } from "react";
 
 // Button component
-const Button = ({ onClick, children, className = '', style = {} }) => {
+const Button = (
+  { onClick, children, className = '', style = {} }: {
+    onClick: () => void,
+    children: ReactNode,
+    className?: string,
+    style?: object
+  }) => {
   return (
     <button
       onClick={onClick}

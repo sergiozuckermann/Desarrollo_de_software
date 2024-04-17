@@ -12,3 +12,14 @@ export interface AuthContextType {
     login: (credentials: Credentials) => Promise<void>,
     logout: () => void
   }
+
+  export interface FormInputProps {
+    type: string,
+    placeholder: string,
+    name: string,
+    required: boolean,
+    value: string,
+    onChange: (e:React.ChangeEvent<HTMLInputElement>) => void,
+    icon?: string,
+    onIconClick?: () => void,
+  }

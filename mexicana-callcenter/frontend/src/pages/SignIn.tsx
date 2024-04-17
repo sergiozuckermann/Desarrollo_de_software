@@ -49,7 +49,7 @@ const SignIn: FunctionComponent = () => {
                 data-cy="email-input"
                 required={true}
                 value={emailTextValue}
-                onChange={(e) => setEmailTextValue(e.target.value)}
+                onChange={(e:React.ChangeEvent<HTMLInputElement>) => setEmailTextValue(e.target.value)}
               />
               <FormInput
                 type={showPassword ? "text" : "password"}
@@ -58,7 +58,7 @@ const SignIn: FunctionComponent = () => {
                 data-cy="password-input"
                 required={true}
                 value={passwordTextValue}
-                onChange={(e) => setPasswordTextValue(e.target.value)}
+                onChange={(e:React.ChangeEvent<HTMLInputElement>) => setPasswordTextValue(e.target.value)}
                 icon="/eye_password.png"
                 onIconClick={togglePasswordVisibility}
               />
