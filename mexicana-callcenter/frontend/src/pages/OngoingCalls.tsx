@@ -78,12 +78,12 @@ const OngoingCalls: FunctionComponent = () => {
                 <img 
                   src="/i_icon.png"  
                   alt="i_icon" 
-                  style={{width: "20px", height: "20px", cursor: 'pointer'}}
+                  style={{width: "30px", height: "px", cursor: 'pointer'}}
                 />
               </div>
-              <div className="flex">
-                <div style={{backgroundColor: statusColor, borderRadius: 10, height: "35px", width: "100px", color: "white", fontSize: "20px", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "Inter, sans-serif"}}>{statusText}</div>
-                <div className="w-9 h-9 rounded-full ml-5" style={{backgroundColor: color}}></div>
+              <div className="flex status-container">
+                <div className="status-text" style={{backgroundColor: statusColor, borderRadius: 10, color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "Inter, sans-serif"}}>{statusText}</div>
+                <div className="color-circle" style={{backgroundColor: color}}></div>
               </div>
               <br />
               <button style={{background: "none", fontSize: "15px", cursor: 'pointer'}}>Barge in</button>
@@ -116,14 +116,14 @@ const OngoingCalls: FunctionComponent = () => {
         <div>
           {/* LA RUTA ESTA A LA PÁGINA DE HELLO POR QUE TODAVÍA NO TENEMOS HOME */}
           <Button onClick={() => window.location.href = '/'}>
-            <img src="/logo_callCenter_color.png" alt="" className="w-[230px] ml-3" />
+            <img src="/logo_callCenter_color.png" alt="" className="w-[230px] ml-3 logo" />
           </Button>
        
         </div>
-        <div className="flex items-center map-container">
+        <div className="flex map-container">
           {/* LA RUTA ESTA A UNA PÁGINA VACIA */}
           <Button onClick={() => window.location.href = '/Notifications'} className="hover-shrink-button">
-            <img src="/notifications_iconn.png" alt="" className="w-[45px] mr-2" />
+            <img src="/notifications_iconn.png" alt="" className="w-[45px] mr-2 notification-bell" />
           </Button>
 
           <h1 className="font">| Map</h1>
