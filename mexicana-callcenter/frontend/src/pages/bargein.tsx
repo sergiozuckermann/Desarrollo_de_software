@@ -1,6 +1,7 @@
 import { FunctionComponent, useState, useEffect } from "react";
 import Button from "../components/Buttons";
-
+import ScrollableRectangle from "../components/scrollableRectangle";
+import "../bargeIn.css";   
 
 const BargeIn: FunctionComponent = () => {
   const [timestamp, setTimestamp] = useState("");
@@ -46,7 +47,52 @@ const BargeIn: FunctionComponent = () => {
       </div>
 
       {/* Main content */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-20 h-[90%] justify-center items-center">
+      <div className="container">
+        <ScrollableRectangle>
+            <div className="flex flex-col items-center justify-center">
+                <h1 className="font2 text-3xl">CCP </h1>
+                <h1 className="font2 text-3xl">CCP </h1>
+                <h1 className="font2 text-3xl">CCP </h1>
+                <h1 className="font2 text-3xl">CCP </h1>
+                <h1 className="font2 text-3xl">CCP </h1>
+                <h1 className="font2 text-3xl">CCP </h1>
+                <h1 className="font2 text-3xl">CCP </h1>
+                <h1 className="font2 text-3xl">CCP </h1>
+
+            </div>
+        </ScrollableRectangle>
+
+        <ScrollableRectangle>
+            <div className="flex flex-col items-center justify-center">
+                <h1 className="font2 text-3xl">NOTEPAD</h1>
+                <h1 className="font2 text-3xl">NOTEPAD</h1>
+                <h1 className="font2 text-3xl">NOTEPAD</h1>
+                <h1 className="font2 text-3xl">NOTEPAD</h1>
+                <h1 className="font2 text-3xl">NOTEPAD</h1>
+                <h1 className="font2 text-3xl">NOTEPAD</h1>
+                <h1 className="font2 text-3xl">NOTEPAD</h1>
+                <h1 className="font2 text-3xl">NOTEPAD</h1>
+                <h1 className="font2 text-3xl">NOTEPAD</h1>
+                <h1 className="font2 text-3xl">NOTEPAD</h1>
+                <h1 className="font2 text-3xl">NOTEPAD</h1>
+                <h1 className="font2 text-3xl">NOTEPAD</h1>
+                <h1 className="font2 text-3xl">NOTEPAD</h1>
+            </div>
+        </ScrollableRectangle>
+
+        <ScrollableRectangle>
+            <div className="flex flex-col items-center justify-center">
+                <h1 className="font2 text-3xl">Q&A</h1>
+                <h1 className="font2 text-3xl">Q&A</h1>
+                <h1 className="font2 text-3xl">Q&A</h1>
+                <h1 className="font2 text-3xl">Q&A</h1>
+                <h1 className="font2 text-3xl">Q&A</h1>
+                <h1 className="font2 text-3xl">Q&A</h1>
+                <h1 className="font2 text-3xl">Q&A</h1>
+                <h1 className="font2 text-3xl">Q&A</h1>
+                <h1 className="font2 text-3xl">Q&A</h1>
+            </div>
+        </ScrollableRectangle>
 
       </div>
 

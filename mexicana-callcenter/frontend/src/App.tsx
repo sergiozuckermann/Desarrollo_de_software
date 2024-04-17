@@ -26,7 +26,6 @@ function App() {
       <Route path="/" element={isAuthenticated ? <Navigate to={`/${role}/home`} /> : <Hello />} />
       <Route path="/signup" element={isAuthenticated ? <Navigate to={`/${role}/home`} /> : <SignUp />} />
       <Route path="/signin" element={isAuthenticated ? <Navigate to={`/${role}/home`} /> : <SignIn />} />
-      <Route path="/bargein" element={isAuthenticated ? <Navigate to={`/${role}/home`} /> : <BargeIn />} />
 
       {/* Protected routes. Authentication and Authorization needed */}
       <Route element={<ProtectedRoute isAllowed={isAuthenticated && role === 'Agent'} />}>
@@ -35,7 +34,7 @@ function App() {
       <Route element={<ProtectedRoute isAllowed={isAuthenticated && role === 'Supervisor'} />}>
           <Route path="/supervisor/home" element={<SupervisorHomeTest />} />
           <Route path="/supervisor/ongoingcalls" element={<OngoingCalls />} />
-          {/* <Route path="/supervisor/bargein" element={<BargeIn />} /> */}
+          <Route path="/supervisor/bargein" element={<BargeIn />} />
       </Route>
 
       {/* Any other route which is not found */}
