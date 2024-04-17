@@ -1,7 +1,7 @@
 import { FunctionComponent } from "react";
 import FrameComponent1 from "../components/HelloFrameComponent1";
 import FrameComponent from "../components/HelloFrameComponent"; 
-import "../HelloComponent.css"
+import "../css/HelloComponent.css"
 
 const Hello: FunctionComponent = () => {
     return (
@@ -10,7 +10,7 @@ const Hello: FunctionComponent = () => {
         <div className="blur-right"></div>
         
         <div className="content">
-          <div className="flex flex-col h-screen justify-center">
+          <div className="flex flex-col justify-center h-screen">
             <FrameComponent1 />
             <div className="flex items-center justify-center">
               <FrameComponent />

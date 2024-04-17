@@ -12,7 +12,8 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAuth } from "./hooks/useAuth";
 import ProtectedRoute from "./components/ProtectedRoute";
-import SupervisorHomeTest from "./pages/SupervisorHomeTest";
+import SupervisorMain from "./pages/SupervisorMain";
+import HomePage from "./pages/AgentMain";
 
 function App() {
 
@@ -28,10 +29,11 @@ function App() {
 
       {/* Protected routes. Authentication and Authorization needed */}
       <Route element={<ProtectedRoute isAllowed={isAuthenticated && role === 'Agent'} />}>
-          <Route path="/agent/home" element={<AgentHome />} />
+          <Route path="/agent/home" element={< HomePage />} />
+          <Route path="agent/workspace" element={< AgentHome />} />
       </Route>
       <Route element={<ProtectedRoute isAllowed={isAuthenticated && role === 'Supervisor'} />}>
-          <Route path="/supervisor/home" element={<SupervisorHomeTest />} />
+          <Route path="/supervisor/home" element={<SupervisorMain />} />
           <Route path="/supervisor/ongoingcalls" element={<OngoingCalls />} />
       </Route>
 

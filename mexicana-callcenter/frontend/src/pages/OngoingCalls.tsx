@@ -1,5 +1,5 @@
 import { FunctionComponent, useState, useEffect } from "react";
-import "../onGoingCalls.css";
+import "../css/onGoingCalls.css";
 import Button from "../components/Buttons";
 
 
@@ -85,7 +85,7 @@ const OngoingCalls: FunctionComponent = () => {
               </div>
               <div className="flex">
                 <div style={{backgroundColor: statusColor, borderRadius: 10, height: "35px", width: "100px", color: "white", fontSize: "20px", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "Inter, sans-serif"}}>{statusText}</div>
-                <div className="w-9 h-9 rounded-full ml-12" style={{backgroundColor: color}}></div>
+                <div className="ml-12 rounded-full w-9 h-9" style={{backgroundColor: color}}></div>
               </div>
               <br />
               <button style={{background: "none", fontSize: "15px", cursor: 'pointer'}}>Barge in</button>
@@ -114,7 +114,7 @@ const OngoingCalls: FunctionComponent = () => {
     <div className="flex flex-col h-screen overflow-hidden"> {/* Prevent overflow at the root level */}
       
       {/* Top bar with background */}
-      <div className="flex h-20 bg-tertiary shadow-lg justify-between items-center p-4">
+      <div className="flex items-center justify-between h-20 p-4 shadow-lg bg-tertiary">
         <div>
           {/* LA RUTA ESTA A LA PÁGINA DE HELLO POR QUE TODAVÍA NO TENEMOS HOME */}
           <Button onClick={() => window.location.href = '/'}>
@@ -151,7 +151,7 @@ const OngoingCalls: FunctionComponent = () => {
       </div>
 
       {/* Bottom bar */}
-      <div className="h-20 bg-tertiary shadow-lg flex justify-center items-center p-4">
+      <div className="flex items-center justify-center h-20 p-4 shadow-lg bg-tertiary">
           <p className = "font2" > {timestamp} </p>
       </div>
     </div>
