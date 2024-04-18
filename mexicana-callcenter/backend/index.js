@@ -30,7 +30,8 @@ app.use(setToken)
 app.use('/auth/signup', signupRouter)
 app.use('/auth/login', loginRouter)
 app.use('/supervisor', verifyToken, verifyRole(roles.supervisor), supervisorRouter)
-app.use('/agent', verifyToken, verifyRole(roles.agent), agentRouter)
+// app.use('/agent', verifyToken, verifyRole(roles.agent), agentRouter)
+app.use('/agent', agentRouter)
 
 
 const port = process.env.PORT || 3000; // Use the port defined in environment variable or default to 3000

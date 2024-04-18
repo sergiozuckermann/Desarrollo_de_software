@@ -22,11 +22,13 @@ const AuthProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
   
       // if information of the user is present, return that information as the context object
       if(userData) {
+        const { name, username, role, token, authenticated } = userData;
         return {
-            isAuthenticated: userData.authenticated,
-            user: userData.user,
-            role: userData.role,
-            token: userData.token,
+            isAuthenticated: authenticated,
+            name,
+            username,
+            role, 
+            token,
             login,
             logout
           } 
@@ -35,7 +37,8 @@ const AuthProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
       // return default values of the context object if no user information is present
       return {
         isAuthenticated: false,
-        user: null,
+        name: null,
+        username: null,
         role: null,
         token: null,
         login,
@@ -51,13 +54,14 @@ const AuthProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
       .post(`${baseUrl}/auth/login`, credentials)
       .then(res => {
         if(res.status === 200) {
-          const { token, name, role } = res.data;
+          const { token, name, username, role } = res.data;
 
           // Create an object to hold the user information
           const userData = {
               token,
               role,
-              user: name,
+              name, 
+              username,
               authenticated: true
           };
 

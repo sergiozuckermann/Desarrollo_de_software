@@ -6,7 +6,8 @@ export interface Credentials {
   
 export interface AuthContextType {
     isAuthenticated: boolean,
-    user: string | null,
+    name: string | null,
+    username: string | null,
     role: string | null,
     token: string | null,
     login: (credentials: Credentials) => Promise<void>,
