@@ -14,9 +14,15 @@
 
   /* Start with the largest size for desktops */
 .frameComponent-header {
-  font-size: 12rem; 
-  text-align: center;
-  margin: 0 auto;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 200px;
+    line-height: 242px;
+    text-align: center;
+    color: primary;
+
 }
 
 
