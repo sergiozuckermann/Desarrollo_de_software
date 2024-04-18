@@ -32,7 +32,7 @@ interface PageStructureProps {
   return (
     <div className="flex flex-col h-screen pl-2 pr-2 sm:overflow-hidden">
       {/* Top bar */}
-      <div className="flex items-center justify-between h-[10%] shadow-lg bg-tertiary z-50"> 
+      <div className="flex items-center justify-between h-[10%] shadow-lg  bg-tertiary z-50"> 
         <div>
         <Button onClick={() => window.location.href = '/'}>
             <img src="/logo_callCenter_color.png" alt="" className=" w-[115px] sm:w-[230px] ml-3" />
