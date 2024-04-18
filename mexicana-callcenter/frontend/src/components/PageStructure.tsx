@@ -1,5 +1,7 @@
 import { FunctionComponent, useState, useEffect, ReactNode } from "react";
 import "../css/PageStructure.css";
+import Button from "./Buttons";
+import SettingsButton from "./SettingsButton";
 
 // Define a type for the props for better TypeScript support
 interface PageStructureProps {
@@ -30,20 +32,21 @@ interface PageStructureProps {
   return (
     <div className="flex flex-col h-screen pl-2 pr-2 sm:overflow-hidden">
       {/* Top bar */}
-      <div className="flex items-center justify-between h-[10%] shadow-lg bg-tertiary"> 
+      <div className="flex items-center justify-between h-[10%] shadow-lg bg-tertiary z-50"> 
         <div>
-          <img 
-            src="/logo_callCenter_color.png"  
-            alt="" 
-            className=" w-[115px] sm:w-[230px] ml-3"
-          />
+        <Button onClick={() => window.location.href = '/'}>
+            <img src="/logo_callCenter_color.png" alt="" className=" w-[115px] sm:w-[230px] ml-3" />
+          </Button>
         </div>
-        <div className="flex items-center justify-center ">
-          <img 
-            src="/notifications_iconn.png" 
-            alt="" 
-            className="w-[30px] sm:w-[45px] mr-2"
-          />
+        <div className="flex items-center">
+          {/* LA RUTA ESTA A UNA PÁGINA VACIA */}
+          <Button onClick={() => window.location.href = '/Notifications'} className="hover-shrink-button">
+            <img src="/notifications_iconn.png" alt="" className="w-[45px] mr-2" />
+          </Button>
+           {/* <Button onClick={() => window.location.href = '/Notifications'} className="hover-shrink-button">
+            <img src="/settings.svg" alt="" className="w-[45px] mr-2" />
+          </Button> */}
+           <SettingsButton />
           <div className="h-10 mx-2 border-l-2 border-primary"></div> {/* Divisory line */}
           <div className="flex items-center">
             <h1 className="font">{title}</h1>
@@ -63,3 +66,4 @@ interface PageStructureProps {
 };
 
 export default PageStructure;
+
