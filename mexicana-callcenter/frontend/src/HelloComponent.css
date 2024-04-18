@@ -1,0 +1,120 @@
+.header-img {
+    height: auto;
+    max-height: 50px; 
+    width: auto;
+    max-width: 100%; 
+  }
+
+/* FrameComponent.css */
+.frameComponent-container {
+    padding-right: 5px;
+    padding-left: 21px;
+  }
+  
+
+  /* Start with the largest size for desktops */
+.frameComponent-header {
+  font-size: 12rem; 
+  text-align: center;
+  margin: 0 auto;
+}
+
+
+  .main-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+  }
+  
+  .blur-left, .blur-right {
+    position: absolute;
+    background-size: contain; 
+    background-repeat: no-repeat; 
+    background-position: center; 
+    z-index: 0;
+  }
+
+  .blur-left {
+    top: 0;
+    left: 0;
+    width: 40%; 
+    height: 100%; 
+    background-image: url('/left.blurb.png');
+    background-position: left bottom; 
+    }
+    
+  .blur-right {
+    bottom: 0;
+    right: 0;
+    width: 70%; 
+    height: 80%; 
+    background-image: url('/right-blurb.png');
+    background-position: right bottom; 
+  }
+  
+  
+  .content {
+    position: relative;
+    z-index: 1; 
+  }
+
+  .frameComponent-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 25px; 
+  }
+  
+  .frameComponent-button {
+    padding: 2.5px 5px;
+    background-color: #20253F; 
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    color: white; 
+    transition: background-color 0.3s ease; 
+    width: 100%; 
+    box-sizing: border-box;
+  }
+  
+  .frameComponent-button:hover {
+    background-color: #4A8B51; 
+  }
+  /* laptop screens */
+  @media (max-width: 1200px) {
+    .blur-left, .blur-right {
+      width: 40%; 
+      height: 100%; 
+      top: 0; 
+      bottom: 0; 
+      transform: scale(1); 
+    }
+  }
+
+    /* tablet screens */
+  @media (max-width: 768px) {
+    .frameComponent-header {
+      font-size: 8rem; /* Smaller size for tablets */
+    }
+  }
+
+  /* mobile screens */
+  @media (max-width: 480px) {
+    .frameComponent-header {
+      font-size: 4rem; 
+    }
+  }
+
+.frameComponent-container {
+    background: none; 
+}
+
+.frameComponent-container, .frameComponent-header, .frameComponent-button {
+    z-index: auto;
+}
+
+.frameComponent-container {
+    overflow: visible; 
+}
+
+
