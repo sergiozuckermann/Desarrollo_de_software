@@ -13,7 +13,8 @@ const GradientButton: React.FC<GradientButtonProps> = ({ mode,handleClick }) => 
     ? "bg-gradient-to-r from-customGreen to-primary"
     : "bg-green-600";
 
-    const paddingClass = 'px-10 py-10 md:px-16 md:py-12';
+    // const paddingClass = 'px-10 py-10 md:px-16 md:py-12';
+    const paddingClass = 'px-4 py-4 md:px-16 md:py-12';
   const buttonTextSizeClass = mode === 'workspace' ? 'text-3xl md:text-4xl' : 'text-xl md:text-3xl';
   const buttonSubtitleSizeClass = 'text-sm md:text-base';
 
