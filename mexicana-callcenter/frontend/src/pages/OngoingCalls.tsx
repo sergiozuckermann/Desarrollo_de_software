@@ -78,7 +78,7 @@ const OngoingCalls: FunctionComponent = () => {
                 <img 
                   src="/i_icon.png"  
                   alt="i_icon" 
-                  style={{width: "30px", height: "px", cursor: 'pointer'}}
+                  style={{width: "30px", height: "30px", cursor: 'pointer'}}
                 />
               </div>
               <div className="flex status-container">
@@ -93,7 +93,7 @@ const OngoingCalls: FunctionComponent = () => {
         );
       }
     return (
-      <div className="grid grid-cols-5 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-5 gap-1">
+      <div className="grid grid-cols-5 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-5 gap-1 responsive-grid">
         {cells}
       </div>
     );

@@ -104,6 +104,9 @@ html, body {
     height: 30px;
     margin-left: 10px;
   }
-  
+
+  .responsive-grid {
+    grid-template-columns: 1fr;
+  }
 
 }
