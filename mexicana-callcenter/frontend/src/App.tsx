@@ -14,6 +14,7 @@ import { useAuth } from "./hooks/useAuth";
 import ProtectedRoute from "./components/ProtectedRoute";
 import SupervisorMain from "./pages/SupervisorMain";
 import HomePage from "./pages/AgentMain";
+import NotficationCenter from "./pages/Notifications";
 
 function App() {
 
@@ -25,12 +26,12 @@ function App() {
       {/* general public routes */}
       <Route path="/" element={isAuthenticated ? <Navigate to={`/${role}/home`} /> : <Hello />} />
       <Route path="/signup" element={isAuthenticated ? <Navigate to={`/${role}/home`} /> : <SignUp />} />
-      <Route path="/signin" element={isAuthenticated ? <Navigate to={`/${role}/home`} /> : <SignIn />} />
 
       {/* Protected routes. Authentication and Authorization needed */}
       <Route element={<ProtectedRoute isAllowed={isAuthenticated && role === 'Agent'} />}>
           <Route path="/agent/home" element={< HomePage />} />
           <Route path="agent/workspace" element={< AgentHome />} />
+          <Route path="Agent/home/notifications" element={< NotficationCenter />} />
       </Route>
       <Route element={<ProtectedRoute isAllowed={isAuthenticated && role === 'Supervisor'} />}>
           <Route path="/supervisor/home" element={<SupervisorMain />} />

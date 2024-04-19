@@ -4,7 +4,7 @@ import {
   CognitoIdentityProviderClient,
   SignUpCommand,
 } from "@aws-sdk/client-cognito-identity-provider";
-import useCustomToast from "../components/notificationComponent";
+import useCustomToast from "../components/LoginNotification";
 import "../css/global.css";
 
 const SignUp: React.FC = () => {

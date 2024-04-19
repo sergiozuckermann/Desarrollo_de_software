@@ -2,7 +2,7 @@ import axios from "axios";
 import { createContext, FunctionComponent, PropsWithChildren } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContextType, Credentials } from "../utils/interfaces";
-import useCustomToast from "../components/notificationComponent";
+import useCustomToast from "../components/LoginNotification";
 
 const baseUrl = 'http://localhost:3000'
 

@@ -2,6 +2,8 @@ import { FunctionComponent, useState, useEffect, ReactNode } from "react";
 import "../css/PageStructure.css";
 import Button from "./Buttons";
 import SettingsButton from "./SettingsButton";
+import NotificationBadge from "./NotificationComponent";
+import { useNavigate } from 'react-router-dom';
 
 // Define a type for the props for better TypeScript support
 interface PageStructureProps {
@@ -10,6 +12,8 @@ interface PageStructureProps {
   }
   const PageStructure: FunctionComponent<PageStructureProps> = ({ title, children }) => {
   const [timestamp, setTimestamp] = useState("");
+  const [notificationCount, setNotificationCount] = useState(0);
+    const navigate = useNavigate();
 
   useEffect(() => {
     const updateTimestamp = () => {
@@ -20,6 +24,43 @@ interface PageStructureProps {
       setTimestamp(currentTimestamp);
     };
 
+  //   const fetchNotifications = async () => {
+  //     setLoading(true);
+  //     setError("");
+  //     try {
+  //         const response = await fetch('YOUR_API_ENDPOINT_HERE', {
+  //             headers: {
+  //                 'Authorization': 'Bearer YOUR_AUTH_TOKEN',
+  //                 // Include other headers as needed
+  //             }
+  //         });
+  //         if (!response.ok) {
+  //             throw new Error(`HTTP error! status: ${response.status}`);
+  //         }
+  //         const data = await response.json();
+  //         setNotificationCount(data.count);  // Assume the API returns an object with a 'count' property
+  //     } catch (error) {
+  //         setError('Failed to fetch notifications');
+  //         console.error('Error fetching notifications:', error);
+  //     }
+  //     setLoading(false);
+  // };
+      
+  const fetchMockNotifications = () => {
+        console.log("Fetching mock notifications...");
+        setTimeout(() => {
+            // Simulated data
+            const simulatedResponse = {
+                count: 5, 
+            };
+            setNotificationCount(simulatedResponse.count);
+            console.log("Mock notifications fetched:", simulatedResponse.count);
+        }, 1500); 
+    };
+
+  fetchMockNotifications();
+
+
     updateTimestamp(); // Actualizar el timestamp inicialmente
 
     const intervalId = setInterval(updateTimestamp, 1000); // Actualizar el timestamp cada segundo
@@ -28,6 +69,13 @@ interface PageStructureProps {
       clearInterval(intervalId); // Limpiar el intervalo cuando el componente se desmonte
     };
   }, []);
+
+  const handleNotificationClick = () => {
+    setNotificationCount(0); 
+    setTimeout(() => {
+      navigate('notifications'); 
+    }, 10); 
+  };
 
   return (
     <div className="flex flex-col h-screen pl-2 pr-2 sm:overflow-hidden">
@@ -40,12 +88,10 @@ interface PageStructureProps {
         </div>
         <div className="flex items-center">
           {/* LA RUTA ESTA A UNA PÁGINA VACIA */}
-          <Button onClick={() => window.location.href = '/Notifications'} className="hover-shrink-button">
+          <Button onClick={handleNotificationClick} className="relative hover-shrink-button">
             <img src="/notifications_iconn.png" alt="" className="w-[45px] mr-2" />
+            <NotificationBadge count={notificationCount} />
           </Button>
-           {/* <Button onClick={() => window.location.href = '/Notifications'} className="hover-shrink-button">
-            <img src="/settings.svg" alt="" className="w-[45px] mr-2" />
-          </Button> */}
            <SettingsButton />
           <div className="h-10 mx-2 border-l-2 border-primary"></div> {/* Divisory line */}
           <div className="flex items-center">

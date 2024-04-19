@@ -1,48 +1,17 @@
-import { toast } from 'react-toastify';
+import  { FunctionComponent, useState, useEffect } from 'react';
 
-const useCustomToast = () => {
-  const showError = (message: string) => {
-    toast.error(message, {
-      position: "top-center",
-      icon: false,
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      style: { 
-        width: "620px", 
-        fontSize: "25px", 
-        color: "white", 
-        backgroundColor: "black", 
-        fontFamily: "Inter"
-      },
-    });
-  };
+interface NotificationBadgeProps {
+    count: number; 
+  }
 
-  const showSuccess = (message: string) => {
-    toast.success(message, {
-      position: "top-center",
-      icon: false,
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      style: { 
-        width: "620px", 
-        fontSize: "25px", 
-        color: "white", 
-        backgroundColor: "#4BB543", // Green background for success
-        fontFamily: "Inter"
-      },
-    });
-  };
-
-  return { showError, showSuccess };
-
+const NotificationBadge: FunctionComponent<NotificationBadgeProps>  = ({ count }) => {
+  if (count > 0) {
+    return (
+      <span className="badge">
+        {count}
+      </span>
+    );
+  }
+  return null;
 };
-
-export default useCustomToast;
+export default NotificationBadge;
