@@ -74,7 +74,7 @@ const OngoingCalls: FunctionComponent = () => {
           <td key={`${i}`} className="px-8 py-4" style={{ backgroundColor: "#F8F9FA", border: "1px solid"}}>
             <div className="flex flex-col">
               <div className="flex">
-                <p style={{fontFamily: "Arial, Helvetica, sans-serif", fontSize: "20px"}}>Nombre del agente</p>
+                <p className = "font2" >Nombre del agente</p>
                 <img 
                   src="/i_icon.png"  
                   alt="i_icon" 
@@ -93,7 +93,7 @@ const OngoingCalls: FunctionComponent = () => {
         );
       }
     return (
-      <div className="grid grid-cols-5 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-5 gap-1 responsive-grid">
+      <div className="grid grid-cols-5 gap-1 responsive-grid1 responsive-grid2 responsive-grid3 responsive-grid4 responsive-grid5">
         {cells}
       </div>
     );
@@ -131,7 +131,7 @@ const OngoingCalls: FunctionComponent = () => {
       </div>
 
       {/* Main content */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-20 h-[90%] justify-center items-center">
+      <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-20 h-[90%] justify-center items-center">
         <div className="flex items-center">
           <img 
             src="/onCallBlurb.png" 
