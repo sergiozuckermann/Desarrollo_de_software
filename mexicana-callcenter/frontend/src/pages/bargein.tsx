@@ -1,10 +1,14 @@
 import { FunctionComponent, useState, useEffect } from "react";
 import Button from "../components/Buttons";
-import ScrollableRectangle from "../components/scrollableRectangle";
 import "../bargeIn.css";   
 
 const BargeIn: FunctionComponent = () => {
   const [timestamp, setTimestamp] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [callDescription, setCallDescription] = useState("");
+  
 
   useEffect(() => {
     const updateTimestamp = () => {
@@ -47,52 +51,151 @@ const BargeIn: FunctionComponent = () => {
       </div>
 
       {/* Main content */}
-      <div className="container">
-        <ScrollableRectangle>
-            <div className="flex flex-col items-center justify-center">
-                <h1 className="font2 text-3xl">CCP </h1>
-                <h1 className="font2 text-3xl">CCP </h1>
-                <h1 className="font2 text-3xl">CCP </h1>
-                <h1 className="font2 text-3xl">CCP </h1>
-                <h1 className="font2 text-3xl">CCP </h1>
-                <h1 className="font2 text-3xl">CCP </h1>
-                <h1 className="font2 text-3xl">CCP </h1>
-                <h1 className="font2 text-3xl">CCP </h1>
-
+      <div className="container h-full">
+        {/*Connect CPP*/}
+        <div className="h-[100%] w-[450px] rounded-lg ml-3 mr-3" style={{backgroundColor: "#F8F9FA", borderColor: "rgba(32, 37, 63, 0.5)", borderWidth: "1px" , borderStyle: "solid"}}>
+            <div>
+              <h2 className="ml-8 mt-11"style={{fontFamily: "Roboto", fontSize: "20px" }}>
+                * Connect Here *
+              </h2>
             </div>
-        </ScrollableRectangle>
+        </div>
 
-        <ScrollableRectangle>
-            <div className="flex flex-col items-center justify-center">
-                <h1 className="font2 text-3xl">NOTEPAD</h1>
-                <h1 className="font2 text-3xl">NOTEPAD</h1>
-                <h1 className="font2 text-3xl">NOTEPAD</h1>
-                <h1 className="font2 text-3xl">NOTEPAD</h1>
-                <h1 className="font2 text-3xl">NOTEPAD</h1>
-                <h1 className="font2 text-3xl">NOTEPAD</h1>
-                <h1 className="font2 text-3xl">NOTEPAD</h1>
-                <h1 className="font2 text-3xl">NOTEPAD</h1>
-                <h1 className="font2 text-3xl">NOTEPAD</h1>
-                <h1 className="font2 text-3xl">NOTEPAD</h1>
-                <h1 className="font2 text-3xl">NOTEPAD</h1>
-                <h1 className="font2 text-3xl">NOTEPAD</h1>
-                <h1 className="font2 text-3xl">NOTEPAD</h1>
+        {/*Client FORM*/}
+        <div className="h-[100%] w-[450px] rounded-lg ml-3 mr-3" style={{backgroundColor: "#F8F9FA", borderColor: "rgba(32, 37, 63, 0.5)", borderWidth: "1px" , borderStyle: "solid"}}>
+            {/*CLIENT TITLE*/}
+            <div>
+              <h1 className="ml-8 mt-11 "style={{fontFamily: "Roboto", fontSize: "50px" }}>
+                Client
+              </h1>
             </div>
-        </ScrollableRectangle>
 
-        <ScrollableRectangle>
-            <div className="flex flex-col items-center justify-center">
-                <h1 className="font2 text-3xl">Q&A</h1>
-                <h1 className="font2 text-3xl">Q&A</h1>
-                <h1 className="font2 text-3xl">Q&A</h1>
-                <h1 className="font2 text-3xl">Q&A</h1>
-                <h1 className="font2 text-3xl">Q&A</h1>
-                <h1 className="font2 text-3xl">Q&A</h1>
-                <h1 className="font2 text-3xl">Q&A</h1>
-                <h1 className="font2 text-3xl">Q&A</h1>
-                <h1 className="font2 text-3xl">Q&A</h1>
+            {/*FORM*/}
+            <div className="w-full ml-11 mt-[10%]">
+              <form className="">
+                {/*NAME*/} 
+                <div className="mb-6 w-full">
+                  <label className="text-base" style={{fontFamily: "Roboto", fontSize: "18px" }}>
+                    Name:
+                  </label>
+                  <input
+                    className="flex h-[40px] w-[80%] relative rounded-3xs bg-tertiary box-border border-[1px] border-solid border-marco" style={{padding: "5px 12px", margin: "5px", fontFamily: "Roboto"}}
+                    placeholder=""
+                    type="text"
+                    value={name}
+                    onChange={(event) => setName(event.target.value)}
+                  />
+                </div>
+      
+                {/*E-MAIL*/} 
+                <div className="mb-6">
+                  <label className="text-base" style={{fontFamily: "Roboto", fontSize: "18px" }}>
+                    E-mail:
+                  </label>
+                  <input
+                    className="flex h-[40px] w-[80%] relative rounded-3xs bg-tertiary box-border border-[1px] border-solid border-marco" style={{padding: "5px 12px", margin: "5px", fontFamily: "Roboto"}}
+                    placeholder=""
+                    type="text"
+                    value={email}
+                    onChange={(event) => setEmail(event.target.value)}
+                  />
+                </div>
+
+                {/*PHONE*/}
+                <div className="mb-6">
+                  <label className="text-base" style={{fontFamily: "Roboto", fontSize: "18px" }}>
+                    Phone:
+                  </label>
+                  <input
+                    className="flex h-[40px] w-[80%] relative rounded-3xs bg-tertiary box-border border-[1px] border-solid border-marco" style={{padding: "5px 12px", margin: "5px", fontFamily: "Roboto"}}
+                    placeholder=""
+                    type="text"
+                    value={phone}
+                    onChange={(event) => setPhone(event.target.value)}
+                  />
+                </div>
+
+                {/* CALL DESCRIPTION */}
+                <div className="mb-6">
+                  <label className="text-base" style={{ fontFamily: "Roboto", fontSize: "18px" }}>
+                    Call Description:
+                  </label>
+                  <textarea
+                    className="flex h-[200px] w-[80%] relative rounded-3xs bg-tertiary box-border border-[1px] border-solid border-marco" 
+                    style={{ padding: "5px 12px", margin: "9px", fontFamily: "Roboto"}}
+                    placeholder=""
+                    value={callDescription}
+                    onChange={(event) => setCallDescription(event.target.value)}
+                  />
+                </div>
+
+
+              </form>  
             </div>
-        </ScrollableRectangle>
+        </div>
+
+        {/*SUGGESTIONS AI*/}
+        <div className="h-[100%] w-[450px] rounded-lg ml-3 mr-3" style={{backgroundColor: "#F8F9FA", borderColor: "rgba(32, 37, 63, 0.5)", borderWidth: "1px" , borderStyle: "solid"}}>
+          <div>
+            <h1 className="ml-8 mt-11"style={{fontFamily: "Roboto", fontSize: "40px" }}>
+              Hi, looking for help?
+            </h1>
+            <h2 className="ml-8 mt-11"style={{fontFamily: "sans-serif", fontSize: "27px" }}>
+              Suggestions
+            </h2>
+            {/*SCROLL FOR SUGGESTIONS*/}
+            <div className="overflow-y-scroll h-[450px]">
+              <hr className="h-px w-[90%] bg-marco border-0 dark:bg-gray-700"/>
+              <a href="#" style={{ textDecoration: 'none', color: 'inherit' }}>
+                <h3 className="ml-11 mt-11 mb-11" style={{fontFamily: "sans-serif", fontSize: "15px" }}>
+                  How do I help a costumer book a flight?
+                </h3>
+              </a>
+              <hr className="h-px w-[90%] bg-marco border-0 dark:bg-gray-700"/>
+              <a href="#" style={{ textDecoration: 'none', color: 'inherit' }}>
+                <h3 className="ml-11 mt-11 mb-11" style={{fontFamily: "sans-serif", fontSize: "15px" }}>
+                  Adding additional services to a reservation
+                </h3>
+              </a>
+              <hr className="h-px w-[90%] bg-marco border-0 dark:bg-gray-700"/>
+              <a href="#" style={{ textDecoration: 'none', color: 'inherit' }}>
+                <h3 className="ml-11 mt-11 mb-11" style={{fontFamily: "sans-serif", fontSize: "15px" }}>
+                  How do I help a costumer to cancel a flight?
+                </h3>
+              </a>
+              <hr className="h-px w-[90%] bg-marco border-0 dark:bg-gray-700"/>
+              <a href="#" style={{ textDecoration: 'none', color: 'inherit' }}>
+                <h3 className="ml-11 mt-11 mb-11" style={{fontFamily: "sans-serif", fontSize: "15px" }}>
+                  Loyalty program information
+                </h3>
+              </a>
+              <hr className="h-px w-[90%] bg-marco border-0 dark:bg-gray-700"/>
+              <a href="#" style={{ textDecoration: 'none', color: 'inherit' }}>
+                <h3 className="ml-11 mt-11 mb-11" style={{fontFamily: "sans-serif", fontSize: "15px" }}>
+                  How do I help a customer claim his lost luggage during a connecting flight?
+                </h3>
+              </a>
+              <hr className="h-px w-[90%] bg-marco border-0 dark:bg-gray-700"/>
+              <a href="#" style={{ textDecoration: 'none', color: 'inherit' }}>
+                <h3 className="ml-11 mt-11 mb-11" style={{fontFamily: "sans-serif", fontSize: "15px" }}>
+                  How can I change the customer's name on a paid flight?
+                </h3>
+              </a>
+              <hr className="h-px w-[90%] bg-marco border-0 dark:bg-gray-700"/>
+              <a href="#" style={{ textDecoration: 'none', color: 'inherit' }}>
+                <h3 className="ml-11 mt-11 mb-11" style={{fontFamily: "sans-serif", fontSize: "15px" }}>
+                  How can I change a customer's flight destination?
+                </h3>
+              </a>
+              <hr className="h-px w-[90%] bg-marco border-0 dark:bg-gray-700"/>
+              <a href="#" style={{ textDecoration: 'none', color: 'inherit' }}>
+                <h3 className="ml-11 mt-11 mb-11" style={{fontFamily: "sans-serif", fontSize: "15px" }}>
+                  How to select a customer's seat?
+                </h3>
+              </a>
+            </div>
+          </div>
+        </div>
 
       </div>
 
