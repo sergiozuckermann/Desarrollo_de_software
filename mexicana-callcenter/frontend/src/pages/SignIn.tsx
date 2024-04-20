@@ -3,7 +3,7 @@ import { useAuth } from '../hooks/useAuth'
 import FormInput from "../components/FormInput";
 
 const SignIn: FunctionComponent = () => {
-  const [emailTextValue, setEmailTextValue] = useState("");
+  const [usernameTextValue, setUsernameTextValue] = useState("");
   const [passwordTextValue, setPasswordTextValue] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const { login } = useAuth()
@@ -11,7 +11,7 @@ const SignIn: FunctionComponent = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const credentials = {username: emailTextValue, password: passwordTextValue}
+    const credentials = {username: usernameTextValue, password: passwordTextValue}
 
     login(credentials) // call login function defined in the AuthProvider
   }
@@ -43,13 +43,13 @@ const SignIn: FunctionComponent = () => {
           <section className="flex flex-col items-center mt-10 tablet:p-10 cellphone:items-center"> 
             <form onSubmit={handleLogin} className=" rounded-lg py-4 px-4 w-full max-w-md mx-auto text-lg cellphone:text-gray-700 cellphone:py-0 cellphone:px-0">
               <FormInput 
-                type="email"
-                placeholder="Email"
-                name="email"
-                data-cy="email-input"
+                type="text"
+                placeholder="Username"
+                name="Username"
+                data-cy="username-input"
                 required={true}
-                value={emailTextValue}
-                onChange={(e) => setEmailTextValue(e.target.value)}
+                value={usernameTextValue}
+                onChange={(e) => setUsernameTextValue(e.target.value)}
               />
               <FormInput
                 type={showPassword ? "text" : "password"}
