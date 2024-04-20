@@ -1,5 +1,5 @@
 import { FunctionComponent, useState, useEffect } from "react";
-import "../onGoingCalls.css";
+import "../css/onGoingCalls.css";
 import Button from "../components/Buttons";
 
 
@@ -112,7 +112,7 @@ const OngoingCalls: FunctionComponent = () => {
     <div className="flex flex-col min-h-screen"> {/* Prevent overflow at the root level */}
       
       {/* Top bar with background */}
-      <div className="flex h-20 bg-tertiary shadow-lg justify-between items-center p-4">
+      <div className="flex items-center justify-between h-20 p-4 shadow-lg bg-tertiary">
         <div>
           {/* LA RUTA ESTA A LA PÁGINA DE HELLO POR QUE TODAVÍA NO TENEMOS HOME */}
           <Button onClick={() => window.location.href = '/'}>
@@ -149,7 +149,7 @@ const OngoingCalls: FunctionComponent = () => {
       </div>
 
       {/* Bottom bar */}
-      <div className="h-20 bg-tertiary shadow-lg flex justify-center items-center p-4">
+      <div className="flex items-center justify-center h-20 p-4 shadow-lg bg-tertiary">
           <p className = "font2" > {timestamp} </p>
       </div>
     </div>
