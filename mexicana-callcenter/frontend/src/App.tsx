@@ -25,6 +25,7 @@ function App() {
     <Routes>
       {/* general public routes */}
       <Route path="/" element={isAuthenticated ? <Navigate to={`/${role}/home`} /> : <Hello />} />
+      <Route path="/signin" element={isAuthenticated ? <Navigate to={`/${role}/home`} /> : <SignIn />} />
       <Route path="/signup" element={isAuthenticated ? <Navigate to={`/${role}/home`} /> : <SignUp />} />
 
       {/* Protected routes. Authentication and Authorization needed */}

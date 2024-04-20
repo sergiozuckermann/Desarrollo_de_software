@@ -2,7 +2,7 @@ import { FunctionComponent, useState, useEffect, ReactNode } from "react";
 import "../css/PageStructure.css";
 import Button from "./Buttons";
 import SettingsButton from "./SettingsButton";
-import NotificationBadge from "./NotificationComponent";
+import NotificationBadge from "./notificationComponent";
 import { useNavigate } from 'react-router-dom';
 
 // Define a type for the props for better TypeScript support
