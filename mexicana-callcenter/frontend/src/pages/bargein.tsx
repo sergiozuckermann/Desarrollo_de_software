@@ -1,15 +1,26 @@
 import { FunctionComponent, useState, useEffect } from "react";
 import Button from "../components/Buttons";
-import "../bargeIn.css";   
+import "../bargeIn.css";  
 
-const BargeIn: FunctionComponent = () => {
+/* Mandarlo de backend????
+interface BargeInProps {
+  randomNumber: number; // Add this prop to receive the random number from the backend
+}
+*/
+
+const BargeIn: FunctionComponent /*<BargeInProps> */= () => {
   const [timestamp, setTimestamp] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [callDescription, setCallDescription] = useState("");
+  const [showPopup, setShowPopup] = useState({ visible: false, imageIndex: 0 });
+  const popupImages = [
+    "/LogoMexicanaAudifonos.svg",
+    "/LogoMexicanaAudifonosIN.svg",
+    "/LogoMexicanaAudifonosOUT.svg",
+  ];
   
-
   useEffect(() => {
     const updateTimestamp = () => {
       const now = new Date();
@@ -19,7 +30,7 @@ const BargeIn: FunctionComponent = () => {
       setTimestamp(currentTimestamp);
     };
 
-    updateTimestamp(); 
+    updateTimestamp();
 
     const intervalId = setInterval(updateTimestamp, 1000); 
 
@@ -28,8 +39,77 @@ const BargeIn: FunctionComponent = () => {
     };
   }, []);
 
+  // Se pone cada X cantidad de timepo
+  useEffect(() => {
+    const randomInterval = () => {
+      const randomDelay = Math.floor(Math.random() * 10000) + 1000;
+  
+      setTimeout(() => {
+        setShowPopup({ visible: true, imageIndex: 0 });
+      }, randomDelay);
+    };
+  
+    const intervalId = setInterval(randomInterval, 10000);
+  
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
+
+  /*   
+  Mandarlo de backend????
+  useEffect(() => {
+    // Check if the random number is 1 and show the popup accordingly
+    setShowPopup(randomNumber === 1);
+  }, [randomNumber]); // Add randomNumber as a dependency
+  
+  
+  Se poden cuando sea 1 (una sola vez) 
+  const handlePopup = () => {
+    const randomNumber = 1;
+    setShowPopup(randomNumber === 1);
+  };
+  */
+
+  useEffect(() => {
+    let timer1: NodeJS.Timeout;
+    let timer2: NodeJS.Timeout;
+  
+    if (showPopup.visible) {
+      if (showPopup.imageIndex === 0) {
+        timer1 = setTimeout(() => {
+          setShowPopup((prevState) => ({
+            ...prevState,
+            imageIndex: 1,
+          }));
+  
+          const startAlternatingImages = () => {
+            timer2 = setInterval(() => {
+              setShowPopup((prevState) => ({
+                ...prevState,
+                imageIndex: prevState.imageIndex === 1 ? 2 : 1,
+              }));
+            }, 3000);
+          };
+  
+          startAlternatingImages();
+        }, 4000);
+      }
+    }
+  
+    return () => {
+      clearTimeout(timer1);
+      clearInterval(timer2);
+    };
+  }, [showPopup.visible, showPopup.imageIndex]);
+  
+  const handleClosePopup = () => {
+    setShowPopup({ visible: false, imageIndex: 0 });
+  };
+
+
   return (
-    <div className="flex flex-col h-screen overflow-hidden"> {/* Prevent overflow at the root level */}
+    <div className="flex flex-col h-screen"> {/* Prevent overflow at the root level */}
       
       {/* Top bar with background */}
       <div className="flex h-20 bg-tertiary shadow-lg justify-between items-center p-4">
@@ -51,9 +131,9 @@ const BargeIn: FunctionComponent = () => {
       </div>
 
       {/* Main content */}
-      <div className="container h-full">
+      <div className="container h-full grid grid-cols-1 md:grid-cols-3 gap-4 justify-items-center">
         {/*Connect CPP*/}
-        <div className="h-[100%] w-[450px] rounded-lg ml-3 mr-3" style={{backgroundColor: "#F8F9FA", borderColor: "rgba(32, 37, 63, 0.5)", borderWidth: "1px" , borderStyle: "solid"}}>
+        <div className="h-[100%] w-full rounded-lg" style={{backgroundColor: "#F8F9FA", borderColor: "rgba(32, 37, 63, 0.5)", borderWidth: "1px" , borderStyle: "solid"}}>
             <div>
               <h2 className="ml-8 mt-11"style={{fontFamily: "Roboto", fontSize: "20px" }}>
                 * Connect Here *
@@ -62,7 +142,7 @@ const BargeIn: FunctionComponent = () => {
         </div>
 
         {/*Client FORM*/}
-        <div className="h-[100%] w-[450px] rounded-lg ml-3 mr-3" style={{backgroundColor: "#F8F9FA", borderColor: "rgba(32, 37, 63, 0.5)", borderWidth: "1px" , borderStyle: "solid"}}>
+        <div className="h-[100%] w-full rounded-lg" style={{backgroundColor: "#F8F9FA", borderColor: "rgba(32, 37, 63, 0.5)", borderWidth: "1px" , borderStyle: "solid"}}>
             {/*CLIENT TITLE*/}
             <div>
               <h1 className="ml-8 mt-11 "style={{fontFamily: "Roboto", fontSize: "50px" }}>
@@ -122,7 +202,7 @@ const BargeIn: FunctionComponent = () => {
                   </label>
                   <textarea
                     className="flex h-[200px] w-[80%] relative rounded-3xs bg-tertiary box-border border-[1px] border-solid border-marco" 
-                    style={{ padding: "5px 12px", margin: "9px", fontFamily: "Roboto"}}
+                    style={{ padding: "5px 12px", margin: "9px", fontFamily: "Roboto", resize: "vertical", minHeight: "200px" }}
                     placeholder=""
                     value={callDescription}
                     onChange={(event) => setCallDescription(event.target.value)}
@@ -134,8 +214,9 @@ const BargeIn: FunctionComponent = () => {
             </div>
         </div>
 
+
         {/*SUGGESTIONS AI*/}
-        <div className="h-[100%] w-[450px] rounded-lg ml-3 mr-3" style={{backgroundColor: "#F8F9FA", borderColor: "rgba(32, 37, 63, 0.5)", borderWidth: "1px" , borderStyle: "solid"}}>
+        <div className="h-[100%] w-full rounded-lg" style={{backgroundColor: "#F8F9FA", borderColor: "rgba(32, 37, 63, 0.5)", borderWidth: "1px" , borderStyle: "solid"}}>
           <div>
             <h1 className="ml-8 mt-11"style={{fontFamily: "Roboto", fontSize: "40px" }}>
               Hi, looking for help?
@@ -203,6 +284,21 @@ const BargeIn: FunctionComponent = () => {
       <div className="h-20 bg-tertiary shadow-lg flex justify-center items-center p-4">
           <p className = "font2" > {timestamp} </p>
       </div>
+
+
+      {/*Pop Up*/}
+      {showPopup.visible && (
+        <div className="fixed bottom-4 right-4 bg-white rounded-lg shadow-lg p-2">
+          <img
+            src={popupImages[showPopup.imageIndex]}
+            alt="Logo"
+            className="w-50 h-50 cursor-pointer"
+            onClick={handleClosePopup}
+          />
+        </div>
+      )}
+
+      
     </div>
   );
 };
