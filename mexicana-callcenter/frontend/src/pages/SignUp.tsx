@@ -1,4 +1,4 @@
-
+  
 import React, { useState } from "react";
 import {
   CognitoIdentityProviderClient,
@@ -104,6 +104,7 @@ const SignUp: React.FC = () => {
                 value={firstName}
                 onChange={(event) => setFirstName(event.target.value)}
                 data-cy="first-name-input"
+                required
               />
             </div>
             <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.899999999999636px] px-[21px] pb-[9.700000000000728px] max-w-full border-[1px] border-solid border-marco">
@@ -115,6 +116,7 @@ const SignUp: React.FC = () => {
                 value={lastName}
                 onChange={(event) => setLastName(event.target.value)}
                 data-cy="sur-name-input"
+                required
               />
             </div>
             <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.5px] px-[19.699999999999815px] pb-[10.100000000000364px] max-w-full border-[1px] border-solid border-marco">
@@ -126,6 +128,7 @@ const SignUp: React.FC = () => {
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
                 data-cy="email-input"
+                required
               />
             </div>
             <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.5px] px-[19.699999999999815px] pb-[10.100000000000364px] max-w-full border-[1px] border-solid border-marco">
@@ -137,6 +140,7 @@ const SignUp: React.FC = () => {
                 value={preferred_username}
                 onChange={(event) => setUsername(event.target.value)}
                 data-cy="username-input"
+                required
               />
             </div>
             <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.800000000000182px] px-[19px] pb-[11px] max-w-full border-[1px] border-solid border-marco relative">
@@ -153,6 +157,7 @@ const SignUp: React.FC = () => {
                 }}
                 style={{ color: passwordValid ? 'green' : 'red' }}
                 data-cy="password-input"
+                required
               />
               <img
                 className="cursor-pointer absolute top-1/2 right-2 transform -translate-y-1/2 h-[30px] w-[30px]"
@@ -176,6 +181,7 @@ const SignUp: React.FC = () => {
                 }}
                 style={{ color: confirmPasswordTextValue === passwordTextValue ? 'green' : 'red' }}
                 data-cy="password-confirm-input"
+                required
               />
               <img
                 className="cursor-pointer absolute top-1/2 right-2 transform -translate-y-1/2 h-[30px] w-[30px]"
@@ -192,7 +198,7 @@ const SignUp: React.FC = () => {
               <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
               <div className="relative flex-1">
                 <div className="custom-select-wrapper">
-                  <select className="custom-select " value={jobLevel} onChange={(event) => setJobLevel(event.currentTarget.value)}>
+                  <select className="custom-select " value={jobLevel} onChange={(event) => setJobLevel(event.currentTarget.value)}  required data-cy='job-level-input'>
                     <option value="" disabled>Job Level</option>
                     <option value="Agent">Agent</option>
                     <option value="Supervisor">Supervisor</option>
@@ -206,7 +212,7 @@ const SignUp: React.FC = () => {
               <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
               <div className="relative flex-1">
                 <div className="custom-select-wrapper">
-                  <select className="custom-select " value={agentType} onChange={(event) => setAgentType(event.currentTarget.value)}>
+                  <select className="custom-select " value={agentType} onChange={(event) => setAgentType(event.currentTarget.value)} required data-cy='agent-type-input' >
                   <option value="" disabled>
                     Agent Type
                   </option>
