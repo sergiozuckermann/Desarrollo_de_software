@@ -4,8 +4,8 @@ export async function deleteUser(userPoolId: string, username: string) {
     const client = new CognitoIdentityProviderClient({
         region: "us-east-1",
         credentials: {
-            accessKeyId: cypress.env('accessKeyId'),
-            secretAccessKey: cypress.env('secretAccessKey'),
+            accessKeyId: Cypress.env('accessKeyId'),
+            secretAccessKey: Cypress.env('secretAccessKey'),
         }
     });
     const command = new AdminDeleteUserCommand({
