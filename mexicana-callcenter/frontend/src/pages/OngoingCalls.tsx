@@ -1,5 +1,5 @@
 import { FunctionComponent, useState, useEffect } from "react";
-import "../onGoingCalls.css";
+import "../css/onGoingCalls.css";
 import Button from "../components/Buttons";
 
 
@@ -74,7 +74,7 @@ const OngoingCalls: FunctionComponent = () => {
           <td key={`${i}`} className="px-8 py-4" style={{ backgroundColor: "#F8F9FA", border: "1px solid"}}>
             <div className="flex flex-col">
               <div className="flex">
-                <p style={{fontFamily: "Arial, Helvetica, sans-serif", fontSize: "20px"}}>Nombre del agente</p>
+                <p className = "font2" >Nombre del agente</p>
                 <img 
                   src="/i_icon.png"  
                   alt="i_icon" 
@@ -93,7 +93,7 @@ const OngoingCalls: FunctionComponent = () => {
         );
       }
     return (
-      <div className="grid grid-cols-5 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-5 gap-1 responsive-grid">
+      <div className="grid grid-cols-5 gap-1 responsive-grid1 responsive-grid2 responsive-grid3 responsive-grid4 responsive-grid5">
         {cells}
       </div>
     );
@@ -112,7 +112,7 @@ const OngoingCalls: FunctionComponent = () => {
     <div className="flex flex-col min-h-screen"> {/* Prevent overflow at the root level */}
       
       {/* Top bar with background */}
-      <div className="flex h-20 bg-tertiary shadow-lg justify-between items-center p-4">
+      <div className="flex items-center justify-between h-20 p-4 shadow-lg bg-tertiary">
         <div>
           {/* LA RUTA ESTA A LA PÁGINA DE HELLO POR QUE TODAVÍA NO TENEMOS HOME */}
           <Button onClick={() => window.location.href = '/'}>
@@ -131,7 +131,7 @@ const OngoingCalls: FunctionComponent = () => {
       </div>
 
       {/* Main content */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-20 h-[90%] justify-center items-center">
+      <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-20 h-[90%] justify-center items-center">
         <div className="flex items-center">
           <img 
             src="/onCallBlurb.png" 
@@ -149,7 +149,7 @@ const OngoingCalls: FunctionComponent = () => {
       </div>
 
       {/* Bottom bar */}
-      <div className="h-20 bg-tertiary shadow-lg flex justify-center items-center p-4">
+      <div className="flex items-center justify-center h-20 p-4 shadow-lg bg-tertiary">
           <p className = "font2" > {timestamp} </p>
       </div>
     </div>

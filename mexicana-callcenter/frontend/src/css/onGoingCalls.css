@@ -105,8 +105,46 @@ html, body {
     margin-left: 10px;
   }
 
-  .responsive-grid {
+  .responsive-grid1 {
     grid-template-columns: 1fr;
   }
 
 }
+
+@media (min-width: 500px) { 
+.responsive-grid1 {
+  grid-template-columns: 1fr;
+}
+}
+
+@media (min-width: 768px) { 
+  
+  .responsive-grid2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+}
+@media (min-width: 1020px) { 
+  
+  .responsive-grid3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+}
+
+@media (min-width: 1300px) { 
+  
+  .responsive-grid4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+}
+
+@media (min-width: 1650px) { 
+  
+  .responsive-grid4 {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+}
+
