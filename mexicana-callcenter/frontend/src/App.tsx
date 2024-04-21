@@ -36,8 +36,8 @@ function App() {
       </Route>
       <Route element={<ProtectedRoute isAllowed={isAuthenticated && role === 'Supervisor'} />}>
           <Route path="/supervisor/home" element={<SupervisorMain />} />
-      </Route>
           <Route path="/supervisor/ongoingcalls" element={<OngoingCalls />} />
+      </Route>
 
       {/* Any other route which is not found */}
       <Route path="*" element={<h1>Not Found</h1>}></Route>

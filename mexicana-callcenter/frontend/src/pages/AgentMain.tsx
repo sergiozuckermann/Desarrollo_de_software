@@ -3,9 +3,13 @@ import PageStructure from "../components/PageStructure";
 import HomeButton from "../components/HomeButtons"; 
 import GradientButton from "../components/CallingButton";
 import WorkerCard from '../components/WorkerCard';
+import axios from 'axios'
+import { useAuth } from '../hooks/useAuth'
 
 const MainContent = () => {
   const [buttonMode, setButtonMode] = useState('workspace');
+  const [userInfo, setUserInfo] = useState<object | null>(null);
+  const { username } = useAuth()
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -14,10 +18,22 @@ const MainContent = () => {
     return () => clearInterval(timer);
   }, []);
 
+  // execute call to backend url to fetch info of the user
+  useEffect(() => {
+    // obtain user information
+    axios
+      .get(`http://localhost:3000/agent/myinfo/${username}`)
+      .then((response) => setUserInfo(response.data))
+      .catch((error) => console.log(error))
+
+  }, [])
+
   return (
     <div className="grid w-full h-full grid-cols-1 gap-4 p-4 md:grid-cols-12">
       <div className="md:col-span-4">
-        <WorkerCard name="Ana Gabriel Martínez" position="Agent" years={2} points={200} status="Active" />
+       
+        { userInfo !== null ? <WorkerCard name={userInfo.name} position={userInfo.position} years={userInfo.experience} points={200} status="Active" /> : null}
+
       </div>
       <div className="flex flex-col space-y-4 md:col-span-8">
   <div className="flex flex-col gap-10">
