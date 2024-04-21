@@ -20,7 +20,7 @@ const BargeIn: FunctionComponent /*<BargeInProps> */= () => {
     "/LogoMexicanaAudifonosIN.svg",
     "/LogoMexicanaAudifonosOUT.svg",
   ];
-  
+
   useEffect(() => {
     const updateTimestamp = () => {
       const now = new Date();
@@ -71,40 +71,22 @@ const BargeIn: FunctionComponent /*<BargeInProps> */= () => {
   };
   */
 
-  useEffect(() => {
-    let timer1: NodeJS.Timeout;
-    let timer2: NodeJS.Timeout;
+  const handleImageClick = () => {
+    setShowPopup((prevState) => {
+      const nextImageIndex = prevState.imageIndex + 1;
   
-    if (showPopup.visible) {
-      if (showPopup.imageIndex === 0) {
-        timer1 = setTimeout(() => {
-          setShowPopup((prevState) => ({
-            ...prevState,
-            imageIndex: 1,
-          }));
-  
-          const startAlternatingImages = () => {
-            timer2 = setInterval(() => {
-              setShowPopup((prevState) => ({
-                ...prevState,
-                imageIndex: prevState.imageIndex === 1 ? 2 : 1,
-              }));
-            }, 3000);
-          };
-  
-          startAlternatingImages();
-        }, 4000);
+      if (nextImageIndex === popupImages.length) {
+        return {
+          visible: false,
+          imageIndex: 0,
+        };
       }
-    }
   
-    return () => {
-      clearTimeout(timer1);
-      clearInterval(timer2);
-    };
-  }, [showPopup.visible, showPopup.imageIndex]);
-  
-  const handleClosePopup = () => {
-    setShowPopup({ visible: false, imageIndex: 0 });
+      return {
+        ...prevState,
+        imageIndex: nextImageIndex,
+      };
+    });
   };
 
 
@@ -286,18 +268,17 @@ const BargeIn: FunctionComponent /*<BargeInProps> */= () => {
       </div>
 
 
-      {/*Pop Up*/}
+      {/* Pop Up */}
       {showPopup.visible && (
         <div className="fixed bottom-4 right-4 bg-white rounded-lg shadow-lg p-2">
           <img
             src={popupImages[showPopup.imageIndex]}
             alt="Logo"
             className="w-50 h-50 cursor-pointer"
-            onClick={handleClosePopup}
+            onClick={handleImageClick}
           />
         </div>
       )}
-
       
     </div>
   );
