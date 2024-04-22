@@ -42,7 +42,7 @@ const BargeIn: FunctionComponent /*<BargeInProps> */= () => {
   // Se pone cada X cantidad de timepo
   useEffect(() => {
     const randomInterval = () => {
-      const randomDelay = Math.floor(Math.random() * 120000) + 1000;
+      const randomDelay = Math.floor(Math.random() * 60000) + 1000;
   
       setTimeout(() => {
         setShowPopup({ visible: true, imageIndex: 0 });
