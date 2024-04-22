@@ -42,14 +42,14 @@ const BargeIn: FunctionComponent /*<BargeInProps> */= () => {
   // Se pone cada X cantidad de timepo
   useEffect(() => {
     const randomInterval = () => {
-      const randomDelay = Math.floor(Math.random() * 10000) + 1000;
+      const randomDelay = Math.floor(Math.random() * 120000) + 1000;
   
       setTimeout(() => {
         setShowPopup({ visible: true, imageIndex: 0 });
       }, randomDelay);
     };
   
-    const intervalId = setInterval(randomInterval, 10000);
+    const intervalId = setInterval(randomInterval, 120000);
   
     return () => {
       clearInterval(intervalId);
@@ -70,25 +70,43 @@ const BargeIn: FunctionComponent /*<BargeInProps> */= () => {
     setShowPopup(randomNumber === 1);
   };
   */
-
-  const handleImageClick = () => {
-    setShowPopup((prevState) => {
-      const nextImageIndex = prevState.imageIndex + 1;
   
-      if (nextImageIndex === popupImages.length) {
-        return {
-          visible: false,
-          imageIndex: 0,
-        };
-      }
+  useEffect(() => {
+    if (showPopup.visible) {
+      const timer1 = setTimeout(() => {
+        setShowPopup((prevState) => ({
+          ...prevState,
+          imageIndex: 1,
+        }));
+      }, 4000);
   
-      return {
-        ...prevState,
-        imageIndex: nextImageIndex,
+      const timer2 = setTimeout(() => {
+        setShowPopup((prevState) => ({
+          ...prevState,
+          imageIndex: 2,
+        }));
+      }, 7000);
+  
+      const timer3 = setInterval(() => {
+        setShowPopup((prevState) => ({
+          ...prevState,
+          imageIndex: prevState.imageIndex === 1 ? 2 : 1,
+        }));
+      }, 3000);
+  
+      return () => {
+        clearTimeout(timer1);
+        clearTimeout(timer2);
+        clearInterval(timer3);
       };
-    });
-  };
+    }
+  }, [showPopup.visible]);
 
+  const handleClosePopup = () => {
+    if (showPopup.imageIndex === 2) {
+      setShowPopup({ visible: false, imageIndex: 0 });
+    }
+  };
 
   return (
     <div className="flex flex-col h-screen"> {/* Prevent overflow at the root level */}
@@ -275,7 +293,7 @@ const BargeIn: FunctionComponent /*<BargeInProps> */= () => {
             src={popupImages[showPopup.imageIndex]}
             alt="Logo"
             className="w-50 h-50 cursor-pointer"
-            onClick={handleImageClick}
+            onClick={handleClosePopup}
           />
         </div>
       )}
