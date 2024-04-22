@@ -270,7 +270,7 @@ const BargeIn: FunctionComponent /*<BargeInProps> */= () => {
 
       {/* Pop Up */}
       {showPopup.visible && (
-        <div className="fixed bottom-4 right-4 bg-white rounded-lg shadow-lg p-2">
+        <div className="fixed bottom-4 right-4 rounded-lg p-2">
           <img
             src={popupImages[showPopup.imageIndex]}
             alt="Logo"
