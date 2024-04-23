@@ -9,7 +9,14 @@ export interface AuthContextType {
     name: string | null,
     username: string | null,
     role: string | null,
-    token: string | null,
     login: (credentials: Credentials) => Promise<void>,
     logout: () => void
   }
+
+export interface WorkerCardProps {
+  name: string;
+  position: string;
+  experience: number;
+  points: number;
+  status?: string;
+}

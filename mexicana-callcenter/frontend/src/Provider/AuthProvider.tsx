@@ -22,13 +22,12 @@ const AuthProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
   
       // if information of the user is present, return that information as the context object
       if(userData) {
-        const { name, username, role, token, authenticated } = userData;
+        const { name, username, role, authenticated } = userData;
         return {
             isAuthenticated: authenticated,
             name,
             username,
             role, 
-            token,
             login,
             logout
           } 
@@ -40,7 +39,6 @@ const AuthProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
         name: null,
         username: null,
         role: null,
-        token: null,
         login,
         logout
       }
@@ -58,7 +56,6 @@ const AuthProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
 
           // Create an object to hold the user information
           const userData = {
-              token,
               role,
               name, 
               username,
@@ -67,6 +64,7 @@ const AuthProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
 
           // Store the combined user data object in localStorage
           localStorage.setItem('userData', JSON.stringify(userData));
+          localStorage.setItem('token', token);
 
           // navigate to the hme page based on the user's role
           showSuccess(`🎉 Welcome ${name}!\nYou are now signed in.`);
