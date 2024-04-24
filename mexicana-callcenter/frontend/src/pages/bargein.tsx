@@ -15,7 +15,6 @@ const BargeIn: FunctionComponent /*<BargeInProps> */= () => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [callDescription, setCallDescription] = useState("");
-  const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
     const updateTimestamp = () => {
