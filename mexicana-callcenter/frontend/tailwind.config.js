@@ -8,50 +8,60 @@ module.exports = {
         primary: "#20253f",
         slategray: "#545973",
         tertiary: "#f8f9fa",
+        'customGreen':"rgba(24,124,67,1)",
         secondary: "#4A8B51",
         marco: "rgba(32, 37, 63, 0.5)",
         black: "#000",
       },
       spacing: {},
       fontFamily: {
-        paragraph: "Inter",
+        paragraph: ['Inter', 'sans-serif'],
+        roboto: ['Roboto', 'sans-serif'],
+        "paragraph2": ['Roboto'],
       },
       borderRadius: {
         "3xs": "10px",
+        'xl': '1rem',
       },
     },
     fontSize: {
       lg: "18px",
-      "181xl": "200px",
-      "31xl": "50px",
-      "61xl": "80px",
-      base: "16px",
-      xl: "20px",
       "41xl": "60px",
       inherit: "inherit",
+      "3xl": "30px",
+      subtitle: "40px",
+      "p2":"30px"
+    },
+    fontWeight: {
+      subtitle: 100,
+      "p2": 300,
+    },
+    lineHeight: {
+      subtitle: "60px",
+      "p2": "35px",
     },
     screens: {
-      lg: {
-        max: "1200px",
+      // lg: {
+      //   max: "1200px",
+      // },
+      // mq1050: {
+      //   raw: "screen and (max-width: 1050px)",
+      // },
+      // mq750: {
+      //   raw: "screen and (max-width: 750px)",
+      // },
+      // mq450: {
+      //   raw: "screen and (max-width: 450px)",
+      // },
+      '2sm': '320px',
+      sm: "640px",
+      md: "768px",
+      lg: "1024px",
+      xl: "1280px",
+      "2xl": "1536px"
       },
-      mq1050: {
-        raw: "screen and (max-width: 1050px)",
-      },
-      mq750: {
-        raw: "screen and (max-width: 750px)",
-      },
-      mq450: {
-        raw: "screen and (max-width: 450px)",
-      },
-      cellphone: 
-      { max: "450px" },
-      tablet: 
-      { max: "1024px" },
-  },
   },
   corePlugins: {
-    preflight: false,
+    preflight: true,
   },
 };
-
-

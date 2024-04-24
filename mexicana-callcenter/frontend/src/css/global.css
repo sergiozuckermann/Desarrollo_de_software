@@ -1,0 +1,64 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap");
+@import "../../public/fonts/roboto.css";
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+body {
+  @apply leading-[normal] m-0;
+}
+*,
+::before,
+::after {
+  border-width: 0;
+}
+
+
+.home-button {
+  position: relative; /* This is needed for absolute positioning of children */
+}
+
+.home-button::after {
+  content: '';
+  display: block;
+  height: 1px;
+  background-color: white; /* This sets the color of the line */
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%; /* This will span the entire width of the container */
+}
+
+h1 {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 60px;
+  line-height: 73px;
+  text-align: center;
+  color: #20253F;
+}
+
+h2  {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 40px;
+  line-height: 48px;
+  text-align: center;
+  color: #000000;
+
+}
+
+.p2 {
+  @apply text-p2 font-paragraph2 leading-p2
+}
+
+p {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  color: #20253F;
+
+}
