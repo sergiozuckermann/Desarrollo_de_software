@@ -1,5 +1,6 @@
 import { FunctionComponent, useState, useEffect } from "react";
 import Button from "../components/Buttons";
+import Popup from "../components/Popup"; // Import the Popup component
 import "../bargeIn.css";  
 
 /* Mandarlo de backend????
@@ -14,12 +15,7 @@ const BargeIn: FunctionComponent /*<BargeInProps> */= () => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [callDescription, setCallDescription] = useState("");
-  const [showPopup, setShowPopup] = useState({ visible: false, imageIndex: 0 });
-  const popupImages = [
-    "/LogoMexicanaAudifonos.svg",
-    "/LogoMexicanaAudifonosIN.svg",
-    "/LogoMexicanaAudifonosOUT.svg",
-  ];
+  const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
     const updateTimestamp = () => {
@@ -39,23 +35,6 @@ const BargeIn: FunctionComponent /*<BargeInProps> */= () => {
     };
   }, []);
 
-  // Se pone cada X cantidad de timepo
-  useEffect(() => {
-    const randomInterval = () => {
-      const randomDelay = Math.floor(Math.random() * 60000) + 1000;
-  
-      setTimeout(() => {
-        setShowPopup({ visible: true, imageIndex: 0 });
-      }, randomDelay);
-    };
-  
-    const intervalId = setInterval(randomInterval, 120000);
-  
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, []);
-
   /*   
   Mandarlo de backend????
   useEffect(() => {
@@ -71,43 +50,6 @@ const BargeIn: FunctionComponent /*<BargeInProps> */= () => {
   };
   */
   
-  useEffect(() => {
-    if (showPopup.visible) {
-      const timer1 = setTimeout(() => {
-        setShowPopup((prevState) => ({
-          ...prevState,
-          imageIndex: 1,
-        }));
-      }, 4000);
-  
-      const timer2 = setTimeout(() => {
-        setShowPopup((prevState) => ({
-          ...prevState,
-          imageIndex: 2,
-        }));
-      }, 7000);
-  
-      const timer3 = setInterval(() => {
-        setShowPopup((prevState) => ({
-          ...prevState,
-          imageIndex: prevState.imageIndex === 1 ? 2 : 1,
-        }));
-      }, 3000);
-  
-      return () => {
-        clearTimeout(timer1);
-        clearTimeout(timer2);
-        clearInterval(timer3);
-      };
-    }
-  }, [showPopup.visible]);
-
-  const handleClosePopup = () => {
-    if (showPopup.imageIndex === 2) {
-      setShowPopup({ visible: false, imageIndex: 0 });
-    }
-  };
-
   return (
     <div className="flex flex-col h-screen"> {/* Prevent overflow at the root level */}
       
@@ -287,16 +229,7 @@ const BargeIn: FunctionComponent /*<BargeInProps> */= () => {
 
 
       {/* Pop Up */}
-      {showPopup.visible && (
-        <div className="fixed bottom-4 right-4 rounded-lg p-2">
-          <img
-            src={popupImages[showPopup.imageIndex]}
-            alt="Logo"
-            className="w-50 h-50 cursor-pointer"
-            onClick={handleClosePopup}
-          />
-        </div>
-      )}
+      <Popup onClose={() => console.log("Popup closed")} />
       
     </div>
   );
