@@ -1,7 +1,7 @@
 import { FunctionComponent, useState, useEffect } from "react";
 import "../onGoingCalls.css";
 import Button from "../components/Buttons";
-
+import { backCall, metricData } from "../utils/backcalls/backcall";
 
 const OngoingCalls: FunctionComponent = () => {
   const [timestamp, setTimestamp] = useState("");
@@ -104,6 +104,7 @@ const OngoingCalls: FunctionComponent = () => {
   // Example suage with backend data
   // bad = 3; medium = 2; good = 1, default = 0
   // defatuly = 0, On call = 1, on hold = 2, alter call = 3
+  console.log(metricData());
   const backendData: BackendData = [
     [1, 0], [2, 1], [3, 2], [1, 3], [0, 0], [3, 1], [0, 0], [2, 2], [3, 3], [1, 0],[2, 3], [3, 2], [1, 1], [2, 0], [3, 3],
   ];

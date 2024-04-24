@@ -10,7 +10,6 @@ const verifyToken = async (req, res, next) => {
         tokenUse: "id",
         clientId: "2gdenkjjd809jojhh7ojfqslf1",
     });
-    
     try {
         const payload = await verifier.verify(token);
         console.log("Token is valid. Payload:", payload);
