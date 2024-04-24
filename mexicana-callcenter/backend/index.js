@@ -15,6 +15,9 @@ const ongoingCalls = require('./controllers/metricData')
 // Create an Express application
 const app = express();
 
+// Dotenv to load environment variables from a .env file into process.env
+require('dotenv').config();
+
 // use cors middleware
 app.use(cors())
 
