@@ -1,5 +1,5 @@
 import { FunctionComponent, useState, useEffect } from "react";
-import "../onGoingCalls.css";
+import "../css/onGoingCalls.css";
 import Button from "../components/Buttons";
 
 
@@ -63,29 +63,27 @@ const OngoingCalls: FunctionComponent = () => {
     return{statusColor, statusText};
   };
 
-  const generateCells = (data:[number,number][][]) => {
-    const rows = [];
+  const generateCells = (data:[number,number][]) => {
+    const cells = [];
     for (let i = 0; i < data.length; i++) {
-      const cells = [];
-      for (let j = 0; j < data[i].length; j++) {
-        const [callStatus, valueMood] = data[i][j]; //get value from the backend data
+        const [callStatus, valueMood] = data[i]; //get value from the backend data
         const color = getMood(valueMood); // get the color based on the value
         const {statusColor, statusText} = getCallStatus(callStatus); // get the status color and text based on the callStatus
         
         cells.push(
-          <td key={`${i}-${j}`} className="px-8 py-4" style={{ backgroundColor: "#F8F9FA", border: "1px solid"}}>
+          <td key={`${i}`} className="px-8 py-4" style={{ backgroundColor: "#F8F9FA", border: "1px solid"}}>
             <div className="flex flex-col">
               <div className="flex">
-                <p style={{fontFamily: "Arial, Helvetica, sans-serif", fontSize: "20px"}}>Nombre del agente</p>
+                <p className = "font2" >Nombre del agente</p>
                 <img 
                   src="/i_icon.png"  
                   alt="i_icon" 
-                  style={{width: "20px", height: "20px", cursor: 'pointer'}}
+                  style={{width: "30px", height: "30px", cursor: 'pointer'}}
                 />
               </div>
-              <div className="flex">
-                <div style={{backgroundColor: statusColor, borderRadius: 10, height: "35px", width: "100px", color: "white", fontSize: "20px", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "Inter, sans-serif"}}>{statusText}</div>
-                <div className="w-9 h-9 rounded-full ml-12" style={{backgroundColor: color}}></div>
+              <div className="flex status-container">
+                <div className="status-text" style={{backgroundColor: statusColor, borderRadius: 10, color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "Inter, sans-serif"}}>{statusText}</div>
+                <div className="color-circle" style={{backgroundColor: color}}></div>
               </div>
               <br />
               <button style={{background: "none", fontSize: "15px", cursor: 'pointer'}}>Barge in</button>
@@ -94,46 +92,46 @@ const OngoingCalls: FunctionComponent = () => {
           </td>
         );
       }
-      rows.push(<tr key={i}>{cells}</tr>);
-    }
-    return rows;
+    return (
+      <div className="grid grid-cols-5 gap-1 responsive-grid1 responsive-grid2 responsive-grid3 responsive-grid4 responsive-grid5">
+        {cells}
+      </div>
+    );
   };
 
-  type BackendData = [number, number][][];
+  type BackendData = [number, number][];
   
   // Example suage with backend data
   // bad = 3; medium = 2; good = 1, default = 0
   // defatuly = 0, On call = 1, on hold = 2, alter call = 3
   const backendData: BackendData = [
-    [[1, 0], [2, 1], [3, 2], [1, 3], [0, 0]],
-    [[3, 1], [0, 0], [2, 2], [3, 3], [1, 0]],
-    [[2, 3], [3, 2], [1, 1], [2, 0], [3, 3]],
+    [1, 0], [2, 1], [3, 2], [1, 3], [0, 0], [3, 1], [0, 0], [2, 2], [3, 3], [1, 0],[2, 3], [3, 2], [1, 1], [2, 0], [3, 3],
   ];
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden"> {/* Prevent overflow at the root level */}
+    <div className="flex flex-col min-h-screen"> {/* Prevent overflow at the root level */}
       
       {/* Top bar with background */}
-      <div className="flex h-20 bg-tertiary shadow-lg justify-between items-center p-4">
+      <div className="flex items-center justify-between h-20 p-4 shadow-lg bg-tertiary">
         <div>
           {/* LA RUTA ESTA A LA PÁGINA DE HELLO POR QUE TODAVÍA NO TENEMOS HOME */}
           <Button onClick={() => window.location.href = '/'}>
-            <img src="/logo_callCenter_color.png" alt="" className="w-[230px] ml-3" />
+            <img src="/logo_callCenter_color.png" alt="" className="w-[230px] ml-3 logo" />
           </Button>
        
         </div>
-        <div className="flex items-center">
+        <div className="flex map-container">
           {/* LA RUTA ESTA A UNA PÁGINA VACIA */}
           <Button onClick={() => window.location.href = '/Notifications'} className="hover-shrink-button">
-            <img src="/notifications_iconn.png" alt="" className="w-[45px] mr-2" />
+            <img src="/notifications_iconn.png" alt="" className="w-[45px] mr-2 notification-bell" />
           </Button>
-        
+
           <h1 className="font">| Map</h1>
         </div>
       </div>
 
       {/* Main content */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-20 h-[90%] justify-center items-center">
+      <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-20 h-[90%] justify-center items-center">
         <div className="flex items-center">
           <img 
             src="/onCallBlurb.png" 
@@ -151,7 +149,7 @@ const OngoingCalls: FunctionComponent = () => {
       </div>
 
       {/* Bottom bar */}
-      <div className="h-20 bg-tertiary shadow-lg flex justify-center items-center p-4">
+      <div className="flex items-center justify-center h-20 p-4 shadow-lg bg-tertiary">
           <p className = "font2" > {timestamp} </p>
       </div>
     </div>

@@ -12,7 +12,7 @@ const AgentHome: FunctionComponent = () => {
           <div className="flex-1 flex flex-row flex-wrap items-start justify-start gap-[19px] max-w-full">
             <div className="h-[636px] w-[407px] flex flex-col items-start justify-start pt-[22px] px-0 pb-0 box-border max-w-full">
               {/* <img
-                className="self-stretch flex-1 relative rounded-3xs max-w-full overflow-hidden max-h-full object-cover"
+                className="relative self-stretch flex-1 object-cover max-w-full max-h-full overflow-hidden rounded-3xs"
                 loading="lazy"
                 alt=""
                 src="/image-15@2x.png"
@@ -24,11 +24,11 @@ const AgentHome: FunctionComponent = () => {
            
             <div className="flex-1 flex flex-col items-start justify-start py-0 pr-1.5 pl-0 box-border gap-[22px] min-w-[325px] max-w-full">
               <div className="self-stretch flex flex-row items-start justify-start py-0 pr-0 pl-0.5 box-border max-w-full">
-                <div className="flex-1 flex flex-col items-start justify-start max-w-full">
+                <div className="flex flex-col items-start justify-start flex-1 max-w-full">
                   <h1 className="m-0 w-[114px] relative text-inherit font-semibold font-inherit inline-block min-w-[114px] z-[1] mq450:text-[24px] mq750:text-[32px]">
                     Client
                   </h1>
-                  <div className="self-stretch flex flex-row items-start justify-start py-0 pr-0 pl-px box-border max-w-full text-left text-lg">
+                  <div className="box-border flex flex-row items-start self-stretch justify-start max-w-full py-0 pl-px pr-0 text-lg text-left">
                     <div className="flex-1 rounded-3xs bg-tertiary box-border flex flex-col items-start justify-start pt-[13px] pb-3.5 pr-2.5 pl-[17px] gap-[5px] max-w-full border-[1px] border-solid border-marco">
                       <div className="w-[491px] h-[262px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
                       <div className="self-stretch flex flex-row items-start justify-start gap-[13px] max-w-full text-center mq675:flex-wrap">
@@ -57,7 +57,7 @@ const AgentHome: FunctionComponent = () => {
                               Gorem
                             </i>
                           </div>
-                          <div className="self-stretch h-10 relative">
+                          <div className="relative self-stretch h-10">
                             <div className="absolute top-[4px] left-[0px] rounded-3xs bg-tertiary box-border w-96 h-9 z-[1] border-[1px] border-solid border-marco" />
                             <i className="absolute top-[0px] left-[17px] flex items-center w-[222px] h-10 z-[2] mq450:text-base">
                               55 5544 6677
