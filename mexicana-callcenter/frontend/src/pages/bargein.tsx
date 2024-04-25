@@ -3,6 +3,9 @@ import Button from "../components/Buttons";
 import Popup from "../components/Popup"; // Import the Popup component
 import "../bargeIn.css";  
 import PageStructure from "../components/PageStructure";
+import ConnectHere from "../components/ConnectHere";
+import ClientForm from "../components/ClientForm";
+import Suggestions from "../components/Suggestions";
 
 /* Mandarlo de backend????
 interface BargeInProps {
@@ -11,29 +14,9 @@ interface BargeInProps {
 */
 
 const BargeIn: FunctionComponent /*<BargeInProps> */= () => {
-  const [timestamp, setTimestamp] = useState("");
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [callDescription, setCallDescription] = useState("");
+ 
 
-  useEffect(() => {
-    const updateTimestamp = () => {
-      const now = new Date();
-      const date = now.toLocaleDateString();
-      const time = now.toLocaleTimeString();
-      const currentTimestamp = `${date} ${time}`;
-      setTimestamp(currentTimestamp);
-    };
 
-    updateTimestamp();
-
-    const intervalId = setInterval(updateTimestamp, 1000); 
-
-    return () => {
-      clearInterval(intervalId); 
-    };
-  }, []);
 
   /*   
   Mandarlo de backend????
@@ -55,152 +38,9 @@ const BargeIn: FunctionComponent /*<BargeInProps> */= () => {
 
       {/* Main content */}
       <div className="container h-full grid grid-cols-1 md:grid-cols-3 gap-4 justify-items-center">
-        {/*Connect CPP*/}
-        <div className="h-[100%] w-full rounded-lg" style={{backgroundColor: "#F8F9FA", borderColor: "rgba(32, 37, 63, 0.5)", borderWidth: "1px" , borderStyle: "solid"}}>
-            <div>
-              <h2 className="ml-8 mt-11"style={{fontFamily: "Roboto", fontSize: "20px" }}>
-                * Connect Here *
-              </h2>
-            </div>
-        </div>
-
-        {/*Client FORM*/}
-        <div className="h-[100%] w-full rounded-lg" style={{backgroundColor: "#F8F9FA", borderColor: "rgba(32, 37, 63, 0.5)", borderWidth: "1px" , borderStyle: "solid"}}>
-            {/*CLIENT TITLE*/}
-            <div>
-              <h1 className="ml-8 mt-11 "style={{fontFamily: "Roboto", fontSize: "50px" }}>
-                Client
-              </h1>
-            </div>
-
-            {/*FORM*/}
-            <div className="w-full ml-11 mt-[10%]">
-              <form className="">
-                {/*NAME*/} 
-                <div className="mb-6 w-full">
-                  <label className="text-base" style={{fontFamily: "Roboto", fontSize: "18px" }}>
-                    Name:
-                  </label>
-                  <input
-                    className="flex h-[40px] w-[80%] relative rounded-3xs bg-tertiary box-border border-[1px] border-solid border-marco" style={{padding: "5px 12px", margin: "5px", fontFamily: "Roboto"}}
-                    placeholder=""
-                    type="text"
-                    value={name}
-                    onChange={(event) => setName(event.target.value)}
-                  />
-                </div>
-      
-                {/*E-MAIL*/} 
-                <div className="mb-6">
-                  <label className="text-base" style={{fontFamily: "Roboto", fontSize: "18px" }}>
-                    E-mail:
-                  </label>
-                  <input
-                    className="flex h-[40px] w-[80%] relative rounded-3xs bg-tertiary box-border border-[1px] border-solid border-marco" style={{padding: "5px 12px", margin: "5px", fontFamily: "Roboto"}}
-                    placeholder=""
-                    type="text"
-                    value={email}
-                    onChange={(event) => setEmail(event.target.value)}
-                  />
-                </div>
-
-                {/*PHONE*/}
-                <div className="mb-6">
-                  <label className="text-base" style={{fontFamily: "Roboto", fontSize: "18px" }}>
-                    Phone:
-                  </label>
-                  <input
-                    className="flex h-[40px] w-[80%] relative rounded-3xs bg-tertiary box-border border-[1px] border-solid border-marco" style={{padding: "5px 12px", margin: "5px", fontFamily: "Roboto"}}
-                    placeholder=""
-                    type="text"
-                    value={phone}
-                    onChange={(event) => setPhone(event.target.value)}
-                  />
-                </div>
-
-                {/* CALL DESCRIPTION */}
-                <div className="mb-6">
-                  <label className="text-base" style={{ fontFamily: "Roboto", fontSize: "18px" }}>
-                    Call Description:
-                  </label>
-                  <textarea
-                    className="flex h-[200px] w-[80%] relative rounded-3xs bg-tertiary box-border border-[1px] border-solid border-marco" 
-                    style={{ padding: "5px 12px", margin: "9px", fontFamily: "Roboto", resize: "vertical", minHeight: "200px" }}
-                    placeholder=""
-                    value={callDescription}
-                    onChange={(event) => setCallDescription(event.target.value)}
-                  />
-                </div>
-
-
-              </form>  
-            </div>
-        </div>
-
-
-        {/*SUGGESTIONS AI*/}
-        <div className="h-[100%] w-full rounded-lg" style={{backgroundColor: "#F8F9FA", borderColor: "rgba(32, 37, 63, 0.5)", borderWidth: "1px" , borderStyle: "solid"}}>
-          <div>
-            <h1 className="ml-8 mt-11"style={{fontFamily: "Roboto", fontSize: "40px" }}>
-              Hi, looking for help?
-            </h1>
-            <h2 className="ml-8 mt-11"style={{fontFamily: "sans-serif", fontSize: "27px" }}>
-              Suggestions
-            </h2>
-            {/*SCROLL FOR SUGGESTIONS*/}
-            <div className="overflow-y-scroll h-[450px]">
-              <hr className="h-px w-[90%] bg-marco border-0 dark:bg-gray-700"/>
-              <a href="#" style={{ textDecoration: 'none', color: 'inherit' }}>
-                <h3 className="ml-11 mt-11 mb-11" style={{fontFamily: "sans-serif", fontSize: "15px" }}>
-                  How do I help a costumer book a flight?
-                </h3>
-              </a>
-              <hr className="h-px w-[90%] bg-marco border-0 dark:bg-gray-700"/>
-              <a href="#" style={{ textDecoration: 'none', color: 'inherit' }}>
-                <h3 className="ml-11 mt-11 mb-11" style={{fontFamily: "sans-serif", fontSize: "15px" }}>
-                  Adding additional services to a reservation
-                </h3>
-              </a>
-              <hr className="h-px w-[90%] bg-marco border-0 dark:bg-gray-700"/>
-              <a href="#" style={{ textDecoration: 'none', color: 'inherit' }}>
-                <h3 className="ml-11 mt-11 mb-11" style={{fontFamily: "sans-serif", fontSize: "15px" }}>
-                  How do I help a costumer to cancel a flight?
-                </h3>
-              </a>
-              <hr className="h-px w-[90%] bg-marco border-0 dark:bg-gray-700"/>
-              <a href="#" style={{ textDecoration: 'none', color: 'inherit' }}>
-                <h3 className="ml-11 mt-11 mb-11" style={{fontFamily: "sans-serif", fontSize: "15px" }}>
-                  Loyalty program information
-                </h3>
-              </a>
-              <hr className="h-px w-[90%] bg-marco border-0 dark:bg-gray-700"/>
-              <a href="#" style={{ textDecoration: 'none', color: 'inherit' }}>
-                <h3 className="ml-11 mt-11 mb-11" style={{fontFamily: "sans-serif", fontSize: "15px" }}>
-                  How do I help a customer claim his lost luggage during a connecting flight?
-                </h3>
-              </a>
-              <hr className="h-px w-[90%] bg-marco border-0 dark:bg-gray-700"/>
-              <a href="#" style={{ textDecoration: 'none', color: 'inherit' }}>
-                <h3 className="ml-11 mt-11 mb-11" style={{fontFamily: "sans-serif", fontSize: "15px" }}>
-                  How can I change the customer's name on a paid flight?
-                </h3>
-              </a>
-              <hr className="h-px w-[90%] bg-marco border-0 dark:bg-gray-700"/>
-              <a href="#" style={{ textDecoration: 'none', color: 'inherit' }}>
-                <h3 className="ml-11 mt-11 mb-11" style={{fontFamily: "sans-serif", fontSize: "15px" }}>
-                  How can I change a customer's flight destination?
-                </h3>
-              </a>
-              <hr className="h-px w-[90%] bg-marco border-0 dark:bg-gray-700"/>
-              <a href="#" style={{ textDecoration: 'none', color: 'inherit' }}>
-                <h3 className="ml-11 mt-11 mb-11" style={{fontFamily: "sans-serif", fontSize: "15px" }}>
-                  How to select a customer's seat?
-                </h3>
-              </a>
-            </div>
-          </div>
-        </div>
-
+        <ConnectHere />
+        <ClientForm />
+        <Suggestions />
       </div>
 
       {/* Pop Up */}
