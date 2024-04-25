@@ -2,6 +2,7 @@ import { FunctionComponent, useState, useEffect } from "react";
 import Button from "../components/Buttons";
 import Popup from "../components/Popup"; // Import the Popup component
 import "../bargeIn.css";  
+import PageStructure from "../components/PageStructure";
 
 /* Mandarlo de backend????
 interface BargeInProps {
@@ -50,26 +51,7 @@ const BargeIn: FunctionComponent /*<BargeInProps> */= () => {
   */
   
   return (
-    <div className="flex flex-col h-screen"> {/* Prevent overflow at the root level */}
-      
-      {/* Top bar with background */}
-      <div className="flex h-20 bg-tertiary shadow-lg justify-between items-center p-4">
-        <div>
-          {/* LA RUTA ESTA A LA PÁGINA DE HELLO POR QUE TODAVÍA NO TENEMOS HOME */}
-          <Button onClick={() => window.location.href = '/'}>
-            <img src="/logo_callCenter_color.png" alt="" className="w-[230px] ml-3" />
-          </Button>
-       
-        </div>
-        <div className="flex items-center">
-          {/* LA RUTA ESTA A UNA PÁGINA VACIA */}
-          <Button onClick={() => window.location.href = '/Notifications'} className="hover-shrink-button">
-            <img src="/notifications_iconn.png" alt="" className="w-[45px] mr-2" />
-          </Button>
-        
-          <h1 className="font">| On Call </h1>
-        </div>
-      </div>
+    <PageStructure title = "On Call">
 
       {/* Main content */}
       <div className="container h-full grid grid-cols-1 md:grid-cols-3 gap-4 justify-items-center">
@@ -221,16 +203,10 @@ const BargeIn: FunctionComponent /*<BargeInProps> */= () => {
 
       </div>
 
-      {/* Bottom bar */}
-      <div className="h-20 bg-tertiary shadow-lg flex justify-center items-center p-4">
-          <p className = "font2" > {timestamp} </p>
-      </div>
-
-
       {/* Pop Up */}
       <Popup onClose={() => console.log("Popup closed")} />
       
-    </div>
+    </PageStructure>
   );
 };
 
