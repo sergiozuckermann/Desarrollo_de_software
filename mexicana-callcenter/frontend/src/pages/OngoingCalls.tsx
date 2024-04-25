@@ -1,7 +1,7 @@
 import { FunctionComponent, useState, useEffect } from "react";
 import "../css/onGoingCalls.css";
 import Button from "../components/Buttons";
-
+import PageStructure from "../components/PageStructure";
 
 const OngoingCalls: FunctionComponent = () => {
   const [timestamp, setTimestamp] = useState("");
@@ -109,50 +109,22 @@ const OngoingCalls: FunctionComponent = () => {
   ];
 
   return (
-    <div className="flex flex-col min-h-screen"> {/* Prevent overflow at the root level */}
-      
-      {/* Top bar with background */}
-      <div className="flex items-center justify-between h-20 p-4 shadow-lg bg-tertiary">
-        <div>
-          {/* LA RUTA ESTA A LA PÁGINA DE HELLO POR QUE TODAVÍA NO TENEMOS HOME */}
-          <Button onClick={() => window.location.href = '/'}>
-            <img src="/logo_callCenter_color.png" alt="" className="w-[230px] ml-3 logo" />
-          </Button>
-       
+    <PageStructure title="Ongoing Calls">
+      <div className="flex flex-col min-h-screen">
+        {/* Main content */}
+        <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-20 h-[90%] justify-center items-center">
+          
+          <div className="col-span-2 flex justify-center items-center mb-[30px]">
+            <table className="border-collapse">
+              {generateCells(backendData)}
+            </table>
+          </div>
         </div>
-        <div className="flex map-container">
-          {/* LA RUTA ESTA A UNA PÁGINA VACIA */}
-          <Button onClick={() => window.location.href = '/Notifications'} className="hover-shrink-button">
-            <img src="/notifications_iconn.png" alt="" className="w-[45px] mr-2 notification-bell" />
-          </Button>
-
-          <h1 className="font">| Map</h1>
-        </div>
+          <div className="flex justify-center items-center h-20 p-4 shadow-lg bg-tertiary">
+            <p className="font2">{timestamp}</p>
+          </div>
       </div>
-
-      {/* Main content */}
-      <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-20 h-[90%] justify-center items-center">
-        <div className="flex items-center">
-          <img 
-            src="/onCallBlurb.png" 
-            alt=""
-            className="mt-12 ml-12 mb-12 mr-4 w-[60px] h-[60px]"
-          />
-          <h1 className="font1">Agents Overview</h1>
-        </div>
-        
-        <div className="col-span-2 flex justify-center items-center mb-[30px]">
-          <table className="border-collapse">
-            <tbody>{generateCells(backendData)}</tbody>
-          </table>
-        </div>
-      </div>
-
-      {/* Bottom bar */}
-      <div className="flex items-center justify-center h-20 p-4 shadow-lg bg-tertiary">
-          <p className = "font2" > {timestamp} </p>
-      </div>
-    </div>
+    </PageStructure>
   );
 };
 
