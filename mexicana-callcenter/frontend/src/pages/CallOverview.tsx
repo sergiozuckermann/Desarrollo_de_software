@@ -1,5 +1,5 @@
 import PageStructure from "../components/PageStructure";
-import MyPieChart from "../components/piechart";
+import MyPieChart from "../components/Charts/piechart";
 import { useState } from "react";
 
 interface CardProps {
