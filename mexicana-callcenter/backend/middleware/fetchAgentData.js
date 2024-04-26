@@ -1,21 +1,20 @@
 const express = require('express');
 const AWS = require('aws-sdk');
-require('dotenv').config({ path: './env/.env' });
 
 const app = express();
 const port = 3001;
 
 // Configura AWS SDK
 AWS.config.update({
-  region: 'Region', // Region en .env
-  accessKeyId: 'ACCESS_KEY_ID', // AccesKeyID en .env
-  secretAccessKey: 'TU_SECRET_ACCESS_KEY', // AccesKeySecret en .env
+  region: '', // Region en .env
+  accessKeyId: '', // AccesKeyID en .env
+  secretAccessKey: '', // AccesKeySecret en .env
 });
 
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 
 // Ruta para obtener datos de un usuario por su nombre de usuario
-app.get('/userDataByUsername', async (req, res) => {
+app.get('/userData', async (req, res) => {
   try {
     const username = 'juanpaRdeChAgent'; // Nombre de usuario a consultar
     const params = {
@@ -41,6 +40,6 @@ app.get('/userDataByUsername', async (req, res) => {
 
 // Inicia el servidor
 app.listen(port, () => {
-  console.log(`Servidor backend iniciado en http://localhost:${port}`);
+  console.log(`Consultar datos del agente en http://localhost:${port}/userData`);
 });
 
