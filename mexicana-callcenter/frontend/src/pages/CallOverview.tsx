@@ -11,7 +11,6 @@ interface CardProps {
     id: string | number;
     label: string;
     value: number;
-    color?: string;
   }
 
   const Card: React.FC<CardProps> = ({ title, children }) => {
@@ -27,9 +26,9 @@ interface CardProps {
 const MainContent = () => {
         // Mock data
         const mockData: PieChartDataItem[] = [
-          { id: "talk", label: "Talk Time", value: 64, color: "hsl(35, 53%, 69%)" },
-          { id: "wait", label: "Wait Time", value: 35, color: "hsl(28, 100%, 53%)" },
-          { id: "hold", label: "Hold Time", value: 20, color: "hsl(56, 68%, 72%)" },
+          { id: "Custumer talk-time", label: "Talk Time", value: 64},
+          { id: "agent talk-time", label: "Wait Time", value: 35},
+          { id: "Total non talk-time", label: "Hold Time", value: 20},
         ];
       
         // State initialized with mock data
