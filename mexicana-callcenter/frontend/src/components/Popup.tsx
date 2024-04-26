@@ -17,7 +17,6 @@ const Popup: FunctionComponent<PopupProps> = ({ onClose }) => {
     const intervalId = setInterval(() => {
       setVisible(true);
     }, 15000);
-
     return () => {
       clearInterval(intervalId);
     };
@@ -28,15 +27,12 @@ const Popup: FunctionComponent<PopupProps> = ({ onClose }) => {
       const timer1 = setTimeout(() => {
         setImageIndex(1);
       }, 4000);
-
       const timer2 = setTimeout(() => {
         setImageIndex(2);
       }, 7000);
-
       const timer3 = setInterval(() => {
         setImageIndex((prevIndex) => (prevIndex === 1 ? 2 : 1));
       }, 3000);
-
       return () => {
         clearTimeout(timer1);
         clearTimeout(timer2);
@@ -55,11 +51,11 @@ const Popup: FunctionComponent<PopupProps> = ({ onClose }) => {
   return (
     <>
       {visible && (
-        <div className="fixed bottom-4 right-4 rounded-lg p-2">
+        <div className="fixed bottom-4 right-4 rounded-lg p-2 w-50 sm:w-60 md:w-75 lg:w-75">
           <img
             src={popupImages[imageIndex]}
             alt="Logo"
-            className="w-50 h-50 cursor-pointer"
+            className="w-full h-auto cursor-pointer"
             onClick={handleClosePopup}
           />
         </div>

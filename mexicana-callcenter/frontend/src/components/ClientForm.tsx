@@ -7,11 +7,13 @@ const ClientForm = () => {
     const [callDescription, setCallDescription] = useState("");
 
     return (
-        <div className="h-full w-full p-4 bg-gray-100 rounded-lg shadow border border-gray-300">
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">Client</h1>
+        <div className="w-full p-4 sm:p-6 lg:p-8 rounded-lg" style={{backgroundColor: "#F8F9FA", borderColor: "rgba(32, 37, 63, 0.5)", borderWidth: "1px" , borderStyle: "solid"}}>
+           <div className="max-w-xl mx-auto"> 
+            <h1 className= "text-xl sm:text-2xl font-roboto mb-8">Client</h1>
             <form className="space-y-4">
                 <div>
-                    <label className="font2">Name:</label>
+                    <label className="text-lg sm:text-4xl font-roboto pl-5">Name:</label>
+
                     <input
                         className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                         type="text"
@@ -20,7 +22,7 @@ const ClientForm = () => {
                     />
                 </div>
                 <div>
-                    <label className="font2">E-mail:</label>
+                <label className="text-lg sm:text-4xl font-roboto pl-5">E-mail:</label>
                     <input
                         className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                         type="text"
@@ -29,7 +31,7 @@ const ClientForm = () => {
                     />
                 </div>
                 <div>
-                    <label className="font2">Phone:</label>
+                <label className="text-lg sm:text-4xl font-roboto pl-5">Phone:</label>
                     <input
                         className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                         type="text"
@@ -38,7 +40,7 @@ const ClientForm = () => {
                     />
                 </div>
                 <div>
-                    <label className="font2">Call Description:</label>
+                <label className="text-lg sm:text-4xl font-roboto pl-5">Call Description:</label>
                     <textarea
                         className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                         value={callDescription}
@@ -47,6 +49,7 @@ const ClientForm = () => {
                     />
                 </div>
             </form>
+        </div>
         </div>
     );
 };
