@@ -8,7 +8,7 @@ type CellGridProps = {
 
 const CellGrid: React.FunctionComponent<CellGridProps> = ({ data }) => {
   return (
-    <div className="grid grid-cols-2 gap-4 p-4"> {/* Adjusted gap and padding */}
+    <div className="grid grid-cols-2 gap-4 p-4 overflow-y-scroll h-[600px] "> {/* Adjusted gap and padding */}
       {data.map(([callStatus, moodValue], index) => (
         <div key={index} className="bg-white rounded-lg shadow p-6 border border-gray-300"> {/* Adjusted background, border, and shadow */}
           <div className="flex flex-col">
