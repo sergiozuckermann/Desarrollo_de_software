@@ -26,10 +26,10 @@ const MyPieChart: React.FC<MyPieChartProps> = ({ data }) => {
     };
 
     return (
-        <div style={{ height: 400, position: 'relative' }}>
+        <div className='h-full' style={{ position: 'relative' }}>
             <ResponsivePie
                 data={data}
-                margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
+                margin={{ top: 10, right: 0, bottom: 0, left: 0 }}
                 innerRadius={0.5}
                 padAngle={0.7}
                 cornerRadius={3}

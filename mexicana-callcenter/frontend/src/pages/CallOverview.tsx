@@ -19,7 +19,7 @@ interface CardProps {
     return (
         <div className="h-full max-w-md p-4 overflow-hidden border-2 border-gray-400 shadow-lg rounded-xl md:block bg-tertiary">
         <h2 className="mb-2 text-lg font-bold text-gray-600 font-roboto">{title}</h2>
-        <div className="h-[80%]">
+        <div className="flex-grow h-[80%]">
         {children}
         </div>
       </div>
@@ -30,9 +30,9 @@ interface CardProps {
 const MainContent = () => {
         // Mock data
         const mockData: PieChartDataItem[] = [
-          { id: "Custumer talk-time", label: "Talk Time", value: 64},
-          { id: "agent talk-time", label: "Wait Time", value: 35},
-          { id: "Total non talk-time", label: "Hold Time", value: 20},
+          { id: "Custumer", label: "Talk Time", value: 64},
+          { id: "Agent", label: "Wait Time", value: 35},
+          { id: "Total", label: "Hold Time", value: 20},
         ];
       
         // State initialized with mock data
