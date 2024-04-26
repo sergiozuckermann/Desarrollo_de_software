@@ -1,38 +1,3 @@
-// const express = require('express');
-// const AWS = require('aws-sdk');
-
-// const app = express();
-// const port = 3001;
-
-// // Configura AWS SDK
-// AWS.config.update({
-//   region: 'us-east-1', // Reemplaza 'us-east-1' con la región de tu tabla DynamoDB
-//   accessKeyId: 'AKIA4MTWNWHCMPE7QLDG', // Reemplaza 'TU_ACCESS_KEY_ID' con tu ID de clave de acceso
-//   secretAccessKey: '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', // Reemplaza 'TU_SECRET_ACCESS_KEY' con tu clave de acceso secreta
-// });
-
-// const dynamoDB = new AWS.DynamoDB.DocumentClient();
-
-// // Ruta para obtener todos los datos de la tabla DynamoDB
-// app.get('/allData', async (req, res) => {
-//   try {
-//     const params = {
-//       TableName: 'Agent',
-//     };
-//     const { Items } = await dynamoDB.scan(params).promise();
-//     res.json(Items);
-//     console.log('Todos los datos de la tabla:', Items); // Se imprime en la consola del servidor
-//   } catch (error) {
-//     console.error('Error al obtener todos los datos de la tabla:', error);
-//     res.status(500).json({ error: 'Error al obtener todos los datos de la tabla', details: error.message });
-//   }
-// });
-
-// // Inicia el servidor
-// app.listen(port, () => {
-//   console.log(`Servidor backend iniciado en http://localhost:${port}`);
-// });
-
 const express = require('express');
 const AWS = require('aws-sdk');
 require('dotenv').config({ path: './env/.env' });
