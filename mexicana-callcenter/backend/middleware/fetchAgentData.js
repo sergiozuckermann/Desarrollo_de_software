@@ -7,7 +7,7 @@ const port = 3001;
 
 // Configura AWS SDK
 AWS.config.update({
-  region: 'us-east-1', // Region us-east-1
+  region: 'Region', // Region en .env
   accessKeyId: 'ACCESS_KEY_ID', // AccesKeyID en .env
   secretAccessKey: 'TU_SECRET_ACCESS_KEY', // AccesKeySecret en .env o solicitar por whatsapp a 4432277727
 });
