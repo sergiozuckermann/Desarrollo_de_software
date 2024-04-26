@@ -35,15 +35,16 @@
 
 const express = require('express');
 const AWS = require('aws-sdk');
+require('dotenv').config({ path: './env/.env' });
 
 const app = express();
 const port = 3001;
 
 // Configura AWS SDK
 AWS.config.update({
-  region: 'us-east-1', // Reemplaza 'us-east-1' con la región de tu tabla DynamoDB
-  accessKeyId: 'AKIA4MTWNWHCMPE7QLDG', // Reemplaza 'TU_ACCESS_KEY_ID' con tu ID de clave de acceso
-  secretAccessKey: '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', // Reemplaza 'TU_SECRET_ACCESS_KEY' con tu clave de acceso secreta
+  region: 'us-east-1', // Region us-east-1
+  accessKeyId: 'ACCESS_KEY_ID', // AccesKeyID en .env
+  secretAccessKey: 'TU_SECRET_ACCESS_KEY', // AccesKeySecret en .env o solicitar por whatsapp a 4432277727
 });
 
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
@@ -78,5 +79,3 @@ app.listen(port, () => {
   console.log(`Servidor backend iniciado en http://localhost:${port}`);
 });
 
-//AKIA4MTWNWHCMPE7QLDG
-//yqgfen+W6sYc/uEY0tfu1AjS8F2Tu9/mrNxS7ddZ
