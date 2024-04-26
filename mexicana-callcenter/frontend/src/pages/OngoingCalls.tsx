@@ -9,19 +9,23 @@ const OngoingCalls: React.FunctionComponent = () => {
     [1, 0], [2, 1], [3, 2], [1, 3], [0, 0], [3, 1], [0, 0], [2, 2], [3, 3], [1, 0],[2, 3], [3, 2], [1, 1], [2, 0], //[3, 3],
   ];
 
-  return (
+
+
+return (
     <PageStructure title="Ongoing Calls">
-      <div className="flex flex-col min-h-screen">
-        <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-20 h-[90%] justify-center items-center">
-          <div className="col-span-2 flex justify-center items-center mb-[30px]">
-            <div className="flex gap-x-[5%]">
-              <GraphAgentStructure/>
-              <CellGrid data={backendData} />
+      <div className="overflow-y-auto max-h-full">
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+              <div className="col-span-1">
+                <GraphAgentStructure />
+              </div>
+              <div className="col-span-1">
+                <CellGrid data={backendData} />
+              </div>
             </div>
           </div>
-        </div>
-          <TimestampDisplay />
-      </div>
+          
+
+          
     </PageStructure>
   );
 };
