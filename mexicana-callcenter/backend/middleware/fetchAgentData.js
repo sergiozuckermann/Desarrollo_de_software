@@ -1,17 +1,27 @@
 const express = require('express');
 const AWS = require('aws-sdk');
+require('dotenv').config({ path: '../../env/.env' });
 
 const app = express();
 const port = 3001;
 
 // Configura AWS SDK
 AWS.config.update({
-  region: '', // Region en .env
-  accessKeyId: '', // AccesKeyID en .env
-  secretAccessKey: '', // AccesKeySecret en .env
+  region: 'us-east-1', // Region en .env
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID, // AccesKeyID en .env
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY, // AccesKeySecret en .env
 });
 
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
+
+// Middleware para configurar CORS
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*'); // Permite cualquier origen para consultas
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Authorization');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  next();
+});
 
 // Ruta para obtener datos de un usuario por su nombre de usuario
 app.get('/userData', async (req, res) => {

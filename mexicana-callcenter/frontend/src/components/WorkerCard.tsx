@@ -22,7 +22,7 @@ const WorkerCard: React.FC<WorkerCardProps> = ({ name, position, years, points, 
         </div>
         <div className="items-center px-6 py-4 text-center">
           <h2 className="pb-5 mb-2">{name}</h2>
-          <p className="pb-1 text-base text-gray-700">{position}</p>
+          <p className="pb-1 text-base text-gray-700">{points}</p>
           <p className="pb-5 text-sm text-gray-600">{years} years</p>
           <p className="pb-10 text-base text-gray-600">{position}</p>
           {/* <div className="flex items-center justify-center w-full pb-9">
