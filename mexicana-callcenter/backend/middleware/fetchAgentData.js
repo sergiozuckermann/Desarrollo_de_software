@@ -9,7 +9,7 @@ const port = 3001;
 AWS.config.update({
   region: 'Region', // Region en .env
   accessKeyId: 'ACCESS_KEY_ID', // AccesKeyID en .env
-  secretAccessKey: 'TU_SECRET_ACCESS_KEY', // AccesKeySecret en .env o solicitar por whatsapp a 4432277727
+  secretAccessKey: 'TU_SECRET_ACCESS_KEY', // AccesKeySecret en .env
 });
 
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
