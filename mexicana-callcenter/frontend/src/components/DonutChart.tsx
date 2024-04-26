@@ -2,21 +2,25 @@ import { Grid } from '@material-ui/core';
 import React from 'react';
 import Chart from "react-apexcharts";
 
-const DonutChart: React.FunctionComponent = () => {
+type DonutChartProps = {
+    seriesData: number[];
+    labelsData: string[];
+};
+
+const DonutChart: React.FunctionComponent<DonutChartProps> = ({ seriesData, labelsData }) => {
     const options = {
-        series: [2,4,5,9,10],
-        labels: ["A", "B", "C", "D", "E"],
+        series: seriesData,
+        labels: labelsData,
         plotOptions:{
             pie:{
                 donut:{
                     size: "80px",
                     labels:{
                         show: true,
-                            total:{
-                                show: true,
-                                showAlways: true,
-                                
-                            }
+                        total:{
+                            show: true,
+                            showAlways: true,
+                        }
                     }
                 }
             }
@@ -26,21 +30,22 @@ const DonutChart: React.FunctionComponent = () => {
         },
         legend: {
             show: false 
+        },
+        fill: {
+            colors: ['#FF6384', '#36A2EB', '#FFCE56', '#9966FF', '#4BC0C0', '#99600F']
         }
     };
-    const series = [2,4,5,9,10];
 
     return (
-            <Grid xs={"auto"} item>
-                <Chart
-                    options={options}
-                    series={series}
-                    type="donut"
-                    width={250} 
-                    height={250}
-                />
-
-            </Grid>
+        <Grid xs={"auto"} item>
+            <Chart
+                options={options}
+                series={seriesData}
+                type="donut"
+                width={250} 
+                height={250}
+            />
+        </Grid>
     );
 };
 

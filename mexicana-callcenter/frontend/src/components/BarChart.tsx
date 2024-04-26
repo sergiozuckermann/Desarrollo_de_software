@@ -2,7 +2,12 @@ import { Grid } from '@material-ui/core';
 import React from 'react';
 import Chart from 'react-apexcharts';
 
-const BarChart: React.FunctionComponent = () => {
+interface BarChartProps {
+    data: number[];
+    categories: string[];
+}
+
+const BarChart: React.FunctionComponent<BarChartProps> = ({ data,  categories }) => {
   const options = {
     chart: {
       toolbar: {
@@ -10,7 +15,7 @@ const BarChart: React.FunctionComponent = () => {
       }
     },
     xaxis: {
-      categories: ["A", "B", "C", "D", "E"]
+      categories: categories
     },
     plotOptions: {
       bar: {
@@ -25,14 +30,14 @@ const BarChart: React.FunctionComponent = () => {
       show: false
     },
     fill: {
-      colors: ['#FF6384', '#36A2EB', '#FFCE56', '#9966FF', '#4BC0C0']
+        colors: ['#FF6384', '#36A2EB', '#FFCE56', '#9966FF', '#4BC0C0', '#99600F']
     }
   };
 
   const series = [
     {
-      name: "Series 1",
-      data: [9, 3, 2, 7, 1]
+      name: "",
+      data: data
     }
   ];
 
