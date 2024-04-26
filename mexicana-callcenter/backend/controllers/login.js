@@ -33,6 +33,7 @@ loginRouter.post('/', async (req, res) => {
         console.log("result of success op: ", result)
         const response = {
             name: result.idToken.payload.given_name,
+            username: result.idToken.payload['cognito:username'],
             role: result.idToken.payload['custom:job_level'],
             token: result.idToken.jwtToken
         }

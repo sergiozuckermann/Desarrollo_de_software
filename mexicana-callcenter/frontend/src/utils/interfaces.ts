@@ -6,9 +6,17 @@ export interface Credentials {
   
 export interface AuthContextType {
     isAuthenticated: boolean,
-    user: string | null,
+    name: string | null,
+    username: string | null,
     role: string | null,
-    token: string | null,
     login: (credentials: Credentials) => Promise<void>,
     logout: () => void
   }
+
+export interface WorkerCardProps {
+  name: string;
+  position: string;
+  experience: number;
+  points: number;
+  status?: string;
+}
