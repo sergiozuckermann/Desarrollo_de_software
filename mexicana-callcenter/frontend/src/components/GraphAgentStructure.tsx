@@ -21,16 +21,16 @@ const GraphAgentStructure: React.FunctionComponent = () => {
             </div>
             <div className='flex justify-evenly'>
                 <div className='mt-[120px]'>
-                    <h2 style={{fontFamily: "Roboto", fontSize: "20px" }}>
+                    <h2 style={{fontFamily: "Roboto", fontSize: "50px" }}>
                         10
                     </h2>
                     <h2 style={{fontFamily: "Roboto", fontSize: "20px" }}>
-                        Costumers Waiting
+                        Customers Waiting
                     </h2>
                 </div>
                 <div>
                     <h1 style={{fontFamily: "Roboto", fontSize: "30px" }}>
-                        Call Ocupancy
+                        Queue Issues
                     </h1>
                     <BarChart />
                 </div>

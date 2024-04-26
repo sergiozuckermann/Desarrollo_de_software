@@ -1,8 +1,6 @@
 import React from "react";
 import PageStructure from "../components/PageStructure";
 import TimestampDisplay from "../components/TimestampDisplay";
-import CallStatusIndicator from "../components/callStatusIndicator";
-import MoodIndicator from "../components/moodIndicator";
 import CellGrid from "../components/CellGrid";
 import GraphAgentStructure from "../components/GraphAgentStructure";
 
