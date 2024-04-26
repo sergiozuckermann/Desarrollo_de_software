@@ -65,7 +65,7 @@ const MyPieChart: React.FC<MyPieChartProps> = ({ data }) => {
                     justifyContent: 'center'
                 }}>
                     <div>{hovered.value}</div>
-                    <div>seconds</div>
+                    <div style={{fontWeight:'normal'}}>seconds</div>
                 </div>
             )}
         </div>
