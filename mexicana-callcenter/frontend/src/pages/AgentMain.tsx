@@ -3,9 +3,18 @@ import PageStructure from "../components/PageStructure";
 import HomeButton from "../components/HomeButtons"; 
 import GradientButton from "../components/CallingButton";
 import WorkerCard from '../components/WorkerCard';
+import { useAuth } from '../hooks/useAuth'
+import { WorkerCardProps } from '../utils/interfaces';
+import useCustomToast from "../components/LoginNotification";
+import userService from "../services/user"
+
 
 const MainContent = () => {
   const [buttonMode, setButtonMode] = useState('workspace');
+  const [userInfo, setUserInfo] = useState<WorkerCardProps | null>(null);
+  const { role, username, logout } = useAuth()
+  const { showError } = useCustomToast();
+
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -14,10 +23,36 @@ const MainContent = () => {
     return () => clearInterval(timer);
   }, []);
 
+  // execute call to backend url to fetch info of the user
+  useEffect(() => {
+ 
+    userService
+      .GetInfo(role!, username!) // call function that makes axios request
+      .then((user) => setUserInfo(user)) // set userInfo state with the result from the request if it is successful
+      .catch(error => {
+        if(error.response.status === 401) { // check for an authorization error
+            showError(error.response.data.error) // display error
+            setTimeout(() => {logout()}, 4000) // log user out
+        }
+      })
+
+
+  }, [])
+
   return (
     <div className="grid w-full h-full grid-cols-1 gap-4 p-4 md:grid-cols-12">
       <div className="md:col-span-4">
-        <WorkerCard name="Ana Gabriel Martínez" position="Agent" years={2} points={200} status="Active" />
+       
+        { userInfo !== null ? 
+          <WorkerCard 
+           name={userInfo.name} 
+           position={userInfo.position} 
+           experience={userInfo.experience} 
+           points={userInfo.points} 
+           status="Active" /> 
+          : null
+        }
+
       </div>
       <div className="flex flex-col space-y-4 md:col-span-8">
   <div className="flex flex-col gap-10">
