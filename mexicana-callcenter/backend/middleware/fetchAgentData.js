@@ -1,15 +1,21 @@
 const express = require('express');
 const AWS = require('aws-sdk');
-require('dotenv').config({ path: '../../env/.env' });
+// require('dotenv').config({ path: '../../env/.env' });
 
 const app = express();
 const port = 3001;
 
 // Configura AWS SDK
+// AWS.config.update({
+//   region: 'us-east-1', // Region en .env
+//   accessKeyId: process.env.AWS_ACCESS_KEY_ID, // AccesKeyID en .env
+//   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY, // AccesKeySecret en .env
+// });
+
 AWS.config.update({
   region: 'us-east-1', // Region en .env
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID, // AccesKeyID en .env
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY, // AccesKeySecret en .env
+  accessKeyId: "", // AccesKeyID en .env
+  secretAccessKey: "", // AccesKeySecret en .env
 });
 
 const dynamoDB = new AWS.DynamoDB.DocumentClient();

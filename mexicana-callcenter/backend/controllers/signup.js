@@ -4,6 +4,7 @@ const userPool = require('../utils/userPool')
 const signupRouter = express.Router();
 
 
+
 signupRouter.post('/', async (req, res) => {
 
     // data received from the client
