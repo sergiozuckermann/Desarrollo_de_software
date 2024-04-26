@@ -21,13 +21,13 @@ const GraphAgentStructure: React.FunctionComponent = () => {
           </div>
       <div className="flex flex-col items-center justify-center sm:flex-row sm:justify-evenly sm:items-start">
   <div className="mt-8 sm:mt-[50px] mb-8 sm:mb-0 text-center sm:ml-8">
-    <h2 className="text-2xl sm:text-2xl font-roboto">
+    <h2 className="text-3xl sm:text-3xl font-roboto">
       10
     </h2>
-    <h2 className="text-2xl sm:text-2xl font-roboto">
+    <h2 className="text-3xl sm:text-3xl font-roboto">
       Customers
     </h2>
-    <h2 className="text-2xl sm:text-2xl font-roboto">
+    <h2 className="text-3xl sm:text-3xl font-roboto">
       Waiting
     </h2>
   </div>

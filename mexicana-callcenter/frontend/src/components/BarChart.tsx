@@ -1,13 +1,16 @@
-import { Grid } from '@material-ui/core';
+import { Grid, useTheme, useMediaQuery } from '@material-ui/core';
 import React from 'react';
 import Chart from 'react-apexcharts';
 
 interface BarChartProps {
-    data: number[];
-    categories: string[];
+  data: number[];
+  categories: string[];
 }
 
-const BarChart: React.FunctionComponent<BarChartProps> = ({ data,  categories }) => {
+const BarChart: React.FunctionComponent<BarChartProps> = ({ data, categories }) => {
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+
   const options = {
     chart: {
       toolbar: {
@@ -30,7 +33,7 @@ const BarChart: React.FunctionComponent<BarChartProps> = ({ data,  categories })
       show: false
     },
     fill: {
-        colors: ['#FF6384', '#36A2EB', '#FFCE56', '#9966FF', '#4BC0C0', '#99600F']
+      colors: ['#FF6384', '#36A2EB', '#FFCE56', '#9966FF', '#4BC0C0', '#99600F']
     }
   };
 
@@ -42,8 +45,14 @@ const BarChart: React.FunctionComponent<BarChartProps> = ({ data,  categories })
   ];
 
   return (
-    <Grid xs={"auto"} item>
-      <Chart options={options} series={series} type="bar" width={450} height={250} />
+    <Grid item xs={12}>
+      <Chart
+        options={options}
+        series={series}
+        type="bar"
+        width={isSmallScreen ? 300 : 450}
+        height={250}
+      />
     </Grid>
   );
 };

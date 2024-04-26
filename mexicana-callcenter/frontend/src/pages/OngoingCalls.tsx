@@ -1,6 +1,5 @@
 import React from "react";
 import PageStructure from "../components/PageStructure";
-import TimestampDisplay from "../components/TimestampDisplay";
 import CellGrid from "../components/CellGrid";
 import GraphAgentStructure from "../components/GraphAgentStructure";
 
