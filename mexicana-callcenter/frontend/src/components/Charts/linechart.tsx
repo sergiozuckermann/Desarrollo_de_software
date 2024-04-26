@@ -6,6 +6,7 @@ import { ResponsiveLine } from '@nivo/line'
 // website examples showcase many properties,
 // you'll often use just a few of them.
 const MyLineChart = ({data}) => (
+    <div className='w-full h-full z-70' style={{ position: 'relative', zIndex:100, paddingBottom:10}}>
     <ResponsiveLine
         data={data}
         margin={{ top: 0, right: 10, bottom: 0, left: 10 }}
@@ -72,6 +73,7 @@ const MyLineChart = ({data}) => (
             }
         ]}
     />
+    </div>
 )
 
 export default MyLineChart;
