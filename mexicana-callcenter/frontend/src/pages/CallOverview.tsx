@@ -1,13 +1,16 @@
 import PageStructure from "../components/PageStructure";
 import MyPieChart from "../components/Charts/piechart";
 import MyLineChart from "../components/Charts/linechart";
+import CallCard from '../components/Callinfo';
+import Card from '../components/Card';
 import AHT from "../components/Charts/AHT";
 import { useState } from "react";
 
-interface CardProps {
-    title: string;
-    children: React.ReactNode;
-  }
+//Aqui va la obtencion de los siguientes datos del aguente visitado: nombre del agente, puesto del agente 
+
+//Aqui va la obtencion de los siguientes datos sobre la llamada: Asunto, Cliente, Prioridad, Razon, Tiempo de la llamada
+
+
 
   interface PieChartDataItem {
     id: string | number;
@@ -15,16 +18,7 @@ interface CardProps {
     value: number;
   }
 
-  const Card: React.FC<CardProps> = ({ title, children }) => {
-    return (
-      <div className="z-50 max-w-md border-2 border-gray-400 shadow-lg xl:h-full md:h-[98%] rounded-xl bg-tertiary sm:max-w-full sm:w-full" style={{zIndex:60}}>
-        <h2 className="z-50 mb-2 text-lg font-bold text-gray-600 font-roboto"style={{zIndex:60}}>{title}</h2>
-        <div className="flex-grow h-[80%] z-70" style={{zIndex:100}}>
-        {children}
-        </div>
-      </div>
-    );
-  };
+
   
 
 const MainContent = () => {
@@ -56,7 +50,13 @@ const MainContent = () => {
         <div className="grid w-full h-full grid-cols-1 gap-4 p-2 md:grid-cols-12">
 {/* AGENT CARD */}
             <div className="md:col-span-4">
-                {/* Contenido */}
+                <CallCard agentname="Juan" 
+                agentposition="agent" 
+                callclasification="Buy a ticket" 
+                clientname="Natalia" 
+                priority="high" 
+                reason="High voice volume" 
+                talktime={"05:30"}/>
             </div>
 {/* Tables Grid */}
             <div className="z-30 h-full md:col-span-8">
