@@ -32,7 +32,7 @@ const MainContent = () => {
         const mockData: PieChartDataItem[] = [
           { id: "Custumer", label: "Talk Time", value: 64},
           { id: "Agent", label: "Wait Time", value: 35},
-          { id: "Total", label: "Hold Time", value: 20},
+          { id: "Non-talk", label: "Hold Time", value: 20},
         ];
       
         // State initialized with mock data
