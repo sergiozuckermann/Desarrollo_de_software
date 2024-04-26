@@ -28,7 +28,7 @@ app.use(setToken)
 
 // controllers  
 app.use('/auth/signup', signupRouter)
-app.use('/auth/login', loginRouter)
+app.use('/auth/login', loginRouter)        
 app.use('/supervisor', verifyToken, verifyRole(roles.supervisor), supervisorRouter)
 app.use('/agent', verifyToken, verifyRole(roles.agent), agentRouter)
 
