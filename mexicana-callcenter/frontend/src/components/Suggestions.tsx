@@ -2,12 +2,12 @@ import React from 'react';
 
 const Suggestions = () => {
     return (
-        <div className="h-[100%] w-full rounded-lgh-full w-full rounded-lg bg-gray-100 border border-gray-400 p-4 sm:p-8" style={{backgroundColor: "#F8F9FA", borderColor: "rgba(32, 37, 63, 0.5)", borderWidth: "1px" , borderStyle: "solid"}}>
+        <div className=" w-full rounded-lgh-full w-full rounded-lg bg-gray-100 border border-gray-400 p-4 sm:p-8" style={{backgroundColor: "#F8F9FA", borderColor: "rgba(32, 37, 63, 0.5)", borderWidth: "1px" , borderStyle: "solid"}}>
             <div>
             <h1 className="text-xl sm:text-2xl font-roboto mb-8"> Hi, looking for help? </h1>
             <h2 className="text-xl sm:text-3xl font-roboto mb-8"> Suggestions </h2>
 
-            <div className="max-h-[600px] sm:max-h-[700px] overflow-y-auto">
+            <div className="max-h-[400px] sm:max-h-[400px] overflow-y-auto">
           <ul className="divide-y-2 divide-gray-500">
             <li>
               <a href="#" className="block p-5 hover:bg-gray-200">

@@ -7,7 +7,7 @@ const ClientForm = () => {
     const [callDescription, setCallDescription] = useState("");
 
     return (
-        <div className="w-full p-4 sm:p-6 lg:p-8 rounded-lg" style={{backgroundColor: "#F8F9FA", borderColor: "rgba(32, 37, 63, 0.5)", borderWidth: "1px" , borderStyle: "solid"}}>
+        <div className="h-full w-full p-4 sm:p-6 lg:p-8 rounded-lg" style={{backgroundColor: "#F8F9FA", borderColor: "rgba(32, 37, 63, 0.5)", borderWidth: "1px" , borderStyle: "solid"}}>
            <div className="max-w-xl mx-auto"> 
             <h1 className= "text-xl sm:text-2xl font-roboto mb-8">Client</h1>
             <form className="space-y-4">
@@ -45,7 +45,7 @@ const ClientForm = () => {
                         className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                         value={callDescription}
                         onChange={(e) => setCallDescription(e.target.value)}
-                        style={{ minHeight: '300px' }}
+                        style={{ minHeight: '200px' }}
                     />
                 </div>
             </form>
