@@ -7,23 +7,17 @@ import Suggestions from "../components/Suggestions";
 import Popup from "../components/Popup";
 
 const BargeIn: FunctionComponent = () => (
-     <PageStructure title="Ongoing Calls">
-      <div className="overflow-y-auto max-h-full">
-            <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
-              
-            </div>
-          </div>
-          
-    <div className="overflow-y-auto max-h-full">
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 py-2">
+  <PageStructure title="Ongoing Calls">
+    <div className="h-full flex items-center">
+      <div className="h-84 grid grid-cols-1 xl:grid-cols-3 gap-4 py-2">
         <div className="col-span-1">
-        <ConnectHere />
+          <ConnectHere />
         </div>
         <div className="col-span-1">
-        <ClientForm />
+          <ClientForm />
         </div>
         <div className="col-span-1">
-        <Suggestions />
+          <Suggestions />
         </div>
       </div>
     </div>
