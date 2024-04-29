@@ -104,7 +104,7 @@ interface PageStructureProps {
         {children}
       </div>
       {/* Bottom bar */}
-      <div className="flex items-center justify-center h-20 p-4 shadow-lg bg-tertiary">
+      <div className="flex items-center justify-center h-10 p-4 shadow-lg bg-tertiary">
           <p className = "font2" > {timestamp} </p>
       </div>
     </div>
