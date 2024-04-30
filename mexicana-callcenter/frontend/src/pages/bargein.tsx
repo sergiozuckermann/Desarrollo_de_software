@@ -8,8 +8,8 @@ import Popup from "../components/Popup";
 
 const BargeIn: FunctionComponent = () => (
   <PageStructure title="Ongoing Calls">
-    <div className="h-full flex items-center">
-      <div className="h-84 grid grid-cols-1 xl:grid-cols-3 gap-4 py-2">
+    <div className="overflow-y-auto max-h-full">
+            <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
         <div className="col-span-1">
           <ConnectHere />
         </div>
