@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ResponsivePie } from '@nivo/pie';
 
 interface PieChartDataItem {
@@ -10,13 +10,29 @@ interface PieChartDataItem {
 
 interface MyPieChartProps {
     data: PieChartDataItem[];
+    unit: string;
 }
 
-const MyPieChart: React.FC<MyPieChartProps> = ({ data }) => {
+const MyPieChart: React.FC<MyPieChartProps> = ({ data,unit }) => {
     const [hovered, setHovered] = useState<PieChartDataItem | null>(null);
+    const [colors, setColors] = useState<string[]>([]);
 
     const brightColors = ['#5BC0EB', '#004BA8', '#4A525A', '#c7f9cc', '#57cc99', '#800080', '#FF4500', '#9ACD32'];
+    
+    const shuffleArray = (array: string[]) => {
+        let result = [...array];
+        for (let i = result.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [result[i], result[j]] = [result[j], result[i]]; // Swap elements
+        }
+        return result;
+    };
 
+    // Initialize colors on component mount
+    useEffect(() => {
+        setColors(shuffleArray(brightColors));
+    }, []); 
+    
     const handleMouseEnter = (datum: any, event: React.MouseEvent) => {
         setHovered(datum.data);  // Ensure datum.data is used to refer to the slice's data
     };
@@ -34,7 +50,7 @@ const MyPieChart: React.FC<MyPieChartProps> = ({ data }) => {
                 padAngle={0.7}
                 cornerRadius={3}
                 activeOuterRadiusOffset={8}
-                colors={brightColors}
+                colors={colors}
                 borderWidth={1}
                 borderColor={{ from: 'color', modifiers: [['darker', 0.2]] }}
                 arcLinkLabelsSkipAngle={10}
@@ -65,7 +81,7 @@ const MyPieChart: React.FC<MyPieChartProps> = ({ data }) => {
                     justifyContent: 'center'
                 }}>
                     <div>{hovered.value}</div>
-                    <div style={{fontWeight:'normal'}}>seconds</div>
+                    <div style={{ fontWeight: 'normal' }}>{unit}</div>
                 </div>
             )}
         </div>

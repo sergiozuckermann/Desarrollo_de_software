@@ -12,6 +12,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAuth } from "./hooks/useAuth";
 import ProtectedRoute from "./components/ProtectedRoute";
+import SupervisorHomeTest from "./pages/SupervisorHomeTest";
 import BargeIn from "./pages/bargein";
 import SupervisorMain from "./pages/SupervisorMain";
 import HomePage from "./pages/AgentMain";
@@ -40,10 +41,9 @@ function App() {
           <Route path="/supervisor/ongoingcalls" element={<OngoingCalls />} />
           <Route path="/supervisor/bargein" element={<BargeIn />} />
           <Route path="/supervisor/home" element={<SupervisorMain />} />
-          <Route path="/supervisor/calloverview" element={<CallOverview/>} />
-      </Route>
           <Route path="/supervisor/ongoingcalls" element={<OngoingCalls />} />
-          <Route path="/calloverview" element={<CallOverview/>} />
+          <Route path="/supervisor/calloverview" element={<CallOverview />} />
+      </Route>
 
       {/* Any other route which is not found */}
       <Route path="*" element={<h1>Not Found</h1>}></Route>

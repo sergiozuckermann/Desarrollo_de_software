@@ -32,6 +32,16 @@ const MainContent = () => {
         // State initialized with mock data
         const [chartData, setChartData] = useState<PieChartDataItem[]>(mockData)
 
+        const AnalysisData: PieChartDataItem[] = [
+          { id: "Positive", label: "Positive", value: 64},
+          { id: "Neutral", label: "Neutral", value: 52},
+          { id: "Negative", label: "Negative", value: 12},
+        ];
+      
+        // State initialized with mock data
+        const [chartData2, setChartData2] = useState<PieChartDataItem[]>(AnalysisData)
+        
+        
         const sentimentData = [
           {
             id: "sentiment",
@@ -66,11 +76,11 @@ const MainContent = () => {
                     </div>
                     <div className="grid w-[100%] h-[80%] grid-cols-1 gap-2 md:grid-cols-2 md:col-span-8 z-30">
                         <Card title="Talk time">
-                            <MyPieChart data={chartData} />
+                            <MyPieChart data={chartData} unit="seconds" />
                         </Card>
                       
                         <Card title="Sentiment"> 
-                            <MyPieChart data={chartData} />  
+                            <MyPieChart data={chartData2} unit="percent" />  
                         </Card>
 
                         <Card title="Sentiment Trend">
