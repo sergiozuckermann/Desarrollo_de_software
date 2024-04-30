@@ -17,7 +17,7 @@ const CallCard: React.FC<CallCardProps> = ({ agentname, agentposition, callclasi
     return(
     <div>
       {/* Large Device Layout */}
-      <div className="hidden md:block">
+      <div className="hidden md:block mt-20">
         <div className="hidden h-[65%] max-w-sm p-4 overflow-hidden border-2 border-gray-400 shadow-lg rounded-xl md:block bg-tertiary">
           <div className="flex justify-center">
             <img className="w-[65%] h-[65%] rounded-full" src="/avatar.png" alt="User avatar" />
@@ -42,12 +42,12 @@ const CallCard: React.FC<CallCardProps> = ({ agentname, agentposition, callclasi
       <div className="pt-40 overflow-hidden bg-white border border-gray-300 rounded-lg 2sm:p-2 md:hidden">
         <div className="text-center">
           <p>{agentname}</p>
-          <p>{agentposition}</p>
-          <p>{callclasification}</p>
-          <p>{clientname}</p>
-          <p>{priority}</p>
-          <p>{reason}</p>
-          <p>{talktime}</p>
+          <p><strong>{agentposition}</strong></p>
+          <p><strong>Classification: </strong> {callclasification}</p>
+          <p><strong>Client name: </strong> {clientname}</p>
+          <p><strong>Priority : </strong> {priority}</p>
+          <p><strong>Reason: </strong> {reason}</p>
+          <p><strong>Talk time: </strong> {talktime}</p>
         </div>
       </div>
     </div>
