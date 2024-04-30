@@ -26,10 +26,10 @@ module.exports = {
     },
     fontSize: {
       //lg: "18px",
-      //"4xl": "60px",
-      //inherit: "inherit",
+      //"41xl": "60px",
+      inherit: "inherit",
       //"3xl": "30px",
-      //subtitle: "40px",
+      subtitle: "40px",
       "p2":"30px",
       xs: "12px",
       sm: "14px",
