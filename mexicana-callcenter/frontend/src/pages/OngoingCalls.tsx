@@ -12,7 +12,7 @@ const OngoingCalls: React.FunctionComponent = () => {
 
 return (
     <PageStructure title="Ongoing Calls">
-      <div className="overflow-y-auto h-full pb-[10%] pt-[5%] ">
+      <div className="overflow-y-auto h-full pb-[5%] pt-[5%] ">
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
               <div className="col-span-1">
                 <GraphAgentStructure />
