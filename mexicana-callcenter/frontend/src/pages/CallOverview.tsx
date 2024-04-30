@@ -49,7 +49,7 @@ const MainContent = () => {
     return (
         <div className="grid w-full h-full grid-cols-1 gap-4 p-2 md:grid-cols-12">
 {/* AGENT CARD */}
-            <div className="md:col-span-4">
+            <div className="md:col-span-4 sm:col-span-12">
                 <CallCard agentname="Juan" 
                 agentposition="agent" 
                 callclasification="Buy a ticket" 
