@@ -42,7 +42,8 @@ const MyPieChart: React.FC<MyPieChartProps> = ({ data,unit }) => {
     };
 
     return (
-        <div className='w-full h-full z-70' style={{ position: 'relative', zIndex:100, paddingBottom:10}}>
+        <div className='w-full h-full z-[100] relative pb-2'> 
+        {/* //style={{ position: 'relative', zIndex:100, paddingBottom:10}} */}
             <ResponsivePie
                 data={data}
                 margin={{ top: 5, right: 0, bottom: 0, left: 0 }}
