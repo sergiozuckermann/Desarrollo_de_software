@@ -17,6 +17,7 @@ import BargeIn from "./pages/bargein";
 import SupervisorMain from "./pages/SupervisorMain";
 import HomePage from "./pages/AgentMain";
 import NotficationCenter from "./pages/Notifications";
+import AgentMetrics from "./pages/AgentMetrics";
 
 function App() {
 
@@ -41,6 +42,7 @@ function App() {
           <Route path="/supervisor/bargein" element={<BargeIn />} />
           <Route path="/supervisor/home" element={<SupervisorMain />} />
           <Route path="/supervisor/ongoingcalls" element={<OngoingCalls />} />
+          <Route path="/supervisor/AgentMetrics" element={<AgentMetrics />} />
       </Route>
 
       {/* Any other route which is not found */}
