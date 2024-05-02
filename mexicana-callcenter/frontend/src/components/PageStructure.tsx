@@ -4,6 +4,7 @@ import Button from "./Buttons";
 import SettingsButton from "./SettingsButton";
 import NotificationBadge from "./notificationComponent";
 import { useNavigate } from 'react-router-dom';
+import TimestampDisplay from "./TimestampDisplay";
 
 // Define a type for the props for better TypeScript support
 interface PageStructureProps {
@@ -104,7 +105,7 @@ interface PageStructureProps {
         {children}
       </div>
       {/* Bottom bar */}
-      
+      <TimestampDisplay />
     </div>
   );
 };
