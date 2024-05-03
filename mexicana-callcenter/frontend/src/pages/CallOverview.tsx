@@ -57,9 +57,9 @@ const MainContent = () => {
       ];
 
     return (
-        <div className="grid w-full h-full grid-cols-1 gap-4 p-2 md:grid-cols-12">
+        <div className="overflow-y-auto grid w-full h-full grid-cols-1 gap-4 p-2 lg:grid-cols-12 items-center justify-center">
 {/* AGENT CARD */}
-            <div className="md:col-span-4 sm:col-span-12">
+            <div className="lg:col-span-4 sm:col-span-12 flex justify-center items-center">
                 <CallCard agentname="Juan" 
                 agentposition="agent" 
                 callclasification="Buy a ticket" 
@@ -69,12 +69,12 @@ const MainContent = () => {
                 talktime={"05:30"}/>
             </div>
 {/* Tables Grid */}
-            <div className="z-30 h-full md:col-span-8">
+            <div className="z-30 h-full lg:col-span-8 sm:col-span-12">
                     <div className="flex items-center justify-between pt-4 mb-4">
                         <h2 className="text-xl text-gray-600 font-roboto">Call Metrics</h2>
-                        <button className="px-4 py-2 text-white rounded shadow bg-secondary">Barge In</button>
+                        <button className="px-4 py-3 text-white shadow bg-secondary w-5/12 rounded-lg hover:opacity-75 mr-7">Barge In</button>
                     </div>
-                    <div className="grid w-[100%] h-[80%] grid-cols-1 gap-2 md:grid-cols-2 md:col-span-8 z-30">
+                    <div className="grid w-[100%] h-[80%]  grid-cols-1 gap-2 lg:grid-cols-2 lg:col-span-8 z-30">
                         <Card title="Talk time">
                             <MyPieChart data={chartData} unit="seconds" />
                         </Card>
