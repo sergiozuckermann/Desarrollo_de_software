@@ -57,7 +57,7 @@ const MainContent = () => {
       ];
 
     return (
-        <div className="overflow-y-auto grid w-full h-full grid-cols-1 gap-4 p-2 lg:grid-cols-12 items-center justify-center">
+        <div className="grid w-full h-full grid-cols-1 gap-4 p-2 lg:grid-cols-12 items-center justify-center overflow-y-auto">
 {/* AGENT CARD */}
             <div className="lg:col-span-4 sm:col-span-12 flex justify-center items-center">
                 <CallCard agentname="Juan" 
