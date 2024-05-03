@@ -46,7 +46,7 @@ const MyPieChart: React.FC<MyPieChartProps> = ({ data,unit }) => {
         {/* //style={{ position: 'relative', zIndex:100, paddingBottom:10}} */}
             <ResponsivePie
                 data={data}
-                margin={{ top: 5, right: 0, bottom: 0, left: 0 }}
+                margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
                 innerRadius={0.5}
                 padAngle={0.7}
                 cornerRadius={3}
