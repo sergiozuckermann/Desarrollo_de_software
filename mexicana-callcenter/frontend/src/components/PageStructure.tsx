@@ -5,6 +5,7 @@ import SettingsButton from "./SettingsButton";
 import NotificationBadge from "./notificationComponent";
 import { useNavigate } from 'react-router-dom';
 import TimestampDisplay from "./TimestampDisplay";
+import TimestampDisplay from "./TimestampDisplay";
 
 // Define a type for the props for better TypeScript support
 interface PageStructureProps {
@@ -78,7 +79,7 @@ interface PageStructureProps {
   };
 
   return (
-    <div className="flex flex-col h-screen pl-2 pr-2 sm:overflow-hidden">
+    <div className="flex flex-col h-screen pl-2 pr-2 md:overflow-hidden">
       {/* Top bar */}
       <div className="flex items-center justify-between h-[10%] shadow-lg  bg-tertiary z-50"> 
         <div>
@@ -103,11 +104,11 @@ interface PageStructureProps {
         </div>
       </div>
       {/* Main content */}
-      <div className="flex h-[90%] w-[98%] items-center justify-center">
+      <div className="flex h-[84%] w-[98%] items-center justify-center">
         {children}
       </div>
       {/* Bottom bar */}
-      <TimestampDisplay />
+     <TimestampDisplay/>
     </div>
   );
 };
