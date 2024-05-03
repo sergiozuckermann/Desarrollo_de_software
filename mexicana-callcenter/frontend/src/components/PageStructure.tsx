@@ -62,12 +62,11 @@ interface PageStructureProps {
   fetchMockNotifications();
 
 
-    updateTimestamp(); // Actualizar el timestamp inicialmente
+    updateTimestamp(); // Update the timestamp initially 
 
-    const intervalId = setInterval(updateTimestamp, 1000); // Actualizar el timestamp cada segundo
-
+    const intervalId = setInterval(updateTimestamp, 1000); // Update the timestamp every second
     return () => {
-      clearInterval(intervalId); // Limpiar el intervalo cuando el componente se desmonte
+      clearInterval(intervalId); //Cleaar the interval when the component unmounts
     };
   }, []);
 
@@ -83,20 +82,23 @@ interface PageStructureProps {
       {/* Top bar */}
       <div className="flex items-center justify-between h-[10%] shadow-lg  bg-tertiary z-50"> 
         <div>
+          {/* Callcenter logo, it redirects to main page*/}
         <Button onClick={() => window.location.href = '/'}>
-            <img src="/logo_callCenter_color.png" alt="" className=" w-[115px] sm:w-[230px] ml-3" />
+            <img src="/logo_callCenter_color.png" alt="" className=" w-[140px] sm:w-[230px] ml-3" />
           </Button>
         </div>
         <div className="flex items-center">
           {/* LA RUTA ESTA A UNA PÁGINA VACIA */}
           <Button onClick={handleNotificationClick} className="relative hover-shrink-button">
-            <img src="/notifications_iconn.png" alt="" className="w-[45px] mr-2" />
+            <img src="/notifications_iconn.png" alt="" className="md:w-[45px] w-[38px]  mr-2" />
             <NotificationBadge count={notificationCount} />
           </Button>
+          {/* Button used for page settings */}
            <SettingsButton />
-          <div className="h-10 mx-2 border-l-2 border-primary"></div> {/* Divisory line */}
+          <div className="hidden md:block md:h-10 md:mx-2 md:border-l-2 md:border-primary"></div> {/* Divisory line only showing in bigger screens */}
+          {/* Page title only showing in bigger screens */}
           <div className="flex items-center">
-            <h1 className="font">{title}</h1>
+            <h1 className="hidden md:block font">{title}</h1>
           </div>
         </div>
       </div>
