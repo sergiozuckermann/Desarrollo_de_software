@@ -18,6 +18,7 @@ import SupervisorMain from "./pages/SupervisorMain";
 import HomePage from "./pages/AgentMain";
 import NotficationCenter from "./pages/Notifications";
 import CallOverview from "./pages/CallOverview";
+import HistoricalMetrics from "./pages/Metrics";
 
 function App() {
 
@@ -43,6 +44,7 @@ function App() {
           <Route path="/supervisor/home" element={<SupervisorMain />} />
           <Route path="/supervisor/ongoingcalls" element={<OngoingCalls />} />
           <Route path="/supervisor/calloverview" element={<CallOverview />} />
+          <Route path="/supervisor/metrics" element={<HistoricalMetrics />} />
       </Route>
 
       {/* Any other route which is not found */}
