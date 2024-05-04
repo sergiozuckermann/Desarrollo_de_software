@@ -5,6 +5,7 @@ import SettingsButton from "./SettingsButton";
 import NotificationBadge from "./notificationComponent";
 import { useNavigate } from 'react-router-dom';
 import TimestampDisplay from "./TimestampDisplay";
+import NotificationsDropDown from "./NotificationsDropDown";
 
 // Define a type for the props for better TypeScript support
 interface PageStructureProps {
@@ -89,10 +90,13 @@ interface PageStructureProps {
         </div>
         <div className="flex items-center">
           {/* LA RUTA ESTA A UNA PÁGINA VACIA */}
+          {/* 
           <Button onClick={handleNotificationClick} className="relative hover-shrink-button">
             <img src="/notifications_iconn.png" alt="" className="w-[45px] mr-2" />
             <NotificationBadge count={notificationCount} />
           </Button>
+          */}
+           <NotificationsDropDown/>
            <SettingsButton />
           <div className="h-10 mx-2 border-l-2 border-primary"></div> {/* Divisory line */}
           <div className="flex items-center">

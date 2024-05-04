@@ -10,8 +10,11 @@ const NotificationBadge: FunctionComponent<NotificationBadgeProps>  = ({ count }
       <span className="badge">
         {count}
       </span>
+      
     );
   }
   return null;
 };
 export default NotificationBadge;
+
+
