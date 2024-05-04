@@ -5,9 +5,9 @@ import FirstContactResolution from "../components/FirstContactResolution";
 import ScheduleAdherence from "../components/ScheduleAdherence";
 
 const AgentMetrics: FunctionComponent = () => (
-  <PageStructure title="Ongoing Calls">
-    <div className="overflow-y-auto max-h-full">
-            <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
+  <PageStructure title="Weekly Agent Metrics">
+    <div className="overflow-y-auto max-h-full pt-2 pb-20">
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
         <div className="col-span-1">
           <AverageHandleTime />
         </div>
@@ -19,7 +19,6 @@ const AgentMetrics: FunctionComponent = () => (
         </div>
       </div>
     </div>
-    
   </PageStructure>
 );
 
