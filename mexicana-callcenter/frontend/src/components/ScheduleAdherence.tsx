@@ -1,5 +1,3 @@
-import React, { useState } from 'react';
-
 const ScheduleAdherence = () => {
     
     const ScaleIcon = '/scale.svg';

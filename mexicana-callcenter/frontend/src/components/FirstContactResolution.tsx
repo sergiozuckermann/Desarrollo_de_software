@@ -1,5 +1,3 @@
-import React, { useState } from 'react';
-
 const FirstContactResolution = () => {
     
     const ScaleIcon = '/scale.svg';
@@ -37,7 +35,7 @@ const FirstContactResolution = () => {
         >
           <div className="max-w-xl mx-auto">
             <h1 className="text-5xl md:text-6xl lg:text-6xl xl:text-6xl font-roboto mb-8">
-                First Contact Resolution
+                Calls no answer
             </h1>
             <div className="bg-white rounded-lg shadow-md p-6 overflow-y-auto" style={{ maxHeight: '500px' }} >
               <div className="mb-4 flex items-center">
