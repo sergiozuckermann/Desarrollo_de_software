@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import NotificationBadge from './notificationComponent';
 import { useNavigate } from 'react-router-dom';
 
+
 const NotificationsDropDown = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [notificationCount, setNotificationCount] = useState(0);
@@ -26,7 +27,8 @@ const NotificationsDropDown = () => {
 
     const handleNotificationClick = () => {
         // página de notificaciones
-        navigate('/notifications');
+        navigate('/supervisor/notifications');
+        
     };
 
     return (
