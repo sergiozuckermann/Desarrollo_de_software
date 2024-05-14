@@ -1,6 +1,6 @@
 import axios from "axios";
 import { createContext, FunctionComponent, PropsWithChildren } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { AuthContextType, Credentials } from "../utils/interfaces";
 import useCustomToast from "../components/LoginNotification";
 
@@ -12,7 +12,7 @@ const AuthProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
 
   const { showError } = useCustomToast();
   const { showSuccess } = useCustomToast();
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
  
     const getContext = () => {
       const userDataString = localStorage.getItem('userData');
@@ -68,7 +68,7 @@ const AuthProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
 
           // navigate to the hme page based on the user's role
           showSuccess(`🎉 Welcome ${name}!\nYou are now signed in.`);
-          navigate(`/${role}/home`)
+          window.location.href = `/${role}/home`
         }
       })
       .catch(error =>  {
@@ -84,8 +84,9 @@ const AuthProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
   // logout function
   const logout = () => {
     localStorage.removeItem('userData')
+    localStorage.removeItem('token')
     showSuccess(`🎉 Logged Out`);
-    navigate('/')
+    window.location.href = '/'
   } 
 
   //  value of the authentication context

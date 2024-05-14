@@ -20,3 +20,8 @@ export interface WorkerCardProps {
   points: number;
   status?: string;
 }
+
+// Define the type for the context value
+export interface WebSocketContextType {
+  socket:  WebSocket | null;
+}

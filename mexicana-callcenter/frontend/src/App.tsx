@@ -12,16 +12,28 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAuth } from "./hooks/useAuth";
 import ProtectedRoute from "./components/ProtectedRoute";
-import SupervisorHomeTest from "./pages/SupervisorHomeTest";
 import BargeIn from "./pages/bargein";
 import SupervisorMain from "./pages/SupervisorMain";
 import HomePage from "./pages/AgentMain";
 import NotficationCenter from "./pages/Notifications";
 import CallOverview from "./pages/CallOverview";
+import { useWebSocket } from "./hooks/useWebSocket";
+import { useEffect } from "react";
 
 function App() {
 
   const {isAuthenticated, role} = useAuth() // get user authentication status and role
+  const { socket } = useWebSocket() // get web socket connection
+
+  useEffect(() => {
+    const ws = socket
+    if(ws !== null) {
+      console.log("This is ws: ", ws)
+      ws.onmessage = (event) => {
+        console.log("message received: ", event.data)
+      }
+    }
+  }, [socket])
 
   return (
     <>
