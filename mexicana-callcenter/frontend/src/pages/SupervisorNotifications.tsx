@@ -1,11 +1,33 @@
 // SupervisorNotifications.tsx
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PageStructure from "../components/PageStructure";
 import NotificationItem from "../components/NotificationItem";
 
 const SupervisorNotifications: React.FunctionComponent = () => {
 
+    const [readNotifications, setReadNotifications] = useState<number[]>([]);
+
+    useEffect(() => {
+        const storedReadNotifications = localStorage.getItem("readNotifications");
+        if (storedReadNotifications) {
+          setReadNotifications(JSON.parse(storedReadNotifications));
+        }
+      }, []);
+
+    const handleNotificationRead = (notificationId: number) => {
+        if (!readNotifications.includes(notificationId)) {
+          setReadNotifications([...readNotifications, notificationId]);
+          localStorage.setItem('readNotifications', JSON.stringify([...readNotifications, notificationId]));
+        }
+      };
+
     const notifications = [
+        {
+            id: 16,
+            title: "High Call Volume 2 prueba",
+            message: "The call center is experiencing a high volume of incoming calls. All available agents are currently assisting customers. Estimated wait time is 10 minutes.",
+            date: "2024-05-09 09:30:00",
+        },
         {
           id: 1,
           title: "High Call Volume",
@@ -146,6 +168,8 @@ const SupervisorNotifications: React.FunctionComponent = () => {
                     title={notification.title}
                     message={notification.message}
                     date={notification.date}
+                    isRead={readNotifications.includes(notification.id)}
+                    onRead={() => handleNotificationRead(notification.id)}
                     />
                   ))}
                 </div>
@@ -165,7 +189,9 @@ const SupervisorNotifications: React.FunctionComponent = () => {
                     title={notification.title}
                     message={notification.message}
                     date={notification.date}
-                    />
+                    isRead={readNotifications.includes(notification.id)}
+                    onRead={() => handleNotificationRead(notification.id)}
+                  />
                   ))}
                 </div>
               </div>
@@ -184,7 +210,9 @@ const SupervisorNotifications: React.FunctionComponent = () => {
                     title={notification.title}
                     message={notification.message}
                     date={notification.date}
-                    />
+                    isRead={readNotifications.includes(notification.id)}
+                    onRead={() => handleNotificationRead(notification.id)}
+                  />
                   ))}
                 </div>
               </div>
@@ -203,7 +231,9 @@ const SupervisorNotifications: React.FunctionComponent = () => {
                     title={notification.title}
                     message={notification.message}
                     date={notification.date}
-                    />
+                    isRead={readNotifications.includes(notification.id)}
+                    onRead={() => handleNotificationRead(notification.id)}
+                  />
                   ))}
                 </div>
               </div>
@@ -218,11 +248,13 @@ const SupervisorNotifications: React.FunctionComponent = () => {
                 <div className="w-full pr-8 pl-8 space-y-4">
                   {groupedNotifications.older.map((notification) => (
                     <NotificationItem
-                      key={notification.id}
-                      title={notification.title}
-                      message={notification.message}
-                      date={notification.date}
-                    />
+                    key={notification.id}
+                    title={notification.title}
+                    message={notification.message}
+                    date={notification.date}
+                    isRead={readNotifications.includes(notification.id)}
+                    onRead={() => handleNotificationRead(notification.id)}
+                  />
                   ))}
                 </div>
               </div>

@@ -1,20 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CircleNotification from "../components/CircleNotifications";
 
 interface NotificationItemProps {
   title: string;
   message: string;
   date: string;
+  isRead: boolean;
+  onRead: () => void;
 }
 
-const NotificationItem: React.FC<NotificationItemProps> = ({ title, message, date }) => {
+const NotificationItem: React.FC<NotificationItemProps> = ({
+  title,
+  message,
+  date,
+  isRead,
+  onRead,
+}) => {
   const [expanded, setExpanded] = useState(false);
-  const [isSeen, setIsSeen] = useState(false);
 
   const toggleExpanded = () => {
     setExpanded(!expanded);
-    if (!expanded) {
-      setIsSeen(true);
+    if (!expanded && !isRead) {
+      onRead();
     }
   };
 
@@ -40,7 +47,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ title, message, dat
         {expanded && <p className="text-base">{message}</p>}
         <p className="text-sm text-gray-500 mt-2">{formatDate(date)}</p>
       </div>
-      <CircleNotification isSeen={isSeen} isExpanded={expanded} />
+      <CircleNotification isSeen={isRead} isExpanded={expanded} />
     </div>
   );
 };
