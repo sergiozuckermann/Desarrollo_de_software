@@ -1,15 +1,23 @@
-import { ResponsiveBar } from '@nivo/bar';
+import { ResponsiveBar, BarDatum } from '@nivo/bar';
 
-const MyResponsiveBar = ({ data }) => {
+
+
+const MyResponsiveBar = ({ data }: {data:Array<BarDatum>}) => {
     // Define your `barColors` mapping
-    const barColors = {
-        "Flight Rsv": "#F47560",
-        "Help": "#E8C1A0",
-        "Booking or Website Issues": "#F1E15B",
-        "Status Inquiries": "#E8A838",
-        "Special Assistance or Docs": "#61CDBB",
-        "Other Questions": "#97E3D5"
-    };
+    const barColors = [
+        { id: "Flight Rsv", color: "#F47560" },
+        { id: "Help", color: "#E8C1A0" },
+        { id: "Booking or Website Issues", color: "#F1E15B" },
+        { id: "Status Inquiries", color: "#E8A838" },
+        { id: "Special Assistance or Docs", color: "#61CDBB" },
+        { id: "Other Questions", color: "#97E3D5" }
+    ]
+
+    // function to find a color given a key
+    const getColor =(key:string|number) => {
+        const barColor = barColors.find((barColor) => barColor.id === key ? barColor : null)
+        return barColor!.color
+    }
 
     return (
         <ResponsiveBar
@@ -20,7 +28,7 @@ const MyResponsiveBar = ({ data }) => {
             padding={0.3}
             valueScale={{ type: 'linear' }}
             indexScale={{ type: 'band', round: true }}
-            colors={({ indexValue }) => barColors[indexValue]}
+            colors={({ indexValue }) => getColor(indexValue)}
             borderColor={{
                 from: 'color',
                 modifiers: [['darker', 1.6]]

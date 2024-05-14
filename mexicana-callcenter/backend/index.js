@@ -22,12 +22,12 @@ app.use(express.json());
 
 // Serve static files from the React production build directory
 // app.use(express.static(path.join(__dirname, 'dist')));
-app.use(express.static('dist'));
+// app.use(express.static('dist'));
 
-// Serve the index.html for any other routes to let React Router handle them
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
-});
+// // Serve the index.html for any other routes to let React Router handle them
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+// });
 
 // middleware to set the token to the request
 app.use(setToken) 
