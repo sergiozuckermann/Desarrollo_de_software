@@ -20,7 +20,7 @@ const FormInput: React.FC<FormInputProps> = ({
       <label htmlFor={name} className="sr-only">
         {placeholder}
       </label>
-      <div className="flex items-center border-2 border-gray-300 rounded-lg text-base sm:text-lg md:text-xl w-full">
+      <div className="flex items-center  rounded-lg text-base sm:text-lg md:text-xl w-full">
         <input
           type={type}
           id={name}

@@ -3,7 +3,7 @@ import { useAuth } from '../hooks/useAuth'
 import FormInput from "../components/FormInput";
 
 const SignIn: FunctionComponent = () => {
-  const [emailTextValue, setEmailTextValue] = useState("");
+  const [usernameTextValue, setUsernameTextValue] = useState("");
   const [passwordTextValue, setPasswordTextValue] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const { login } = useAuth()
@@ -11,7 +11,7 @@ const SignIn: FunctionComponent = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const credentials = {username: emailTextValue, password: passwordTextValue}
+    const credentials = {username: usernameTextValue, password: passwordTextValue}
 
     login(credentials) // call login function defined in the AuthProvider
   }
@@ -29,7 +29,7 @@ const SignIn: FunctionComponent = () => {
     <main className="mt-9 w-full max-md:max-w-full  cellphone:items-center cellphone:grid cellphone:justify-center">
       <div className="flex gap-5 max-md:flex-col max-md:gap-0 cellphone:items-center cellphone:justify-center w-full"> 
       <div className="flex flex-col w-6/12 max-md:ml-0 max-md:w-full cellphone:hidden">
-        <div className="flex overflow-hidden relative flex-col grow justify-center border border-black border-none fill-gray-50 fill-opacity-0 max-w-[700px] min-h-[697px] stroke-[1px] stroke-black max-md:hidden max-md:max-w-full max-sm:hidden max-sm:min-h-0 ">
+        <div className="flex overflow-hidden relative flex-col grow justify-center fill-gray-50 fill-opacity-0 max-w-[700px] min-h-[697px] stroke-[1px] stroke-black max-md:hidden max-md:max-w-full max-sm:hidden max-sm:min-h-0 ">
         <img loading="lazy"
         src="/SignInBlob.png"></img>
         </div>
@@ -41,15 +41,15 @@ const SignIn: FunctionComponent = () => {
             </div>
             {/* <div className="w-full md:w-1/2"> */}
           <section className="flex flex-col items-center mt-10 tablet:p-10 cellphone:items-center"> 
-            <form onSubmit={handleLogin} className="border-2 border-gray-300 rounded-lg py-4 px-4 w-full max-w-md mx-auto text-lg cellphone:text-gray-700 cellphone:py-0 cellphone:px-0">
+            <form onSubmit={handleLogin} className=" rounded-lg py-4 px-4 w-full max-w-md mx-auto text-lg cellphone:text-gray-700 cellphone:py-0 cellphone:px-0">
               <FormInput 
-                type="email"
-                placeholder="Email"
-                name="email"
-                data-cy="email-input"
+                type="text"
+                placeholder="Username"
+                name="Username"
+                data-cy="username-input"
                 required={true}
-                value={emailTextValue}
-                onChange={(e:React.ChangeEvent<HTMLInputElement>) => setEmailTextValue(e.target.value)}
+                value={usernameTextValue}
+                onChange={(e:React.ChangeEvent<HTMLInputElement>) => setUsernameTextValue(e.target.value)}
               />
               <FormInput
                 type={showPassword ? "text" : "password"}
