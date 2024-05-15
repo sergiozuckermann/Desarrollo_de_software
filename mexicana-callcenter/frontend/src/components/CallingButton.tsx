@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface GradientButtonProps {
-  mode: 'workspace' | 'calling';
+  mode: string;
   handleClick: () => void;
 }
 

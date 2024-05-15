@@ -22,6 +22,7 @@ const MainContent = () => {
       setButtonMode(prevMode => prevMode === 'workspace' ? 'calling' : 'workspace');
     }, 10000);
     return () => clearInterval(timer);
+    console.log(buttonMode)
   }, []);
 
   // execute call to backend url to fetch info of the user

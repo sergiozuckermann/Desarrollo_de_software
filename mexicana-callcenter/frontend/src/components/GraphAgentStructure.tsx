@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+// import React, { useState } from 'react';
 import MyPieChart from './Charts/piechart';
 import MyResponsiveBar from './Charts/barChart';
 
@@ -15,7 +15,7 @@ const GraphAgentStructure: React.FunctionComponent = () => {
     { id: "After Call", label: "After Call", value: 10 },
   ];
 
-  const [chartData, setChartData] = useState<PieChartDataItem[]>(availabilityData);
+  // const [chartData, setChartData] = useState<PieChartDataItem[]>(availabilityData);
 
   const issueData: PieChartDataItem[] = [
     { id: "Flight Rsv", label: "Flight Rsv", value: 10 },
@@ -27,7 +27,7 @@ const GraphAgentStructure: React.FunctionComponent = () => {
   ];
 
 
-  const [chartData2, setChartData2] = useState<PieChartDataItem[]>(issueData);
+  // const [chartData2, setChartData2] = useState<PieChartDataItem[]>(issueData);
 
   const queueData = [
     { label: "Flight Rsv", value: 1 },
@@ -47,7 +47,7 @@ const GraphAgentStructure: React.FunctionComponent = () => {
           <h1 className="text-3xl font-roboto mb-4 text-center sm:text-left">Agent Status</h1>
           <div className="flex justify-center">
             <div style={{ width: '100%', height: '300px' }}>
-              <MyPieChart data={chartData} unit="Agents" />
+              <MyPieChart data={availabilityData} unit="Agents" />
             </div>
           </div>
         </div>
@@ -55,7 +55,7 @@ const GraphAgentStructure: React.FunctionComponent = () => {
           <h1 className="text-3xl font-roboto mb-4 text-center sm:text-left">Agent Availability</h1>
           <div className="flex justify-center">
             <div style={{ width: '100%', height: '300px' }}>
-              <MyPieChart data={chartData2} unit="Agents" />
+              <MyPieChart data={issueData} unit="Agents" />
             </div>
           </div>
         </div>

@@ -10,7 +10,7 @@ import userService from "../services/user"
 
 
 const MainContent = () => {
-  const [buttonMode, setButtonMode] = useState('workspace');
+  const [buttonMode, setButtonMode] = useState("workspace");
   const [userInfo, setUserInfo] = useState<WorkerCardProps | null>(null);
   const { role, username, logout } = useAuth()
   const { showError } = useCustomToast();

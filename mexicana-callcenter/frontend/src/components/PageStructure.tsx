@@ -12,18 +12,18 @@ interface PageStructureProps {
     children?: ReactNode; // main div content
   }
   const PageStructure: FunctionComponent<PageStructureProps> = ({ title, children }) => {
-  const [timestamp, setTimestamp] = useState("");
+  // const [timestamp, setTimestamp] = useState("");
   const [notificationCount, setNotificationCount] = useState(0);
     const navigate = useNavigate();
 
   useEffect(() => {
-    const updateTimestamp = () => {
-      const now = new Date();
-      const date = now.toLocaleDateString();
-      const time = now.toLocaleTimeString();
-      const currentTimestamp = `${date} ${time}`;
-      setTimestamp(currentTimestamp);
-    };
+    // const updateTimestamp = () => {
+    //   const now = new Date();
+    //   const date = now.toLocaleDateString();
+    //   const time = now.toLocaleTimeString();
+    //   const currentTimestamp = `${date} ${time}`;
+    //   setTimestamp(currentTimestamp);
+    // };
 
   //   const fetchNotifications = async () => {
   //     setLoading(true);
@@ -62,12 +62,12 @@ interface PageStructureProps {
   fetchMockNotifications();
 
 
-    updateTimestamp(); // Update the timestamp initially 
+    // updateTimestamp(); // Update the timestamp initially 
 
-    const intervalId = setInterval(updateTimestamp, 1000); // Update the timestamp every second
-    return () => {
-      clearInterval(intervalId); //Cleaar the interval when the component unmounts
-    };
+    // const intervalId = setInterval(updateTimestamp, 1000); // Update the timestamp every second
+    // return () => {
+    //   clearInterval(intervalId); //Cleaar the interval when the component unmounts
+    // };
   }, []);
 
   const handleNotificationClick = () => {

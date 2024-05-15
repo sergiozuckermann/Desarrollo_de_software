@@ -4,7 +4,7 @@ import MyLineChart from "../components/Charts/linechart";
 import CallCard from '../components/Callinfo';
 import Card from '../components/Card';
 import AHT from "../components/Charts/AHT";
-import { useState } from "react";
+// import { useState } from "react";
 
 //Aqui va la obtencion de los siguientes datos del aguente visitado: nombre del agente, puesto del agente 
 
@@ -30,7 +30,7 @@ const MainContent = () => {
         ];
       
         // State initialized with mock data
-        const [chartData, setChartData] = useState<PieChartDataItem[]>(mockData)
+        // const [chartData, setChartData] = useState<PieChartDataItem[]>(mockData)
 
         const AnalysisData: PieChartDataItem[] = [
           { id: "Positive", label: "Positive", value: 64},
@@ -39,7 +39,7 @@ const MainContent = () => {
         ];
       
         // State initialized with mock data
-        const [chartData2, setChartData2] = useState<PieChartDataItem[]>(AnalysisData)
+        // const [chartData2, setChartData2] = useState<PieChartDataItem[]>(AnalysisData)
         
         
         const sentimentData = [
@@ -76,11 +76,11 @@ const MainContent = () => {
                     </div>
                     <div className="grid w-[100%] h-[80%]  grid-cols-1 gap-2 lg:grid-cols-2 lg:col-span-8 z-30">
                         <Card title="Talk time">
-                            <MyPieChart data={chartData} unit="seconds" />
+                            <MyPieChart data={mockData} unit="seconds" />
                         </Card>
                       
                         <Card title="Sentiment"> 
-                            <MyPieChart data={chartData2} unit="percent" />  
+                            <MyPieChart data={AnalysisData} unit="percent" />  
                         </Card>
 
                         <Card title="Sentiment Trend">
