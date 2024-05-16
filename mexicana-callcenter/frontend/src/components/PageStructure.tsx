@@ -2,9 +2,14 @@ import { FunctionComponent, ReactNode } from "react";
 import "../css/PageStructure.css";
 import Button from "./Buttons";
 import SettingsButton from "./SettingsButton";
+
+import NotificationBadge from "./notificationComponent";
+import { useNavigate } from 'react-router-dom';
+import TimestampDisplay from "./TimestampDisplay";
 import TimestampDisplay from "./TimestampDisplay";
 import NotificationsDropDown from "./NotificationsDropDown";
 import { notifications } from "./notificationsData";
+
 
 interface PageStructureProps {
   title: string;
