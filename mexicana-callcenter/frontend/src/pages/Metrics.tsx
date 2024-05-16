@@ -1,24 +1,30 @@
 
 import PageStructure from '../components/PageStructure';
+import { FetchMetrics } from '../services/metrics';
 
 
 const MainContent = () => {
+     const { averageAbandonmentRate, averageAbandonTime, averageQueueAnswerTime } = FetchMetrics();
      return (
         <div className="grid w-full h-full grid-cols-12 grid-rows-6 gap-4 p-2 pt-5 overflow-y-auto">
 
             {/* Abandonment Rate */}
             <div className="w-full h-full col-span-3 row-span-2 p-3 border-2 border-gray-400 shadow-lg bg-tertiary rounded-xl">
                 <p>Abandonment Rate</p>
+                <p>{averageAbandonmentRate}</p>
+
             </div>
 
             {/* Average Case Resolution Time */}
             <div className="w-full h-full col-span-3 row-span-2 p-3 border-2 border-gray-400 shadow-lg bg-tertiary rounded-xl">
                 <p>Average Case Resolution Time</p>
+                <p>{averageAbandonTime}</p>
             </div>
 
             {/* Average Contacts per Case */}
             <div className="w-full h-full col-span-3 row-span-2 p-3 border-2 border-gray-400 shadow-lg bg-tertiary rounded-xl">
                 <p>Average Contacts per Case</p>
+                <p>{averageQueueAnswerTime}</p>
             </div>
 
             {/* Filters */}
