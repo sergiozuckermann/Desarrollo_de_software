@@ -3,8 +3,8 @@ import axios from 'axios';
 
 export function FetchMetrics() {
     const [averageAbandonmentRate, setAverageAbandonmentRate] = useState<number | null>(null);
-    const [averageAbandonTime, setAverageAbandonTime] = useState<number | null>(null);
-    const [averageQueueAnswerTime, setAverageQueueAnswerTime] = useState<number | null>(null);
+    const [averageAbandonTime, setAverageAbandonTime] = useState<Array<{label: string, value: number}> | null>(null);
+    const [averageQueueAnswerTime, setAverageQueueAnswerTime] = useState<Array<{label: string, value: number}> | null>(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -13,11 +13,9 @@ export function FetchMetrics() {
             const metricResults = response.data.MetricResults;
 
             let totalAbandonmentRate = 0;
-            let totalAbandonTime = 0;
-            let totalQueueAnswerTime = 0;
             let abandonmentRateCount = 0;
-            let abandonTimeCount = 0;
-            let queueAnswerTimeCount = 0;
+            let abandonTimes = [];
+            let queueAnswerTimes = [];
 
             metricResults.forEach(queue => {
                 queue.Collections.forEach(metric => {
@@ -30,14 +28,12 @@ export function FetchMetrics() {
                             break;
                         case "AVG_ABANDON_TIME":
                             if (metric.Value !== undefined) {
-                                totalAbandonTime += metric.Value;
-                                abandonTimeCount++;
+                                abandonTimes.push({label: queue.Dimensions.QUEUE, value: metric.Value});
                             }
                             break;
                         case "AVG_QUEUE_ANSWER_TIME":
                             if (metric.Value !== undefined) {
-                                totalQueueAnswerTime += metric.Value;
-                                queueAnswerTimeCount++;
+                                queueAnswerTimes.push({label: queue.Dimensions.QUEUE, value: metric.Value});
                             }
                             break;
                     }
@@ -47,12 +43,8 @@ export function FetchMetrics() {
             if (abandonmentRateCount > 0) {
                 setAverageAbandonmentRate(Math.round(totalAbandonmentRate / abandonmentRateCount));
             }
-            if (abandonTimeCount > 0) {
-                setAverageAbandonTime(Math.round(totalAbandonTime / abandonTimeCount));
-            }
-            if (queueAnswerTimeCount > 0) {
-                setAverageQueueAnswerTime(Math.round(totalQueueAnswerTime / queueAnswerTimeCount));
-            }
+            setAverageAbandonTime(abandonTimes);
+            setAverageQueueAnswerTime(queueAnswerTimes);
 
           } catch (error) {
             console.error("Error fetching data", error);

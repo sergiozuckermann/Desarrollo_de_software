@@ -1,10 +1,14 @@
 
 import PageStructure from '../components/PageStructure';
 import { FetchMetrics } from '../services/metrics';
+import MyResponsiveBar from '../components/Charts/barChart2';
 
 
 const MainContent = () => {
      const { averageAbandonmentRate, averageAbandonTime, averageQueueAnswerTime } = FetchMetrics();
+     console.log(averageAbandonTime);
+
+
      return (
         <div className="grid w-full h-full grid-cols-12 grid-rows-6 gap-4 p-2 pt-5 overflow-y-auto">
 
@@ -18,13 +22,15 @@ const MainContent = () => {
             {/* Average Case Resolution Time */}
             <div className="w-full h-full col-span-3 row-span-2 p-3 border-2 border-gray-400 shadow-lg bg-tertiary rounded-xl">
                 <p>Average Case Resolution Time</p>
-                <p>{averageAbandonTime}</p>
+                {/* <MyResponsiveBar data={averageAbandonTime} />
+                <p>{averageAbandonTime}</p> */}
+              
             </div>
 
             {/* Average Contacts per Case */}
             <div className="w-full h-full col-span-3 row-span-2 p-3 border-2 border-gray-400 shadow-lg bg-tertiary rounded-xl">
                 <p>Average Answer Time per Queue</p>
-                <p>{averageQueueAnswerTime}</p>
+                {/* <p>{averageQueueAnswerTime}</p> */}
             </div>
 
             {/* Filters */}
@@ -40,6 +46,7 @@ const MainContent = () => {
             {/* Average Queue Abandon Time */}
             <div className="w-full h-full col-span-4 row-span-2 p-3 border-2 border-gray-400 shadow-lg bg-tertiary rounded-xl">
                 <p>Average Queue Abandon Time</p>
+                <MyResponsiveBar data={averageAbandonTime} />
             </div>
 
             {/* Average Queue Answer Time (ASA) */}
