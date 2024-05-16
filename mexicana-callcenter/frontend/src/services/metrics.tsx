@@ -10,7 +10,7 @@ export function FetchMetrics() {
     const [averageAbandonmentRate, setAverageAbandonmentRate] = useState<number | null>(null);
     const [averageAbandonTime, setAverageAbandonTime] = useState<Array<{label: string, value: number}> | null>(null);
     const [averageQueueAnswerTime, setAverageQueueAnswerTime] = useState<Array<{label: string, value: number}> | null>(null);
-
+    const [averageAnswerTime, setAverageAnswerTime] = useState<number | null>(null);
     useEffect(() => {
         const fetchData = async () => {
           try {
@@ -21,6 +21,8 @@ export function FetchMetrics() {
             let abandonmentRateCount = 0;
             let abandonTimes: Array<{label: string, value: number}> = [];
             let queueAnswerTimes: Array<{label: string, value: number}> = [];
+            let totalAnswerTime = 0;
+            let AnswerTimeCount = 0;
 
             metricResults.forEach(queue => {
                 const queueName = queueNames[queue.Dimensions.QUEUE];
@@ -34,14 +36,14 @@ export function FetchMetrics() {
                                 break;
                             case "AVG_ABANDON_TIME":
                                 if (metric.Value !== undefined) {
-                                    // abandonTimes.push({label: queue.Dimensions.QUEUE, value: metric.Value});
                                     abandonTimes.push({label: queueName, value: metric.Value});
                                 }
                                 break;
                             case "AVG_QUEUE_ANSWER_TIME":
                                 if (metric.Value !== undefined) {
-                                    // queueAnswerTimes.push({label: queue.Dimensions.QUEUE, value: metric.Value});
                                     queueAnswerTimes.push({label: queueName, value: metric.Value});
+                                    totalAnswerTime += metric.Value;
+                                    AnswerTimeCount++;
                                 }
                                 break;
                     }
@@ -54,6 +56,10 @@ export function FetchMetrics() {
             setAverageAbandonTime(abandonTimes);
             setAverageQueueAnswerTime(queueAnswerTimes);
 
+            if (AnswerTimeCount > 0) {
+                setAverageAnswerTime(Math.round(totalAnswerTime / AnswerTimeCount));
+            }
+
           } catch (error) {
             console.error("Error fetching data", error);
           }
@@ -65,6 +71,7 @@ export function FetchMetrics() {
     return {
         averageAbandonmentRate,
         averageAbandonTime,
-        averageQueueAnswerTime
+        averageQueueAnswerTime,
+        averageAnswerTime
     };
 }
