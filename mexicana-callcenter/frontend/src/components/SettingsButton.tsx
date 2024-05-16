@@ -22,7 +22,7 @@ function SettingsButton() {
                 <img src='/settings.svg' alt="Settings" className="md:w-[45px] w-[38px] " />
             </button>
             {isActive && (
-                <div className="absolute right-0 w-48 py-2 mt-2 bg-white rounded-md shadow-xl">
+                <div className="absolute right-0 w-48 py-2 mt-2 bg-white rounded-md">
                     <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Modes</a>
                     <button onClick={handleLogout} className="block w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100">Logout</button>
                 </div>
