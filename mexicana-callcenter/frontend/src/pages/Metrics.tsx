@@ -4,6 +4,7 @@ import { FetchMetrics } from '../services/metrics';
 import MyResponsiveBar from '../components/Charts/barChart2';
 
 
+
 const MainContent = () => {
      const { averageAbandonmentRate, averageAbandonTime, averageQueueAnswerTime } = FetchMetrics();
      console.log(averageAbandonTime, averageQueueAnswerTime);
