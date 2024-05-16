@@ -43,7 +43,6 @@ function App() {
           <Route path="/supervisor/ongoingcalls" element={<OngoingCalls />} />
           <Route path="/supervisor/bargein" element={<BargeIn />} />
           <Route path="/supervisor/home" element={<SupervisorMain />} />
-          <Route path="/supervisor/ongoingcalls" element={<OngoingCalls />} />
           <Route path="/supervisor/notifications" element={<SupervisorNotifications />} />
           <Route path="/supervisor/calloverview" element={<CallOverview />} />
           <Route path="/supervisor/metrics" element={<HistoricalMetrics />} />

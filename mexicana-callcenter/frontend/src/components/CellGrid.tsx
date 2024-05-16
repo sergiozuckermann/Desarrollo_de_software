@@ -14,13 +14,13 @@ const CellGrid: React.FunctionComponent<CellGridProps> = ({ data }) => {
       <div className="grid sm:grid-cols-2 gap-4">
         {data.map(([callStatus, moodValue], index) => (
           <Link
-            to="/Supervisor/bargein"
+            to="/Supervisor/calloverview"
             key={index}
             className="bg-white rounded-lg shadow p-6 border border-gray-300"
           >
             <div className="flex flex-col items-center justify-center text-center h-full">
               <div className="flex justify-center items-center mb-4">
-                <p className="text-lg font-semibold">Nombre del agente</p>
+                <p className="text-lg font-semibold">Agent</p>
               </div>
               <div className="flex items-center justify-center space-x-4 mb-4">
                 <CallStatusIndicator callStatus={callStatus} />

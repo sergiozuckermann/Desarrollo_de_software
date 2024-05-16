@@ -6,7 +6,6 @@ import SettingsButton from "./SettingsButton";
 import NotificationBadge from "./notificationComponent";
 import { useNavigate } from 'react-router-dom';
 import TimestampDisplay from "./TimestampDisplay";
-import TimestampDisplay from "./TimestampDisplay";
 import NotificationsDropDown from "./NotificationsDropDown";
 import { notifications } from "./notificationsData";
 

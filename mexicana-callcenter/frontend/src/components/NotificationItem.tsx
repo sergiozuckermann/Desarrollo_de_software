@@ -40,7 +40,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
   };
 
   const handleCallOverview = () => {
-    navigate(`/supervisor/ongoingcalls`);
+    navigate(`/supervisor/calloverview`);
   };
 
   const shouldShowCallOverviewButton =
