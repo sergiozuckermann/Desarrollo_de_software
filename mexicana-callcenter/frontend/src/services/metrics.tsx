@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const queueNames = {
-    '99bfbe85-27ac-4384-8462-f01f75b53d32': "Flight Management queue",
+    '99bfbe85-27ac-4384-8462-f01f75b53d32': "Flight Management",
     '292d0398-6089-42cc-9ec9-aee43d6202a6': "Travel logistics"
 };
 
