@@ -1,7 +1,9 @@
 
 import PageStructure from '../components/PageStructure';
 import { FetchMetrics } from '../services/metrics';
+import '../css/global.css';
 import MyResponsiveBar from '../components/Charts/barChart2';
+import GaugeChart from 'react-gauge-chart';
 
 
 const MainContent = () => {
@@ -15,8 +17,7 @@ const MainContent = () => {
             {/* Abandonment Rate */}
             <div className="w-full h-full col-span-3 row-span-2 p-3 border-2 border-gray-400 shadow-lg bg-tertiary rounded-xl">
                 <p>Abandonment Rate</p>
-                <p>{averageAbandonmentRate}</p>
-
+                <GaugeChart id="gauge-chart1" nrOfLevels={20} colors={["#84BF68", "#FF5F6D", "#FFC371"]} arcWidth={0.3} percent={averageAbandonmentRate / 100} textColor="#20253F" />
             </div>
 
             {/* Average Case Resolution Time */}
