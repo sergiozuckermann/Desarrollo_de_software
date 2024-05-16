@@ -12,7 +12,7 @@ const OngoingCalls: React.FunctionComponent = () => {
 
 return (
     <PageStructure title="Ongoing Calls">
-      <div className="overflow-y-auto h-full pb-[3%] pt-[2%] pl-[2%]">
+      <div className="overflow-y-auto h-full w-full pb-[1%] pt-[1%] pl-[2%]">
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
               <div className="col-span-1">
                 <GraphAgentStructure />
@@ -21,10 +21,7 @@ return (
                 <CellGrid data={backendData} />
               </div>
             </div>
-          </div>
-          
-
-          
+          </div> 
     </PageStructure>
   );
 };
