@@ -23,52 +23,46 @@ const SupervisorNotifications: React.FunctionComponent = () => {
 
     const notifications = [
         {
-            id: 16,
-            title: "High Call Volume 2 prueba",
-            message: "The call center is experiencing a high volume of incoming calls. All available agents are currently assisting customers. Estimated wait time is 10 minutes.",
-            date: "2024-05-09 09:30:00",
-        },
-        {
           id: 1,
           title: "High Call Volume",
           message: "The call center is experiencing a high volume of incoming calls. All available agents are currently assisting customers. Estimated wait time is 10 minutes.",
-          date: "2024-05-09 09:30:00",
+          date: "2024-05-16 09:30:00",
         },
         {
           id: 2,
           title: "System Update Scheduled",
           message: "A system update has been scheduled for today at 11:00 PM. The call center system will be unavailable for approximately 30 minutes during the update.",
-          date: "2024-05-09 10:15:00",
+          date: "2024-05-16 10:15:00",
         },
         {
           id: 3,
           title: "New Agent Training",
           message: "A new batch of agents has completed their training and will be joining the call center team starting next Monday. Please ensure they are properly onboarded and assigned to their respective queues.",
-          date: "2024-04-08 12:00:00",
+          date: "2024-05-15 12:00:00",
         },
         {
           id: 4,
           title: "Customer Satisfaction Survey Results",
           message: "The results of the latest customer satisfaction survey are now available. Overall satisfaction rate has increased by 5% compared to the previous quarter. Great job, team!",
-          date: "2024-05-08 11:45:00",
+          date: "2024-05-15 11:45:00",
         },
         {
           id: 5,
           title: "Agent Performance Review",
           message: "The monthly agent performance review is scheduled for next Friday. Please prepare your feedback and discuss areas of improvement with your team members.",
-          date: "2024-05-08 16:30:00",
+          date: "2024-05-15 16:30:00",
         },
         {
           id: 6,
           title: "New Script Guidelines",
           message: "Updated script guidelines have been released for the sales campaign. All agents are required to familiarize themselves with the new guidelines and adhere to them during customer interactions.",
-          date: "2024-05-07 13:20:00",
+          date: "2024-05-14 13:20:00",
         },
         {
           id: 7,
           title: "System Outage Resolved",
           message: "The issue with the call center system has been resolved. All services are now back to normal. Thank you for your patience and understanding during the outage.",
-          date: "2024-05-06 15:00:00",
+          date: "2024-05-13 15:00:00",
         },
         {
           id: 8,
@@ -154,14 +148,14 @@ const SupervisorNotifications: React.FunctionComponent = () => {
 
       return (
         <PageStructure title="Notifications">
-          <div className="flex flex-col w-full h-[90%] overflow-y-scroll">
+          <div className="flex flex-col w-full h-[90%] overflow-y-auto" style={{ WebkitOverflowScrolling: 'touch', msOverflowStyle: 'none', scrollbarWidth: 'none' }}>
             {/* Today */}
             {groupedNotifications.today.length > 0 && (
               <div className="w-full flex flex-col">
-                <div className="pl-8 pb-6">
-                  <h1 className="text-left">Today</h1>
+                <div className="pl-24 pb-2">
+                  <h1 className="text-left text-4xl">Today</h1>
                 </div>
-                <div className="w-full pr-8 pl-8 space-y-4">
+                <div className="w-full pr-8 pl-16 space-y-4">
                   {groupedNotifications.today.map((notification) => (
                     <NotificationItem
                     key={notification.id}
@@ -179,10 +173,10 @@ const SupervisorNotifications: React.FunctionComponent = () => {
             {/* Yesterday */}
             {groupedNotifications.yesterday.length > 0 && (
               <div className="w-full flex flex-col">
-                <div className="pl-8 pb-6">
-                  <h1 className="text-left">Yesterday</h1>
+                <div className="pl-24 pb-2 pt-6">
+                  <h1 className="text-left text-4xl">Yesterday</h1>
                 </div>
-                <div className="w-full pr-8 pl-8 space-y-4">
+                <div className="w-full pr-8 pl-16 space-y-4">
                   {groupedNotifications.yesterday.map((notification) => (
                     <NotificationItem
                     key={notification.id}
@@ -200,10 +194,10 @@ const SupervisorNotifications: React.FunctionComponent = () => {
             {/* Last 7 Days */}
             {groupedNotifications.lastWeek.length > 0 && (
               <div className="w-full flex flex-col">
-                <div className="pl-8 pb-6">
-                  <h1 className="text-left">Last 7 Days</h1>
+                <div className="pl-24 pb-2 pt-6">
+                  <h1 className="text-left text-4xl">Last 7 Days</h1>
                 </div>
-                <div className="w-full pr-8 pl-8 space-y-4">
+                <div className="w-full pr-8 pl-16 space-y-4">
                   {groupedNotifications.lastWeek.map((notification) => (
                     <NotificationItem
                     key={notification.id}
@@ -221,10 +215,10 @@ const SupervisorNotifications: React.FunctionComponent = () => {
             {/* Last 30 Days */}
             {groupedNotifications.lastMonth.length > 0 && (
               <div className="w-full flex flex-col">
-                <div className="pl-8 pb-6">
-                  <h1 className="text-left">Last 30 Days</h1>
+                <div className="pl-24 pb-2 pt-6">
+                  <h1 className="text-left text-4xl">Last 30 Days</h1>
                 </div>
-                <div className="w-full pr-8 pl-8 space-y-4">
+                <div className="w-full pr-8 pl-16 space-y-4">
                   {groupedNotifications.lastMonth.map((notification) => (
                     <NotificationItem
                     key={notification.id}
@@ -242,10 +236,10 @@ const SupervisorNotifications: React.FunctionComponent = () => {
             {/* Older */}
             {groupedNotifications.older.length > 0 && (
               <div className="w-full flex flex-col">
-                <div className="pl-8 pb-6">
-                  <h1 className="text-left">Older</h1>
+                <div className="pl-24 pb-2 pt-6">
+                  <h1 className="text-left text-4xl">Older</h1>
                 </div>
-                <div className="w-full pr-8 pl-8 space-y-4">
+                <div className="w-full pr-8 pl-16 space-y-4">
                   {groupedNotifications.older.map((notification) => (
                     <NotificationItem
                     key={notification.id}
