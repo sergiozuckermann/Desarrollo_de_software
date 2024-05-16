@@ -8,6 +8,10 @@ const MainContent = () => {
      const { averageAbandonmentRate, averageAbandonTime, averageQueueAnswerTime } = FetchMetrics();
      console.log(averageAbandonTime, averageQueueAnswerTime);
 
+     if (averageAbandonTime === null || averageQueueAnswerTime === null) {
+        return <div>Loading...</div>;
+    }
+
 
      return (
         <div className="grid w-full h-full grid-cols-12 grid-rows-6 gap-4 p-2 pt-5 overflow-y-auto">
