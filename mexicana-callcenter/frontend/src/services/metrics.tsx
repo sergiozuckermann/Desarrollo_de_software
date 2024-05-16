@@ -45,13 +45,13 @@ export function FetchMetrics() {
             });
 
             if (abandonmentRateCount > 0) {
-                setAverageAbandonmentRate(totalAbandonmentRate / abandonmentRateCount);
+                setAverageAbandonmentRate(Math.round(totalAbandonmentRate / abandonmentRateCount));
             }
             if (abandonTimeCount > 0) {
-                setAverageAbandonTime(totalAbandonTime / abandonTimeCount);
+                setAverageAbandonTime(Math.round(totalAbandonTime / abandonTimeCount));
             }
             if (queueAnswerTimeCount > 0) {
-                setAverageQueueAnswerTime(totalQueueAnswerTime / queueAnswerTimeCount);
+                setAverageQueueAnswerTime(Math.round(totalQueueAnswerTime / queueAnswerTimeCount));
             }
 
           } catch (error) {

@@ -23,7 +23,7 @@ const MainContent = () => {
 
             {/* Average Contacts per Case */}
             <div className="w-full h-full col-span-3 row-span-2 p-3 border-2 border-gray-400 shadow-lg bg-tertiary rounded-xl">
-                <p>Average Contacts per Case</p>
+                <p>Average Answer Time per Queue</p>
                 <p>{averageQueueAnswerTime}</p>
             </div>
 
