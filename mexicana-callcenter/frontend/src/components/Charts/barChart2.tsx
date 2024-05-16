@@ -10,42 +10,41 @@ const MyResponsiveBar = ({ data }) => {
     }
 
     return (
-            <ResponsiveBar
-                data={data}
+        <ResponsiveBar
+            data={data}
+            indexBy="label"
+            margin={{ top: 10, right: 30, bottom: 50, left: 60 }} 
+            padding={0.3}
+            valueScale={{ type: 'linear' }}
+            indexScale={{ type: 'band', round: true }}
+            colors={({ index }) => barColors[index % barColors.length]}
+            borderColor={{
+                from: 'color',
+                modifiers: [['darker', 1.6]]
+            }}
+            axisTop={null}
+            axisRight={null}
+            axisBottom={{
+                tickSize: 5,
+                tickPadding: 5,
+                tickRotation:0,
                 
-                indexBy="label"
-                margin={{ top: 10, right: 30, bottom: 100, left: 60 }} 
-                padding={0.3}
-                valueScale={{ type: 'linear' }}
-                indexScale={{ type: 'band', round: true }}
-                colors={barColors}
-                borderColor={{
-                    from: 'color',
-                    modifiers: [['darker', 1.6]]
-                }}
-                axisTop={null}
-                axisRight={null}
-                axisBottom={{
-                    tickSize: 5,
-                    tickPadding: 5,
-                    tickRotation: -35,
-                    
-                }}
-                axisLeft={{
-                    tickSize: 5,
-                    tickPadding: 5,
-                    tickRotation: 0,
-                    legend: 'Number of Issues',
-                    legendPosition: 'middle',
-                    legendOffset: -40
-                }}
-                labelSkipWidth={12}
-                labelSkipHeight={12}
-                labelTextColor={{
-                    from: 'color',
-                    modifiers: [['darker', 1.6]]
-                }}
-                legends={[
+            }}
+            axisLeft={{
+                tickSize: 5,
+                tickPadding: 5,
+                tickRotation: 0,
+                legend: 'Seconds',
+                legendPosition: 'middle',
+                legendOffset: -40
+            }}
+            labelSkipWidth={12}
+            labelSkipHeight={12}
+            labelTextColor={{
+                from: 'color',
+                modifiers: [['darker', 1.6]]
+            }}
+            legends={[
 
                 ]}
                 role="application"

@@ -6,9 +6,14 @@ import MyResponsiveBar from '../components/Charts/barChart2';
 import GaugeChart from 'react-gauge-chart';
 
 
+
 const MainContent = () => {
      const { averageAbandonmentRate, averageAbandonTime, averageQueueAnswerTime } = FetchMetrics();
      console.log(averageAbandonTime, averageQueueAnswerTime);
+
+     if (averageAbandonTime === null || averageQueueAnswerTime === null) {
+        return <div>Loading...</div>;
+    }
 
 
      return (
