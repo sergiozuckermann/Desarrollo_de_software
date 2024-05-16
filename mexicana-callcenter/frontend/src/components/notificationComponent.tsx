@@ -1,4 +1,4 @@
-import  { FunctionComponent, useState, useEffect } from 'react';
+import  { FunctionComponent } from 'react';
 
 interface NotificationBadgeProps {
     count: number; 
@@ -10,6 +10,7 @@ const NotificationBadge: FunctionComponent<NotificationBadgeProps>  = ({ count }
       <span className="badge">
         {count}
       </span>
+      
     );
   }
   return null;

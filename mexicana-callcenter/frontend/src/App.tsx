@@ -17,6 +17,7 @@ import BargeIn from "./pages/bargein";
 import SupervisorMain from "./pages/SupervisorMain";
 import HomePage from "./pages/AgentMain";
 import NotficationCenter from "./pages/Notifications";
+import SupervisorNotifications from "./pages/SupervisorNotifications"
 import CallOverview from "./pages/CallOverview";
 
 function App() {
@@ -42,6 +43,7 @@ function App() {
           <Route path="/supervisor/bargein" element={<BargeIn />} />
           <Route path="/supervisor/home" element={<SupervisorMain />} />
           <Route path="/supervisor/ongoingcalls" element={<OngoingCalls />} />
+          <Route path="/supervisor/notifications" element={<SupervisorNotifications />} />
           <Route path="/supervisor/calloverview" element={<CallOverview />} />
       </Route>
 
