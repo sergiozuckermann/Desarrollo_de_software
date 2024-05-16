@@ -6,7 +6,7 @@ import MyResponsiveBar from '../components/Charts/barChart2';
 
 const MainContent = () => {
      const { averageAbandonmentRate, averageAbandonTime, averageQueueAnswerTime } = FetchMetrics();
-     console.log(averageAbandonTime);
+     console.log(averageAbandonTime, averageQueueAnswerTime);
 
 
      return (
@@ -52,6 +52,7 @@ const MainContent = () => {
             {/* Average Queue Answer Time (ASA) */}
             <div className="w-full h-full col-span-5 row-span-2 p-3 border-2 border-gray-400 shadow-lg bg-tertiary rounded-xl">
                 <p>Average Queue Answer Time (ASA)</p>
+                <MyResponsiveBar data={averageQueueAnswerTime} />
             </div>
 
             {/* Cases Created */}
