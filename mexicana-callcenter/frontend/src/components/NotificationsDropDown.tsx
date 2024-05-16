@@ -35,7 +35,7 @@ const NotificationsDropDown: React.FC<NotificationsDropDownProps> = ({ notificat
       {isDropdownOpen && (
         <div className="absolute right-0 mt-2 w-64 bg-white border rounded-lg shadow-lg max-h-60 overflow-y-auto">
           <div className="p-2">
-            <h3 className="text-lg font-semibold mb-4">Notificaciones</h3>
+            <h3 className="text-lg font-semibold mb-4">Notifications</h3>
             {notificationsData.slice(0, 5).map((notification) => (
               <div
                 key={notification.id}
