@@ -18,7 +18,7 @@ const CallCard: React.FC<CallCardProps> = ({ agentname, agentposition, callclasi
     <div>
       {/* Large Device Layout */}
       <div className="hidden md:block lg:mt-20 lg:h-[95%]">
-        <div className="hidden max-w-sm p-4 overflow-hidden border-2 border-gray-400 shadow-lg rounded-xl md:block bg-tertiary h-[20%] justify-center items-center"> 
+        <div className="hidden max-w-sm p-4 overflow-hidden border-2 border-gray-400 rounded-xl md:block bg-tertiary h-[20%] justify-center items-center"> 
           <div className="flex justify-center">
             <img className="w-[65%] h-[65%] rounded-full" src="/avatar.png" alt="User avatar" />
           </div>

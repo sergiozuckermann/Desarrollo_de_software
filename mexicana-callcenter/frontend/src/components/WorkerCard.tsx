@@ -7,7 +7,7 @@ const WorkerCard: React.FC<WorkerCardProps> = ({ name, position, experience, poi
   return (
     <div>
       {/* Large Device Layout */}
-      <div className="hidden h-[65%] max-w-sm p-4 overflow-hidden border-2 border-gray-400 shadow-lg rounded-xl md:block bg-tertiary">
+      <div className="hidden h-[65%] max-w-sm p-4 overflow-hidden border-2 border-gray-400 rounded-xl md:block bg-tertiary">
         <div className="flex justify-center">
           <img className="w-[65%] h-[65%] rounded-full" src="/avatar.png" alt="User avatar" />
         </div>

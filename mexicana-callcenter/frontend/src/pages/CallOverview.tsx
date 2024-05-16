@@ -72,7 +72,7 @@ const MainContent = () => {
             <div className="z-30 h-full lg:col-span-8 sm:col-span-12">
                     <div className="flex items-center justify-between pt-4 mb-4">
                         <h2 className="text-xl text-gray-600 font-roboto">Call Metrics</h2>
-                        <button className="px-4 py-3 text-white shadow bg-secondary w-5/12 rounded-lg hover:opacity-75 mr-7">Barge In</button>
+                        <button className="px-4 py-3 text-white bg-secondary w-5/12 rounded-lg hover:opacity-75 mr-7">Barge In</button>
                     </div>
                     <div className="grid w-[100%] h-[80%]  grid-cols-1 gap-2 lg:grid-cols-2 lg:col-span-8 z-30">
                         <Card title="Talk time">

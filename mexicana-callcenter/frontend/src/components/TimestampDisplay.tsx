@@ -19,7 +19,7 @@ const TimestampDisplay: React.FunctionComponent = () => {
   }, []);
 
   return (
-    <div className="fixed bottom-0 left-0 w-full flex items-center justify-center h-[5%] p-4 shadow-lg bg-tertiary ">
+    <div className="fixed bottom-0 left-0 w-full flex items-center justify-center h-[5%] p-4 bg-tertiary ">
       <p className="text-black text-lg font-semibold text-center font2">
         {timestamp}
       </p>

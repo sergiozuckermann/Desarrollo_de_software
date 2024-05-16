@@ -80,7 +80,7 @@ interface PageStructureProps {
   return (
     <div className="flex flex-col h-screen pl-2 pr-2 md:overflow-hidden">
       {/* Top bar */}
-      <div className="flex items-center justify-between h-[10%] shadow-lg  bg-tertiary z-50"> 
+      <div className="flex items-center justify-between h-[10%] bg-tertiary z-50"> 
         <div>
           {/* Callcenter logo, it redirects to main page*/}
         <Button onClick={() => window.location.href = '/'}>

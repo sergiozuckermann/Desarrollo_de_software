@@ -19,7 +19,7 @@ const GradientButton: React.FC<GradientButtonProps> = ({ mode,handleClick }) => 
   const buttonSubtitleSizeClass = 'text-sm md:text-base';
 
     return (
-      <button className={`relative flex items-center justify-center w-full ${paddingClass} mt-3 text-white transition ease-in-out duration-300 shadow-md rounded-xl ${backgroundClass} hover:opacity-75 border-2 border-gray-400`}
+      <button className={`relative flex items-center justify-center w-full ${paddingClass} mt-3 text-white transition ease-in-out duration-300 rounded-xl ${backgroundClass} hover:opacity-75 border-2 border-gray-400`}
       onClick={handleClick}>
         {mode === 'workspace' && (
           <img src='/phone.svg' alt="Phone" className="w-6 h-6 mr-2 md:w-8 md:h-8" />

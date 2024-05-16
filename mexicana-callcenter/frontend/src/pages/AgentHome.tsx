@@ -78,8 +78,8 @@ const AgentHome: FunctionComponent = () => {
                   </div>
                 </div>
               </div>
-              <div className="self-stretch h-[308px] rounded-3xs bg-tertiary shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)] box-border flex flex-row items-start justify-start pt-4 pb-[21px] pr-4 pl-[23px] max-w-full border-[1px] border-solid border-marco">
-                <div className="h-[308px] w-[491px] relative rounded-3xs bg-tertiary shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)] box-border hidden max-w-full border-[1px] border-solid border-marco" />
+              <div className="self-stretch h-[308px] rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-4 pb-[21px] pr-4 pl-[23px] max-w-full border-[1px] border-solid border-marco">
+                <div className="h-[308px] w-[491px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
                 <img
                   className="h-[271px] flex-1 relative rounded-3xs max-w-full overflow-hidden object-cover z-[1]"
                   loading="lazy"
@@ -129,14 +129,14 @@ const AgentHome: FunctionComponent = () => {
                     </div>
                   </div>
                   <div className="self-stretch flex flex-row items-start justify-end py-0 pr-[29px] pl-[31px]">
-                    <button className="cursor-pointer [border:none] py-3.5 px-[47.5px] bg-forestgreen-100 flex-1 rounded-3xs shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)] flex flex-row items-start justify-start whitespace-nowrap z-[1] hover:bg-forestgreen-200">
+                    <button className="cursor-pointer [border:none] py-3.5 px-[47.5px] bg-forestgreen-100 flex-1 rounded-3xs flex flex-row items-start justify-start whitespace-nowrap z-[1] hover:bg-forestgreen-200">
                       <div className="w-[105px] relative text-lg font-paragraph text-tertiary text-center inline-block min-w-[105px]">
                         Agent mood
                       </div>
                     </button>
                   </div>
                   <div className="self-stretch flex flex-row items-start justify-end py-0 px-[30px]">
-                    <button className="cursor-pointer [border:none] py-3.5 px-[48.5px] bg-forestgreen-100 flex-1 rounded-3xs shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)] flex flex-row items-start justify-start whitespace-nowrap z-[1] hover:bg-forestgreen-200">
+                    <button className="cursor-pointer [border:none] py-3.5 px-[48.5px] bg-forestgreen-100 flex-1 rounded-3xs flex flex-row items-start justify-start whitespace-nowrap z-[1] hover:bg-forestgreen-200">
                       <div className="w-[103px] relative text-lg font-paragraph text-tertiary text-center inline-block min-w-[103px]">
                         Client mood
                       </div>
@@ -178,7 +178,7 @@ const AgentHome: FunctionComponent = () => {
           </div>
         </section>
       </main>
-      <footer className="self-stretch bg-tertiary shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)_inset] flex flex-row items-start justify-center py-2.5 px-5 text-center text-lg text-primary font-paragraph">
+      <footer className="self-stretch bg-tertiary flex flex-row items-start justify-center py-2.5 px-5 text-center text-lg text-primary font-paragraph">
         <div className="w-[182px] relative flex items-center justify-center whitespace-nowrap">
           29/02/2024 15:00:43
         </div>

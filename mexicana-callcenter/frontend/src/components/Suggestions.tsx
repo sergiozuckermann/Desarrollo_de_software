@@ -21,7 +21,7 @@ const Suggestions = () => {
             </li>
             <li>
               <a href="#" className="block p-5 hover:bg-gray-200">
-                <h3 className="text-lg md:text-xl lg:text-xl xl:text-xl font-roboto">How do I help a customer to cancel a flight?</h3>
+                <h3 className="text-lg md:text-xl lg:text-xl xl:text-xl font-roboto">How can I assist a customer with canceling a flight?</h3>
               </a>
             </li>
             <li>
@@ -31,7 +31,7 @@ const Suggestions = () => {
             </li>
             <li>
               <a href="#" className="block p-5 hover:bg-gray-200">
-                <h3 className="text-lg md:text-xl lg:text-xl xl:text-xl font-roboto"> How do I help a customer claim his lost luggage during a connecting flight?</h3>
+                <h3 className="text-lg md:text-xl lg:text-xl xl:text-xl font-roboto"> How can I assist a customer in claiming their lost luggage during a connecting flight?</h3>
               </a>
             </li>
             <li>

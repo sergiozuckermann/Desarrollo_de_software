@@ -41,7 +41,7 @@ const GraphAgentStructure: React.FunctionComponent = () => {
   const totalCustomersWaiting = queueData.reduce((sum, item) => sum + item.value, 0);
 
   return (
-    <div className="box-border border-[1px] rounded-lg shadow p-4 border-solid border-marco shadow-lg lg:h-[700px] overflow-y-auto">
+    <div className="box-border border-[1px] rounded-lg p-4 border-solid border-marco lg:h-[700px] overflow-y-auto">
       <div className="flex flex-col items-center space-y-8 w-full">
         <div className="w-full">
           <h1 className="text-3xl font-roboto mb-4 text-center sm:text-left">Agent Status</h1>
