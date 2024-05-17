@@ -4,20 +4,22 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 const Filter = ({ onApplyFilters }) => {
     const [agent, setAgent] = useState('');
-    const [date, setDate] = useState(new Date());
+    const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(new Date());
     const [queue, setQueue] = useState('');
     const [showFilters, setShowFilters] = useState(false);
     const filterRef = useRef(null);
 
     const handleReset = () => {
         setAgent('');;
-        setDate(new Date());
         setQueue('');
+        setStartDate(new Date());
+        setEndDate(new Date());
     };
 
     const handleSearch = (e) => {
         e.preventDefault();
-        onApplyFilters({ agent, date, queue });
+        onApplyFilters({ agent, queue, startDate, endDate });
     };
 
     const toggleFilters = () => {
@@ -81,16 +83,6 @@ const Filter = ({ onApplyFilters }) => {
                                     />
                                 </div>
 
-
-                                <div className="flex flex-col">
-                                    <label htmlFor="date" className="text-sm font-medium text-stone-600">Date</label>
-                                    <DatePicker
-                                        selected={date}
-                                        onChange={(date) => setDate(date)}
-                                        className="block w-full px-2 py-1 mt-2 bg-gray-100 border border-gray-100 rounded-md shadow-sm outline-none cursor-pointer focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-                                    />
-                                </div>
-
                                 <div className="flex flex-col">
                                     <label htmlFor="queue" className="text-sm font-medium text-stone-600">Queue</label>
                                     <select
@@ -103,6 +95,22 @@ const Filter = ({ onApplyFilters }) => {
                                         <option>Travel logisticst</option>
                                         <option>Flight Managment</option>
                                     </select>
+                                </div>
+                                <div className="flex flex-col">
+                                    <label htmlFor="startdate" className="text-sm font-medium text-stone-600"> Start Date</label>
+                                    <DatePicker
+                                        selected={startDate}
+                                        onChange={(startDate) => setStartDate(startDate)}
+                                        className="block w-full px-2 py-1 mt-2 bg-gray-100 border border-gray-100 rounded-md shadow-sm outline-none cursor-pointer focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                    />
+                                </div>
+                                <div className="flex flex-col">
+                                    <label htmlFor="enddate" className="text-sm font-medium text-stone-600"> End Date</label>
+                                    <DatePicker
+                                        selected={endDate}
+                                        onChange={(endDate) => setEndDate(endDate)}
+                                        className="block w-full px-2 py-1 mt-2 bg-gray-100 border border-gray-100 rounded-md shadow-sm outline-none cursor-pointer focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                    />
                                 </div>
                             </div>
 
