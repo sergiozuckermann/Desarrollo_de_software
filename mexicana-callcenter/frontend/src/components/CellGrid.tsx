@@ -14,7 +14,7 @@ const CellGrid: React.FunctionComponent<CellGridProps> = ({ data }) => {
       <div className="grid sm:grid-cols-2 gap-4">
         {data.map(([callStatus, moodValue], index) => (
           <Link
-            to="/Supervisor/bargein"
+            to="/Supervisor/calloverview"
             key={index}
             className="bg-white rounded-lg p-6 border border-gray-300"
           >

@@ -5,6 +5,8 @@ import CallCard from '../components/Callinfo';
 import Card from '../components/Card';
 import AHT from "../components/Charts/AHT";
 import { useState } from "react";
+import { Link, redirect } from "react-router-dom";
+
 
 //Aqui va la obtencion de los siguientes datos del aguente visitado: nombre del agente, puesto del agente 
 
@@ -24,7 +26,7 @@ import { useState } from "react";
 const MainContent = () => {
         // Mock data
         const mockData: PieChartDataItem[] = [
-          { id: "Custumer", label: "Talk Time", value: 64},
+          { id: "Customer", label: "Talk Time", value: 64},
           { id: "Agent", label: "Wait Time", value: 35},
           { id: "Non-talk", label: "Hold Time", value: 20},
         ];
