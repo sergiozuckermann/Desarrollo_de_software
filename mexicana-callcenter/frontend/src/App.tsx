@@ -15,6 +15,7 @@ import SupervisorMain from './pages/SupervisorMain';
 import HomePage from './pages/AgentMain';
 import NotficationCenter from './pages/Notifications';
 import CallOverview from './pages/CallOverview';
+import ChatWidget from './components/ChatWidget';
 
 function App() {
   const { isAuthenticated, role } = useAuth(); // get user authentication status and role

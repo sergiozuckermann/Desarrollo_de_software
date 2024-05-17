@@ -1,0 +1,7 @@
+/* Asegúrate de que el contenedor del widget no esté oculto ni superpuesto */
+.rcw-widget-container {
+  z-index: 1000; /* Asegúrate de que el widget esté encima de otros elementos */
+  position: fixed; /* Para asegurarte de que esté en una posición fija */
+  bottom: 20px; /* Ajusta la posición si es necesario */
+  right: 20px; /* Ajusta la posición si es necesario */
+}

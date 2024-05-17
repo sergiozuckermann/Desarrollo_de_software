@@ -7,6 +7,7 @@ import { useAuth } from '../hooks/useAuth'
 import { WorkerCardProps } from '../utils/interfaces';
 import useCustomToast from "../components/LoginNotification";
 import userService from "../services/user"
+import ChatWidget from '../components/ChatWidget';
 
 
 const MainContent = () => {
@@ -65,6 +66,7 @@ const MainContent = () => {
             <GradientButton mode={buttonMode} handleClick={() => window.location.href = '/agent/workspace'} />
         </div>
       </div>
+      <ChatWidget />
     </div>
   );
 };
