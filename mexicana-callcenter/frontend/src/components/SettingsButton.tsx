@@ -19,7 +19,7 @@ function SettingsButton() {
     return (
         <div className="relative">
             <button onClick={toggleIsActive} className="p-2">
-                <img src='/settings.svg' alt="Settings" className="w-[45px]" />
+                <img src='/settings.svg' alt="Settings" className="md:w-[45px] w-[38px] " />
             </button>
             {isActive && (
                 <div className="absolute right-0 w-48 py-2 mt-2 bg-white rounded-md shadow-xl">
