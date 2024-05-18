@@ -1,20 +1,23 @@
 import { CognitoIdentityProviderClient, SignUpCommand } from "@aws-sdk/client-cognito-identity-provider";
 
-export async function createUser(testEmailExisting: string, testPasswordValid: string, testFirstName: string, testSurName: string, testJobLevel: string) {
+export async function createUser(test_email_valid: string, test_password_valid: string, test_firstName: string, test_lastName: string, test_jobLevel: string, test_agentType: string, test_preferred_username: string) {
     const client = new CognitoIdentityProviderClient({ region: "us-east-1" , credentials: {
         accessKeyId: Cypress.env('accessKeyId'),
         secretAccessKey: Cypress.env('secretAccessKey'),
     }});
     const command = new SignUpCommand({
-        ClientId: "2gdenkjjd809jojhh7ojfqslf1",
-        Username: testEmailExisting,
-        Password: testPasswordValid,
+        ClientId: "2pjaga1vncnbn404e3e6q81ehi",
+        Username: test_preferred_username,
+        Password: test_password_valid,
         UserAttributes: [
-            { Name: "given_name", Value: testFirstName },
-            { Name: "family_name", Value: testSurName },
-            { Name: "custom:job_level", Value: testJobLevel },
+          { Name: "given_name", Value: test_firstName },
+          { Name: "family_name", Value: test_lastName },
+          { Name: "email", Value: test_email_valid },
+          { Name: "custom:routing_profile", Value: test_agentType },
+          { Name: "preferred_username", Value: test_preferred_username },
+          { Name: "custom:passKey", Value: test_password_valid }
         ],
-    });
+      });
     try {
         const response = await client.send(command);
         const { $metadata } = response;
