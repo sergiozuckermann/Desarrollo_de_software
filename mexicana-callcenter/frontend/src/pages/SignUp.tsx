@@ -1,9 +1,4 @@
-
 import React, { useState } from "react";
-import {
-  CognitoIdentityProviderClient,
-  SignUpCommand,
-} from "@aws-sdk/client-cognito-identity-provider";
 import useCustomToast from "../components/LoginNotification";
 import "../css/global.css";
 
@@ -20,7 +15,7 @@ const SignUp: React.FC = () => {
   const [passwordValid, setPasswordValid] = useState(false);
   const [confirmPasswordTextValue, setConfirmPasswordTextValue] = useState("");
   const [passwordTextValue, setPasswordTextValue] = useState("");
-  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false); // Nuevo estado
+  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
   const { showError, showSuccess } = useCustomToast();
 
   const checkPasswordRequirements = (password: string) => {
@@ -35,42 +30,43 @@ const SignUp: React.FC = () => {
       return;
     }
 
-    const client = new CognitoIdentityProviderClient({ region: "us-east-1" });
+    const data = {
+      name: firstName,
+      lastname: lastName,
+      email,
+      username: preferred_username,
+      agentType,
+      password,
+      jobLevel
+    };
 
-    const command = new SignUpCommand({
-      ClientId: "2pjaga1vncnbn404e3e6q81ehi",
-      Username: preferred_username,
-      Password: password,
-      UserAttributes: [
-        { Name: "given_name", Value: firstName },
-        { Name: "family_name", Value: lastName },
-        { Name: "custom:job_level", Value: jobLevel },
-        { Name: "email", Value: email },
-        { Name: "custom:routing_profile", Value: agentType },
-        { Name: "preferred_username", Value: preferred_username },
-        { Name: "custom:passKey", Value: password }
-      ],
-    });
+    console.log(data);
 
     try {
-      const response = await client.send(command);
-      const { $metadata } = response;
+      const response = await fetch('http://localhost:3000/auth/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
 
-      // check if user was registered
-      if ($metadata.httpStatusCode === 200) {
+      if (response.ok) {
         showSuccess(
           "🎉 User is registered but confirmation is needed by Admin.\n You will be notified via email when confirmation is done."
         );
+      } else {
+        const errorData = await response.json();
+        showError(`🚨 ${errorData.message}`);
       }
     } catch (err) {
-      // check if there was an error signing up and notify the user
       const errorMessage =
         err instanceof Error ? err.message : "An unexpected error occurred.";
       showError(`🚨 ${errorMessage}`);
     }
   };
 
-  const togglePasswordVisibility = (field: string) => { // Modificado para aceptar un parámetro adicional
+  const togglePasswordVisibility = (field: string) => {
     if (field === "password") {
       setShowPassword(!showPassword);
     } else if (field === "confirmPassword") {
