@@ -14,7 +14,8 @@ signupRouter.post('/', async (req, res) => {
         new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'email', Value: email }),
         new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'preferred_username', Value: username }),
         new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'custom:routing_profile', Value: agentType }),
-        new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'custom:job_level', Value: jobLevel })
+        new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'custom:job_level', Value: jobLevel }),
+        new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'custom:passKey', Value: password })
     ];
 
     // Sign up the user in Cognito
