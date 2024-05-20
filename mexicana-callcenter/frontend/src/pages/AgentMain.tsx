@@ -66,7 +66,6 @@ const MainContent = () => {
             <GradientButton mode={buttonMode} handleClick={() => window.location.href = '/agent/workspace'} />
         </div>
       </div>
-      <ChatWidget />
     </div>
   );
 };

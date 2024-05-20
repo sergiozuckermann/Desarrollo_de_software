@@ -15,6 +15,7 @@ import SupervisorMain from './pages/SupervisorMain';
 import HomePage from './pages/AgentMain';
 import NotficationCenter from './pages/Notifications';
 import CallOverview from './pages/CallOverview';
+//import ChatWidget from './components/ChatWidget';
 import ChatWidget from './components/ChatWidget';
 
 function App() {
@@ -45,6 +46,7 @@ function App() {
           <Route path="*" element={<h1>Not Found</h1>}></Route>
         </Routes>
         <ToastContainer />
+        <ChatWidget />
       </>
   );
 }
