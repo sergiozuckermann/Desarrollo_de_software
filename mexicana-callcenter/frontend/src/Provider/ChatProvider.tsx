@@ -34,8 +34,8 @@ const useChatProvider = () => {
       setMembers(data.members);
     } else if (data.publicMessage && typeof data.publicMessage === 'string') {
       setChatRows(oldArray => [...oldArray, data.publicMessage || '']);
-    } else if (data.privateMessage) {
-      alert(data.privateMessage);
+    } else if (data.privateMessage && typeof data.privateMessage === 'string') {
+      setChatRows(oldArray => [...oldArray, `Private message from ${data.privateMessage}: ${data.privateMessage}`]);
     } else if (data.systemMessage && typeof data.systemMessage === 'string') {
       setChatRows(oldArray => [...oldArray, data.systemMessage || '']);
     }
@@ -58,28 +58,21 @@ const useChatProvider = () => {
     };
   }, []);
 
-  const onSendPrivateMessage = useCallback((to: string) => {
-    const message = prompt('Enter private message for ' + to);
+  const onSendPrivateMessage = useCallback((message: string, to: string) => {
     socket.current?.send(JSON.stringify({
       action: 'sendPrivate',
       message,
       to,
     }));
+    setChatRows(oldArray => [...oldArray, `Private message to ${to}: ${message}`]); // Agregar mensaje privado al chat
   }, []);
 
-  const onSendPublicMessage = useCallback(() => {
-    const message = prompt('Enter public message');
+  const onSendPublicMessage = useCallback((message: string) => {
     socket.current?.send(JSON.stringify({
       action: 'sendPublic',
       message,
     }));
   }, []);
-
-  // const onDisconnect = useCallback(() => {
-  //   if (isConnected) {
-  //     socket.current?.close();
-  //   }
-  // }, [isConnected]);
 
   const { logout } = useAuth(); // Obtener la función logout desde el contexto de autenticación
 
