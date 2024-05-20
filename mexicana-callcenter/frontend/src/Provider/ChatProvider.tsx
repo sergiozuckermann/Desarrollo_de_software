@@ -35,7 +35,7 @@ const useChatProvider = () => {
     } else if (data.publicMessage && typeof data.publicMessage === 'string') {
       setChatRows(oldArray => [...oldArray, data.publicMessage || '']);
     } else if (data.privateMessage && typeof data.privateMessage === 'string') {
-      setChatRows(oldArray => [...oldArray, `Private message from ${data.privateMessage}: ${data.privateMessage}`]);
+      setChatRows(oldArray => [...oldArray, `Private message from ${data.privateMessage}`]);
     } else if (data.systemMessage && typeof data.systemMessage === 'string') {
       setChatRows(oldArray => [...oldArray, data.systemMessage || '']);
     }
