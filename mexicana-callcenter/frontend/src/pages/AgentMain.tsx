@@ -8,6 +8,7 @@ import { WorkerCardProps } from '../utils/interfaces';
 import useCustomToast from "../components/LoginNotification";
 import userService from "../services/user"
 import ChatWidget from '../components/ChatWidget';
+import CCPComponent from "../components/CCPComponent";
 
 
 const MainContent = () => {

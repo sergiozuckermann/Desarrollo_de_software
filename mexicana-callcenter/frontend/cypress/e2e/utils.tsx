@@ -1,17 +1,24 @@
 // First name
-export const testFirstName = 'Jorge';
+export const test_firstName = 'Jorge';
 
 // Surname
-export const testSurName = 'Durgan';
+export const test_lastName = 'Durgan';
+
+// Username
+export const test_preferred_username = 'JorgeD24';
+export const test_preferred_username2 = 'JorgeD25';
+// Agent type
+export const test_agentType = 'Assistance & Support'; 
 
 // Email
-export const testEmailExisting = 'ExistingEmailValid@mail.com';
-export const testEmailValid = 'EmailValid@mail.com';
-export const testEmailWithoutDomainName = 'invalidemail@';
+export const test_email_existing = 'ExistingEmailValid@mail.com';
+export const test_email_valid = 'EmailValid@mail.com';
+export const test_email_valid2 = 'EmailValid2@mail.com';
+export const test_email_valid_no_domain = 'invalidemail@';
 
 // Password
-export const testPasswordValid = 'ValidPassword10!';
-export const testPasswordValid2 = 'ValidPassword10!!';
+export const test_password_valid = 'ValidPassword10!';
+export const test_password_valid2 = 'ValidPassword10!!';
 
 // Job level
-export const testJobLevel = 'Supervisor';
+export const test_jobLevel = 'Supervisor';
