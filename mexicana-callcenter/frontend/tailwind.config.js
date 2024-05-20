@@ -45,6 +45,15 @@ module.exports = {
     fontWeight: {
       subtitle: 100,
       "p2": 300,
+        thin: 100,
+        extralight: 200,
+        light: 300,
+        normal: 400,
+        medium: 500,
+        semibold: 600,
+        bold: 700,
+        extrabold: 800,
+        black: 900,
     },
     lineHeight: {
       subtitle: "60px",

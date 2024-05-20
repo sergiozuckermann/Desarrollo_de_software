@@ -42,25 +42,25 @@ const SignIn: FunctionComponent = () => {
             {/* <div className="w-full md:w-1/2"> */}
           <section className="flex flex-col items-center mt-10 tablet:p-10 cellphone:items-center"> 
             <form onSubmit={handleLogin} className=" rounded-lg py-4 px-4 w-full max-w-md mx-auto text-lg cellphone:text-gray-700 cellphone:py-0 cellphone:px-0">
-              <FormInput 
+              <FormInput
                 type="text"
                 placeholder="Username"
                 name="Username"
-                data-cy="username-input"
                 required={true}
                 value={usernameTextValue}
                 onChange={(e) => setUsernameTextValue(e.target.value)}
-              />
+                data-cy="username-input"
+                />
               <FormInput
                 type={showPassword ? "text" : "password"}
                 placeholder="Password"
                 name="password"
-                data-cy="password-input"
                 required={true}
                 value={passwordTextValue}
                 onChange={(e) => setPasswordTextValue(e.target.value)}
                 icon="/eye_password.png"
                 onIconClick={togglePasswordVisibility}
+                data-cy="password-input"
               />
                 <button
                 type="submit"
@@ -77,4 +77,3 @@ const SignIn: FunctionComponent = () => {
   );
 };
 export default SignIn;
-
