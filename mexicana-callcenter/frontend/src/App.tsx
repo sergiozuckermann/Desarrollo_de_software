@@ -1,13 +1,10 @@
-import {
-  Routes,
-  Route,
-  Navigate
-} from "react-router-dom";
-import Hello from "./pages/Hello";
-import SignIn from "./pages/SignIn";
-import SignUp from "./pages/SignUp";
-import AgentHome from "./pages/AgentHome";
-import OngoingCalls from "./pages/OngoingCalls";
+import React from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import Hello from './pages/Hello';
+import SignIn from './pages/SignIn';
+import SignUp from './pages/SignUp';
+import AgentHome from './pages/AgentHome';
+import OngoingCalls from './pages/OngoingCalls';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAuth } from "./hooks/useAuth";
@@ -22,16 +19,15 @@ import CallOverview from "./pages/CallOverview";
 import HistoricalMetrics from "./pages/Metrics";
 
 function App() {
-
-  const {isAuthenticated, role} = useAuth() // get user authentication status and role
+  const { isAuthenticated, role } = useAuth(); // get user authentication status and role
 
   return (
-    <>
-    <Routes>
-      {/* general public routes */}
-      <Route path="/" element={isAuthenticated ? <Navigate to={`/${role}/home`} /> : <Hello />} />
-      <Route path="/signin" element={isAuthenticated ? <Navigate to={`/${role}/home`} /> : <SignIn />} />
-      <Route path="/signup" element={isAuthenticated ? <Navigate to={`/${role}/home`} /> : <SignUp />} />
+      <>
+        <Routes>
+          {/* General public routes */}
+          <Route path="/" element={isAuthenticated ? <Navigate to={`/${role}/home`} /> : <Hello />} />
+          <Route path="/signin" element={isAuthenticated ? <Navigate to={`/${role}/home`} /> : <SignIn />} />
+          <Route path="/signup" element={isAuthenticated ? <Navigate to={`/${role}/home`} /> : <SignUp />} />
 
       {/* Protected routes. Authentication and Authorization needed */}
       <Route element={<ProtectedRoute isAllowed={isAuthenticated && role === 'Agent'} />}>
@@ -48,12 +44,12 @@ function App() {
           <Route path="/supervisor/metrics" element={<HistoricalMetrics />} />
       </Route>
 
-      {/* Any other route which is not found */}
-      <Route path="*" element={<h1>Not Found</h1>}></Route>
-    </Routes>
-     <ToastContainer />
-     </>
+          {/* Any other route which is not found */}
+          <Route path="*" element={<h1>Not Found</h1>}></Route>
+        </Routes>
+        <ToastContainer />
+      </>
   );
-
 }
+
 export default App;
