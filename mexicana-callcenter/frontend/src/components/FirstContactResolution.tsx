@@ -24,20 +24,12 @@ const FirstContactResolution = () => {
     ];
 
     return (
-        <div
-          className="h-full w-full p-4 sm:p-6 lg:p-8 rounded-lg"
-          style={{
-            backgroundColor: '#F8F9FA',
-            borderColor: 'rgba(32, 37, 63, 0.5)',
-            borderWidth: '1px',
-            borderStyle: 'solid',
-          }}
-        >
+        <div className="h-full w-full p-4 sm:p-6 lg:p-8 rounded-lg shadow-md border" style={{ backgroundColor: '#F8F9FA'}}>
           <div className="max-w-xl mx-auto">
             <h1 className="text-5xl md:text-6xl lg:text-6xl xl:text-6xl font-roboto mb-8">
-                Calls no answer
+                Calls with no answer
             </h1>
-            <div className="bg-white rounded-lg shadow-md p-6 overflow-y-auto" style={{ maxHeight: '500px' }} >
+            <div className="rounded-lg p-2 overflow-y-auto mt-4" style={{ WebkitOverflowScrolling: "touch", msOverflowStyle: "none", scrollbarWidth: "none", maxHeight: '480px' }} >
               <div className="mb-4 flex items-center">
                 <span className="text-red-500 text-2xl">Need your attention</span>
               </div>

@@ -39,7 +39,7 @@ function App() {
           <Route path="/supervisor/bargein" element={<BargeIn />} />
           <Route path="/supervisor/home" element={<SupervisorMain />} />
           <Route path="/supervisor/ongoingcalls" element={<OngoingCalls />} />
-          <Route path="/supervisor/AgentMetrics" element={<AgentMetrics />} />
+          <Route path="/supervisor/AgentSpotlight" element={<AgentMetrics />} />
       </Route>
 
       {/* Any other route which is not found */}

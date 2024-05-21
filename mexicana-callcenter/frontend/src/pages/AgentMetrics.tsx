@@ -5,8 +5,8 @@ import FirstContactResolution from "../components/FirstContactResolution";
 import ScheduleAdherence from "../components/ScheduleAdherence";
 
 const AgentMetrics: FunctionComponent = () => (
-  <PageStructure title="Weekly Agent Metrics">
-    <div className="overflow-y-auto max-h-full pt-2 pb-20">
+  <PageStructure title="Weekly Agent Performance">
+    <div className="flex flex-col w-full h-[90%] pl-8 overflow-y-auto" style={{ WebkitOverflowScrolling: "touch", msOverflowStyle: "none", scrollbarWidth: "none" }}>
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
         <div className="col-span-1">
           <AverageHandleTime />
