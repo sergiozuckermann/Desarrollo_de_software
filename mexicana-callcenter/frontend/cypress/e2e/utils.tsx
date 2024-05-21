@@ -8,7 +8,7 @@ export const test_lastName = 'Durgan';
 export const test_preferred_username = 'JorgeD24';
 export const test_preferred_username2 = 'JorgeD25';
 // Agent type
-export const test_agentType = 'Assistance & Support'; 
+export const test_agentType = 'Customer Care'; 
 
 // Email
 export const test_email_existing = 'ExistingEmailValid@mail.com';
