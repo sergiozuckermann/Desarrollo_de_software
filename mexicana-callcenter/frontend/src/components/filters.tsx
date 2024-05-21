@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import moment from 'moment';
 
 const Filter = ({ onApplyFilters }) => {
     const [agent, setAgent] = useState('');
@@ -11,7 +12,7 @@ const Filter = ({ onApplyFilters }) => {
     const filterRef = useRef(null);
 
     const handleReset = () => {
-        setAgent('');;
+        setAgent('');
         setQueue('');
         setStartDate(new Date());
         setEndDate(new Date());
@@ -19,7 +20,14 @@ const Filter = ({ onApplyFilters }) => {
 
     const handleSearch = (e) => {
         e.preventDefault();
-        onApplyFilters({ agent, queue, startDate, endDate });
+        const filters = {
+            agent,
+            queue,
+            startDate: moment(startDate).format('YYYY-MM-DD HH:mm:ss'),
+            endDate: moment(endDate).format('YYYY-MM-DD HH:mm:ss')
+        };
+        console.log("Applying filters:", filters);
+        onApplyFilters(filters);
     };
 
     const toggleFilters = () => {
@@ -89,11 +97,11 @@ const Filter = ({ onApplyFilters }) => {
                                         id="queue"
                                         value={queue}
                                         onChange={(e) => setQueue(e.target.value)}
-                                        className="block w-full px-2 py-1 mt-2 shadow-sm outline-none cursor-pointer bg-gray-100rounded-md focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                        className="block w-full px-2 py-1 mt-2 bg-gray-100 rounded-md shadow-sm outline-none cursor-pointer focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
                                     >
                                         <option value="">Select Queue</option>
-                                        <option>Travel logisticst</option>
-                                        <option>Flight Managment</option>
+                                        <option>Travel logistics</option>
+                                        <option>Flight Management</option>
                                     </select>
                                 </div>
                                 <div className="flex flex-col">

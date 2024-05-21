@@ -10,11 +10,11 @@ import { useState } from 'react';
 const MainContent = () => {
     // State to manage filter criteria
     const [filters, setFilters] = useState({
-        name: '',
-        manufacturer: '',
-        date: new Date(),
-        status: ''
+        agent:'',
+        date: '',
+        endDate: ''
     });
+    // const [filters, setFilters] = useState(null);
 
     // Function to update filters when applied
     const handleApplyFilters = (newFilters) => {
@@ -22,7 +22,7 @@ const MainContent = () => {
     };
 
     // Fetch metrics data
-    const { averageAbandonmentRate, averageAbandonTime, averageQueueAnswerTime, averageAnswerTime } = FetchMetrics();
+    const { averageAbandonmentRate, averageAbandonTime, averageQueueAnswerTime, averageAnswerTime } = FetchMetrics(filters);
     console.log(averageAbandonTime, averageQueueAnswerTime, averageAnswerTime);
 
     // Display loading message until metrics data is available
@@ -37,27 +37,18 @@ const MainContent = () => {
                 <p>Abandonment Rate</p>
                 <GaugeChart id="gauge-chart1" nrOfLevels={20} colors={["#84BF68", "#FF5F6D", "#FFC371"]} arcWidth={0.3} percent={averageAbandonmentRate / 100} textColor="#20253F" />
             </div>
-
-            {/* Average Case Resolution Time (currently commented out) */}
-            {/* <div className="col-span-3 row-span-2 card bg-tertiary">
-                <p>Average Case Resolution Time</p>
-                <MyResponsiveBar data={averageAbandonTime} />
-                <p>{averageAbandonTime}</p>
-            </div> */}
-
-            {/* Average Case Resolution Time (displayed as a static value) */}
             <div className="col-span-3 row-span-2 shadow-lg card bg-tertiary ">
                 <div className="flex flex-row items-center justify-between">
                     <div className="px-4 py-4 bg-gray-300 rounded-xl bg-opacity-30">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" viewBox="0 0 20 20" fill="currentColor">
+                        {/* <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" viewBox="0 0 20 20" fill="currentColor">
                             <path fillRule="evenodd" d="M10.293 15.707a1 1 0 010-1.414L14.586 10l-4.293-4.293a1 1 0 111.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clipRule="evenodd" />
                             <path fillRule="evenodd" d="M4.293 15.707a1 1 0 010-1.414L8.586 10 4.293 5.707a1 1 0 011.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                        </svg>
+                        </svg> */}
                     </div>
                     <div className="inline-flex text-sm text-gray-600 sm:text-base">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 mr-2 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                        {/* <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 mr-2 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
+                        </svg> */}
                         12%
                     </div>
                 </div>
@@ -71,15 +62,15 @@ const MainContent = () => {
             <div className="col-span-3 row-span-2 shadow-lg card bg-tertiary">
                 <div className="flex flex-row items-center justify-between">
                     <div className="px-4 py-4 bg-gray-300 rounded-xl bg-opacity-30">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" viewBox="0 0 20 20" fill="currentColor">
+                        {/* <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" viewBox="0 0 20 20" fill="currentColor">
                             <path fillRule="evenodd" d="M10.293 15.707a1 1 0 010-1.414L14.586 10l-4.293-4.293a1 1 111.414-1.414l5 5a1 1 010 1.414l-5 5a1 1 01-1.414 0z" clipRule="evenodd" />
                             <path fillRule="evenodd" d="M4.293 15.707a1 1 010-1.414L8.586 10 4.293 5.707a1 1 111.414-1.414l5 5a1 1 010 1.414l-5 5a1 1 01-1.414 0z" clipRule="evenodd" />
-                        </svg>
+                        </svg> */}
                     </div>
                     <div className="inline-flex text-sm text-gray-600 sm:text-base">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 mr-2 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                        {/* <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 mr-2 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
+                        </svg> */}
                         12%
                     </div>
                 </div>
@@ -113,15 +104,15 @@ const MainContent = () => {
                 </div>
                 <div className="flex flex-row items-center justify-between">
                     <div className="px-4 py-4 bg-gray-300 rounded-xl bg-opacity-30">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" viewBox="0 0 20 20" fill="currentColor">
+                        {/* <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" viewBox="0 0 20 20" fill="currentColor">
                             <path fillRule="evenodd" d="M10.293 15.707a1 1 0 010-1.414L14.586 10l-4.293-4.293a1 1 111.414-1.414l5 5a1 1 010 1.414l-5 5a1 1 01-1.414 0z" clipRule="evenodd" />
                             <path fillRule="evenodd" d="M4.293 15.707a1 1 010-1.414L8.586 10 4.293 5.707a1 1 111.414-1.414l5 5a1 1 010 1.414l-5 5a1 1 01-1.414 0z" clipRule="evenodd" />
-                        </svg>
+                        </svg> */}
                     </div>
                     <div className="inline-flex text-sm text-gray-600 sm:text-base">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 mr-2 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                        {/* <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 mr-2 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
+                        </svg> */}
                         12%
                     </div>
                 </div>
@@ -135,15 +126,14 @@ const MainContent = () => {
                 </div>
                 <div className="flex flex-row items-center justify-between">
                     <div className="px-4 py-4 bg-gray-300 rounded-xl bg-opacity-30">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M10.293 15.707a1 1 0 010-1.414L14.586 10l-4.293-4.293a1 1 111.414-1.414l5 5a1 1 010 1.414l-5 5a1 1 01-1.414 0z" clipRule="evenodd" />
-                            <path fillRule="evenodd" d="M4.293 15.707a1 1 010-1.414L8.586 10 4.293 5.707a1 1 111.414-1.414l5 5a1 1 010 1.414l-5 5a1 1 01-1.414 0z" />
-                        </svg>
+                    {/* <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M4.293 15.707a1 1 0 010-1.414L8.586 10 4.293 5.707a1 1 1 0 111.414-1.414l5 5a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg> */}
                     </div>
                     <div className="inline-flex text-sm text-gray-600 sm:text-base">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 mr-2 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                        {/* <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 mr-2 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
+                        </svg> */}
                         12%
                     </div>
                 </div>
@@ -157,20 +147,19 @@ const MainContent = () => {
                 </div>
                 <div className="flex flex-row items-center justify-between">
                     <div className="px-4 py-4 bg-gray-300 rounded-xl bg-opacity-30">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" viewBox="0 0 20 20" fill="currentColor">
+                        {/* <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" viewBox="0 0 20 20" fill="currentColor">
                             <path fillRule="evenodd" d="M10.293 15.707a1 1 0 010-1.414L14.586 10l-4.293-4.293a1 1 111.414-1.414l5 5a1 1 010 1.414l-5 5a1 1 01-1.414 0z" clipRule="evenodd" />
                             <path fillRule="evenodd" d="M4.293 15.707a1 1 010-1.414L8.586 10 4.293 5.707a1 1 111.414-1.414l5 5a1 1 010 1.414l-5 5a1 1 01-1.414 0z" />
-                        </svg>
+                        </svg> */}
                     </div>
-                    <div className="inline-flex text-sm text-gray-600 sm:text-base">
+                    {/* <div className="inline-flex text-sm text-gray-600 sm:text-base">
                         <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 mr-2 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
+                        </svg> */}
                         12%
                     </div>
                 </div>
                 <h1 className="mt-1 text-3xl font-bold text-gray-700 sm:text-m xl:text-4xl">6 cases</h1>
-            </div>
 
             {/* Cases Reopened */}
             <div className="col-span-4 row-span-2 card bg-tertiary">
@@ -179,15 +168,15 @@ const MainContent = () => {
                 </div>
                 <div className="flex flex-row items-center justify-between">
                     <div className="px-4 py-4 bg-gray-300 rounded-xl bg-opacity-30">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" viewBox="0 0 20 20" fill="currentColor">
+                        {/* <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" viewBox="0 0 20 20" fill="currentColor">
                             <path fillRule="evenodd" d="M10.293 15.707a1 1 0 010-1.414L14.586 10l-4.293-4.293a1 1 111.414-1.414l5 5a1 1 010 1.414l-5 5a1 1 01-1.414 0z" clipRule="evenodd" />
                             <path fillRule="evenodd" d="M4.293 15.707a1 1 010-1.414L8.586 10 4.293 5.707a1 1 111.414-1.414l5 5a1 1 010 1.414l-5 5a1 1 01-1.414 0z" />
-                        </svg>
+                        </svg> */}
                     </div>
                     <div className="inline-flex text-sm text-gray-600 sm:text-base">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 mr-2 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                        {/* <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 mr-2 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
+                        </svg> */}
                         12%
                     </div>
                 </div>
