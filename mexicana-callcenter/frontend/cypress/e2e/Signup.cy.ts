@@ -152,7 +152,7 @@ describe('Signup Tests', () => {
 
   // Delete the test user
   after(async () => {
-    await deleteUser("us-east-1_Kk8qPSFAN", test_preferred_username);
-    await deleteUser("us-east-1_Kk8qPSFAN", test_preferred_username2);
+    await deleteUser("us-east-1_B7gG0aOum", test_preferred_username);
+    await deleteUser("us-east-1_B7gG0aOum", test_preferred_username2);
   });
 });
