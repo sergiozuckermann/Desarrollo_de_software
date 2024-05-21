@@ -70,7 +70,7 @@ const AuthProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
           localStorage.setItem('token', token);
 
           // Create a WebSocket connection
-          const ws = new WebSocket('wss://8qombs74rl.execute-api.us-east-1.amazonaws.com/production');
+          const ws = new WebSocket('wss://ass8qombs74rl.execute-api.us-east-1.amazonaws.com/production');
           ws.onopen = () => {
             console.log('Connected to WebSocket');
             ws.send(JSON.stringify({ action: 'setName', name: username }));
@@ -107,7 +107,10 @@ const AuthProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
   } 
 
   //  value of the authentication context
-  const contextValue = getContext()
+  const contextValue = {
+    ...getContext(),
+    logout, // Agregar la función logout al contextValue
+  };
 
   // Provide the authentication context to the children components
   return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;

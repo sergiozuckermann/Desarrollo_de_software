@@ -17,6 +17,7 @@ import NotficationCenter from "./pages/Notifications";
 import SupervisorNotifications from "./pages/SupervisorNotifications"
 import CallOverview from "./pages/CallOverview";
 import HistoricalMetrics from "./pages/Metrics";
+import ChatWidget from './components/ChatWidget';
 
 function App() {
   const { isAuthenticated, role } = useAuth(); // get user authentication status and role
@@ -48,6 +49,7 @@ function App() {
           <Route path="*" element={<h1>Not Found</h1>}></Route>
         </Routes>
         <ToastContainer />
+        <ChatWidget />
       </>
   );
 }
