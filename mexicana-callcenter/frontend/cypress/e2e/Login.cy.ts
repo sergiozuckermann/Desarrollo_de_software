@@ -8,8 +8,8 @@ describe('Login Tests', () => {
   //Successful login
   it('displays a success message on successful login', () => {
     // Wait for the username input to be visible before typing
-    cy.get('[name=Username]', { timeout: 10000 }).should('be.visible').type('dbuser');
-    cy.get('[name=password]', { timeout: 10000 }).should('be.visible').type('PassWord1!{enter}');
+    cy.get('[name=Username]', { timeout: 10000 }).should('be.visible').type('tg2714');
+    cy.get('[name=password]', { timeout: 10000 }).should('be.visible').type('Zekund99.{enter}');
 
     // Checks for the notification to be visible
     cy.contains('🎉 Welcome databaseUser! You are now signed in.', { timeout: 10000 }).should('be.visible');
