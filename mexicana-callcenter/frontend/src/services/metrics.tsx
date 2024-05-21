@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const queueNames = {
+const queueNames: { [key: string]: string } = {
     '99bfbe85-27ac-4384-8462-f01f75b53d32': "Flight Management",
     '292d0398-6089-42cc-9ec9-aee43d6202a6': "Travel logistics"
 };
@@ -18,11 +18,12 @@ export function FetchMetrics(filters) {
                 // Use empty filters if none provided
                 const requestFilters = filters || {};
                 console.log("Filters before sending request:", requestFilters);  // Log filters
-                const response = await axios.post("https://iv5is62s80.execute-api.us-east-1.amazonaws.com/default/EpochUnixDate", requestFilters, {
+                const response = await axios.post("http://localhost:3000/historicmetrics", requestFilters, {
                     headers: {
                         'Content-Type': 'application/json',
                     }
                 });
+
                 const metricResults = response.data.MetricResults;
 
                 let totalAbandonmentRate = 0;
@@ -32,9 +33,9 @@ export function FetchMetrics(filters) {
                 let totalAnswerTime = 0;
                 let AnswerTimeCount = 0;
 
-                metricResults.forEach(queue => {
+                metricResults.forEach((queue:any) => {
                     const queueName = queueNames[queue.Dimensions.QUEUE];
-                    queue.Collections.forEach(metric => {
+                    queue.Collections.forEach((metric:any) => {
                         switch (metric.Metric.Name) {
                             case "ABANDONMENT_RATE":
                                 if (metric.Value !== undefined) {
