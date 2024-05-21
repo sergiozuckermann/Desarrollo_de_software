@@ -75,6 +75,7 @@ const HomePage = () => {
   return (
     <PageStructure title="Home">
       <MainContent />
+      <ChatWidget />
     </PageStructure>
   );
 };

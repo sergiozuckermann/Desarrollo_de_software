@@ -8,6 +8,7 @@ import userService from "../services/user"
 import { useAuth } from '../hooks/useAuth'
 import { WorkerCardProps } from '../utils/interfaces';
 import useCustomToast from "../components/LoginNotification";
+import ChatWidget from '../components/ChatWidget';
 
 
 
@@ -69,6 +70,7 @@ const HomePage = () => {
   return (
     <PageStructure title="Home">
       <MainContent />
+      <ChatWidget />
     </PageStructure>
   );
 };

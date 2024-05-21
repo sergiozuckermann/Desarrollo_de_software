@@ -50,7 +50,6 @@ function App() {
           <Route path="*" element={<h1>Not Found</h1>}></Route>
         </Routes>
         <ToastContainer />
-        <ChatWidget />
       </ChatProviderContext>
   );
 }
