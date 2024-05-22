@@ -29,4 +29,50 @@ supervisorRouter.get('/myInfo/:username', async (req, res, next) => {
   }
 })
 
+// Get agents
+supervisorRouter.get('/agents', async (req, res) => {
+  const instanceId = 'd90b8836-8188-46c5-a73c-20cbee3a8ded';
+
+  try {
+    const usersResponse = await connectClient.listUsers({ InstanceId: instanceId }).promise();
+    const users = usersResponse.UserSummaryList;
+
+    const userDetailsPromises = users.map(async (user) => {
+      const userResponse = await connectClient.describeUser({
+        InstanceId: instanceId,
+        UserId: user.Id
+      }).promise();
+      return {
+        id: user.Id,
+        name: userResponse.User.Username,
+        routingProfileId: userResponse.User.RoutingProfileId
+      };
+    });
+
+    const userDetails = await Promise.all(userDetailsPromises);
+    res.json(userDetails);
+  } catch (error) {
+    console.error('Error al obtener agentes:', error);
+    res.status(500).send('Error al obtener agentes');
+  }
+});
+
+// Update routing profile
+supervisorRouter.post('/update-routing-profile', async (req, res) => {
+  const { userId, routingProfileId } = req.body;
+  const instanceId = 'd90b8836-8188-46c5-a73c-20cbee3a8ded';
+
+  try {
+    await connectClient.updateUserRoutingProfile({
+      InstanceId: instanceId,
+      UserId: userId,
+      RoutingProfileId: routingProfileId,
+    }).promise();
+    res.send('Routing profile actualizado exitosamente');
+  } catch (error) {
+    console.error('Error al actualizar routing profile:', error);
+    res.status(500).send('Error al actualizar routing profile');
+  }
+});
+
 module.exports = supervisorRouter
