@@ -1,4 +1,7 @@
 import { CognitoIdentityProviderClient, AdminDeleteUserCommand } from "@aws-sdk/client-cognito-identity-provider";
+import cypress from "cypress";
+
+// require('dotenv').config();
 
 export async function deleteUser(userPoolId: string, username: string) {
     const client = new CognitoIdentityProviderClient({ region: "us-east-1" , credentials: {

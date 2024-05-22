@@ -14,7 +14,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
   const {isAuthenticated} = useAuth()
   useEffect(() => {
     if(isAuthenticated) {
-        setSocket(new WebSocket('wss://gzmcfn4hlk.execute-api.us-east-1.amazonaws.com/production/'))
+        setSocket(new WebSocket('wss://305odlxyc3.execute-api.us-east-1.amazonaws.com/production/'))
     }
   }, [isAuthenticated]);
 
