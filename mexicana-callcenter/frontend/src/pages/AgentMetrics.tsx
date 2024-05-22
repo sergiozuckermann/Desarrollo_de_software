@@ -1,21 +1,22 @@
 import { FunctionComponent } from "react";
 import PageStructure from "../components/PageStructure";
-import AverageHandleTime from "../components/AverageHandleTime";
-import FirstContactResolution from "../components/FirstContactResolution";
-import ScheduleAdherence from "../components/ScheduleAdherence";
+import AverageResolutionTime from "../components/AverageResolutionTime";
+import AverageInteractionTime from "../components/AverageInteractionTime";
+import AverageHoldTime from "../components/AverageHoldTime";
+
 
 const AgentMetrics: FunctionComponent = () => (
-  <PageStructure title="Weekly Agent Performance">
-    <div className="flex flex-col w-full h-[90%] pl-8 overflow-y-auto" style={{ WebkitOverflowScrolling: "touch", msOverflowStyle: "none", scrollbarWidth: "none" }}>
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
-        <div className="col-span-1">
-          <AverageHandleTime />
+  <PageStructure title="Agent Performance">
+    <div className="flex flex-col w-full mb-[5%] pl-[2%] pb-[60%] mt-[72%] flex-grow overflow-y-auto">
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-[1%] flex-1">
+        <div className="col-span-1 h-full max-h-[90%]">
+          <AverageResolutionTime />
         </div>
-        <div className="col-span-1">
-          <FirstContactResolution />
+        <div className="col-span-1 h-full max-h-[90%]">
+          <AverageHoldTime />
         </div>
-        <div className="col-span-1">
-          <ScheduleAdherence />
+        <div className="col-span-1 h-full max-h-[90%]">
+          <AverageInteractionTime />
         </div>
       </div>
     </div>

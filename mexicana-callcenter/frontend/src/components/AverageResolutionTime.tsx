@@ -1,4 +1,4 @@
-const AverageHandleTime = () => {
+const AverageResolutionTime = () => {
     const ScaleIcon = '/scale.svg';
   
     // Example data
@@ -23,14 +23,22 @@ const AverageHandleTime = () => {
     ];
   
     return (
-      <div className="h-full w-full p-4 sm:p-6 lg:p-8 rounded-lg shadow-md border" style={{ backgroundColor: '#F8F9FA'}}>
+      <div className="w-full p-4 sm:p-6 lg:p-8 card overflow-hidden" style={{ backgroundColor: '#F8F9FA'}}>
         <div className="max-w-xl mx-auto">
-          <h1 className="text-5xl md:text-6xl lg:text-6xl xl:text-6xl font-roboto mb-8">
-            Average Handle Time
+          <h1 className="md:text-6xl lg:text-6xl xl:text-6xl font-roboto mb-8">
+            Average Case Resolution Time
           </h1>
-          <div className="rounded-lg p-2 overflow-y-auto mt-4" style={{ WebkitOverflowScrolling: "touch", msOverflowStyle: "none", scrollbarWidth: "none", maxHeight: '480px' }} >
+          <div
+            className="rounded-lg p-2 overflow-y-auto mt-4 overflow-hidden pb-16"
+            style={{
+              WebkitOverflowScrolling: 'touch',
+              msOverflowStyle: 'none',
+              scrollbarWidth: 'none',
+              maxHeight: '480px',
+            }}
+          >
             <div className="mb-4 flex items-center">
-              <span className="text-red-500 text-2xl">Need your attention</span>
+              <span className="text-red-500 text-2xl"> Needs your attention </span>
             </div>
             <div className="grid grid-cols-[auto_1fr] items-start gap-4">
               <img src={ScaleIcon} alt="Scale Icon" className="h-full w-auto" />
@@ -47,7 +55,7 @@ const AverageHandleTime = () => {
               </div>
             </div>
             <div className="mt-4 flex items-center">
-              <span className="text-green-500 text-2xl">Is doing great</span>
+              <span className="text-green-500 text-2xl"> Is doing great </span>
             </div>
           </div>
         </div>
@@ -55,4 +63,4 @@ const AverageHandleTime = () => {
     );
   };
   
-  export default AverageHandleTime;
+  export default AverageResolutionTime;
