@@ -18,13 +18,12 @@ import SupervisorNotifications from "./pages/SupervisorNotifications"
 import CallOverview from "./pages/CallOverview";
 import HistoricalMetrics from "./pages/Metrics";
 import ChatWidget from './components/ChatWidget';
-import ChatProviderContext from './hooks/ChatContext';
 
 function App() {
   const { isAuthenticated, role } = useAuth(); // get user authentication status and role
 
   return (
-      <ChatProviderContext>
+      <>
         <Routes>
           {/* General public routes */}
           <Route path="/" element={isAuthenticated ? <Navigate to={`/${role}/home`} /> : <Hello />} />
@@ -50,7 +49,7 @@ function App() {
           <Route path="*" element={<h1>Not Found</h1>}></Route>
         </Routes>
         <ToastContainer />
-      </ChatProviderContext>
+      </>
   );
 }
 
