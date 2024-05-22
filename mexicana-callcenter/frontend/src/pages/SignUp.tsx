@@ -212,10 +212,12 @@ const SignUp: React.FC = () => {
                   <option value="" disabled>
                     Agent Type
                   </option>
-                  <option value="094ace77-d6fa-4903-82e3-8714a6c4fa84">Flight Managment</option>
-                  <option value="32cc94f8-dce7-4208-a87b-e7bd376d283f">Assistance & Support</option>
-                  <option value="184244af-2f57-409a-9b95-a09f271a8c9f">Special Assistance</option>
-                  <option value="6c9dc035-b844-4266-9e91-9fdc55c26714">Travel Logistics</option>
+                  <option value="cef57a3d-e69c-410f-a52a-511cdd89664b">Flight Managment</option>
+                  <option value="0de58771-443e-461c-bb5d-3999dea7dfb6">Website Assistance</option>
+                  <option value="10700746-2ca6-4e5f-a882-4c274cd1e2b4">Customer Care</option>
+                  <option value="ce4292ed-d0e1-46a5-a0b5-966c4315e429">Other Questions</option>
+                  <option value="2d25f6a6-a8c9-4cf3-aacb-ad3338c699fc">Special Assistance</option>
+                  <option value="ac2bd63f-1865-4bc6-821f-36f2dbd19ecc">Travel Information</option>
                   </select>
                 </div>
               </div>
