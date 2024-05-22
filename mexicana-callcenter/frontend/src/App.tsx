@@ -1,8 +1,5 @@
-import {
-  Routes,
-  Route,
-  Navigate
-} from "react-router-dom";
+import React from 'react';
+import {Routes,Route,Navigate} from "react-router-dom";
 import Hello from "./pages/Hello";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
@@ -17,9 +14,12 @@ import BargeIn from "./pages/bargein";
 import SupervisorMain from "./pages/SupervisorMain";
 import HomePage from "./pages/AgentMain";
 import NotficationCenter from "./pages/Notifications";
+import AgentMetrics from "./pages/AgentMetrics";
 import SupervisorNotifications from "./pages/SupervisorNotifications"
 import CallOverview from "./pages/CallOverview";
 import HistoricalMetrics from "./pages/Metrics";
+import ChatWidget from './components/ChatWidget';
+
 
 function App() {
 
@@ -43,17 +43,18 @@ function App() {
           <Route path="/supervisor/ongoingcalls" element={<OngoingCalls />} />
           <Route path="/supervisor/bargein" element={<BargeIn />} />
           <Route path="/supervisor/home" element={<SupervisorMain />} />
-          <Route path="/supervisor/notifications" element={<SupervisorNotifications />} />
-          <Route path="/supervisor/calloverview" element={<CallOverview />} />
-          <Route path="/supervisor/metrics" element={<HistoricalMetrics />} />
+          <Route path="/supervisor/ongoingcalls" element={<OngoingCalls />} />
+          <Route path="/supervisor/AgentSpotlight" element={<AgentMetrics />} />
       </Route>
 
-      {/* Any other route which is not found */}
-      <Route path="*" element={<h1>Not Found</h1>}></Route>
-    </Routes>
-     <ToastContainer />
-     </>
+          {/* Any other route which is not found */}
+          <Route path="*" element={<h1>Not Found</h1>}></Route>
+        </Routes>
+        <ToastContainer />
+        <ChatWidget />
+      </>
   );
 
 }
 export default App;
+

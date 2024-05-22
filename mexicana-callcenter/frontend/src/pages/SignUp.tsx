@@ -1,9 +1,4 @@
-
 import React, { useState } from "react";
-import {
-  CognitoIdentityProviderClient,
-  SignUpCommand,
-} from "@aws-sdk/client-cognito-identity-provider";
 import useCustomToast from "../components/LoginNotification";
 import "../css/global.css";
 
@@ -20,7 +15,7 @@ const SignUp: React.FC = () => {
   const [passwordValid, setPasswordValid] = useState(false);
   const [confirmPasswordTextValue, setConfirmPasswordTextValue] = useState("");
   const [passwordTextValue, setPasswordTextValue] = useState("");
-  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false); // Nuevo estado
+  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
   const { showError, showSuccess } = useCustomToast();
 
   const checkPasswordRequirements = (password: string) => {
@@ -35,42 +30,43 @@ const SignUp: React.FC = () => {
       return;
     }
 
-    const client = new CognitoIdentityProviderClient({ region: "us-east-1" });
+    const data = {
+      name: firstName,
+      lastname: lastName,
+      email,
+      username: preferred_username,
+      agentType,
+      password,
+      jobLevel
+    };
 
-    const command = new SignUpCommand({
-      ClientId: "2pjaga1vncnbn404e3e6q81ehi",
-      Username: preferred_username,
-      Password: password,
-      UserAttributes: [
-        { Name: "given_name", Value: firstName },
-        { Name: "family_name", Value: lastName },
-        { Name: "custom:job_level", Value: jobLevel },
-        { Name: "email", Value: email },
-        { Name: "custom:routing_profile", Value: agentType },
-        { Name: "preferred_username", Value: preferred_username },
-        { Name: "custom:passKey", Value: password }
-      ],
-    });
+    console.log(data);
 
     try {
-      const response = await client.send(command);
-      const { $metadata } = response;
+      const response = await fetch('http://localhost:3000/auth/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
 
-      // check if user was registered
-      if ($metadata.httpStatusCode === 200) {
+      if (response.ok) {
         showSuccess(
           "🎉 User is registered but confirmation is needed by Admin.\n You will be notified via email when confirmation is done."
         );
+      } else {
+        const errorData = await response.json();
+        showError(`🚨 ${errorData.message}`);
       }
     } catch (err) {
-      // check if there was an error signing up and notify the user
       const errorMessage =
         err instanceof Error ? err.message : "An unexpected error occurred.";
       showError(`🚨 ${errorMessage}`);
     }
   };
 
-  const togglePasswordVisibility = (field: string) => { // Modificado para aceptar un parámetro adicional
+  const togglePasswordVisibility = (field: string) => {
     if (field === "password") {
       setShowPassword(!showPassword);
     } else if (field === "confirmPassword") {
@@ -104,6 +100,7 @@ const SignUp: React.FC = () => {
                 value={firstName}
                 onChange={(event) => setFirstName(event.target.value)}
                 data-cy="first-name-input"
+                required
               />
             </div>
             <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.899999999999636px] px-[21px] pb-[9.700000000000728px] max-w-full border-[1px] border-solid border-marco">
@@ -115,6 +112,7 @@ const SignUp: React.FC = () => {
                 value={lastName}
                 onChange={(event) => setLastName(event.target.value)}
                 data-cy="sur-name-input"
+                required
               />
             </div>
             <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.5px] px-[19.699999999999815px] pb-[10.100000000000364px] max-w-full border-[1px] border-solid border-marco">
@@ -126,6 +124,7 @@ const SignUp: React.FC = () => {
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
                 data-cy="email-input"
+                required
               />
             </div>
             <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.5px] px-[19.699999999999815px] pb-[10.100000000000364px] max-w-full border-[1px] border-solid border-marco">
@@ -137,6 +136,7 @@ const SignUp: React.FC = () => {
                 value={preferred_username}
                 onChange={(event) => setUsername(event.target.value)}
                 data-cy="username-input"
+                required
               />
             </div>
             <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.800000000000182px] px-[19px] pb-[11px] max-w-full border-[1px] border-solid border-marco relative">
@@ -153,6 +153,7 @@ const SignUp: React.FC = () => {
                 }}
                 style={{ color: passwordValid ? 'green' : 'red' }}
                 data-cy="password-input"
+                required
               />
               <img
                 className="cursor-pointer absolute top-1/2 right-2 transform -translate-y-1/2 h-[30px] w-[30px]"
@@ -176,6 +177,7 @@ const SignUp: React.FC = () => {
                 }}
                 style={{ color: confirmPasswordTextValue === passwordTextValue ? 'green' : 'red' }}
                 data-cy="password-confirm-input"
+                required
               />
               <img
                 className="cursor-pointer absolute top-1/2 right-2 transform -translate-y-1/2 h-[30px] w-[30px]"
@@ -192,7 +194,7 @@ const SignUp: React.FC = () => {
               <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
               <div className="relative flex-1">
                 <div className="custom-select-wrapper">
-                  <select className="custom-select " value={jobLevel} onChange={(event) => setJobLevel(event.currentTarget.value)}>
+                  <select className="custom-select " value={jobLevel} onChange={(event) => setJobLevel(event.currentTarget.value)}  required data-cy='job-level-input'>
                     <option value="" disabled>Job Level</option>
                     <option value="Agent">Agent</option>
                     <option value="Supervisor">Supervisor</option>
@@ -206,14 +208,16 @@ const SignUp: React.FC = () => {
               <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
               <div className="relative flex-1">
                 <div className="custom-select-wrapper">
-                  <select className="custom-select " value={agentType} onChange={(event) => setAgentType(event.currentTarget.value)}>
+                  <select className="custom-select " value={agentType} onChange={(event) => setAgentType(event.currentTarget.value)} required data-cy='agent-type-input' >
                   <option value="" disabled>
                     Agent Type
                   </option>
-                  <option value="094ace77-d6fa-4903-82e3-8714a6c4fa84">Flight Managment</option>
-                  <option value="32cc94f8-dce7-4208-a87b-e7bd376d283f">Assistance & Support</option>
-                  <option value="184244af-2f57-409a-9b95-a09f271a8c9f">Special Assistance</option>
-                  <option value="6c9dc035-b844-4266-9e91-9fdc55c26714">Travel Logistics</option>
+                  <option value="cef57a3d-e69c-410f-a52a-511cdd89664b">Flight Managment</option>
+                  <option value="0de58771-443e-461c-bb5d-3999dea7dfb6">Website Assistance</option>
+                  <option value="10700746-2ca6-4e5f-a882-4c274cd1e2b4">Customer Care</option>
+                  <option value="ce4292ed-d0e1-46a5-a0b5-966c4315e429">Other Questions</option>
+                  <option value="2d25f6a6-a8c9-4cf3-aacb-ad3338c699fc">Special Assistance</option>
+                  <option value="ac2bd63f-1865-4bc6-821f-36f2dbd19ecc">Travel Information</option>
                   </select>
                 </div>
               </div>
