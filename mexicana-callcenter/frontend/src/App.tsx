@@ -15,6 +15,11 @@ import SupervisorMain from "./pages/SupervisorMain";
 import HomePage from "./pages/AgentMain";
 import NotficationCenter from "./pages/Notifications";
 import AgentMetrics from "./pages/AgentMetrics";
+import SupervisorNotifications from "./pages/SupervisorNotifications"
+import CallOverview from "./pages/CallOverview";
+import HistoricalMetrics from "./pages/Metrics";
+import ChatWidget from './components/ChatWidget';
+
 
 function App() {
 
@@ -42,11 +47,12 @@ function App() {
           <Route path="/supervisor/AgentSpotlight" element={<AgentMetrics />} />
       </Route>
 
-      {/* Any other route which is not found */}
-      <Route path="*" element={<h1>Not Found</h1>}></Route>
-    </Routes>
-     <ToastContainer />
-     </>
+          {/* Any other route which is not found */}
+          <Route path="*" element={<h1>Not Found</h1>}></Route>
+        </Routes>
+        <ToastContainer />
+        <ChatWidget />
+      </>
   );
 
 }

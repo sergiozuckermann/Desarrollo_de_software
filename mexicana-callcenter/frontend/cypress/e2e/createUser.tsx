@@ -16,7 +16,7 @@ import {
 const client = new CognitoIdentityProviderClient({ region: "us-east-1" });
 
 const command = new SignUpCommand({
-  ClientId: "2pjaga1vncnbn404e3e6q81ehi",
+  ClientId: "232lqu9hp3k913eihjj76ai1l2",
   Username: test_preferred_username,
   Password: test_password_valid,
   UserAttributes: [
