@@ -55,7 +55,7 @@ const MainContent = () => {
   <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:col-span-2 flex justify-center">
       <HomeButton icon="/MetricsSymbol.svg" title="My Metrics" subtitle="See the historical metrics of the call center" handleClick={() => window.location.href = '/supervisor/metrics'}/>
       <HomeButton icon="/SpotlightSymbol.svg" title="Agent Spotlight" subtitle="Weekly best agents" handleClick={() => window.location.href = '/AgentSpotlight'}/>
-      <HomeButton icon="/costumer.svg" title="Customer Service" subtitle="See the metrics for the customer service surveys" handleClick={() => window.location.href = '/CustomerService'}/>
+      <HomeButton icon="/costumer.svg" title="Agent Performance" subtitle="See the weekly metrics of agent perfomance" handleClick={() => window.location.href = '/supervisor/AgentSpotlight'}/>
       <HomeButton icon="/BreakSymbol.svg" title="Take a break" subtitle="Go to take a break to clear the mind" handleClick={() => window.location.href = '/Breaks'}/>
       <div className="w-full md:col-span-2 flex justify-center">
         <HomeButton icon="/Switch.svg" title="Agent Queue Transfer" subtitle="Transfer agents from one queue to another" handleClick={() => window.location.href = '/supervisor/agentroutingprofile'}/>

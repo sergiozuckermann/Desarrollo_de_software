@@ -77,16 +77,20 @@ supervisorRouter.get('/agents', async (req, res) => {
 
 // Update routing profile
 supervisorRouter.post('/update-routing-profile', async (req, res) => {
-  const { userId, routingProfileId } = req.body;
+  const userid = req.body.userId;
+  const routingProfileId = req.body.routingProfileId;
   const instanceId = 'd90b8836-8188-46c5-a73c-20cbee3a8ded';
 
   try {
-    await connectClient.UpdateUserRoutingProfile({
+    const command = new UpdateUserRoutingProfileCommand({
       InstanceId: instanceId,
-      UserId: userId,
+      UserId: userid,
       RoutingProfileId: routingProfileId,
-    }).promise();
-    res.send('Routing profile actualizado exitosamente');
+    });
+
+    const response = await connectClient.send(command);
+    console.log('Routing profile actualizado exitosamente:', response);
+    
   } catch (error) {
     console.error('Error al actualizar routing profile:', error);
     res.status(500).send('Error al actualizar routing profile');

@@ -4,13 +4,14 @@ import CardDrag from '../components/CardDrop';
 import userService from "../services/user";
 import styled from 'styled-components';
 import PageStructure from '../components/PageStructure';
+import axios from 'axios';
 
 // Styled components
 const CardsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 10px; // Espacio entre las tarjetas
+  gap: 10px;
 `;
 
 const AgentRoutingProfile = () => {
@@ -43,6 +44,22 @@ const AgentRoutingProfile = () => {
     loadAgents();
   }, []);
 
+  const handleAgentDrop = async (agentId, newRoutingProfileId) => {
+    try {
+      const config = { // set headers
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      };
+      await axios.post('http://localhost:3000/Supervisor/update-routing-profile',
+        { userId: agentId, routingProfileId: newRoutingProfileId }, config
+      );
+
+    } catch (error) {
+      console.error('Error al actualizar el perfil de enrutamiento:', error);
+    }
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -61,10 +78,11 @@ const AgentRoutingProfile = () => {
     <div>
       <CardsContainer>
         {Object.keys(routingProfilesMap).map((routingProfileId) => (
-          <CardDrag 
-            key={routingProfileId} 
+          <CardDrag
+            key={routingProfileId}
             profileName={routingProfilesMap[routingProfileId]}
             routingProfileId={routingProfileId}
+            onAgentDrop={handleAgentDrop}
           >
             {(agentsByRoutingProfile[routingProfileId] || []).map((agent) => (
               <Agent key={agent.id} agent={agent} />
