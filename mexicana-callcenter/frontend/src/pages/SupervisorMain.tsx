@@ -57,6 +57,7 @@ const MainContent = () => {
       <HomeButton icon="/SpotlightSymbol.svg" title="Agent Spotlight" subtitle="Weekly best agents" handleClick={() => window.location.href = '/AgentSpotlight'}/>
       <HomeButton icon="/costumer.svg" title="Customer Service" subtitle="See the metrics for the customer service surveys" handleClick={() => window.location.href = '/CustomerService'}/>
       <HomeButton icon="/BreakSymbol.svg" title="Take a break" subtitle="Go to take a break to clear the mind" handleClick={() => window.location.href = '/Breaks'}/>
+      <HomeButton icon="/Switch.svg" title="Agent Queue Transfer" subtitle="Transfer agents from one queue to another" handleClick={() => window.location.href = '/supervisor/agentroutingprofile'}/>
     </div>
     <SupervisorButton handleClick={() => window.location.href = '/supervisor/onGoingCalls'} />
   </div>

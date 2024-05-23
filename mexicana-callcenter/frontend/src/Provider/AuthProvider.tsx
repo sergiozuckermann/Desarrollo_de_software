@@ -70,7 +70,7 @@ const AuthProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
           localStorage.setItem('token', token);
 
           // Create a WebSocket connection
-          const ws = new WebSocket('wss://ass8qombs74rl.execute-api.us-east-1.amazonaws.com/production');
+          const ws = new WebSocket('wss://305odlxyc3.execute-api.us-east-1.amazonaws.com/production/');
           ws.onopen = () => {
             console.log('Connected to WebSocket');
             ws.send(JSON.stringify({ action: 'setName', name: username }));

@@ -14,6 +14,19 @@ const GetInfo = (userRole:string, username:string) => {
         
 }
 
+const GetAgents = () => {
+    const config = { // set headers
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          }
+    }
+    return axios
+      .get(`${baseUrl}/Supervisor/agents`, config)
+      .then(response => response.data);
+  };
+  
+
 export default {
     GetInfo,
+    GetAgents
 }

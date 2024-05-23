@@ -18,12 +18,16 @@ import SupervisorNotifications from "./pages/SupervisorNotifications"
 import CallOverview from "./pages/CallOverview";
 import HistoricalMetrics from "./pages/Metrics";
 import ChatWidget from './components/ChatWidget';
+import AgentRoutingProfile from './pages/QueueTransfer';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 function App() {
   const { isAuthenticated, role } = useAuth(); // get user authentication status and role
 
   return (
       <>
+      <DndProvider backend={HTML5Backend}>
         <Routes>
           {/* General public routes */}
           <Route path="/" element={isAuthenticated ? <Navigate to={`/${role}/home`} /> : <Hello />} />
@@ -43,6 +47,7 @@ function App() {
           <Route path="/supervisor/notifications" element={<SupervisorNotifications />} />
           <Route path="/supervisor/calloverview" element={<CallOverview />} />
           <Route path="/supervisor/metrics" element={<HistoricalMetrics />} />
+          <Route path="/supervisor/agentroutingprofile" element={<AgentRoutingProfile />} />
       </Route>
 
           {/* Any other route which is not found */}
@@ -50,6 +55,7 @@ function App() {
         </Routes>
         <ToastContainer />
         <ChatWidget />
+      </DndProvider>
       </>
   );
 }

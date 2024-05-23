@@ -1,7 +1,9 @@
 const express = require('express');
 const supervisorRouter = express.Router();
 const dynamoDBClient = require('../utils/dynamoDBClient')
+const connectClient = require('../utils/connectClient')
 const { ScanCommand } = require("@aws-sdk/client-dynamodb"); // CommonJS import
+const { ListUsersCommand, DescribeUserCommand, UpdateUserRoutingProfileCommand  } = require("@aws-sdk/client-connect"); // CommonJS import
 const { unmarshall } = require('@aws-sdk/util-dynamodb');
 
 supervisorRouter.get('/myInfo/:username', async (req, res, next) => {
@@ -31,25 +33,41 @@ supervisorRouter.get('/myInfo/:username', async (req, res, next) => {
 
 // Get agents
 supervisorRouter.get('/agents', async (req, res) => {
-  const instanceId = 'd90b8836-8188-46c5-a73c-20cbee3a8ded';
+
+  const params = {
+    InstanceId: 'd90b8836-8188-46c5-a73c-20cbee3a8ded'
+  };
+
 
   try {
-    const usersResponse = await connectClient.listUsers({ InstanceId: instanceId }).promise();
-    const users = usersResponse.UserSummaryList;
+    const command = new ListUsersCommand(params);
+    const response = await connectClient.send(command);
+    const users = response.UserSummaryList;
 
     const userDetailsPromises = users.map(async (user) => {
-      const userResponse = await connectClient.describeUser({
-        InstanceId: instanceId,
+
+      const params = {
+        InstanceId: 'd90b8836-8188-46c5-a73c-20cbee3a8ded',
         UserId: user.Id
-      }).promise();
+      };
+
+      const usercommand = new DescribeUserCommand(params);
+
+      const userResponse = await connectClient.send(usercommand);
+
       return {
         id: user.Id,
-        name: userResponse.User.Username,
-        routingProfileId: userResponse.User.RoutingProfileId
+        username: userResponse.User.Username,
+        routingProfileId: userResponse.User.RoutingProfileId,
+        name: userResponse.User.IdentityInfo.FirstName,
+        lastname: userResponse.User.IdentityInfo.LastName,
       };
+
     });
 
     const userDetails = await Promise.all(userDetailsPromises);
+    console.log("this is response: ", userDetails)
+
     res.json(userDetails);
   } catch (error) {
     console.error('Error al obtener agentes:', error);
@@ -63,7 +81,7 @@ supervisorRouter.post('/update-routing-profile', async (req, res) => {
   const instanceId = 'd90b8836-8188-46c5-a73c-20cbee3a8ded';
 
   try {
-    await connectClient.updateUserRoutingProfile({
+    await connectClient.UpdateUserRoutingProfile({
       InstanceId: instanceId,
       UserId: userId,
       RoutingProfileId: routingProfileId,
