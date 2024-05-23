@@ -20,7 +20,7 @@ const AgentContainer = styled.div`
     background-color: #f1f1f1;
   }
 
-  opacity: ${(props) => (props.isDragging ? 0.5 : 1)};
+  opacity: ${(props) => (props.isdragging ? 0.5 : 1)};
 `;
 
 // Agent Name Styles
@@ -37,7 +37,7 @@ const AgentUsername = styled.div`
 `;
 
 const Agent = ({ agent }) => {
-  const [{ isDragging }, drag] = useDrag(() => ({
+  const [{ isdragging }, drag] = useDrag(() => ({
     type: 'AGENT',
     item: { id: agent.id },
     collect: (monitor) => ({
@@ -46,7 +46,7 @@ const Agent = ({ agent }) => {
   }));
 
   return (
-    <AgentContainer ref={drag} isDragging={isDragging}>
+    <AgentContainer ref={drag} isdragging={isdragging}>
       <AgentName>{agent.name}</AgentName>
       <AgentUsername>{agent.username}</AgentUsername>
     </AgentContainer>
