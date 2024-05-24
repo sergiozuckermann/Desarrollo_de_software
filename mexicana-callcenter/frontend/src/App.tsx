@@ -21,6 +21,7 @@ import HistoricalMetrics from "./pages/Metrics";
 import ChatWidget from './components/ChatWidget';
 import TakeABreak from './pages/TakeABreak';
 import MoveYourBody from './pages/MoveYourBody';
+import BreathingExcer from './pages/BreathingExcer';
 
 
 function App() {
@@ -49,6 +50,7 @@ function App() {
           <Route path="/supervisor/AgentSpotlight" element={<AgentMetrics />} />
           <Route path="/supervisor/TakeABreak" element={<TakeABreak />} />
           <Route path="/supervisor/MoveYourBody" element={<MoveYourBody />} />
+          <Route path="/supervisor/BreathingExcer" element={<BreathingExcer />} />
       </Route>
 
           {/* Any other route which is not found */}
