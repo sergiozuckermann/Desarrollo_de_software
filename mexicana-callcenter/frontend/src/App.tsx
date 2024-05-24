@@ -19,6 +19,8 @@ import SupervisorNotifications from "./pages/SupervisorNotifications"
 import CallOverview from "./pages/CallOverview";
 import HistoricalMetrics from "./pages/Metrics";
 import ChatWidget from './components/ChatWidget';
+import TakeABreak from './pages/TakeABreak';
+import MoveYourBody from './pages/MoveYourBody';
 
 
 function App() {
@@ -45,6 +47,8 @@ function App() {
           <Route path="/supervisor/home" element={<SupervisorMain />} />
           <Route path="/supervisor/ongoingcalls" element={<OngoingCalls />} />
           <Route path="/supervisor/AgentSpotlight" element={<AgentMetrics />} />
+          <Route path="/supervisor/TakeABreak" element={<TakeABreak />} />
+          <Route path="/supervisor/MoveYourBody" element={<MoveYourBody />} />
       </Route>
 
           {/* Any other route which is not found */}
