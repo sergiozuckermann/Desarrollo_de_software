@@ -66,12 +66,11 @@ supervisorRouter.get('/agents', async (req, res) => {
     });
 
     const userDetails = await Promise.all(userDetailsPromises);
-    console.log("this is response: ", userDetails)
 
     res.json(userDetails);
   } catch (error) {
-    console.error('Error al obtener agentes:', error);
-    res.status(500).send('Error al obtener agentes');
+    console.error('Error fetching agents:', error);
+    res.status(500).send('Error fetching agents');
   }
 });
 
@@ -89,12 +88,12 @@ supervisorRouter.post('/update-routing-profile', async (req, res) => {
     });
 
     const response = await connectClient.send(command);
-    console.log('Routing profile actualizado exitosamente:', response);
-    res.status(200).send('Routing profile actualizado exitosamente'); 
+    console.log('Routing profile updated successfully:', response);
+    res.status(200).send('Routing profile updated successfully'); 
 
   } catch (error) {
-    console.error('Error al actualizar routing profile:', error);
-    res.status(500).send('Error al actualizar routing profile');
+    console.error('Error at updating routing profile:', error);
+    res.status(500).send('Error at updating routing profile');
   }
 });
 
