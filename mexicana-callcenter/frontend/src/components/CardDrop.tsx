@@ -68,7 +68,7 @@ const AgentsContainer = styled.div`
   }
 `;
 
-const CardDrag = ({ profileName, routingProfileId, children, onAgentDrop }) => {
+const CardDrop = ({ profileName, routingProfileId, onAgentDrop, children }) => {
   const [{ isOver }, drop] = useDrop(() => ({
     accept: 'AGENT',
     drop: (item) => onAgentDrop(item.id, routingProfileId),
@@ -76,6 +76,10 @@ const CardDrag = ({ profileName, routingProfileId, children, onAgentDrop }) => {
       isOver: !!monitor.isOver(),
     }),
   }));
+
+  console.log('Profile Name:', profileName);
+  console.log('Routing Profile Id:', routingProfileId);
+  console.log('isOver:', isOver);
 
   return (
     <CardContainer ref={drop} className={isOver ? 'isOver' : ''}>
@@ -87,4 +91,4 @@ const CardDrag = ({ profileName, routingProfileId, children, onAgentDrop }) => {
   );
 };
 
-export default CardDrag;
+export default CardDrop;

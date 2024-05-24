@@ -37,7 +37,7 @@ const AgentUsername = styled.div`
 `;
 
 const Agent = ({ agent }) => {
-  const [{ isdragging }, drag] = useDrag(() => ({
+  const [{ isDragging }, drag] = useDrag(() => ({
     type: 'AGENT',
     item: { id: agent.id },
     collect: (monitor) => ({
@@ -45,8 +45,11 @@ const Agent = ({ agent }) => {
     }),
   }));
 
+  console.log('Agent:', agent);
+  console.log('isDragging:', isDragging);
+
   return (
-    <AgentContainer ref={drag} isdragging={isdragging}>
+    <AgentContainer ref={drag} isdragging={isDragging}>
       <AgentName>{agent.name}</AgentName>
       <AgentUsername>{agent.username}</AgentUsername>
     </AgentContainer>

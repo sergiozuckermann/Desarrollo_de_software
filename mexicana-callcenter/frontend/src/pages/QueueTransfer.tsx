@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Agent from '../components/AgentDrag';
-import CardDrag from '../components/CardDrop';
+import CardDrop from '../components/CardDrop';
 import userService from "../services/user";
 import styled from 'styled-components';
 import PageStructure from '../components/PageStructure';
@@ -15,7 +15,14 @@ const CardsContainer = styled.div`
 `;
 
 const AgentRoutingProfile = () => {
-  const [agents, setAgents] = useState([]);
+  type Agent = {
+    id: string;
+    name: string;
+    username: string;
+    routingProfileId: string;
+  };
+
+  const [agents, setAgents] = useState<Agent[]>([]);
   const [loading, setLoading] = useState(true);
 
   const routingProfilesMap = {
@@ -30,21 +37,21 @@ const AgentRoutingProfile = () => {
     '13a54127-9cff-44e8-804f-689c05089faf': 'Basic Routing Profile',
   };
 
-  useEffect(() => {
-    const loadAgents = async () => {
-      try {
-        const agentsData = await userService.GetAgents();
-        setAgents(agentsData);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error al obtener agentes:', error);
-      }
-    };
+  const loadAgents = async () => {
+    try {
+      const agentsData = await userService.GetAgents();
+      setAgents(agentsData);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error al obtener agentes:', error);
+    }
+  };
 
+  useEffect(() => {
     loadAgents();
   }, []);
 
-  const handleAgentDrop = async (agentId, newRoutingProfileId) => {
+  const handleAgentDrop = async (agentId: string, newRoutingProfileId: string) => {
     try {
       const config = { // set headers
         headers: {
@@ -55,6 +62,8 @@ const AgentRoutingProfile = () => {
         { userId: agentId, routingProfileId: newRoutingProfileId }, config
       );
 
+      // Vuelve a cargar los agentes después de actualizar el perfil de enrutamiento
+      await loadAgents();
     } catch (error) {
       console.error('Error al actualizar el perfil de enrutamiento:', error);
     }
@@ -64,7 +73,7 @@ const AgentRoutingProfile = () => {
     return <div>Loading...</div>;
   }
 
-  // Group Agents by Routing Profile
+  // Agrupar agentes por perfil de enrutamiento
   const agentsByRoutingProfile = agents.reduce((acc, agent) => {
     const { routingProfileId } = agent;
     if (!acc[routingProfileId]) {
@@ -78,16 +87,16 @@ const AgentRoutingProfile = () => {
     <div>
       <CardsContainer>
         {Object.keys(routingProfilesMap).map((routingProfileId) => (
-          <CardDrag
+          <CardDrop
             key={routingProfileId}
             profileName={routingProfilesMap[routingProfileId]}
             routingProfileId={routingProfileId}
             onAgentDrop={handleAgentDrop}
           >
-            {(agentsByRoutingProfile[routingProfileId] || []).map((agent) => (
+            {(agentsByRoutingProfile[routingProfileId] || []).map((agent: Agent) => (
               <Agent key={agent.id} agent={agent} />
             ))}
-          </CardDrag>
+          </CardDrop>
         ))}
       </CardsContainer>
     </div>
