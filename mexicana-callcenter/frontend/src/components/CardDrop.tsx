@@ -71,15 +71,14 @@ const AgentsContainer = styled.div`
 const CardDrop = ({ profileName, routingProfileId, onAgentDrop, children }) => {
   const [{ isOver }, drop] = useDrop(() => ({
     accept: 'AGENT',
-    drop: (item) => onAgentDrop(item.id, routingProfileId),
+    drop: (item) => {
+      console.log('Dropped Agent:', item);
+      onAgentDrop(item.id, routingProfileId);
+    },
     collect: (monitor) => ({
       isOver: !!monitor.isOver(),
     }),
   }));
-
-  console.log('Profile Name:', profileName);
-  console.log('Routing Profile Id:', routingProfileId);
-  console.log('isOver:', isOver);
 
   return (
     <CardContainer ref={drop} className={isOver ? 'isOver' : ''}>

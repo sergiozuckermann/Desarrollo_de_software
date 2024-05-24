@@ -90,7 +90,8 @@ supervisorRouter.post('/update-routing-profile', async (req, res) => {
 
     const response = await connectClient.send(command);
     console.log('Routing profile actualizado exitosamente:', response);
-    
+    res.status(200).send('Routing profile actualizado exitosamente'); 
+
   } catch (error) {
     console.error('Error al actualizar routing profile:', error);
     res.status(500).send('Error al actualizar routing profile');

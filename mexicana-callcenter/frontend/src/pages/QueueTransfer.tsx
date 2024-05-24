@@ -52,18 +52,34 @@ const AgentRoutingProfile = () => {
   }, []);
 
   const handleAgentDrop = async (agentId: string, newRoutingProfileId: string) => {
+
     try {
-      const config = { // set headers
+      const config = {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       };
+
       await axios.post('http://localhost:3000/Supervisor/update-routing-profile',
         { userId: agentId, routingProfileId: newRoutingProfileId }, config
       );
 
-      // Vuelve a cargar los agentes después de actualizar el perfil de enrutamiento
-      await loadAgents();
+    // Update the agents state
+    setAgents((prevAgents) => {
+      // Find the moved agent
+      const movedAgent = prevAgents.find(agent => agent.id === agentId);
+      if (!movedAgent) return prevAgents; // If the agent is not found, do nothing
+
+      // Delete the moved agent from the previous routing profile
+      const updatedAgents = prevAgents.filter(agent => agent.id !== agentId);
+
+      // Update the routing profile of the moved agent
+      movedAgent.routingProfileId = newRoutingProfileId;
+
+      // Add the moved agent to the new routing profile
+      return [...updatedAgents, movedAgent];
+    });
+
     } catch (error) {
       console.error('Error al actualizar el perfil de enrutamiento:', error);
     }
@@ -73,7 +89,7 @@ const AgentRoutingProfile = () => {
     return <div>Loading...</div>;
   }
 
-  // Agrupar agentes por perfil de enrutamiento
+  // Group agents by routing profile
   const agentsByRoutingProfile = agents.reduce((acc, agent) => {
     const { routingProfileId } = agent;
     if (!acc[routingProfileId]) {
