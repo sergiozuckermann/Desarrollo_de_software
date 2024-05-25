@@ -38,14 +38,31 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
     };
     return new Date(dateString).toLocaleDateString("en-US", options);
   };
+  // performance
+  const handleShowMetrics = () => {
+    navigate(`/supervisor/AgentSpotlight`);
+  }
+  
+  const shouldShowMetricsButton =
+    title.toLowerCase().includes("performance");
+    
 
+  // call overview, bad call, bad sentiment
   const handleCallOverview = () => {
     navigate(`/supervisor/calloverview`);
   };
 
   const shouldShowCallOverviewButton =
     title.toLowerCase().includes("call") ||
-    message.toLowerCase().includes("call");
+    title.toLowerCase().includes("bad sentiment");
+
+  // agent overview, queue graphs
+  const handleOnGoingCalls= () => {
+    navigate(`/supervisor/ongoingcalls`);
+  };
+  
+  const shouldShowOnGoingCallsButton =
+    title.toLowerCase().includes("queue is too long");
 
   return (
     <div
@@ -57,12 +74,31 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
         {expanded && (
           <>
             <p className="text-base">{message}</p>
+             {/* call */}
             {shouldShowCallOverviewButton && (
               <button
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2 mt-4"
+                className="bg-[#20253F] hover:bg-[#4A8B51] text-white font-bold py-2 px-4 rounded mb-2 mt-4"
                 onClick={handleCallOverview}
               >
                 Call Overview
+              </button>
+            )}
+            {/* performance */}
+            {shouldShowMetricsButton && (
+              <button
+                className="bg-[#20253F] hover:bg-[#4A8B51] text-white font-bold py-2 px-4 rounded mb-2 mt-4"
+                onClick={handleShowMetrics}
+              >
+                Agent Performance
+              </button>
+            )}
+            {/* queue */}
+            {shouldShowOnGoingCallsButton&& (
+              <button
+                className="bg-[#20253F] hover:bg-[#4A8B51] text-white font-bold py-2 px-4 rounded mb-2 mt-4"
+                onClick={handleOnGoingCalls}
+              >
+                On Going Calls
               </button>
             )}
           </>
