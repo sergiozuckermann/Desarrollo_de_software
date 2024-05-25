@@ -4,7 +4,8 @@ import MyLineChart from "../components/Charts/linechart";
 import CallCard from '../components/Callinfo';
 import Card from '../components/Card';
 import AHT from "../components/Charts/AHT";
-import { useState } from "react";
+//import { sentimentData } from '../components/sentimentData';
+import { useState,  useEffect  } from "react";
 import { Link, redirect } from "react-router-dom";
 
 
@@ -57,6 +58,10 @@ const MainContent = () => {
             ]
           }
       ];
+      //Lines necessary for Cypress to detect the constant.
+      useEffect(() => {
+        (window as any).sentimentData = sentimentData;
+      }, []);
 
     return (
         <div className="grid w-full h-full grid-cols-1 gap-4 p-2 lg:grid-cols-12 items-center justify-center overflow-y-auto">

@@ -45,6 +45,8 @@ function App() {
           <Route path="/supervisor/home" element={<SupervisorMain />} />
           <Route path="/supervisor/ongoingcalls" element={<OngoingCalls />} />
           <Route path="/supervisor/AgentSpotlight" element={<AgentMetrics />} />
+          <Route path="/supervisor/calloverview" element={<CallOverview />} />
+
       </Route>
 
           {/* Any other route which is not found */}
