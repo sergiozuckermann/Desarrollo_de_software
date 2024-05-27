@@ -1,6 +1,6 @@
 import { ResponsiveBar } from '@nivo/bar';
 
-const MyResponsiveBar = ({ data }) => {
+const MyResponsiveBar2 = ({ data }) => {
     // Define your `barColors` mapping
     const barColors = {
         "Flight Rsv": "#F47560",
@@ -57,4 +57,4 @@ const MyResponsiveBar = ({ data }) => {
     );
 };
 
-export default MyResponsiveBar;
+export default MyResponsiveBar2;
