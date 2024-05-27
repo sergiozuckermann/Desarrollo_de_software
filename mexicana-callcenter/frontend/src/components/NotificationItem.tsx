@@ -77,7 +77,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
              {/* call */}
             {shouldShowCallOverviewButton && (
               <button
-                className="bg-[#20253F] hover:bg-[#4A8B51] text-white font-bold py-2 px-4 rounded mb-2 mt-4"
+                className="bg-[#4A8B51] hover:bg-[#4A8B51] text-white font-bold py-2 px-4 rounded mb-2 mt-4"
                 onClick={handleCallOverview}
               >
                 Call Overview
@@ -86,7 +86,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
             {/* performance */}
             {shouldShowMetricsButton && (
               <button
-                className="bg-[#20253F] hover:bg-[#4A8B51] text-white font-bold py-2 px-4 rounded mb-2 mt-4"
+                className="bg-[#4A8B51] hover:bg-[#4A8B51] text-white font-bold py-2 px-4 rounded mb-2 mt-4"
                 onClick={handleShowMetrics}
               >
                 Agent Performance
@@ -95,7 +95,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
             {/* queue */}
             {shouldShowOnGoingCallsButton&& (
               <button
-                className="bg-[#20253F] hover:bg-[#4A8B51] text-white font-bold py-2 px-4 rounded mb-2 mt-4"
+                className="bg-[#4A8B51] hover:bg-[#4A8B51] text-white font-bold py-2 px-4 rounded mb-2 mt-4"
                 onClick={handleOnGoingCalls}
               >
                 On Going Calls
