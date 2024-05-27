@@ -106,7 +106,7 @@ return (
             image={showingAgents[0].image}
           />
         </div>
-        <div className="col-span-1 p-4 flex-shrink-0 scale-100">
+        <div className="col-span-1 p-4 flex-shrink-0 scale-120">
           <AgentSpotlightComp
             name={showingAgents[1].name}
             performance={showingAgents[1].performance}
