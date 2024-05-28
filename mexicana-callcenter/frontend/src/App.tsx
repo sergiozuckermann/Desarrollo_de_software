@@ -21,8 +21,7 @@ import CallOverview from "./pages/CallOverview";
 function App() {
 
   const {isAuthenticated, role} = useAuth() // get user authentication status and role
-
-
+  
   return (
     <>
     <Routes>

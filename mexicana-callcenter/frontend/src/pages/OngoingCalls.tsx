@@ -3,113 +3,175 @@ import PageStructure from "../components/PageStructure";
 import CellGrid from "../components/CellGrid";
 import GraphAgentStructure from "../components/GraphAgentStructure";
 import { useWebSocket } from "../hooks/useWebSocket";
-import { Interaction } from "../utils/interfaces";
+import { Interaction, SentimentSegment } from "../utils/interfaces";
 
 const OngoingCalls: React.FunctionComponent = () => {
-  const { socket } = useWebSocket() // get web socket connection
-  const [interactions, setInteractions] = useState<Array<Interaction>>([])
+  const { socket } = useWebSocket(); // get web socket connection
+  const [interactions, setInteractions] = useState<Array<Interaction>>([]); // interactions
 
-  // 1. Receive the data segment (could be the combined segment: both sentiment and call status OR receive the 2 segments separately) from the established websocket connection 
-  // 2. Store the segment in state (do this inside a useEffect hook that runs whenever new data is received)
-  // 3. In the data state (backend data) check if there is not an already established interaction by checking every contactID
-  // 4. If there is, replace the segment at that position and set the backend data state to that.
-  // 5. If there is not, add the segment to the backend data
-
+  // useEffect to fetch information from session storage on every rerender
   useEffect(() => {
-    localStorage.setItem('interactions', JSON.stringify([]))
-  }, [])
-
-  const processEvent = (segment:Interaction) => {
-
-    const data = localStorage.getItem('interactions')
-    let currentInteractions = []
-    if(data) {
-      currentInteractions = JSON.parse(data)
-      console.log('curenenne: ', currentInteractions)
-      const establishedInteraction = currentInteractions.find(interaction => interaction.key === segment.key)
-      if(establishedInteraction) {
-
-      if(segment.state === 'LOGOUT') {
-        console.log("entered logou")
-        const filteredInteractions = currentInteractions.filter(interaction => interaction.key !== segment.key)
-        localStorage.setItem('interactions', JSON.stringify(filteredInteractions))
-        setInteractions(filteredInteractions)
-        return
-      }
-
-      const updatedInteractions = currentInteractions.map(interaction => interaction.key === segment.key ? segment : interaction)
-      localStorage.setItem('interactions', JSON.stringify(updatedInteractions))
-      setInteractions(updatedInteractions)
-      } else { // no established interaction
-        const newData = [...currentInteractions]
-        newData.push(segment)
-        
-        setInteractions(newData)
-        localStorage.setItem('interactions', JSON.stringify(newData))
-
-      }
+    const interactionsData = sessionStorage.getItem("interactions"); // check if interactions key exists
+    if (interactionsData) {
+      setInteractions(JSON.parse(interactionsData)); // set interactions state
     } else {
-      console.log('data is NULL')
+      sessionStorage.setItem("interactions", JSON.stringify([])); // create the key if it does not exist
     }
-   
-  }
+  }, []);
 
-  const processSentimentAnalysis = (segment) => {
-    const data = localStorage.getItem('interactions')
-    let currentInteractions:Array<Interaction> = []
-    if(data) {
-      currentInteractions = JSON.parse(data)
-      const establishedInteraction = currentInteractions.find(i => i.contactId === segment.contactId)
-        if(establishedInteraction) {
-          const updatedInteraction = {
-            ...establishedInteraction,
-            Sentiment: segment.Sentiment
-          }
-          const updatedInteractions = currentInteractions.map(i => i.contactId === segment.contactId ? updatedInteraction : i)
-          localStorage.setItem('interactions', JSON.stringify(updatedInteractions))
-          setInteractions(updatedInteractions)
+  // Define a function to process events, which takes a 'segment' of type Interaction as an argument
+  const processEvent = (segment: Interaction) => {
+    // Retrieve 'interactions' data from local storage
+    const data = sessionStorage.getItem("interactions");
+    // Initialize an array to hold interaction objects
+    let currentInteractions: Array<Interaction> = [];
+
+    // Check if there is any data retrieved from local storage
+    if (data) {
+      // Parse the JSON string back into an array of objects
+      currentInteractions = JSON.parse(data);
+
+      // Find the interaction object that matches the key from the segment
+      const establishedInteraction = currentInteractions.find(
+        (interaction) => interaction.key === segment.key
+      );
+
+      // Check if an established interaction was found
+      if (establishedInteraction) {
+        // Check if the segment's state is 'LOGOUT'
+        if (segment.state === "LOGOUT") {
+          // Filter out the interaction with the matching key to remove it
+          const filteredInteractions = currentInteractions.filter(
+            (interaction) => interaction.key !== segment.key
+          );
+
+          // Save the filtered interactions array back to local storage as a JSON string
+          sessionStorage.setItem(
+            "interactions",
+            JSON.stringify(filteredInteractions)
+          );
+
+          // Update the state or context with the filtered interactions array
+          setInteractions(filteredInteractions);
+          return;
+        }
+
+        // Map through the current interactions to replace the interaction
+        // where the key matches with the new segment data
+        const updatedInteractions = currentInteractions.map((interaction) =>
+          interaction.key === segment.key ? segment : interaction
+        );
+
+        // Save the updated interactions array back to local storage as a JSON string
+        sessionStorage.setItem(
+          "interactions",
+          JSON.stringify(updatedInteractions)
+        );
+
+        // Update the state or context with the new interactions array
+        setInteractions(updatedInteractions);
+      } else {
+        // If no established interaction was found
+        // Create a new array with all current interactions
+        const newData = [...currentInteractions];
+        // Add the new segment to the array
+        newData.push(segment);
+
+        // Save the new interactions array back to local storage as a JSON string
+        sessionStorage.setItem("interactions", JSON.stringify(newData));
+        // Update the state or context with the new interactions array
+        setInteractions(newData);
       }
     }
-  }
+  };
 
+  // Define a function to process sentiment analysis, which takes a 'segment' object as an argument
+  const processSentimentAnalysis = (segment: SentimentSegment) => {
+    // Retrieve 'interactions' data from local storage
+    const data = sessionStorage.getItem("interactions");
+    // Initialize an array to hold interaction objects
+    let currentInteractions: Array<Interaction> = [];
+
+    // Check if there is any data retrieved from local storage
+    if (data) {
+      // Parse the JSON string back into an array of objects
+      currentInteractions = JSON.parse(data);
+
+      // Find the interaction object that matches the contact ID from the segment
+      const establishedInteraction = currentInteractions.find(
+        (i) => i.contactId === segment.contactId
+      );
+
+      // Check if an established interaction was found
+      if (establishedInteraction) {
+        // Create an updated interaction object by spreading the existing interaction
+        // and updating the 'Sentiment' field with the sentiment from the segment
+        const updatedInteraction = {
+          ...establishedInteraction,
+          Sentiment: segment.Sentiment,
+        };
+
+        // Map through the current interactions to replace the updated interaction
+        // in the array where the contact ID matches
+        const updatedInteractions = currentInteractions.map((i) =>
+          i.contactId === segment.contactId ? updatedInteraction : i
+        );
+
+        // Save the updated interactions array back to local storage as a JSON string
+        sessionStorage.setItem(
+          "interactions",
+          JSON.stringify(updatedInteractions)
+        );
+
+        // Update the state or context with the new interactions array
+        setInteractions(updatedInteractions);
+      }
+    }
+  };
+
+  // web socket connection to get real time information from ongoing intereaction
   useEffect(() => {
-    const ws = socket
-    if(ws !== null) {
-      console.log("This is ws: ", ws)
+    const ws = socket;
+    if (ws !== null) {
+      // check that the websocket connection exists
+
       ws.onmessage = (event) => {
-        console.log("message received: ", event.data)
-        const data = JSON.parse(event.data)
-        const segment = data.message
-        console.log("now seg: ", segment)
-        if(segment) {
-          console.log('entered iff')
-          const { segmentType } = segment
-          if(segmentType == 'AGENT_EVENT') {
-            console.log('interactions before calling fn: ', interactions)
-            processEvent(segment)
-          } else if(segmentType == 'SENTIMENT_ANALYSIS') {
-            processSentimentAnalysis(segment)
+        // onmessage event to receive data
+        const data = JSON.parse(event.data);
+        const segment = data.message;
+        console.log("data: ", segment);
+
+        if (segment) {
+          // check if segment exists
+          const { segmentType } = segment;
+          if (segmentType == "AGENT_EVENT") {
+            // segment of type agent event
+            processEvent(segment);
+          } else if (segmentType == "SENTIMENT_ANALYSIS") {
+            // segment of type sentiment analysis
+            processSentimentAnalysis(segment);
           }
         }
-      }
+      };
     }
-  }, [socket])
-
+  }, [socket]);
 
   return (
     <PageStructure title="Ongoing Calls">
       <div className="overflow-y-auto h-full pb-[3%] pt-[2%] pl-[2%]">
-            <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
-              <div className="col-span-1">
-                <GraphAgentStructure />
-              </div>
-              <div className="col-span-1">
-                {!interactions.length ? 
-                  <h1>No ongoing interactions</h1> : 
-                  <CellGrid data={interactions} />}
-              </div>
-            </div>
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+          <div className="col-span-1">
+            <GraphAgentStructure />
           </div>
+          <div className="col-span-1">
+            {!interactions.length ? (
+              <h1>No ongoing interactions</h1>
+            ) : (
+              <CellGrid data={interactions} />
+            )}
+          </div>
+        </div>
+      </div>
     </PageStructure>
   );
 };

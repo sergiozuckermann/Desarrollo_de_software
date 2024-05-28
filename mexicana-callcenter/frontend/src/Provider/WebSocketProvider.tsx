@@ -11,12 +11,12 @@ interface WebSocketProviderProps {
 
 export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }) => {
   const [socket, setSocket] = useState<WebSocket | null>(null)
-  const {isAuthenticated} = useAuth()
+  const {isAuthenticated, role} = useAuth()
   useEffect(() => {
-    if(isAuthenticated) {
+    if(isAuthenticated && role == 'Supervisor') {
         setSocket(new WebSocket('wss://305odlxyc3.execute-api.us-east-1.amazonaws.com/production/'))
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, role]);
 
   return (
     <WebSocketContext.Provider value={{ socket }}>

@@ -14,10 +14,10 @@ const CellGrid: React.FunctionComponent<CellGridProps> = ({ data }) => {
     <div className="box-border border-[1px] rounded-lg shadow p-4 border-solid border-marco shadow-lg lg:h-[700px] overflow-y-auto">
       <div className="grid sm:grid-cols-2 gap-4">
         
-        {data.map((interaction, index) => (
+        {data.map((interaction) => (
           <Link
             to="/Supervisor/bargein"
-            key={index}
+            key={interaction.key}
             className="bg-white rounded-lg shadow p-6 border border-gray-300"
           >
             <div className="flex flex-col items-center justify-center text-center h-full">

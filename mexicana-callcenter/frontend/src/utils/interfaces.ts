@@ -36,5 +36,19 @@ export interface Interaction {
   contactId?: string,
   Sentiment?: string,
   queueName?: string,
+  
+}
 
+// Define the type for an interaction
+export interface SentimentSegment {
+  ParticipantId: string;
+  ParticipantRole: string;
+  Content: string;
+  BeginOffsetMillis: number;
+  EndOffsetMillis: number;
+  Id: string;
+  Sentiment: string;
+  contactId?:string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  IssuesDetected: Array<any>; // Use specific type instead of `any` if you know what will be in the array
 }
