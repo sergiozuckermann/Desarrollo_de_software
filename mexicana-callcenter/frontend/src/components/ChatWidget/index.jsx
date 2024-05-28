@@ -1,9 +1,8 @@
+import React, { useEffect, useRef, useState } from "react";
+import { BsFillChatFill } from "react-icons/bs";
 // importing external style
 import { styles } from "./styles";
-// import icon
-import { BsFillChatFill } from "react-icons/bs";
-import { useEffect, useRef, useState } from "react";
-//import ModalWindow
+// import ModalWindow
 import ModalWindow from "./ModalWindow";
 
 function ChatWidget() {
@@ -11,9 +10,10 @@ function ChatWidget() {
     const [hovered, setHovered] = useState(false);
     // state variable to track modal visibility
     const [visible, setVisible] = useState(false);
-    //creating a ref 'id'
+    // creating a ref 'id'
     const widgetRef = useRef(null);
-    // use effect listener to check if the mouse was cliked outside the window 
+
+    // use effect listener to check if the mouse was clicked outside the window 
     useEffect(() => {
         function handleClickOutside(event) {
             if (widgetRef.current && !widgetRef.current.contains(event.target)) {
@@ -27,11 +27,11 @@ function ChatWidget() {
     }, [widgetRef]);
 
     return (
-        //container
-        //call widgetRef inside the div
+        // container
+        // call widgetRef inside the div
         <div ref={widgetRef}>
             {/* Call Modal Window */}
-            <ModalWindow visible={visible} />
+            <ModalWindow visible={visible} onClose={() => setVisible(false)} />
 
             {/* Chat Button Component */}
             <div
@@ -61,6 +61,5 @@ function ChatWidget() {
         </div>
     );
 }
-
 
 export default ChatWidget;
