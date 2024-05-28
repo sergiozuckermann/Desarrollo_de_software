@@ -15,6 +15,7 @@
     "nodemon": "^3.1.0"
   },
   "dependencies": {
+    "@aws-sdk/client-connect": "^3.582.0",
     "@aws-sdk/client-dynamodb": "^3.556.0",
     "@aws-sdk/util-dynamodb": "^3.556.0",
     "amazon-cognito-identity-js": "^6.3.12",
