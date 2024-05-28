@@ -47,7 +47,7 @@ function App() {
           <Route path="/supervisor/notifications" element={<SupervisorNotifications />} />
           <Route path="/supervisor/calloverview" element={<CallOverview />} />
           <Route path="/supervisor/metrics" element={<HistoricalMetrics />} />
-          <Route path="/supervisor/agentroutingprofile" element={<AgentRoutingProfile />} />
+          <Route path="/supervisor/agent-transfer" element={<AgentRoutingProfile />} />
       </Route>
 
           {/* Any other route which is not found */}

@@ -46,7 +46,7 @@ const Agent = ({ agent }) => {
   }));
 
   return (
-    <AgentContainer ref={drag} style={{ opacity: isDragging ? 0.5 : 1 }}>
+    <AgentContainer ref={drag} style={{ opacity: isDragging ? 0.5 : 1 }} data-testid={`agent-${agent.id}`}>
       <AgentName>{agent.name}</AgentName>
       <AgentUsername>{agent.username}</AgentUsername>
     </AgentContainer>

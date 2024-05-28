@@ -81,7 +81,7 @@ const CardDrop = ({ profileName, routingProfileId, onAgentDrop, children }) => {
   }));
 
   return (
-    <CardContainer ref={drop} className={isOver ? 'isOver' : ''}>
+    <CardContainer ref={drop} className={isOver ? 'isOver' : ''} data-testid={`card-${profileName.replace(/\s+/g, '')}`}>
       <CardTitle>{profileName}</CardTitle>
       <AgentsContainer>
         {children}

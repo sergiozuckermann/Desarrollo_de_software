@@ -25,25 +25,9 @@ const GetAgents = () => {
         .then(response => response.data);
 };
 
-const UpdateRoutingProfile = (agentId:string, newRoutingProfileId:string) => {
-    const config = { // set headers
-        method: 'post',
-        headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-        data: {
-            agentId: agentId,
-            routingProfileId: newRoutingProfileId
-        },
-    };
-    return axios
-        .post(`${baseUrl}/Supervisor/update-routing-profile`, config)
-        .then(response => response.data);
-};
 
 
 export default {
     GetInfo,
-    GetAgents,
-    UpdateRoutingProfile
+    GetAgents
 }
