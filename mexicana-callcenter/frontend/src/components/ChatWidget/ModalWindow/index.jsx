@@ -47,6 +47,7 @@ function ModalWindow(props) {
         color: 'white',
         padding: '10px 5px',
         textAlign: 'center',
+        position: 'relative', // Add relative positioning to the header
     };
 
     const titleStyles = {
@@ -61,6 +62,17 @@ function ModalWindow(props) {
         fontSize: '18px',
         color: 'white',
         lineHeight: '1.2',
+    };
+
+    const closeButtonStyles = {
+        position: 'absolute',
+        top: '10px',
+        right: '10px',
+        backgroundColor: 'transparent',
+        border: 'none',
+        fontSize: '16px',
+        color: 'white',
+        cursor: 'pointer',
     };
 
     const activeUsersContainerStyles = {
@@ -117,53 +129,57 @@ function ModalWindow(props) {
 
     // Retornar la interfaz del chat
     return (
-        <div
-            style={{
-                ...styles.modalWindow,
-                ...{ opacity: props.visible ? "1" : "0" },
-            }}
-        >
-            <div style={headerStyles}>
-                <h1 style={titleStyles}>MexicanaAirlines</h1>
-                <h2 style={subtitleStyles}>Live Chat</h2>
-            </div>
-            {isConnected ? (
-                <>
-                    <div style={activeUsersContainerStyles}>
-                        <label htmlFor="activeUsers" style={labelStyles}>Active Users:</label>
-                        <select
-                            id="activeUsers"
-                            value={selectedMember}
-                            onChange={(e) => setSelectedMember(e.target.value)}
-                            style={selectStyles}
-                        >
-                            <option value="sendToAll">Send to All</option>
-                            {members.map((member) => (
-                                <option key={member} value={member}>
-                                    {member}
-                                </option>
+        <>
+            {props.visible && <div style={styles.modalBackdrop}></div>}
+            <div
+                style={{
+                    ...styles.modalWindow,
+                    ...(props.visible && styles.modalWindowVisible),
+                }}
+            >
+                <div style={headerStyles}>
+                    <h1 style={titleStyles}>MexicanaAirlines</h1>
+                    <h2 style={subtitleStyles}>Live Chat</h2>
+                    <button style={closeButtonStyles} onClick={props.onClose}>X</button>
+                </div>
+                {isConnected ? (
+                    <>
+                        <div style={activeUsersContainerStyles}>
+                            <label htmlFor="activeUsers" style={labelStyles}>Active Users:</label>
+                            <select
+                                id="activeUsers"
+                                value={selectedMember}
+                                onChange={(e) => setSelectedMember(e.target.value)}
+                                style={selectStyles}
+                            >
+                                <option value="sendToAll">Send to All</option>
+                                {members.map((member) => (
+                                    <option key={member} value={member}>
+                                        {member}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        <div>Chat Messages:</div>
+                        <ul style={chatListStyles}>
+                            {chatRows.map((row, index) => (
+                                <li key={index} style={chatItemStyles}>{row}</li>
                             ))}
-                        </select>
-                    </div>
-                    <div>Chat Messages:</div>
-                    <ul style={chatListStyles}>
-                        {chatRows.map((row, index) => (
-                            <li key={index} style={chatItemStyles}>{row}</li>
-                        ))}
-                    </ul>
-                    <input
-                        type="text"
-                        value={message}
-                        onChange={(e) => setMessage(e.target.value)}
-                        style={inputStyles}
-                    />
-                    <button onClick={handleSendMessage} style={buttonStyles}>Send</button>
-                    <button onClick={onDisconnect} style={buttonStyles}>Disconnect</button>
-                </>
-            ) : (
-                <div>Connecting...</div>
-            )}
-        </div>
+                        </ul>
+                        <input
+                            type="text"
+                            value={message}
+                            onChange={(e) => setMessage(e.target.value)}
+                            style={inputStyles}
+                        />
+                        <button onClick={handleSendMessage} style={buttonStyles}>Send</button>
+                        <button onClick={onDisconnect} style={buttonStyles}>Disconnect</button>
+                    </>
+                ) : (
+                    <div>Connecting...</div>
+                )}
+            </div>
+        </>
     );
 }
 
