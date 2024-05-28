@@ -25,3 +25,16 @@ export interface WorkerCardProps {
 export interface WebSocketContextType {
   socket:  WebSocket | null;
 }
+
+// Define the type for an interaction
+export interface Interaction {
+  key: string,
+  segmentType: string,
+  agentFirstName: string,
+  agentLastName: string,
+  state: string,
+  contactId?: string,
+  Sentiment?: string,
+  queueName?: string,
+
+}
