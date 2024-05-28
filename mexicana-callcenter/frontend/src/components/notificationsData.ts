@@ -170,5 +170,11 @@ export const notifications = [
     date: "2024-05-20 14:30:00",
   },
 
+  {id: 29,
+    title: "Lost bagagge queue is too long",
+    message: "Please rearrange your agents to manage the long queue of Lost Baggage",
+    date: "2024-05-22 14:30:00",
+  },
+
   ];
   
