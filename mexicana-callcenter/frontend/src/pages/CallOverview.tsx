@@ -5,6 +5,8 @@ import CallCard from '../components/Callinfo';
 import Card from '../components/Card';
 import AHT from "../components/Charts/AHT";
 import { useState } from "react";
+import { Link, redirect } from "react-router-dom";
+
 
 //Aqui va la obtencion de los siguientes datos del aguente visitado: nombre del agente, puesto del agente 
 
@@ -24,7 +26,7 @@ import { useState } from "react";
 const MainContent = () => {
         // Mock data
         const mockData: PieChartDataItem[] = [
-          { id: "Custumer", label: "Talk Time", value: 64},
+          { id: "Customer", label: "Talk Time", value: 64},
           { id: "Agent", label: "Wait Time", value: 35},
           { id: "Non-talk", label: "Hold Time", value: 20},
         ];
@@ -72,7 +74,7 @@ const MainContent = () => {
             <div className="z-30 h-full lg:col-span-8 sm:col-span-12">
                     <div className="flex items-center justify-between pt-4 mb-4">
                         <h2 className="text-xl text-gray-600 font-roboto">Call Metrics</h2>
-                        <button className="px-4 py-3 text-white shadow bg-secondary w-5/12 rounded-lg hover:opacity-75 mr-7">Barge In</button>
+                        <button className="px-4 py-3 text-white shadow bg-secondary w-5/12 rounded-lg hover:opacity-75 mr-7" onClick={() => window.location.href = '/supervisor/bargein'}>Barge In</button>
                     </div>
                     <div className="grid w-[100%] h-[80%]  grid-cols-1 gap-2 lg:grid-cols-2 lg:col-span-8 z-30">
                         <Card title="Talk time">

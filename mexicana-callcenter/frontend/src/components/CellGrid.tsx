@@ -16,7 +16,7 @@ const CellGrid: React.FunctionComponent<CellGridProps> = ({ data }) => {
         
         {data.map((interaction) => (
           <Link
-            to="/Supervisor/bargein"
+            to="/Supervisor/calloverview"
             key={interaction.key}
             className="bg-white rounded-lg shadow p-6 border border-gray-300"
           >

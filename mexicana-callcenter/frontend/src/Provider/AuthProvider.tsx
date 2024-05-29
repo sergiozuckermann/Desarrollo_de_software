@@ -3,6 +3,7 @@ import { createContext, FunctionComponent, PropsWithChildren } from "react";
 import { AuthContextType, Credentials } from "../utils/interfaces";
 import useCustomToast from "../components/LoginNotification";
 
+
 const baseUrl = 'http://localhost:3000'
 
 export const AuthContext = createContext<AuthContextType | null>(null);
@@ -88,7 +89,10 @@ const AuthProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
   } 
 
   //  value of the authentication context
-  const contextValue = getContext()
+  const contextValue = {
+    ...getContext(),
+    logout, // Agregar la función logout al contextValue
+  };
 
   // Provide the authentication context to the children components
   return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;
