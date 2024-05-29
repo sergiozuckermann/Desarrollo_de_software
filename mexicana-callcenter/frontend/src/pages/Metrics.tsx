@@ -81,7 +81,7 @@ const MainContent = () => {
                         12%
                     </div>
                 </div>
-                <h1 className="mt-1 text-3xl font-bold text-gray-700 sm:text-m xl:text-4xl">2:43 minutes</h1>
+                <h1 className="mt-1 text-3xl font-bold text-gray-700 sm:text-m xl:text-4xl"></h1>
                 <div className="flex flex-row justify-between mt-2">
                     <p>Agent Occupancy</p>
                 </div>
