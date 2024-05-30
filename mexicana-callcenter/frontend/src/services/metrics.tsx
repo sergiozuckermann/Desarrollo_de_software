@@ -15,6 +15,7 @@ export function FetchMetrics(filters) {
     const [averageContactDuration, setAverageContactDuration] = useState<number | null>(null);
     const[contactsHandeled, setContactsHandeled] = useState<number | null>(null);
     const [contactFlowTime, setContactFlowTime] = useState<number | null>(null);
+    const [agentOccupancy, setAgentOccupancy]=useState<number | null>(null);
     
     useEffect(() => {
         const fetchData = async () => {
@@ -28,7 +29,9 @@ export function FetchMetrics(filters) {
                     }
                 });
 
-                const metricResults = response.data.MetricResults;
+                
+                const queueMetrics = response.data.QueueMetrics.MetricResults;
+                const agentMetrics = response.data.AgentMetrics.MetricResults;
 
                 let totalAbandonmentRate = 0;
                 let abandonmentRateCount = 0;
@@ -44,7 +47,7 @@ export function FetchMetrics(filters) {
                 let contactFlowTimeCount = 0;
             
 
-                metricResults.forEach((queue) => {
+                queueMetrics.forEach((queue) => {
                     if (queue.Dimensions && queue.Dimensions.QUEUE) {
                         const queueName = queueNames[queue.Dimensions.QUEUE];
                         queue.Collections.forEach((metric) => {
@@ -113,6 +116,18 @@ export function FetchMetrics(filters) {
                 if (contactFlowTimeCount > 0) {
                     setContactFlowTime(Math.round(contactFlowTime / contactFlowTimeCount));
                 }
+
+                agentMetrics.forEach((agent) => {
+                    agent.Collections.forEach((metric) => {
+                        if (metric.Metric.Name === "AGENT_OCCUPANCY" && metric.Value !== undefined) {
+                            agentOccupancy.push({ label: agent.Dimensions.AGENT, value: metric.Value });
+                        }
+                    });
+                });
+
+                setAgentOccupancy(agentOccupancy);
+            
+            
 
             } catch (error) {
                 console.error("Error fetching data", error);
