@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import MyPieChart from './Charts/piechart';
 import MyResponsiveBar from './Charts/barChart';
+import userService from '../services/user';
 
 interface PieChartDataItem {
   id: string | number;
@@ -8,7 +9,15 @@ interface PieChartDataItem {
   value: number;
 }
 
+interface QueueDataItem {
+  label: string;
+  value: number;
+}
+
 const GraphAgentStructure: React.FunctionComponent = () => {
+  const [queueData, setQueueData] = useState<QueueDataItem[]>([]);
+
+
   const availabilityData: PieChartDataItem[] = [
     { id: "Available", label: "Available", value: 30 },
     { id: "On Call", label: "On Call", value: 20 },
@@ -28,16 +37,25 @@ const GraphAgentStructure: React.FunctionComponent = () => {
 
 
   const [chartData2, setChartData2] = useState<PieChartDataItem[]>(issueData);
-
-  const queueData = [
-    { label: "Flight Rsv", value: 1 },
-    { label: "Help", value: 2 },
-    { label: "Booking or Website Issues", value: 5 },
-    { label: "Status Inquiries", value: 3 },
-    { label: "Special Assistance or Docs", value: 6 },
-    { label: "Other Questions", value: 4 }
-  ];
-
+  
+  
+  //FETCH QUEUE METRICS EVERY 5 SECONDS
+  const loadMetricsEverySecond = async () => {
+    try {
+      console.log('Fetching metrics...'); // LOG FOR LOADING METRICS   
+      const queueMetrics = await userService.GetQueueMetrics(); // FETCH QUEUE METRICS
+      setQueueData(queueMetrics); // SET QUEUE METRICS      
+      console.log('Metrics fetched:', queueMetrics); // LOG FOR LOADED METRICS
+    } catch (error) {
+      console.log("Error loading metrics", error);
+    }
+  };
+  
+  useEffect (() => {
+    const interval = setInterval(loadMetricsEverySecond, 5000);
+    return () => clearInterval(interval);
+  }, []);
+  
   const totalCustomersWaiting = queueData.reduce((sum, item) => sum + item.value, 0);
 
   return (
@@ -61,22 +79,24 @@ const GraphAgentStructure: React.FunctionComponent = () => {
         </div>
       </div>
       <div className="flex flex-col">
-        <h1 className="text-3xl font-roboto mb-0 text-center sm:text-left">Queue Issues</h1> 
-          <div className="flex flex-col sm:flex-col md:flex-col lg:flex-row items-center justify-center space-y-4 lg:space-y-0 lg:space-x-4">
-              <div className="text-center">
-                  <h2 className="text-3xl font-roboto text-red-600">{totalCustomersWaiting}</h2>
-                  <h2 className="text-xl font-roboto">Customers</h2>
-                  <h2 className="text-xl font-roboto">Waiting</h2>
-              </div>
-              <div style={{ width: '100%', height: '300px' }}>
-                  <MyResponsiveBar data={queueData} />
-              </div>
-          </div>
-      </div>
-
+  <h1 className="text-3xl font-roboto mb-0 text-center sm:text-left">Contacts Queued</h1>
+  <div className="flex flex-col sm:flex-col md:flex-col lg:flex-row items-center justify-center space-y-4 lg:space-y-0 lg:space-x-4">
+    <div className="text-center">
+      <h2 className="text-3xl font-roboto text-red-600">{totalCustomersWaiting}</h2>
+      <h2 className="text-xl font-roboto">
+        <a href="/supervisor/agent-transfer" className="text-gray-600 font-semibold">Customer Waiting</a>
+      </h2>
+    </div>
+    <div style={{ width: '100%', height: '300px' }}>
+      <MyResponsiveBar data={queueData} />
+    </div>
+  </div>
 </div>
 
-    
+
+    </div>
+
+
   );
 };
 
