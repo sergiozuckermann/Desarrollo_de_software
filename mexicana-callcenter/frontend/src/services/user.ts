@@ -5,8 +5,8 @@ const baseUrl = 'http://localhost:3000'
 const GetInfo = (userRole: string, username: string) => {
     const config = { // set headers
         headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-        }
+            Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+          }
     }
     return axios //  axios request to backend
         .get(`${baseUrl}/${userRole}/myInfo/${username}`, config)
@@ -17,7 +17,7 @@ const GetInfo = (userRole: string, username: string) => {
 const GetAgents = () => {
     const config = { // set headers
         headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            Authorization: `Bearer ${sessionStorage.getItem('token')}`,
         }
     }
     return axios
