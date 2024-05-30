@@ -4,10 +4,18 @@ import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
 import Modal from 'react-modal';
 
+const defaultStartDate = new Date();
+defaultStartDate.setDate(defaultStartDate.getDate() - 30);
+defaultStartDate.setHours(0, 0, 0, 0); 
+
+
+const defaultEndDate = new Date();
+defaultEndDate.setHours(23, 59, 59, 999);
+
 const Filter = ({ onApplyFilters }) => {
     const [agent, setAgent] = useState('');
-    const [startDate, setStartDate] = useState(new Date());
-    const [endDate, setEndDate] = useState(new Date());
+    const [startDate, setStartDate] = useState(defaultStartDate);
+    const [endDate, setEndDate] = useState(defaultEndDate);
     const [queue, setQueue] = useState('');
     const [showFilters, setShowFilters] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
