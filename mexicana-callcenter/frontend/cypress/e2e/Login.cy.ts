@@ -12,7 +12,7 @@ describe('Login Tests', () => {
     cy.get('[name=password]', { timeout: 10000 }).should('be.visible').type('Zekund99.{enter}');
 
     // Checks for the notification to be visible
-    cy.contains('🎉 Welcome databaseUser! You are now signed in.', { timeout: 10000 }).should('be.visible');
+    cy.contains('🎉 Welcome test! You are now signed in.', { timeout: 10000 }).should('be.visible');
   });
 
   //Failed login
