@@ -2,6 +2,10 @@ import { useState, useRef, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
+import Modal from 'react-modal';
+
+// Set the app element for accessibility
+Modal.setAppElement('#root');
 
 const Filter = ({ onApplyFilters }) => {
     const [agent, setAgent] = useState('');
@@ -9,6 +13,8 @@ const Filter = ({ onApplyFilters }) => {
     const [endDate, setEndDate] = useState(new Date());
     const [queue, setQueue] = useState('');
     const [showFilters, setShowFilters] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
     const filterRef = useRef(null);
 
     const handleReset = () => {
@@ -18,8 +24,28 @@ const Filter = ({ onApplyFilters }) => {
         setEndDate(new Date());
     };
 
+    const validateDates = () => {
+        const today = new Date();
+        const startDateValid = startDate >= today && startDate > new Date('2024-01-01');
+        const endDateValid = endDate >= today && endDate > new Date('2024-01-01');
+        const rangeValid = startDate < endDate;
+        
+        if (!startDateValid || !endDateValid || !rangeValid) {
+            let errorMessage = "Not valid filters: ";
+            if (!startDateValid) errorMessage += "Start date must be after today and after 2024. ";
+            if (!endDateValid) errorMessage += "End date must be after today and after 2024. ";
+            if (!rangeValid) errorMessage += "Start date must be before end date. ";
+            setModalMessage(errorMessage);
+            setIsModalOpen(true);
+            return false;
+        }
+        return true;
+    };
+
     const handleSearch = (e) => {
         e.preventDefault();
+        if (!validateDates()) return;
+
         const filters = {
             agent,
             queue,
@@ -105,7 +131,7 @@ const Filter = ({ onApplyFilters }) => {
                                     </select>
                                 </div>
                                 <div className="flex flex-col">
-                                    <label htmlFor="startdate" className="text-sm font-medium text-stone-600"> Start Date</label>
+                                    <label htmlFor="startdate" className="text-sm font-medium text-stone-600">Start Date</label>
                                     <DatePicker
                                         selected={startDate}
                                         onChange={(startDate) => setStartDate(startDate)}
@@ -113,7 +139,7 @@ const Filter = ({ onApplyFilters }) => {
                                     />
                                 </div>
                                 <div className="flex flex-col">
-                                    <label htmlFor="enddate" className="text-sm font-medium text-stone-600"> End Date</label>
+                                    <label htmlFor="enddate" className="text-sm font-medium text-stone-600">End Date</label>
                                     <DatePicker
                                         selected={endDate}
                                         onChange={(endDate) => setEndDate(endDate)}
@@ -132,7 +158,7 @@ const Filter = ({ onApplyFilters }) => {
                                 </button>
                                 <button
                                     type="submit"
-                                    className="px-4 py-2 font-medium rounded-lg outline-none text-whit bg-secondary hover:opacity-80 focus:ring"
+                                    className="px-4 py-2 font-medium text-white rounded-lg outline-none bg-secondary hover:opacity-80 focus:ring"
                                 >
                                     Search
                                 </button>
@@ -141,6 +167,25 @@ const Filter = ({ onApplyFilters }) => {
                     )}
                 </form>
             </div>
+
+            <Modal
+                isOpen={isModalOpen}
+                onRequestClose={() => setIsModalOpen(false)}
+                contentLabel="Validation Error"
+                className="modal"
+                overlayClassName="modal-overlay"
+            >
+                <div className="p-4 bg-white rounded-lg shadow-lg">
+                    <h2 className="text-lg font-bold">Unable to apply Filters</h2>
+                    <p>{modalMessage}</p>
+                    <button
+                        onClick={() => setIsModalOpen(false)}
+                        className="px-4 py-2 mt-4 font-medium text-white rounded-lg bg-secondary hover:opacity-80"
+                    >
+                        Close
+                    </button>
+                </div>
+            </Modal>
         </div>
     );
 };
