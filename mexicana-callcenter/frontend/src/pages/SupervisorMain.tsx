@@ -40,32 +40,32 @@ const MainContent = () => {
   }, [])
   
   return (
-    <div className="grid w-full h-full grid-cols-1 gap-4 p-4 md:grid-cols-12">
-      <div className="md:col-span-4">
-        { userInfo !== null ? 
-        <WorkerCard 
-          name={userInfo.name} 
-          position={userInfo.position} 
-          experience={userInfo.experience} 
-          points={userInfo.points} 
-          status="Active" /> : null}
-      </div>
-      <div className="flex flex-col space-y-4 md:col-span-8">
-  <div className="flex flex-col gap-10">
-  <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:col-span-2 flex justify-center">
-      <HomeButton icon="/MetricsSymbol.svg" title="My Metrics" subtitle="See the historical metrics of the call center" handleClick={() => window.location.href = '/supervisor/metrics'}/>
-      <HomeButton icon="/SpotlightSymbol.svg" title="Agent Spotlight" subtitle="Weekly best agents" handleClick={() => window.location.href = '/AgentSpotlight'}/>
-      <HomeButton icon="/costumer.svg" title="Agent Performance" subtitle="See the weekly metrics of agent perfomance" handleClick={() => window.location.href = '/supervisor/AgentSpotlight'}/>
-      <HomeButton icon="/BreakSymbol.svg" title="Take a break" subtitle="Go to take a break to clear the mind" handleClick={() => window.location.href = '/Breaks'}/>
-      <div className="w-full md:col-span-2 flex justify-center">
-        <HomeButton icon="/Switch.svg" title="Agent Queue Transfer" subtitle="Transfer agents from one queue to another" handleClick={() => window.location.href = '/supervisor/agent-transfer'}/>
+    <div className="grid w-full h-full grid-cols-1 gap-4 p-4 text-black transition-colors duration-500 bg-white md:grid-cols-12 dark:bg-gray-900 dark:text-white">
+    <div className="md:col-span-4">
+      { userInfo !== null ? 
+      <WorkerCard 
+        name={userInfo.name} 
+        position={userInfo.position} 
+        experience={userInfo.experience} 
+        points={userInfo.points} 
+        status="Active" /> : null}
+    </div>
+    <div className="flex flex-col space-y-4 md:col-span-8">
+      <div className="flex flex-col gap-10">
+        <div className="flex grid justify-center grid-cols-1 gap-4 md:grid-cols-2 md:col-span-2">
+          <HomeButton icon="/MetricsSymbol.svg" title="My Metrics" subtitle="See the historical metrics of the call center" handleClick={() => window.location.href = '/supervisor/metrics'}/>
+          <HomeButton icon="/SpotlightSymbol.svg" title="Agent Spotlight" subtitle="Weekly best agents" handleClick={() => window.location.href = '/AgentSpotlight'}/>
+          <HomeButton icon="/costumer.svg" title="Agent Performance" subtitle="See the weekly metrics of agent perfomance" handleClick={() => window.location.href = '/supervisor/AgentSpotlight'}/>
+          <HomeButton icon="/BreakSymbol.svg" title="Take a break" subtitle="Go to take a break to clear the mind" handleClick={() => window.location.href = '/Breaks'}/>
+          <div className="flex justify-center w-full md:col-span-2">
+            <HomeButton icon="/Switch.svg" title="Agent Queue Transfer" subtitle="Transfer agents from one queue to another" handleClick={() => window.location.href = '/supervisor/agent-transfer'}/>
+          </div>
+        </div>
+        <SupervisorButton handleClick={() => window.location.href = '/supervisor/onGoingCalls'} />
       </div>
     </div>
-    <SupervisorButton handleClick={() => window.location.href = '/supervisor/onGoingCalls'} />
   </div>
-</div>
-</div>
-  );
+);
 };
 
 const HomePage = () => {

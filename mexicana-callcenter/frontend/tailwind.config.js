@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: 'class', 
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
@@ -12,6 +13,9 @@ module.exports = {
         secondary: "#4A8B51",
         marco: "rgba(32, 37, 63, 0.5)",
         black: "#000",
+        darkPrimary: "#1c1c2e", 
+        darkSlategray: "#4a4a66", 
+        darkTertiary: "#1a1a1a", 
       },
       spacing: {},
       fontFamily: {
