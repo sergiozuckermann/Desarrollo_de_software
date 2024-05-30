@@ -29,17 +29,18 @@ const Filter = ({ onApplyFilters }) => {
     const validateDates = () => {
         const today = new Date();
         const startDateValidBeforeToday = startDate < today;
-        const startDateValidAfter2024 = startDate > new Date('2024-01-01');
+        const startDateValidAfter2024 = startDate > new Date('2024-03-17');
         const endDateValidPast = endDate <= today;
-        const endDateValidAfter2024 = endDate > new Date('2024-01-01');
+        const endDateValidAfter2024 = endDate > new Date('2024-03-18');
         const rangeValid = startDate < endDate;
-        
+        const daysDifference = Number((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+
         if (!startDateValidBeforeToday) {
             showModal("Not valid filters: Start date must be before today.");
             return false;
         }
         if (!startDateValidAfter2024) {
-            showModal("Not valid filters: Start date must be after January 1, 2024.");
+            showModal("Not valid filters: Start date must be after March 17, 2024.");
             return false;
         }
         if (!endDateValidPast) {
@@ -47,11 +48,15 @@ const Filter = ({ onApplyFilters }) => {
             return false;
         }
         if (!endDateValidAfter2024) {
-            showModal("Not valid filters: End date must be after January 1, 2024.");
+            showModal("Not valid filters: End date must be after March 18, 2024.");
             return false;
         }
         if (!rangeValid) {
             showModal("Not valid filters: Start date must be before end date.");
+            return false;
+        }
+        if (daysDifference > 30) {
+            showModal("Not valid filters: Date range must be within 30 days.");
             return false;
         }
         return true;
