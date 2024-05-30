@@ -8,14 +8,12 @@ interface PieChartDataItem {
   value: number;
 }
 
-const GraphAgentStructure: React.FunctionComponent = () => {
-  const availabilityData: PieChartDataItem[] = [
-    { id: "Available", label: "Available", value: 30 },
-    { id: "On Call", label: "On Call", value: 20 },
-    { id: "After Call", label: "After Call", value: 10 },
-  ];
+interface GraphAgentStructureProps {
+  agentsState: Array<PieChartDataItem>
+}
 
-  const [chartData, setChartData] = useState<PieChartDataItem[]>(availabilityData);
+const GraphAgentStructure: React.FunctionComponent<GraphAgentStructureProps> = ({agentsState}) => {
+ 
 
   const issueData: PieChartDataItem[] = [
     { id: "Flight Rsv", label: "Flight Rsv", value: 10 },
@@ -30,12 +28,12 @@ const GraphAgentStructure: React.FunctionComponent = () => {
   const [chartData2, setChartData2] = useState<PieChartDataItem[]>(issueData);
 
   const queueData = [
-    { label: "Flight Rsv", value: 1 },
-    { label: "Help", value: 2 },
-    { label: "Booking or Website Issues", value: 5 },
-    { label: "Status Inquiries", value: 3 },
-    { label: "Special Assistance or Docs", value: 6 },
-    { label: "Other Questions", value: 4 }
+    {id:"FlightManagement", label: "Flight Rsv", value: 1 },
+    {id:"CustomerCare", label: "Customer Care", value: 2 },
+    {id:"WebsiteAssistance", label: "Booking or Website Issues", value: 5 },
+    {id:"TravelInformation", label: "Status Inquiries", value: 3 },
+    {id:"SpecialAssitance", label: "Special Assistance or Docs", value: 6 },
+    {id:"OtherQuestions", label: "Other Questions", value: 4 }
   ];
 
   const totalCustomersWaiting = queueData.reduce((sum, item) => sum + item.value, 0);
@@ -47,7 +45,11 @@ const GraphAgentStructure: React.FunctionComponent = () => {
           <h1 className="text-3xl font-roboto mb-4 text-center sm:text-left">Agent Status</h1>
           <div className="flex justify-center">
             <div style={{ width: '100%', height: '300px' }}>
-              <MyPieChart data={chartData} unit="Agents" />
+              {
+                agentsState.every(state => state.value === 0) ? 
+                <h1>No active agents</h1> :  
+                <MyPieChart data={agentsState} unit="Agents" />
+              }
             </div>
           </div>
         </div>

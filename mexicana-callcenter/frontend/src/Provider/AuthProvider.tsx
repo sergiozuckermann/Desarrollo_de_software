@@ -82,8 +82,7 @@ const AuthProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
 
   // logout function
   const logout = () => {
-    sessionStorage.removeItem('userData')
-    sessionStorage.removeItem('token')
+    sessionStorage.clear()
     showSuccess(`🎉 Logged Out`);
     window.location.href = '/'
   } 

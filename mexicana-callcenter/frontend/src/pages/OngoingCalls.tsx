@@ -5,15 +5,41 @@ import GraphAgentStructure from "../components/GraphAgentStructure";
 import { useWebSocket } from "../hooks/useWebSocket";
 import { Interaction, SentimentSegment } from "../utils/interfaces";
 
+interface PieChartDataItem {
+  id: string | number;
+  label: string;
+  value: number;
+}
+
+const Action = {
+  START: "START",
+  END: "END"
+}
+
 const OngoingCalls: React.FunctionComponent = () => {
   const { socket } = useWebSocket(); // get web socket connection
   const [interactions, setInteractions] = useState<Array<Interaction>>([]); // interactions
+  const [agentsState, setAgentsState] = useState<Array<PieChartDataItem>>([
+    { id: "AVAILABLE", label: "Available", value: 0 },
+    { id: "ON CALL", label: "On Call", value: 0 },
+    { id: "ACW", label: "After Call", value: 0 },
+    { id: "OFFLINE", label: "Offline", value: 0 },
+  ])
+  const [agentsAvailability, setAgentsAvailability] = useState<Array<PieChartDataItem>>([
+    {id:"FlightManagement", label: "Flight Rsv", value: 0 },
+    {id:"CustomerCare", label: "Customer Care", value: 0 },
+    {id:"WebsiteAssistance", label: "Booking or Website Issues", value: 0 },
+    {id:"TravelInformation", label: "Status Inquiries", value: 0 },
+    {id:"SpecialAssitance", label: "Special Assistance or Docs", value: 0 },
+    {id:"OtherQuestions", label: "Other Questions", value: 0 }
+  ])
 
   // useEffect to fetch information from session storage on every rerender
   useEffect(() => {
     const interactionsData = sessionStorage.getItem("interactions"); // check if interactions key exists
     if (interactionsData) {
       setInteractions(JSON.parse(interactionsData)); // set interactions state
+      updateAllAgentStatus(Action.END) // update states
     } else {
       sessionStorage.setItem("interactions", JSON.stringify([])); // create the key if it does not exist
     }
@@ -28,6 +54,9 @@ const OngoingCalls: React.FunctionComponent = () => {
 
     // Check if there is any data retrieved from local storage
     if (data) {
+      // update states
+      updateAllAgentStatus(Action.START)
+
       // Parse the JSON string back into an array of objects
       currentInteractions = JSON.parse(data);
 
@@ -36,7 +65,7 @@ const OngoingCalls: React.FunctionComponent = () => {
         (interaction) => interaction.key === segment.key
       );
 
-      // Check if an established interaction was found
+      // Check if an established interaction was found    
       if (establishedInteraction) {
         // Check if the segment's state is 'LOGOUT'
         if (segment.state === "LOGOUT") {
@@ -53,6 +82,9 @@ const OngoingCalls: React.FunctionComponent = () => {
 
           // Update the state or context with the filtered interactions array
           setInteractions(filteredInteractions);
+
+          updateAllAgentStatus(Action.END)
+
           return;
         }
 
@@ -82,6 +114,9 @@ const OngoingCalls: React.FunctionComponent = () => {
         // Update the state or context with the new interactions array
         setInteractions(newData);
       }
+
+      // update agents status
+      updateAllAgentStatus(Action.END)
     }
   };
 
@@ -129,6 +164,39 @@ const OngoingCalls: React.FunctionComponent = () => {
     }
   };
 
+  // Function to update agent status
+  const updateAllAgentStatus = (action:string) => {
+    const callStates = [...agentsState]
+
+    const data = sessionStorage.getItem('interactions')
+
+    if(data) {
+      const interactionsData = JSON.parse(data)
+
+      for(const interaction of interactionsData) {
+        for(const callState of callStates) {
+          if(callState.id === interaction.state) {
+            switch(action) {
+              case Action.START:
+                callState.value -= 1 
+                break
+              case Action.END:
+                callState.value += 1
+                break
+              default:
+                break
+             } 
+          }
+        }
+      }
+
+      sessionStorage.setItem('callStates', JSON.stringify(callStates))
+      setAgentsState(callStates)
+
+    }
+    
+  }
+
   // web socket connection to get real time information from ongoing intereaction
   useEffect(() => {
     const ws = socket;
@@ -151,6 +219,8 @@ const OngoingCalls: React.FunctionComponent = () => {
             // segment of type sentiment analysis
             processSentimentAnalysis(segment);
           }
+
+         
         }
       };
     }
@@ -161,7 +231,7 @@ const OngoingCalls: React.FunctionComponent = () => {
       <div className="overflow-y-auto h-full pb-[3%] pt-[2%] pl-[2%]">
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
           <div className="col-span-1">
-            <GraphAgentStructure />
+            <GraphAgentStructure agentsState={agentsState} />
           </div>
           <div className="col-span-1">
             {!interactions.length ? (
