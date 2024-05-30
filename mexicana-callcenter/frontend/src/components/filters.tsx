@@ -23,8 +23,8 @@ const Filter = ({ onApplyFilters }) => {
         const filters = {
             agent,
             queue,
-            startDate: moment(startDate).format('YYYY-MM-DD HH:mm:ss'),
-            endDate: moment(endDate).format('YYYY-MM-DD HH:mm:ss')
+            startTime: moment(startDate).format('YYYY-MM-DD HH:mm:ss'),
+            endTime: moment(endDate).format('YYYY-MM-DD HH:mm:ss')
         };
         console.log("Applying filters:", filters);
         onApplyFilters(filters);

@@ -5,7 +5,6 @@ const router = express.Router();
 router.post('/', async (req, res) => {
     try {
         const filters = req.body;
-        console.log("Received filters:", JSON.stringify(filters, null, 2)); // Log received filters
 
         if (!filters || typeof filters !== 'object') {
             console.error("Invalid filters received:", filters);

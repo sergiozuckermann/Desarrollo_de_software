@@ -12,8 +12,8 @@ const MainContent = () => {
     // State to manage filter criteria
     const [filters, setFilters] = useState({
         agent:'',
-        date: '',
-        endDate: ''
+        startTime: '',
+        endTime: ''
     });
     
 
