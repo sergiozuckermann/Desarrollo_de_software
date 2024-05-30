@@ -42,10 +42,10 @@ const GraphAgentStructure: React.FunctionComponent = () => {
   //FETCH QUEUE METRICS EVERY 5 SECONDS
   const loadMetricsEverySecond = async () => {
     try {
-      console.log('Fetching metrics...'); // LOG FOR LOADING METRICS   
+      // console.log('Fetching metrics...'); // LOG FOR LOADING METRICS   
       const queueMetrics = await userService.GetQueueMetrics(); // FETCH QUEUE METRICS
       setQueueData(queueMetrics); // SET QUEUE METRICS      
-      console.log('Metrics fetched:', queueMetrics); // LOG FOR LOADED METRICS
+      // console.log('Metrics fetched:', queueMetrics); // LOG FOR LOADED METRICS
     } catch (error) {
       console.log("Error loading metrics", error);
     }
@@ -84,7 +84,7 @@ const GraphAgentStructure: React.FunctionComponent = () => {
           <div className="text-center">
             <h2 className="text-3xl font-roboto text-red-600">{totalCustomersWaiting}</h2>
             <h2 className="text-xl font-roboto">
-              <a href="/supervisor/agent-transfer" className="text-gray-800 font-semibold hover:text-gray-600"
+              <a href="/supervisor/agent-transfer" className="text-black-900 font-semibold hover:text-green-500"
                 data-cy='link' title='Click here to move agents within queues'>Customer Waiting</a>
             </h2>
           </div>

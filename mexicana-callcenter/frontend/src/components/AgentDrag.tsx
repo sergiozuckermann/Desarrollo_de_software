@@ -33,13 +33,13 @@ const AgentUsername = styled.div`
 // Aget Username Styles
 const AgentName = styled.div`
   font-size: 14px;
-  color: #777;
+  color: #20253f;
 `;
 
 // Agent Type
 const AgentType = styled.div`
   font-size: 14px;
-  color: #332deb;
+  color: #16a34a;
   font-style: italic;
 `;
 
