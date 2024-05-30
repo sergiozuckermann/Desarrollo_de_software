@@ -18,7 +18,7 @@
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "^5.15.17",
     "@mui/material": "^5.15.18",
-    "@nivo/bar": "^0.86.0",
+    "@nivo/bar": "^0.85.1",
     "@nivo/core": "^0.85.1",
     "@nivo/line": "^0.85.1",
     "@nivo/pie": "^0.85.1",
