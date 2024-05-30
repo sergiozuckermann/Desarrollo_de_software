@@ -55,7 +55,7 @@ const MainContent = () => {
     <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
       <HomeButton icon="/MetricsSymbol.svg" title="My Metrics" subtitle="See the historical metrics of the call center" handleClick={() => window.location.href = '/supervisor/metrics'}/>
       <HomeButton icon="/SpotlightSymbol.svg" title="Agent Spotlight" subtitle="Weekly best agents" handleClick={() => window.location.href = '/supervisor/AgentSpotlight'}/>
-      <HomeButton icon="/costumer.svg" title="Agent Performance" subtitle="See the weekly metrics of agent perfomance" handleClick={() => window.location.href = '/supervisor/AgentSpotlight'}/>
+      <HomeButton icon="/costumer.svg" title="Agent Performance" subtitle="See the weekly metrics of agent perfomance" handleClick={() => window.location.href = '/supervisor/AgentPerformance'}/>
       <HomeButton icon="/BreakSymbol.svg" title="Take a break" subtitle="Go to take a break to clear the mind" handleClick={() => window.location.href = '/Breaks'}/>
     </div>
     <SupervisorButton handleClick={() => window.location.href = '/supervisor/onGoingCalls'} />

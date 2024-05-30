@@ -71,6 +71,7 @@ const AgentSpotlight = () => {
       image: "/public/avatar.png",
     },
   ];
+  
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -92,42 +93,43 @@ const AgentSpotlight = () => {
     bestAgents[(currentIndex + 2) % bestAgents.length],
   ];
 
-return (
-  <PageStructure title="Agent Spotlight">
-    <div className="flex items-center justify-center h-full">
-      <button onClick={handlePrevClick} className="ml-8 mr-4">
-        <img src="/public/back.svg" alt="Previous Arrow" />
-      </button>
-      <div className="flex grid grid-cols-1 lg:grid-cols-3 items-center">
-        <div className="col-span-1 p-4 flex-shrink-0 scale-75 lg:block hidden">
-          <AgentSpotlightComp
-            name={showingAgents[0].name}
-            performance={showingAgents[0].performance}
-            image={showingAgents[0].image}
-          />
+  return (
+    <PageStructure title="Agent Spotlight">
+      <div className="flex flex-col items-center justify-center h-full">
+        <div className="flex grid grid-cols-1 lg:grid-cols-3 items-center ml-4">
+          <div className="col-span-1 p-4 flex-shrink-0 scale-75 lg:block hidden">
+            <AgentSpotlightComp
+              name={showingAgents[0].name}
+              performance={showingAgents[0].performance}
+              image={showingAgents[0].image}
+            />
+          </div>
+          <div className="col-span-1 p-4 flex-shrink-0 scale-120">
+            <AgentSpotlightComp
+              name={showingAgents[1].name}
+              performance={showingAgents[1].performance}
+              image={showingAgents[1].image}
+            />
+          </div>
+          <div className="col-span-1 p-4 flex-shrink-0 scale-75 lg:block hidden">
+            <AgentSpotlightComp
+              name={showingAgents[2].name}
+              performance={showingAgents[2].performance}
+              image={showingAgents[2].image}
+            />
+          </div>
         </div>
-        <div className="col-span-1 p-4 flex-shrink-0 scale-120">
-          <AgentSpotlightComp
-            name={showingAgents[1].name}
-            performance={showingAgents[1].performance}
-            image={showingAgents[1].image}
-          />
-        </div>
-        <div className="col-span-1 p-4 flex-shrink-0 scale-75 lg:block hidden">
-          <AgentSpotlightComp
-            name={showingAgents[2].name}
-            performance={showingAgents[2].performance}
-            image={showingAgents[2].image}
-          />
+        <div className="flex justify-center mt-6 ml-4">
+          <button onClick={handlePrevClick} className="mr-12">
+            <img src="/public/back.svg" alt="Previous Arrow" />
+          </button>
+          <button onClick={handleNextClick}>
+            <img src="/public/next.svg" alt="Next Arrow" />
+          </button>
         </div>
       </div>
-      <button onClick={handleNextClick} className="ml-4">
-        <img src="/public/next.svg" alt="Next Arrow" />
-      </button>
-    </div>
-  </PageStructure>
-);
-
+    </PageStructure>
+  );
 };
 
 export default AgentSpotlight;
