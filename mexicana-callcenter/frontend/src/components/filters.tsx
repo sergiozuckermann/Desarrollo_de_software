@@ -8,9 +8,13 @@ const defaultStartDate = new Date();
 defaultStartDate.setDate(defaultStartDate.getDate() - 30);
 defaultStartDate.setHours(0, 0, 0, 0); 
 
-
 const defaultEndDate = new Date();
 defaultEndDate.setHours(23, 59, 59, 999);
+
+const queueMap = {
+    'Travel logistics': '292d0398-6089-42cc-9ec9-aee43d6202a6',
+    'Flight Management': '99bfbe85-27ac-4384-8462-f01f75b53d32'
+};
 
 const Filter = ({ onApplyFilters }) => {
     const [agent, setAgent] = useState('');
@@ -76,7 +80,7 @@ const Filter = ({ onApplyFilters }) => {
 
         const filters = {
             agent,
-            queue,
+            queue: queueMap[queue] || '',
             startTime: moment(startDate).format('YYYY-MM-DD HH:mm:ss'),
             endTime: moment(endDate).format('YYYY-MM-DD HH:mm:ss')
         };
