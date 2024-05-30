@@ -61,6 +61,7 @@ supervisorRouter.get('/agents', async (req, res) => {
         routingProfileId: userResponse.User.RoutingProfileId,
         name: userResponse.User.IdentityInfo.FirstName,
         lastname: userResponse.User.IdentityInfo.LastName,
+        type: userResponse.User.SecurityProfileIds,
       };
 
     });

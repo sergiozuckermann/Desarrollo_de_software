@@ -37,8 +37,8 @@ const GraphAgentStructure: React.FunctionComponent = () => {
 
 
   const [chartData2, setChartData2] = useState<PieChartDataItem[]>(issueData);
-  
-  
+
+
   //FETCH QUEUE METRICS EVERY 5 SECONDS
   const loadMetricsEverySecond = async () => {
     try {
@@ -50,12 +50,12 @@ const GraphAgentStructure: React.FunctionComponent = () => {
       console.log("Error loading metrics", error);
     }
   };
-  
-  useEffect (() => {
+
+  useEffect(() => {
     const interval = setInterval(loadMetricsEverySecond, 5000);
     return () => clearInterval(interval);
   }, []);
-  
+
   const totalCustomersWaiting = queueData.reduce((sum, item) => sum + item.value, 0);
 
   return (
@@ -79,19 +79,20 @@ const GraphAgentStructure: React.FunctionComponent = () => {
         </div>
       </div>
       <div className="flex flex-col">
-  <h1 className="text-3xl font-roboto mb-0 text-center sm:text-left">Contacts Queued</h1>
-  <div className="flex flex-col sm:flex-col md:flex-col lg:flex-row items-center justify-center space-y-4 lg:space-y-0 lg:space-x-4">
-    <div className="text-center">
-      <h2 className="text-3xl font-roboto text-red-600">{totalCustomersWaiting}</h2>
-      <h2 className="text-xl font-roboto">
-        <a href="/supervisor/agent-transfer" className="text-gray-600 font-semibold">Customer Waiting</a>
-      </h2>
-    </div>
-    <div style={{ width: '100%', height: '300px' }}>
-      <MyResponsiveBar data={queueData} />
-    </div>
-  </div>
-</div>
+        <h1 className="text-3xl font-roboto mb-0 text-center sm:text-left">Contacts Queued</h1>
+        <div className="flex flex-col sm:flex-col md:flex-col lg:flex-row items-center justify-center space-y-4 lg:space-y-0 lg:space-x-4">
+          <div className="text-center">
+            <h2 className="text-3xl font-roboto text-red-600">{totalCustomersWaiting}</h2>
+            <h2 className="text-xl font-roboto">
+              <a href="/supervisor/agent-transfer" className="text-gray-800 font-semibold hover:text-gray-600"
+                data-cy='link' title='Click here to move agents within queues'>Customer Waiting</a>
+            </h2>
+          </div>
+          <div style={{ width: '100%', height: '300px' }}>
+            <MyResponsiveBar data={queueData} />
+          </div>
+        </div>
+      </div>
 
 
     </div>

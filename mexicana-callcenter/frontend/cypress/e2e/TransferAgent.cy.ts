@@ -3,17 +3,19 @@ import '@4tw/cypress-drag-drop'
 
 describe('Transfer Agent Tests', () => {
   beforeEach(() => {
+    const link = '[data-cy="link"]';
 
     cy.viewport(1920, 1080);
 
     cy.visit('/signin');
     cy.get('[name=Username]').type('tg2714');
     cy.get('[name=password]').type('Zekund99.');
-    cy.get('button').click();
+    cy.get('button[type="submit"]').click(); // Adjust the selector to be more specific
 
     cy.url().should('include', '/Supervisor/home');
-    cy.get('button').contains('Agent Queue Transfer').click();
-    cy.url().should('include', '/supervisor/agent-transfer');
+    cy.get('button').contains('Agent Overview').click();
+    cy.url().should('include', '/supervisor/onGoingCalls');
+    cy.get(link).scrollIntoView().should('be.visible').click();
 
   });
 
@@ -68,7 +70,7 @@ describe('Transfer Agent Tests', () => {
 
   afterEach(() => {
     const draggableAgent = '[data-testid="agent-ba2f07cd-153d-4562-863d-7ad5fc67d51e"]';
-    const originalTarget = '[data-testid="card-Supervisor"]';
+    const originalTarget = '[data-testid="card-TestProfile"]';
 
     cy.get(draggableAgent).scrollIntoView().should('be.visible');
     cy.get(originalTarget).scrollIntoView().should('be.visible');
