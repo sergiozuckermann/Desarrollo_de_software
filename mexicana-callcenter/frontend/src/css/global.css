@@ -92,6 +92,24 @@ p {
   padding: 20px;
 }
 
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  max-width: 600px; /* Increase the max-width to make the modal bigger */
+  width: 90%; /* Ensure it is responsive */
+  max-height: 80%; /* Ensure it does not exceed the viewport height */
+  height: auto; /* Allow it to expand vertically as needed */
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  overflow: auto; /* Add scroll if content overflows */
+}
+
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -101,3 +119,4 @@ p {
   background-color: rgba(0, 0, 0, 0.75);
   z-index: 1000;
 }
+

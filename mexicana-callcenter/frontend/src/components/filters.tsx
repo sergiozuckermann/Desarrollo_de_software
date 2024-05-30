@@ -4,9 +4,6 @@ import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
 import Modal from 'react-modal';
 
-// Set the app element for accessibility
-Modal.setAppElement('#root');
-
 const Filter = ({ onApplyFilters }) => {
     const [agent, setAgent] = useState('');
     const [startDate, setStartDate] = useState(new Date());
@@ -24,19 +21,37 @@ const Filter = ({ onApplyFilters }) => {
         setEndDate(new Date());
     };
 
+    const showModal = (message) => {
+        setModalMessage(message);
+        setIsModalOpen(true);
+    };
+
     const validateDates = () => {
         const today = new Date();
-        const startDateValid = startDate >= today && startDate > new Date('2024-01-01');
-        const endDateValid = endDate >= today && endDate > new Date('2024-01-01');
+        const startDateValidBeforeToday = startDate < today;
+        const startDateValidAfter2024 = startDate > new Date('2024-01-01');
+        const endDateValidPast = endDate <= today;
+        const endDateValidAfter2024 = endDate > new Date('2024-01-01');
         const rangeValid = startDate < endDate;
         
-        if (!startDateValid || !endDateValid || !rangeValid) {
-            let errorMessage = "Not valid filters: ";
-            if (!startDateValid) errorMessage += "Start date must be after today and after 2024. ";
-            if (!endDateValid) errorMessage += "End date must be after today and after 2024. ";
-            if (!rangeValid) errorMessage += "Start date must be before end date. ";
-            setModalMessage(errorMessage);
-            setIsModalOpen(true);
+        if (!startDateValidBeforeToday) {
+            showModal("Not valid filters: Start date must be before today.");
+            return false;
+        }
+        if (!startDateValidAfter2024) {
+            showModal("Not valid filters: Start date must be after January 1, 2024.");
+            return false;
+        }
+        if (!endDateValidPast) {
+            showModal("Not valid filters: End date cannot be in the future.");
+            return false;
+        }
+        if (!endDateValidAfter2024) {
+            showModal("Not valid filters: End date must be after January 1, 2024.");
+            return false;
+        }
+        if (!rangeValid) {
+            showModal("Not valid filters: Start date must be before end date.");
             return false;
         }
         return true;
