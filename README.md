@@ -28,26 +28,23 @@ This web application provides real-time metrics and interaction monitoring for c
 8. Transparency regarding decisions and operations made within the business.
 9. Ensuring our user’s privacy with the highest level of security available.
 
-<details>
-  <summary><h2> Contributors </h2></summary>
+## Contributors
   
-  - [Mauricio Tumalán](https://github.com/mtumalan)
-  - [Sergio Zuckermann](https://github.com/sergiozuckermann)
-  - [Santiago Benitez](https://github.com/santibpz)
-  - [Carlos Fragoso](https://github.com/carlosfragoso21)
-  - [Arantza Parra](https://github.com/Ashaparra)
-  - [Juan Pablo Ruiz](https://github.com/juanpaRdeCh)
-  - [Fer Cortés](https://github.com/fernicortlo)
-  - [Natalia Valles](https://github.com/Nathv7)
-  - [Santiago Tena](https://github.com/santiagoTena05)
-  - [Emilio Berber](https://github.com/emilioberber)
-  - [Ian Vázquez](https://github.com/IanVazquez)
-  - [Hedguhar Domínguez](https://github.com/slitheryduke11)
-  - [Luisa Castaños](https://github.com/a01366643)
-  - [Carlos Soto](https://github.com/CSA09)
-  - [David Flores](https://github.com/DavidF2714)
-
-</details>
+- [Mauricio Tumalán](https://github.com/mtumalan)
+- [Sergio Zuckermann](https://github.com/sergiozuckermann)
+- [Santiago Benitez](https://github.com/santibpz)
+- [Carlos Fragoso](https://github.com/carlosfragoso21)
+- [Arantza Parra](https://github.com/Ashaparra)
+- [Juan Pablo Ruiz](https://github.com/juanpaRdeCh)
+- [Fer Cortés](https://github.com/fernicortlo)
+- [Natalia Valles](https://github.com/Nathv7)
+- [Santiago Tena](https://github.com/santiagoTena05)
+- [Emilio Berber](https://github.com/emilioberber)
+- [Ian Vázquez](https://github.com/IanVazquez)
+- [Hedguhar Domínguez](https://github.com/slitheryduke11)
+- [Luisa Castaños](https://github.com/a01366643)
+- [Carlos Soto](https://github.com/CSA09)
+- [David Flores](https://github.com/DavidF2714)
 
 ## License
 
