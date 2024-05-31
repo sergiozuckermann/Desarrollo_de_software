@@ -57,3 +57,11 @@ For any inquiries, please contact any of the contributors mentioned above.
 ## Disclaimer
 
 This project is affiliated with Amazon Web Services (AWS) or Amazon Connect via [Tecnológico de Monterrey](https://tec.mx/)
+
+<details>
+  <summary>Pestaña 2</summary>
+
+  ### Contenido de la Pestaña 2
+
+  Aquí puedes poner el contenido que deseas mostrar en la Pestaña 2.
+</details>
