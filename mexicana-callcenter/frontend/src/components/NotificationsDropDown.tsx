@@ -26,6 +26,15 @@ const NotificationsDropDown: React.FC<NotificationsDropDownProps> = ({ notificat
     navigate("/supervisor/notifications");
   };
 
+  const isUrgent = (message: string) => {
+    return message.toLowerCase().includes("call") ||
+           message.toLowerCase().includes("performance");
+  };
+
+  const unreadUrgentNotifications = notificationsData
+    .filter(notification => isUrgent(notification.message) && !notification.isRead)
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
   return (
     <div className="relative">
       <button className="p-2" onClick={handleToggleDropdown}>
@@ -36,7 +45,7 @@ const NotificationsDropDown: React.FC<NotificationsDropDownProps> = ({ notificat
         <div className="absolute right-0 mt-2 w-64 bg-white border rounded-lg shadow-lg max-h-60 overflow-y-auto">
           <div className="p-2">
             <h3 className="text-lg font-semibold mb-4">Notifications</h3>
-            {notificationsData.slice(0, 5).map((notification) => (
+            {unreadUrgentNotifications.slice(0, 5).map((notification) => (
               <div
                 key={notification.id}
                 className="notification-item mb-4 cursor-pointer"
