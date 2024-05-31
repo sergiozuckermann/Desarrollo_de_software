@@ -4,6 +4,7 @@ import CellGrid from "../components/CellGrid";
 import GraphAgentStructure from "../components/GraphAgentStructure";
 import { useWebSocket } from "../hooks/useWebSocket";
 import { Interaction, SentimentSegment } from "../utils/interfaces";
+import userService from "../services/user";
 
 const OngoingCalls: React.FunctionComponent = () => {
   const { socket } = useWebSocket(); // get web socket connection
