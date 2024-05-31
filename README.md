@@ -48,7 +48,7 @@ This web application provides real-time metrics and interaction monitoring for c
 
 ## Documentation
 
-To get more details on how to install and configure the project, refer to the [installation manual].(INSTALL.md)
+To get more details on how to install and configure the project, refer to the [installation manual](INSTALL.md).
 
 ## License
 
