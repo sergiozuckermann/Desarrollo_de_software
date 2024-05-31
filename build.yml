@@ -16,7 +16,7 @@ phases:
       - echo "Changing to root directory..."
       - cd ../..
       - echo "Updating lambda function..."
-      - aws lambda update-function-code --function-name dynamiclambdagittest --zip-file fileb://deployment_package.zip
+      - aws lambda update-function-code --function-name lambda-api-back --zip-file fileb://deployment_package.zip
       - echo "DONE!!"
 artifacts:
   files:
