@@ -1,0 +1,23 @@
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      nodejs: 20 # Especifica la versión de Node.js que deseas usar
+    commands:
+      - echo "Installing dependencies..."
+      - cd mexicana-callcenter/backend
+      - npm install
+  build:
+    commands:
+      - echo "Zipping deployment package..."
+      - zip -r ../../deployment_package.zip . # Empaqueta todo el contenido del directorio backend, incluidos node_modules
+  post_build:
+    commands:
+      - echo "Changing to root directory..."
+      - cd ../..
+      - echo "Updating lambda function..."
+      - aws lambda update-function-code --function-name lambda-api-back --zip-file fileb://deployment_package.zip
+      - echo "DONE!!"
+artifacts:
+  files:
+    - deployment_package.zip
