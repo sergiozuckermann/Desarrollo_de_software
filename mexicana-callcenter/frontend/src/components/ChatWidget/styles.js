@@ -15,6 +15,7 @@ export const styles = {
         // Border
         borderRadius: "10px",
         cursor: "pointer",
+        zIndex: 999,
     },
 
     chatWidgetText: {
@@ -23,15 +24,15 @@ export const styles = {
         marginLeft: "5px",
     },
 
-    // Styling for model window 
+    // Styling for modal window 
     modalWindow: {
         // Position
         position: "fixed",
-        bottom: "105px",
-        right: "20px",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
         // Size
         width: "370px",
-        // width: "420px",
         height: "65vh",
         maxWidth: "calc(100% - 48px)",
         maxHeight: "calc(100% - 48px)",
@@ -42,6 +43,25 @@ export const styles = {
         overflow: "hidden",
         // Shadow
         boxShadow: "0px 0px 16px 6px rgba(0, 0, 0, 0.33)",
+        // Transition
+        opacity: "0",
+        pointerEvents: "none", // Disable interactions when not visible
+        transition: "opacity 0.3s ease",
+        zIndex: 1001,
     },
 
-}
+    modalWindowVisible: {
+        opacity: "1",
+        pointerEvents: "auto", // Enable interactions when visible
+    },
+
+    modalBackdrop: {
+        position: "fixed",
+        top: "0",
+        left: "0",
+        width: "100%",
+        height: "100%",
+        backgroundColor: "rgba(0, 0, 0, 0.5)",
+        zIndex: 1000,
+    },
+};
