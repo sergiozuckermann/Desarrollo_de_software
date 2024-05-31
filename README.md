@@ -59,9 +59,23 @@ For any inquiries, please contact any of the contributors mentioned above.
 This project is affiliated with Amazon Web Services (AWS) or Amazon Connect via [Tecnológico de Monterrey](https://tec.mx/)
 
 <details>
-  <summary> ### Pestaña 2</summary>
-
-  ### Contenido de la Pestaña 2
+  <summary> Contributors </summary>
+  
+  - [Mauricio Tumalán](https://github.com/mtumalan)
+  - [Sergio Zuckermann](https://github.com/sergiozuckermann)
+  - [Santiago Benitez](https://github.com/santibpz)
+  - [Carlos Fragoso](https://github.com/carlosfragoso21)
+  - [Arantza Parra](https://github.com/Ashaparra)
+  - [Juan Pablo Ruiz](https://github.com/juanpaRdeCh)
+  - [Fer Cortés](https://github.com/fernicortlo)
+  - [Natalia Valles](https://github.com/Nathv7)
+  - [Santiago Tena](https://github.com/santiagoTena05)
+  - [Emilio Berber](https://github.com/emilioberber)
+  - [Ian Vázquez](https://github.com/IanVazquez)
+  - [Hedguhar Domínguez](https://github.com/slitheryduke11)
+  - [Luisa Castaños](https://github.com/a01366643)
+  - [Carlos Soto](https://github.com/CSA09)
+  - [David Flores](https://github.com/DavidF2714)
 
   Aquí puedes poner el contenido que deseas mostrar en la Pestaña 2.
 </details>
