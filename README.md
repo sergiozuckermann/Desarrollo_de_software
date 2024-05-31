@@ -54,6 +54,10 @@ This project is licensed under the [MIT License](LICENSE).
 
 For any inquiries, please contact any of the contributors mentioned above.
 
+## Documentation
+
+Para obtener más detalles sobre cómo instalar y configurar el proyecto, consulta el [manual de instalación](INSTALL.md)
+
 ## Disclaimer
 
 This project is affiliated with Amazon Web Services (AWS) or Amazon Connect via [Tecnológico de Monterrey](https://tec.mx/)
