@@ -59,7 +59,7 @@ For any inquiries, please contact any of the contributors mentioned above.
 This project is affiliated with Amazon Web Services (AWS) or Amazon Connect via [Tecnológico de Monterrey](https://tec.mx/)
 
 <details>
-  <summary> Contributors </summary>
+  <summary><h2> Contributors </h2></summary>
   
   - [Mauricio Tumalán](https://github.com/mtumalan)
   - [Sergio Zuckermann](https://github.com/sergiozuckermann)
@@ -77,5 +77,4 @@ This project is affiliated with Amazon Web Services (AWS) or Amazon Connect via 
   - [Carlos Soto](https://github.com/CSA09)
   - [David Flores](https://github.com/DavidF2714)
 
-  Aquí puedes poner el contenido que deseas mostrar en la Pestaña 2.
 </details>
