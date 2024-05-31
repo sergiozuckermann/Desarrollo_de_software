@@ -46,6 +46,10 @@ This web application provides real-time metrics and interaction monitoring for c
 - [Carlos Soto](https://github.com/CSA09)
 - [David Flores](https://github.com/DavidF2714)
 
+## Documentation
+
+Para obtener más detalles sobre cómo instalar y configurar el proyecto, consulta el [manual de instalación](INSTALL.md)
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
@@ -53,10 +57,6 @@ This project is licensed under the [MIT License](LICENSE).
 ## Support
 
 For any inquiries, please contact any of the contributors mentioned above.
-
-## Documentation
-
-Para obtener más detalles sobre cómo instalar y configurar el proyecto, consulta el [manual de instalación](INSTALL.md)
 
 ## Disclaimer
 
