@@ -8,15 +8,15 @@ const queueNames = {
 
 export function FetchMetrics(filters) {
     const [averageAbandonmentRate, setAverageAbandonmentRate] = useState<number | null>(null);
-    const [averageAbandonTime, setAverageAbandonTime] = useState<Array<{label: string, value: number}> | null>(null);
-    const [averageQueueAnswerTime, setAverageQueueAnswerTime] = useState<Array<{label: string, value: number}> | null>(null);
+    const [averageAbandonTime, setAverageAbandonTime] = useState<Array<{ label: string, value: number }> | null>(null);
+    const [averageQueueAnswerTime, setAverageQueueAnswerTime] = useState<Array<{ label: string, value: number }> | null>(null);
     const [averageAnswerTime, setAverageAnswerTime] = useState<number | null>(null);
     const [ServiceLevel, setServiceLevel] = useState<number | null>(null);
     const [averageContactDuration, setAverageContactDuration] = useState<number | null>(null);
-    const[contactsHandeled, setContactsHandeled] = useState<number | null>(null);
+    const [contactsHandeled, setContactsHandeled] = useState<number | null>(null);
     const [contactFlowTime, setContactFlowTime] = useState<number | null>(null);
-    const [agentOccupancy, setAgentOccupancy]=useState<number | null>(null);
-    
+    const [agentOccupancy, setAgentOccupancy] = useState<Array<{ label: string, value: number }> | null>(null);
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -29,7 +29,6 @@ export function FetchMetrics(filters) {
                     }
                 });
 
-                
                 const queueMetrics = response.data.QueueMetrics.MetricResults;
                 const agentMetrics = response.data.AgentMetrics.MetricResults;
 
@@ -45,7 +44,7 @@ export function FetchMetrics(filters) {
                 let contactsHandeled = 0;
                 let contactFlowTime = 0;
                 let contactFlowTimeCount = 0;
-            
+                let agentOccupancyArray = []; // Initialize as an array
 
                 queueMetrics.forEach((queue) => {
                     if (queue.Dimensions && queue.Dimensions.QUEUE) {
@@ -75,24 +74,23 @@ export function FetchMetrics(filters) {
                                         serviceLevelValue = metric.Value;
                                     }
                                     break;
-                                    case "AVG_CONTACT_DURATION":
-                                        if (metric.Value !== undefined) {
-                                            totalContactDuration += metric.Value;
-                                            contactDurationCount++;
-                                        }
+                                case "AVG_CONTACT_DURATION":
+                                    if (metric.Value !== undefined) {
+                                        totalContactDuration += metric.Value;
+                                        contactDurationCount++;
+                                    }
                                     break;
-                                    case "CONTACTS_HANDLED":
-                                        if (metric.Value !== undefined) {
-                                            contactsHandeled = metric.Value;
-                                        }
+                                case "CONTACTS_HANDLED":
+                                    if (metric.Value !== undefined) {
+                                        contactsHandeled = metric.Value;
+                                    }
                                     break;
-                                    case "SUM_CONTACT_FLOW_TIME":
-                                        if (metric.Value !== undefined) {
-                                            contactFlowTime += metric.Value;
-                                            contactFlowTimeCount++;
-                                        }
-                            
-
+                                case "SUM_CONTACT_FLOW_TIME":
+                                    if (metric.Value !== undefined) {
+                                        contactFlowTime += metric.Value;
+                                        contactFlowTimeCount++;
+                                    }
+                                    break;
                             }
                         });
                     }
@@ -108,7 +106,7 @@ export function FetchMetrics(filters) {
                     setAverageAnswerTime(Math.round(totalAnswerTime / AnswerTimeCount));
                 }
                 setServiceLevel(serviceLevelValue);
-                
+
                 if (contactDurationCount > 0) {
                     setAverageContactDuration(Math.round(totalContactDuration / contactDurationCount));
                 }
@@ -120,14 +118,12 @@ export function FetchMetrics(filters) {
                 agentMetrics.forEach((agent) => {
                     agent.Collections.forEach((metric) => {
                         if (metric.Metric.Name === "AGENT_OCCUPANCY" && metric.Value !== undefined) {
-                            agentOccupancy.push({ label: agent.Dimensions.AGENT, value: metric.Value });
+                            agentOccupancyArray.push({ label: agent.Dimensions.AGENT, value: metric.Value });
                         }
                     });
                 });
 
-                setAgentOccupancy(agentOccupancy);
-            
-            
+                setAgentOccupancy(agentOccupancyArray); // Update state with the array
 
             } catch (error) {
                 console.error("Error fetching data", error);
@@ -145,6 +141,7 @@ export function FetchMetrics(filters) {
         ServiceLevel,
         averageContactDuration,
         contactsHandeled,
-        contactFlowTime 
+        contactFlowTime,
+        agentOccupancy
     };
 }

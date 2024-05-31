@@ -1,11 +1,12 @@
+import React, { useState } from 'react';
 import PageStructure from '../components/PageStructure';
 import { FetchMetrics } from '../services/metrics';
 import '../css/global.css';
 import MyBarChart2 from '../components/Charts/barChart2';
 import GaugeChart from 'react-gauge-chart';
 import Filter from '../components/filters';
-import { useState } from 'react';
 import MyBarChart from '../components/Charts/BarChartV';
+import MyPieChart from '../components/Charts/piechart'; // Assuming MyPieChart is a pie chart component
 
 const MainContent = () => {
     const [filters, setFilters] = useState({
@@ -18,8 +19,8 @@ const MainContent = () => {
         setFilters(newFilters);
     };
 
-    const { averageAbandonmentRate, averageAbandonTime, averageQueueAnswerTime, averageAnswerTime, ServiceLevel, averageContactDuration, contactsHandeled, contactFlowTime } = FetchMetrics(filters);
-    console.log(averageAbandonmentRate, averageAbandonTime, averageQueueAnswerTime, averageAnswerTime, averageContactDuration, contactsHandeled, contactFlowTime);
+    const { averageAbandonmentRate, averageAbandonTime, averageQueueAnswerTime, averageAnswerTime, ServiceLevel, averageContactDuration, contactsHandeled, contactFlowTime, agentOccupancy } = FetchMetrics(filters);
+    console.log(averageAbandonmentRate, averageAbandonTime, averageQueueAnswerTime, averageAnswerTime, averageContactDuration, contactsHandeled, contactFlowTime, agentOccupancy);
 
     if (averageAbandonTime === null || averageQueueAnswerTime === null) {
         return <div>Loading...</div>;
@@ -29,22 +30,27 @@ const MainContent = () => {
 
     const AbandonData = [
         ...averageAbandonTime.map(item => ({ metric: item.label, value: item.value })),
-    ]; 
+    ];
 
     const AnswerData = [
         ...averageQueueAnswerTime.map(item => ({ metric: item.label, value: item.value })),
     ];
 
+    const OccupancyData = agentOccupancy !== null ? [
+        { metric: "Occupied", value: agentOccupancy },
+        { metric: "Unoccupied", value: 100 - agentOccupancy }
+    ] : [];
+
     const formatTime = (seconds) => {
-        if (seconds >= 60) {
-            const minutes = Math.floor(seconds / 60);
-            const remainingSeconds = seconds % 60;
-            return `${minutes}:${remainingSeconds} minutes`;
-        } else if (seconds >= 3600) {
+        if (seconds >= 3600) {
             const hours = Math.floor(seconds / 3600);
             const remainingMinutes = Math.floor((seconds % 3600) / 60);
             const remainingSeconds = seconds % 60;
             return `${hours}:${remainingMinutes}:${remainingSeconds} hours`;
+        } else if (seconds >= 60) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            return `${minutes}:${remainingSeconds} minutes`;
         } else {
             return `${seconds} seconds`;
         }
@@ -56,7 +62,7 @@ const MainContent = () => {
                 <p>Abandonment Rate</p>
                 <GaugeChart id="gauge-chart1" nrOfLevels={20} colors={["#84BF68", "#FF5F6D", "#FFC371"]} arcWidth={0.3} percent={averageAbandonmentRate / 100} textColor="#20253F" />
             </div>
-            <div className="col-span-3 row-span-2 shadow-lg card bg-tertiary ">
+            <div className="col-span-3 row-span-2 shadow-lg card bg-tertiary">
                 <div className="flex flex-row items-center justify-between">
                     <div className="px-4 py-4 bg-gray-300 rounded-xl bg-opacity-30">
                     </div>
@@ -66,8 +72,14 @@ const MainContent = () => {
                 </div>
                 <h1 className="mt-1 text-3xl font-bold text-gray-700 sm:text-m xl:text-4xl"></h1>
                 <div className="flex flex-row justify-between mt-2">
-                    <p>Agent Occupancy</p>
+                    <p>Agent Occupancy </p>
+                    {/* {agentOccupancy !== null && (
+                    <div className="w-full h-full">
+                        <MyPieChart data={OccupancyData} unit="%" />
+                    </div>
+                )} */}
                 </div>
+                <h1 className="mt-1 text-3xl font-bold text-gray-700 sm:text-m xl:text-4xl">No Available Data</h1>
             </div>
             <div className="col-span-3 row-span-2 shadow-lg card bg-tertiary">
                 <div className="flex flex-row items-center justify-between">
@@ -94,8 +106,8 @@ const MainContent = () => {
                 <MyBarChart2 data={AbandonData} />
             </div>
             <div className="col-span-4 row-span-2 card bg-tertiary">
-                <p>Service Level</p>    
-                <MyBarChart data={ServiceData} />  
+                <p>Service Level</p>
+                <MyBarChart data={ServiceData} />
             </div>
             <div className="col-span-4 row-span-2 card bg-tertiary">
                 <div className="flex flex-row justify-between pb-5 mt-2">
@@ -110,7 +122,7 @@ const MainContent = () => {
                 </div>
                 <h1 className="mt-1 text-3xl font-bold text-gray-700 sm:text-m xl:text-4xl">{formatTime(averageContactDuration)}</h1>
             </div>
-             <div className="col-span-4 row-span-2 card bg-tertiary">
+            <div className="col-span-4 row-span-2 card bg-tertiary">
                 <div className="flex flex-row justify-between pb-5 mt-2">
                     <p>Contacts Handled</p>
                 </div>
