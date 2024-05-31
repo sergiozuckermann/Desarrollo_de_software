@@ -15,6 +15,10 @@ git clone https://github.com/sergiozuckermann/Desarrollo_de_software.git
 After cloning the repository, navigate into the folder:
 
 ```bash
-cd Desarrollo_de_software
+cd Desarrollo_de_software\mexicana-callcenter
 ```
+
+## BACKEND
+
+### Path
 
