@@ -20,6 +20,7 @@ import ChatWidget from './components/ChatWidget';
 import AgentRoutingProfile from './pages/QueueTransfer';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import AgentMetrics from './pages/AgentMetrics';
 
 function App() {
   const { isAuthenticated, role } = useAuth(); // get user authentication status and role

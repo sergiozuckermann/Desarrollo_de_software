@@ -14,17 +14,14 @@ interface QueueDataItem {
   value: number;
 }
 
-const GraphAgentStructure: React.FunctionComponent = () => {
+interface GraphAgentStructureProps {
+  agentsState: Array<PieChartDataItem>
+}
+
+  
+  const GraphAgentStructure: React.FunctionComponent<GraphAgentStructureProps> = ({agentsState}) => {
   const [queueData, setQueueData] = useState<QueueDataItem[]>([]);
-
-
-  const availabilityData: PieChartDataItem[] = [
-    { id: "Available", label: "Available", value: 30 },
-    { id: "On Call", label: "On Call", value: 20 },
-    { id: "After Call", label: "After Call", value: 10 },
-  ];
-
-  const [chartData, setChartData] = useState<PieChartDataItem[]>(availabilityData);
+ 
 
   const issueData: PieChartDataItem[] = [
     { id: "Flight Rsv", label: "Flight Rsv", value: 10 },
@@ -65,7 +62,11 @@ const GraphAgentStructure: React.FunctionComponent = () => {
           <h1 className="text-3xl font-roboto mb-4 text-center sm:text-left">Agent Status</h1>
           <div className="flex justify-center">
             <div style={{ width: '100%', height: '300px' }}>
-              <MyPieChart data={chartData} unit="Agents" />
+              {
+                agentsState.every(state => state.value === 0) ? 
+                <h1>No active agents</h1> :  
+                <MyPieChart data={agentsState} unit="Agents" />
+              }
             </div>
           </div>
         </div>
