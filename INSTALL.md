@@ -6,7 +6,7 @@
 
 ## Clone Repository 
 
-To get more details on how to install and configure the project, refer to the [Installation Manual](INSTALL.md).
+To clone the repository, open your preferred terminal and type the following command in the directory where you want to clone the repository:
 
 ```bash
 git clone https://github.com/sergiozuckermann/Desarrollo_de_software.git
