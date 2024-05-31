@@ -1,9 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import MyPieChart from './Charts/piechart';
 import MyResponsiveBar from './Charts/barChart';
+import userService from '../services/user';
 
 interface PieChartDataItem {
   id: string | number;
+  label: string;
+  value: number;
+}
+
+interface QueueDataItem {
   label: string;
   value: number;
 }
@@ -12,7 +18,9 @@ interface GraphAgentStructureProps {
   agentsState: Array<PieChartDataItem>
 }
 
-const GraphAgentStructure: React.FunctionComponent<GraphAgentStructureProps> = ({agentsState}) => {
+  
+  const GraphAgentStructure: React.FunctionComponent<GraphAgentStructureProps> = ({agentsState}) => {
+  const [queueData, setQueueData] = useState<QueueDataItem[]>([]);
  
 
   const issueData: PieChartDataItem[] = [
@@ -27,14 +35,23 @@ const GraphAgentStructure: React.FunctionComponent<GraphAgentStructureProps> = (
 
   const [chartData2, setChartData2] = useState<PieChartDataItem[]>(issueData);
 
-  const queueData = [
-    {id:"FlightManagement", label: "Flight Rsv", value: 1 },
-    {id:"CustomerCare", label: "Customer Care", value: 2 },
-    {id:"WebsiteAssistance", label: "Booking or Website Issues", value: 5 },
-    {id:"TravelInformation", label: "Status Inquiries", value: 3 },
-    {id:"SpecialAssitance", label: "Special Assistance or Docs", value: 6 },
-    {id:"OtherQuestions", label: "Other Questions", value: 4 }
-  ];
+
+  //FETCH QUEUE METRICS EVERY 5 SECONDS
+  const loadMetricsEverySecond = async () => {
+    try {
+      // console.log('Fetching metrics...'); // LOG FOR LOADING METRICS   
+      const queueMetrics = await userService.GetQueueMetrics(); // FETCH QUEUE METRICS
+      setQueueData(queueMetrics); // SET QUEUE METRICS      
+      // console.log('Metrics fetched:', queueMetrics); // LOG FOR LOADED METRICS
+    } catch (error) {
+      console.log("Error loading metrics", error);
+    }
+  };
+
+  useEffect(() => {
+    const interval = setInterval(loadMetricsEverySecond, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
   const totalCustomersWaiting = queueData.reduce((sum, item) => sum + item.value, 0);
 
@@ -63,22 +80,25 @@ const GraphAgentStructure: React.FunctionComponent<GraphAgentStructureProps> = (
         </div>
       </div>
       <div className="flex flex-col">
-        <h1 className="text-3xl font-roboto mb-0 text-center sm:text-left">Queue Issues</h1> 
-          <div className="flex flex-col sm:flex-col md:flex-col lg:flex-row items-center justify-center space-y-4 lg:space-y-0 lg:space-x-4">
-              <div className="text-center">
-                  <h2 className="text-3xl font-roboto text-red-600">{totalCustomersWaiting}</h2>
-                  <h2 className="text-xl font-roboto">Customers</h2>
-                  <h2 className="text-xl font-roboto">Waiting</h2>
-              </div>
-              <div style={{ width: '100%', height: '300px' }}>
-                  <MyResponsiveBar data={queueData} />
-              </div>
+        <h1 className="text-3xl font-roboto mb-0 text-center sm:text-left">Contacts Queued</h1>
+        <div className="flex flex-col sm:flex-col md:flex-col lg:flex-row items-center justify-center space-y-4 lg:space-y-0 lg:space-x-4">
+          <div className="text-center">
+            <h2 className="text-3xl font-roboto text-red-600">{totalCustomersWaiting}</h2>
+            <h2 className="text-xl font-roboto">
+              <a href="/supervisor/agent-transfer" className="text-black-900 font-semibold hover:text-green-500"
+                data-cy='link' title='Click here to move agents within queues'>Customer Waiting</a>
+            </h2>
           </div>
+          <div style={{ width: '100%', height: '300px' }}>
+            <MyResponsiveBar data={queueData} />
+          </div>
+        </div>
       </div>
 
-</div>
 
-    
+    </div>
+
+
   );
 };
 

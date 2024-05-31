@@ -4,6 +4,7 @@ import CellGrid from "../components/CellGrid";
 import GraphAgentStructure from "../components/GraphAgentStructure";
 import { useWebSocket } from "../hooks/useWebSocket";
 import { Interaction, SentimentSegment } from "../utils/interfaces";
+import userService from "../services/user";
 
 interface PieChartDataItem {
   id: string | number;

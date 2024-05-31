@@ -20,6 +20,7 @@ import ChatWidget from './components/ChatWidget';
 import AgentRoutingProfile from './pages/QueueTransfer';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import AgentMetrics from './pages/AgentMetrics';
 
 function App() {
   const { isAuthenticated, role } = useAuth(); // get user authentication status and role
@@ -43,9 +44,11 @@ function App() {
           <Route path="/supervisor/ongoingcalls" element={<OngoingCalls />} />
           <Route path="/supervisor/bargein" element={<BargeIn />} />
           <Route path="/supervisor/home" element={<SupervisorMain />} />
-          <Route path="/supervisor/notifications" element={<SupervisorNotifications />} />
-          <Route path="/supervisor/calloverview" element={<CallOverview />} />
-          <Route path="/supervisor/metrics" element={<HistoricalMetrics />} />
+          <Route path="/supervisor/ongoingcalls" element={<OngoingCalls />} />
+          <Route path="/supervisor/AgentSpotlight" element={<AgentMetrics />} />
+          <Route path="/supervisor/notifications" element={< SupervisorNotifications />} />
+          <Route path="/supervisor/metrics" element={< HistoricalMetrics />} />
+          <Route path="/supervisor/calloverview" element={< CallOverview />} />
           <Route path="/supervisor/agent-transfer" element={<AgentRoutingProfile />} />
       </Route>
 
@@ -53,7 +56,7 @@ function App() {
           <Route path="*" element={<h1>Not Found</h1>}></Route>
         </Routes>
         <ToastContainer />
-        <ChatWidget />
+        {isAuthenticated ? <ChatWidget /> : null}
       </DndProvider>
       </>
   );
