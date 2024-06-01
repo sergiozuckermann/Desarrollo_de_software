@@ -81,31 +81,27 @@ Something similar to the next message should be displayed in the Command Line In
   ➜  press h + enter to show help
 ```
 
+When entering the website for first time, the next message will appear. 
+
+<img src="assets/warning.png" alt="warning" style="width:500px">
+
+1. Click on Advanced
+2. Proceed to localhost(unsafe)
+3. You are in
+
+
+
+
 ## Environmental Variables
 
 Create a .env file with the Amazon Web Services Identity and Access Management (IAM) Access Keys
-
-<details>
-1. Go to your Amazon Web Services IAM Managment Console 
-2. Users
-4. Select a user with the appropiate permissions
-5. Go to security credentials
-6. Scroll down to Access Keys
-7. Click on create access keys
-8. Fill the form
-   1. CLI
-   2. Tag
-   3. Retrieve Access Keys
-9. Save both Access and Secret Access Keys
-10. Write them down to an .env file
     
-    ```bash
-    ACCESS_KEY_ID = YOUR_ACCESS_KEY_ID
-    SECRET_ACCESS_KEY = YOUR_SECRET_ACCESS_KEY
-    ```
-</details>
+```bash
+ACCESS_KEY_ID = YOUR_ACCESS_KEY_ID
+SECRET_ACCESS_KEY = YOUR_SECRET_ACCESS_KEY
+```
 
-Go to the root directory of the reposotory
+Go to the root directory of the repository 
 
 
 
