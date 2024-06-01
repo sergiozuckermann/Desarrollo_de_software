@@ -90,7 +90,7 @@ When entering the website for first time, the next message will appear.
 2. Proceed to localhost(unsafe)
 3. You are in
 
-<img src="assets/homepage.pgn" alt="homepage" style="width:500px">
+<img src="assets/homepage.png" alt="homepage" style="width:500px">
 
 ## Environmental Variables
 
@@ -101,7 +101,31 @@ ACCESS_KEY_ID = YOUR_ACCESS_KEY_ID
 SECRET_ACCESS_KEY = YOUR_SECRET_ACCESS_KEY
 ```
 
-Go to the root directory of the repository 
+Go to the root directory of the repository at:
+```sh
+..\Desarrollo_de_software\mexicana-callcenter
+```
+
+### Backend
+
+Go to the root backend directory of the repository at:
+
+```sh
+..\Desarrollo_de_software\mexicana-callcenter\backend
+```
+
+and drag the .env file in 
+
+
+### Frontend
+
+Go to the root frontend directory of the repository at:
+
+```sh
+..\Desarrollo_de_software\mexicana-callcenter\frontend
+```
+
+and drag the .env file in 
 
 
 
