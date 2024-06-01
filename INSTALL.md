@@ -1,32 +1,30 @@
-# Installation Manual.
+# Installation Manual
 
-## Prerequisites: 
-- Node.js
-  - https://nodejs.org/
-- Git
-  - https://git-scm.com/downloads
-- Amazon Web Services Account
-  - https://aws.amazon.com/es
+## Prerequisites
 
-## Clone Repository.
+- [Node.js](https://nodejs.org/)
+- [Git](https://git-scm.com/downloads)
+- [Amazon Web Services Account](https://aws.amazon.com/es)
+
+## Clone the Repository
 
 To clone the repository, open your preferred Command Line Interface (CLI) and type the following command in the directory where you want to clone the repository:
 
-```bash
+```sh
 git clone https://github.com/sergiozuckermann/Desarrollo_de_software.git
 ```
 
 After cloning the repository, navigate into the folder:
 
-```bash
+```sh
 cd ..\Desarrollo_de_software\mexicana-callcenter
 ```
 
 ## Environmental Variables.
 
-Create a .env file with the Amazon Web Services Identity and Access Management (IAM) Access Keys with the appropiate roles and policies.
+Create a `.env` file with the Amazon Web Services Identity and Access Management (IAM) Authorized User Access Keys.
     
-```bash
+```sh
 ACCESS_KEY_ID = YOUR_ACCESS_KEY_ID
 SECRET_ACCESS_KEY = YOUR_SECRET_ACCESS_KEY
 ```
