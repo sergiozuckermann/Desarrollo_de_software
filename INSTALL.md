@@ -20,7 +20,7 @@ cd ..\Desarrollo_de_software\mexicana-callcenter
 
 ## Environmental Variables.
 
-Create a .env file with the Amazon Web Services Identity and Access Management (IAM) Access Keys.
+Create a .env file with the Amazon Web Services Identity and Access Management (IAM) Access Keys with the appropiate roles and policies.
     
 ```bash
 ACCESS_KEY_ID = YOUR_ACCESS_KEY_ID
