@@ -36,7 +36,7 @@ npm install
 
 After having installed the dependencies, run the server with the command:
 
-```js
+```sh
 node .\index.js
 ```
 
