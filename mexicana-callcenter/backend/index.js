@@ -35,9 +35,24 @@ app.use('/agent', verifyToken, verifyRole(roles.agent), agentRouter)
 app.use('/historicmetrics',  metricsRouter)
 
 
-const port = process.env.PORT || 3000; // Use the port defined in environment variable or default to 3000
+const awsServerlessExpress = require('aws-serverless-express');
 
-// Start the server
-app.listen(port, () => {
-  console.log(`Server is running at http://localhost:${port}`);
-});
+if (process.env.NODE_ENV === 'development') {
+  const port = process.env.PORT || 3000; // Usar el puerto port o por defecto 3000
+
+  // Iniciar el servidor en desarrollo local
+  app.listen(port, () => {
+    console.log(`Server is running at http://localhost:${port}`);
+  });
+} else if (process.env.NODE_ENV === 'production') {
+  // Crear el servidor para aws-serverless-express
+  const server = awsServerlessExpress.createServer(app);
+
+  // Exportar el manejador de Lambda
+  exports.handler = (event, context) => {
+    awsServerlessExpress.proxy(server, event, context);
+  };
+} else {
+  console.error('NODE_ENV is not set to a valid value. Expected "development" or "production".');
+  process.exit(1);
+}
