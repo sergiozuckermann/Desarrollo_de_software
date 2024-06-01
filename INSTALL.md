@@ -1,10 +1,12 @@
 # Installation Manual.
 
-## Install:
+## Prerequisites: 
 - Node.js
   - https://nodejs.org/
 - Git
   - https://git-scm.com/downloads
+- Amazon Web Services Account
+  - [https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwiexKP-ybmGAxXc78kDHeMWC2IQFnoECAYQAQ&url=https%3A%2F%2Faws.amazon.com%2Fmarketplace%2Fmanagement%2Fsignin&usg=AOvVaw2hkeF5D3jl50-yuv33pY1a&opi=89978449](https://aws.amazon.com/es/)
 
 ## Clone Repository.
 
