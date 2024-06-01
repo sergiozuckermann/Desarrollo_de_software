@@ -1,4 +1,7 @@
 import { CognitoIdentityProviderClient, AdminDeleteUserCommand } from "@aws-sdk/client-cognito-identity-provider";
+import cypress from "cypress";
+
+// require('dotenv').config();
 
 require('dotenv').config();
 

@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import useChatProvider from '../../../Provider/ChatProvider'; // Importa el hook useChatProvider
-import { useAuth } from '../../../hooks/useAuth'; // Importa el hook useAuth
-
-// importing external style
-import { styles } from "./../styles";
+import React, { useState, useEffect, useRef } from 'react';
+import useChatProvider from '../../../Provider/ChatProvider';
+import { useAuth } from '../../../hooks/useAuth';
+import { styles } from './../styles';
 
 function ModalWindow(props) {
     const {
@@ -13,40 +11,48 @@ function ModalWindow(props) {
         onPublicMessage,
         onPrivateMessage,
         onConnect,
-        onDisconnect,
-    } = useChatProvider(); // Usar el hook useChatProvider
+    } = useChatProvider();
 
-    const { username } = useAuth(); // Obtener el nombre de usuario desde el contexto de autenticación
+    const { username } = useAuth();
 
-    // Estado local para el mensaje a enviar
     const [message, setMessage] = useState('');
     const [selectedMember, setSelectedMember] = useState('sendToAll');
+    const chatEndRef = useRef(null);
 
-    // Función para manejar el envío de mensajes
     const handleSendMessage = () => {
         if (message.trim() !== '') {
             if (selectedMember === 'sendToAll') {
-                onPublicMessage(message); // Mandar mensaje público
+                onPublicMessage(message);
             } else {
-                onPrivateMessage(message, selectedMember); // Mandar mensaje privado
+                onPrivateMessage(message, selectedMember);
             }
-            setMessage(''); // Limpiar el mensaje después de enviarlo
+            setMessage('');
         }
     };
 
-    // Conectar al montar el componente
+    const scrollToBottom = () => {
+        chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    };
+
     useEffect(() => {
         if (username) {
             onConnect(username);
         }
-    }, [username]); // Vuelve a conectarse si cambia el nombre de usuario
+    }, [username]);
 
-    // Estilos personalizados
+    useEffect(() => {
+        console.log(chatRows);
+        scrollToBottom();
+    }, [chatRows]);
+
     const headerStyles = {
         backgroundColor: '#20253F',
         color: 'white',
         padding: '10px 5px',
         textAlign: 'center',
+        position: 'sticky',
+        top: 0,
+        zIndex: 10,
     };
 
     const titleStyles = {
@@ -63,12 +69,23 @@ function ModalWindow(props) {
         lineHeight: '1.2',
     };
 
+    const closeButtonStyles = {
+        position: 'absolute',
+        top: '10px',
+        right: '10px',
+        backgroundColor: 'transparent',
+        border: 'none',
+        fontSize: '16px',
+        color: 'white',
+        cursor: 'pointer',
+    };
+
     const activeUsersContainerStyles = {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        marginBottom: '20px', // Aumentar el margen inferior para separar del header
-        marginTop: '20px', // Agregar margen superior para separar del header
+        marginBottom: '20px',
+        marginTop: '20px',
     };
 
     const labelStyles = {
@@ -88,11 +105,38 @@ function ModalWindow(props) {
     const chatListStyles = {
         listStyleType: 'none',
         padding: 0,
+        flex: 1,
+        overflowY: 'auto',
+        marginBottom: '10px',
     };
 
     const chatItemStyles = {
         padding: '5px',
         borderBottom: '1px solid #ddd',
+        display: 'flex',
+    };
+
+    const myMessageStyles = {
+        ...chatItemStyles,
+        justifyContent: 'flex-end',
+        backgroundColor: '#54d3fa',
+    };
+
+    const otherMessageStyles = {
+        ...chatItemStyles,
+        justifyContent: 'flex-start',
+        backgroundColor: '#f1f0f0',
+    };
+
+    const inputContainerStyles = {
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
+        padding: '10px 0',
+        position: 'sticky',
+        bottom: 0,
+        backgroundColor: 'white',
+        zIndex: 10,
     };
 
     const inputStyles = {
@@ -100,8 +144,7 @@ function ModalWindow(props) {
         fontSize: '16px',
         borderRadius: '5px',
         border: '1px solid #ddd',
-        width: 'calc(100% - 12px)',
-        marginBottom: '10px',
+        flex: 1,
     };
 
     const buttonStyles = {
@@ -112,58 +155,82 @@ function ModalWindow(props) {
         backgroundColor: '#20253F',
         color: 'white',
         cursor: 'pointer',
-        marginRight: '10px',
     };
 
-    // Retornar la interfaz del chat
+    const modalContentStyles = {
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+        overflowY: 'auto',
+    };
+
     return (
-        <div
-            style={{
-                ...styles.modalWindow,
-                ...{ opacity: props.visible ? "1" : "0" },
-            }}
-        >
-            <div style={headerStyles}>
-                <h1 style={titleStyles}>MexicanaAirlines</h1>
-                <h2 style={subtitleStyles}>Live Chat</h2>
-            </div>
-            {isConnected ? (
-                <>
-                    <div style={activeUsersContainerStyles}>
-                        <label htmlFor="activeUsers" style={labelStyles}>Active Users:</label>
-                        <select
-                            id="activeUsers"
-                            value={selectedMember}
-                            onChange={(e) => setSelectedMember(e.target.value)}
-                            style={selectStyles}
-                        >
-                            <option value="sendToAll">Send to All</option>
-                            {members.map((member) => (
-                                <option key={member} value={member}>
-                                    {member}
-                                </option>
-                            ))}
-                        </select>
+        <>
+            {props.visible && <div style={styles.modalBackdrop}></div>}
+            <div
+                style={{
+                    ...styles.modalWindow,
+                    ...(props.visible && styles.modalWindowVisible),
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: '100vh',
+                }}
+            >
+                <div style={headerStyles}>
+                    <h1 style={titleStyles}>MexicanaAirlines</h1>
+                    <h2 style={subtitleStyles}>Live Chat</h2>
+                    <button style={closeButtonStyles} onClick={props.onClose}>X</button>
+                </div>
+                {isConnected ? (
+                    <div style={modalContentStyles}>
+                        <div style={activeUsersContainerStyles}>
+                            <label htmlFor="activeUsers" style={labelStyles}>Active Users:</label>
+                            <select
+                                id="activeUsers"
+                                value={selectedMember}
+                                onChange={(e) => setSelectedMember(e.target.value)}
+                                style={selectStyles}
+                            >
+                                <option value="sendToAll">Send to All</option>
+                                {members.map((member) => (
+                                    <option key={member} value={member}>
+                                        {member}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        <div style={{ flex: 1, overflowY: 'auto' }}>
+                            <div>Chat Messages:</div>
+                            <ul style={chatListStyles}>
+                                {chatRows.map((row, index) => {
+                                    const isPrivateMessageTo = row.startsWith('Private message to ');
+                                    const isPrivateMessageFrom = row.startsWith('Private message from ');
+                                    const rowStyle = row.startsWith(username) || isPrivateMessageTo ? myMessageStyles : otherMessageStyles;
+
+                                    return (
+                                        <li key={index} style={rowStyle}>
+                                            {row}
+                                        </li>
+                                    );
+                                })}
+                                <div ref={chatEndRef} />
+                            </ul>
+                        </div>
+                        <div style={inputContainerStyles}>
+                            <input
+                                type="text"
+                                value={message}
+                                onChange={(e) => setMessage(e.target.value)}
+                                style={inputStyles}
+                            />
+                            <button onClick={handleSendMessage} style={buttonStyles}>Send</button>
+                        </div>
                     </div>
-                    <div>Chat Messages:</div>
-                    <ul style={chatListStyles}>
-                        {chatRows.map((row, index) => (
-                            <li key={index} style={chatItemStyles}>{row}</li>
-                        ))}
-                    </ul>
-                    <input
-                        type="text"
-                        value={message}
-                        onChange={(e) => setMessage(e.target.value)}
-                        style={inputStyles}
-                    />
-                    <button onClick={handleSendMessage} style={buttonStyles}>Send</button>
-                    <button onClick={onDisconnect} style={buttonStyles}>Disconnect</button>
-                </>
-            ) : (
-                <div>Connecting...</div>
-            )}
-        </div>
+                ) : (
+                    <div>Connecting...</div>
+                )}
+            </div>
+        </>
     );
 }
 

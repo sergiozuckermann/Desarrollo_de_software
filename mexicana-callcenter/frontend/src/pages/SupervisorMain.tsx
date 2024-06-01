@@ -52,7 +52,7 @@ const MainContent = () => {
       </div>
       <div className="flex flex-col space-y-4 md:col-span-8">
   <div className="flex flex-col gap-10">
-    <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
+  <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:col-span-2 flex justify-center">
       <HomeButton icon="/MetricsSymbol.svg" title="My Metrics" subtitle="See the historical metrics of the call center" handleClick={() => window.location.href = '/supervisor/metrics'}/>
       <HomeButton icon="/SpotlightSymbol.svg" title="Agent Spotlight" subtitle="Weekly best agents" handleClick={() => window.location.href = '/supervisor/AgentSpotlight'}/>
       <HomeButton icon="/costumer.svg" title="Agent Performance" subtitle="See the weekly metrics of agent perfomance" handleClick={() => window.location.href = '/supervisor/AgentPerformance'}/>
