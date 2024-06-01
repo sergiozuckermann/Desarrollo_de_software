@@ -63,7 +63,7 @@ npm install
 
 Once the installation has finished, run the server with the command:
 
-```js
+```sh
 npm run dev
 ```
 
