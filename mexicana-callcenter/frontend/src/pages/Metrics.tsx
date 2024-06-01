@@ -7,6 +7,8 @@ import GaugeChart from 'react-gauge-chart';
 import Filter from '../components/filters';
 import MyBarChart from '../components/Charts/BarChartV';
 import MyPieChart from '../components/Charts/piechart'; // Assuming MyPieChart is a pie chart component
+import 'react-tooltip/dist/react-tooltip.css'
+import { Tooltip } from 'react-tooltip'
 
 const MainContent = () => {
     const [filters, setFilters] = useState({
@@ -57,11 +59,17 @@ const MainContent = () => {
     };
 
     return (
-        <div className="grid w-full h-full grid-cols-12 grid-rows-6 gap-4 p-2 pt-5 overflow-y-auto">
-            <div className="col-span-3 row-span-2 card bg-tertiary">
+        <div className="grid w-full h-full grid-cols-12 grid-rows-6 gap-4 p-2 pt-5 overflow-y-auto" >
+            <div className="col-span-3 row-span-2 card bg-tertiary" 
+                data-tooltip-id="my-tooltip" 
+                data-tooltip-content="Abandonment Rate is the percentage of calls that are abandoned by the caller before being answered by an agent.
+                Hight abandonment rates can be a sign of poor customer service or long wait times. A low abandonment rate is a good indicator of customer satisfaction and efficient call handling by agents" 
+                data-tooltip-place="left">
                 <p>Abandonment Rate</p>
                 <GaugeChart id="gauge-chart1" nrOfLevels={20} colors={["#84BF68", "#FF5F6D", "#FFC371"]} arcWidth={0.3} percent={averageAbandonmentRate / 100} textColor="#20253F" />
+                
             </div>
+            <Tooltip id="my-tooltip" className="custom-tooltip"  />
             <div className="col-span-3 row-span-2 shadow-lg card bg-tertiary">
                 <div className="flex flex-row items-center justify-between">
                     <div className="px-4 py-4 bg-gray-300 rounded-xl bg-opacity-30">

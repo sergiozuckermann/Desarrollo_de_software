@@ -130,3 +130,11 @@ p {
 .flash-red {
   animation: flash 1s infinite;
 }
+
+.custom-tooltip {
+  z-index: 1000; 
+  max-width: 300px; 
+  white-space: normal; 
+  word-wrap: break-word;
+  background-color: #20253F;
+}
