@@ -42,7 +42,7 @@ Go to the root backend directory of the repository at:
 ..\Desarrollo_de_software\mexicana-callcenter\backend
 ```
 
-and drag the .env file in. You are done!
+and drag the `.env` file in. You are done!
 
 ### FRONTEND.
 
@@ -52,7 +52,7 @@ Go to the root frontend directory of the repository at:
 ..\Desarrollo_de_software\mexicana-callcenter\frontend
 ```
 
-and drag the .env file in. You are done!
+and drag the `.env` file in. You are done!
 
 ## BACKEND.
 
