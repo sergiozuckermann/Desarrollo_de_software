@@ -2,26 +2,26 @@
 
 describe('Login Tests', () => {
   beforeEach(() => {
-    cy.visit('/'); 
+    cy.visit('/signin'); 
   });
 
   //Successful login
   it('displays a success message on successful login', () => {
-    // Wait for the email input to be visible before typing
-    cy.get('[data-cy=email-input]', { timeout: 10000 }).should('be.visible').type('random@gmail.com');
-    cy.get('[data-cy=password-input]', { timeout: 10000 }).should('be.visible').type('PassWord1!{enter}');
+    // Wait for the username input to be visible before typing
+    cy.get('[name=Username]', { timeout: 10000 }).should('be.visible').type('tg2714');
+    cy.get('[name=password]', { timeout: 10000 }).should('be.visible').type('Zekund99.{enter}');
 
     // Checks for the notification to be visible
-    cy.contains('🎉 You are now signed in.', { timeout: 10000 }).should('be.visible');
+    cy.contains('🎉 Welcome test! You are now signed in.', { timeout: 10000 }).should('be.visible');
   });
 
   //Failed login
   it('displays an error message on failed login', () => {
     // Wait for the email input to be visible before typing
-    cy.get('[data-cy=email-input]', { timeout: 10000 }).should('be.visible').type('invalid@gmail.com');
-    cy.get('[data-cy=password-input]', { timeout: 10000 }).should('be.visible').type('wrongpassword{enter}');
+    cy.get('[name=Username]', { timeout: 10000 }).should('be.visible').type('invalidUser');
+    cy.get('[name=password]', { timeout: 10000 }).should('be.visible').type('wrongpassword{enter}');
 
     // Checks for the notification to be visible
-    cy.contains('🚨', { timeout: 10000 }).should('be.visible');
+    cy.contains('🚨 Incorrect username or password.', { timeout: 10000 }).should('be.visible');
   });
 });

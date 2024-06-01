@@ -1,8 +1,8 @@
 const AmazonCognitoIdentity = require('amazon-cognito-identity-js');
 
 const poolData = {
-  UserPoolId: 'us-east-1_Kk8qPSFAN',
-  ClientId: '2pjaga1vncnbn404e3e6q81ehi'
+  UserPoolId: 'us-east-1_B7gG0aOum',
+  ClientId: '232lqu9hp3k913eihjj76ai1l2'
 };
 
 const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);

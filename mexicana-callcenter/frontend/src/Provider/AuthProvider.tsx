@@ -1,8 +1,8 @@
 import axios from "axios";
 import { createContext, FunctionComponent, PropsWithChildren } from "react";
-import { useNavigate } from "react-router-dom";
 import { AuthContextType, Credentials } from "../utils/interfaces";
 import useCustomToast from "../components/LoginNotification";
+
 
 const baseUrl = 'http://localhost:3000'
 
@@ -12,10 +12,9 @@ const AuthProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
 
   const { showError } = useCustomToast();
   const { showSuccess } = useCustomToast();
-  const navigate = useNavigate()
  
     const getContext = () => {
-      const userDataString = localStorage.getItem('userData');
+      const userDataString = sessionStorage.getItem('userData');
   
       // Parse the JSON string back into an object
       const userData = userDataString ? JSON.parse(userDataString) : null;
@@ -62,13 +61,13 @@ const AuthProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
               authenticated: true
           };
 
-          // Store the combined user data object in localStorage
-          localStorage.setItem('userData', JSON.stringify(userData));
-          localStorage.setItem('token', token);
+          // Store the combined user data object in sessionStorage
+          sessionStorage.setItem('userData', JSON.stringify(userData));
+          sessionStorage.setItem('token', token);
 
           // navigate to the hme page based on the user's role
           showSuccess(`🎉 Welcome ${name}!\nYou are now signed in.`);
-          navigate(`/${role}/home`)
+          window.location.href = `/${role}/home`
         }
       })
       .catch(error =>  {
@@ -83,13 +82,16 @@ const AuthProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
 
   // logout function
   const logout = () => {
-    localStorage.removeItem('userData')
+    sessionStorage.clear()
     showSuccess(`🎉 Logged Out`);
-    navigate('/')
+    window.location.href = '/'
   } 
 
   //  value of the authentication context
-  const contextValue = getContext()
+  const contextValue = {
+    ...getContext(),
+    logout, // Agregar la función logout al contextValue
+  };
 
   // Provide the authentication context to the children components
   return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;
