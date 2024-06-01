@@ -3,6 +3,8 @@
 ## Install:
 - Node.js
   - https://nodejs.org/
+- Git
+  - https://git-scm.com/downloads
 
 ## Clone Repository.
 
