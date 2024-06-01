@@ -38,17 +38,17 @@ app.use('/historicmetrics',  metricsRouter)
 const awsServerlessExpress = require('aws-serverless-express');
 
 if (process.env.NODE_ENV === 'development') {
-  const port = process.env.PORT || 3000; // Usar el puerto port o por defecto 3000
+  const port = process.env.PORT || 3000; // Use 3000 port or default port loaded from environment variables
 
-  // Iniciar el servidor en desarrollo local
+  // start server in local environment
   app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
   });
 } else if (process.env.NODE_ENV === 'production') {
-  // Crear el servidor para aws-serverless-express
+  // start server for aws-serverless-express
   const server = awsServerlessExpress.createServer(app);
 
-  // Exportar el manejador de Lambda
+  // export lambda handler
   exports.handler = (event, context) => {
     awsServerlessExpress.proxy(server, event, context);
   };
