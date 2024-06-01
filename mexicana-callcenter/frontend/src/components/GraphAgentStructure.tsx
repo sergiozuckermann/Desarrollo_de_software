@@ -49,7 +49,7 @@ interface GraphAgentStructureProps {
   };
 
   useEffect(() => {
-    const interval = setInterval(loadMetricsEverySecond, 5000);
+    const interval = setInterval(loadMetricsEverySecond, 1000);
     return () => clearInterval(interval);
   }, []);
 

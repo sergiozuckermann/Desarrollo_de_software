@@ -124,12 +124,6 @@ supervisorRouter.get('/metrics', async (req, res) => {
     Groupings: [
       'QUEUE'
     ],
-    SortCriteria: [
-      {
-        SortByMetric: 'CONTACTS_IN_QUEUE',
-        SortOrder: 'ASCENDING'
-      }
-    ],
     InstanceId: 'd90b8836-8188-46c5-a73c-20cbee3a8ded',
   }
 
