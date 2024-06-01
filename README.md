@@ -28,8 +28,8 @@ This web application provides real-time metrics and interaction monitoring for c
 8. Transparency regarding decisions and operations made within the business.
 9. Ensuring our user’s privacy with the highest level of security available.
 
-## Contributing
-
+## Contributors
+  
 - [Mauricio Tumalán](https://github.com/mtumalan)
 - [Sergio Zuckermann](https://github.com/sergiozuckermann)
 - [Santiago Benitez](https://github.com/santibpz)
@@ -46,6 +46,10 @@ This web application provides real-time metrics and interaction monitoring for c
 - [Carlos Soto](https://github.com/CSA09)
 - [David Flores](https://github.com/DavidF2714)
 
+## Documentation
+
+To get more details on how to install and configure the project, refer to the [Installation Manual](INSTALL.md).
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
@@ -57,3 +61,4 @@ For any inquiries, please contact any of the contributors mentioned above.
 ## Disclaimer
 
 This project is affiliated with Amazon Web Services (AWS) or Amazon Connect via [Tecnológico de Monterrey](https://tec.mx/)
+

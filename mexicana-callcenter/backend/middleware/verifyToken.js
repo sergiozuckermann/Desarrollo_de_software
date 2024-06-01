@@ -6,9 +6,9 @@ const verifyToken = async (req, res, next) => {
 
     // Verifier that expects valid access tokens:
     const verifier = CognitoJwtVerifier.create({
-        userPoolId: "us-east-1_Kk8qPSFAN",
+        userPoolId: "us-east-1_B7gG0aOum",
         tokenUse: "id",
-        clientId: "2pjaga1vncnbn404e3e6q81ehi",
+        clientId: "232lqu9hp3k913eihjj76ai1l2",
     });
     
     try {

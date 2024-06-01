@@ -1,16 +1,14 @@
 import React from "react";
 
-const MoodIndicator: React.FunctionComponent<{ moodValue: number }> = ({ moodValue }) => {
-  const getMoodColor = (value: number) => {
+const MoodIndicator: React.FunctionComponent<{ moodValue: string }> = ({ moodValue }) => {
+  const getMoodColor = (value: string) => {
     switch (value) {
-      case 1:
-        return "#06CB52"; // Green
-      case 2:
-        return "#ffd500"; // Yellow
-      case 3:
-        return "#ff2b00"; // Red
-      default:
-        return "#808080"; // Default gray
+      case "POSITIVE":
+        return "#06CB52"; // Green for POSITIVE sentiment
+      case "NEUTRAL":
+        return "#808080"; // Gray for NEUTRAL sentiment
+      case "NEGATIVE":
+        return "#ff2b00"; // Red for NEGATIVE sentiment
     }
   };
 

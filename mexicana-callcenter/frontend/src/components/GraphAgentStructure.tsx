@@ -1,47 +1,106 @@
-import React from 'react';
-import DonutChart from '../components/DonutChart';
-import BarChart from '../components/BarChart';
+import React, { useEffect, useState } from 'react';
+import MyPieChart from './Charts/piechart';
+import MyResponsiveBar from './Charts/barChart';
+import userService from '../services/user';
 
-const GraphAgentStructure: React.FunctionComponent = () => {
-    return (
-        <div className="rounded-3xs box-border border-[1px] border-solid border-marco shadow-lg mr-4 sm:mr-[40px] w-full lg:h-[700px]">
-          <div className="flex flex-col sm:flex-row justify-evenly items-center">
-            <div className="mb-8 sm:mb-0">
-              <h1 className="text-3xl sm:text-2xl font-roboto mb-4 text-center sm:text-left">Agent Status</h1>
-              <div className="flex justify-center sm:block">
-                <DonutChart seriesData={[20, 10, 30]} labelsData={["Available", "On Call", "After Call"]} />
-              </div>
-            </div>
-            <div>
-              <h1 className="text-3xl sm:text-2xl font-roboto mb-4 text-center sm:text-left">Agent Availability</h1>
-              <div className="flex justify-center sm:block">
-                <DonutChart seriesData={[10, 20, 5, 5, 16, 4]} labelsData={["Flight Rsv", "Help", "Booking or Website Issues", "Status Inquiries", "Special Assistance or Docs", "Other Questions"]} />
-              </div>
+interface PieChartDataItem {
+  id: string | number;
+  label: string;
+  value: number;
+}
+
+interface QueueDataItem {
+  label: string;
+  value: number;
+}
+
+interface GraphAgentStructureProps {
+  agentsState: Array<PieChartDataItem>
+}
+
+
+const GraphAgentStructure: React.FunctionComponent<GraphAgentStructureProps> = ({ agentsState }) => {
+  const [queueData, setQueueData] = useState<QueueDataItem[]>([]);
+
+
+  const issueData: PieChartDataItem[] = [
+    { id: "Flight Rsv", label: "Flight Rsv", value: 10 },
+    { id: "Help", label: "Help", value: 20 },
+    { id: "Booking or Website Issues", label: "Booking or Website Issues", value: 5 },
+    { id: "Status Inquiries", label: "Status Inquiries", value: 5 },
+    { id: "Special Assistance or Docs", label: "Special Assistance or Docs", value: 15 },
+    { id: "Other Questions", label: "Other Questions", value: 4 },
+  ];
+
+
+  const [chartData2, setChartData2] = useState<PieChartDataItem[]>(issueData);
+
+
+  //FETCH QUEUE METRICS EVERY 5 SECONDS
+  const loadMetricsEverySecond = async () => {
+    try {
+      // console.log('Fetching metrics...'); // LOG FOR LOADING METRICS   
+      const queueMetrics = await userService.GetQueueMetrics(); // FETCH QUEUE METRICS
+      setQueueData(queueMetrics); // SET QUEUE METRICS      
+      // console.log('Metrics fetched:', queueMetrics); // LOG FOR LOADED METRICS
+    } catch (error) {
+      console.log("Error loading metrics", error);
+    }
+  };
+
+  useEffect(() => {
+    const interval = setInterval(loadMetricsEverySecond, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const totalCustomersWaiting = queueData.reduce((sum, item) => sum + item.value, 0);
+
+  return (
+    <div className="box-border border-[1px] rounded-lg shadow p-4 border-solid border-marco shadow-lg lg:h-[700px] overflow-y-auto">
+      <div className="flex flex-col items-center space-y-8 w-full">
+        <div className="w-full">
+          <h1 className="text-3xl font-roboto mb-4 text-center sm:text-left">Agent Status</h1>
+          <div className="flex justify-center">
+            <div style={{ width: '100%', height: '300px' }}>
+              {
+                agentsState.every(state => state.value === 0) ?
+                  <h1>No active agents</h1> :
+                  <MyPieChart data={agentsState} unit="Agents" />
+              }
             </div>
           </div>
-      <div className="flex flex-col items-center justify-center sm:flex-row sm:justify-evenly sm:items-start">
-  <div className="mt-8 sm:mt-[50px] mb-8 sm:mb-0 text-center sm:ml-8">
-    <h2 className="text-3xl sm:text-3xl font-roboto">
-      10
-    </h2>
-    <h2 className="text-3xl sm:text-3xl font-roboto">
-      Customers
-    </h2>
-    <h2 className="text-3xl sm:text-3xl font-roboto">
-      Waiting
-    </h2>
-  </div>
-  <div className="flex-grow">
-    <h1 className="text-3xl sm:text-2xl font-roboto mb-4 text-center">
-      Queue Issues
-    </h1>
-    <div className="flex justify-center">
-      <BarChart
-        data={[10, 20, 5, 5, 16, 4]} categories={["Flight Rsv", "Help", "Booking or Website Issues", "Status Inquiries", "Special Assistance or Docs", "Other Questions"]} />
+        </div>
+        <div className="w-full">
+          <h1 className="text-3xl font-roboto mb-4 text-center sm:text-left">Agent Availability</h1>
+          <div className="flex justify-center">
+            <div style={{ width: '100%', height: '300px' }}>
+              <MyPieChart data={chartData2} unit="Agents" />
+            </div>
           </div>
         </div>
       </div>
+      <div className="flex flex-col">
+        <h1 className="text-3xl font-roboto mb-0 text-center sm:text-left">Contacts Queued</h1>
+        <div className="flex flex-col sm:flex-col md:flex-col lg:flex-row items-center justify-center space-y-4 lg:space-y-0 lg:space-x-4">
+          <div className="text-center">
+            <h2 className="text-3xl font-roboto text-red-600">{totalCustomersWaiting}</h2>
+            <h2 className="text-xl font-roboto">
+              <a>Customer Waiting</a>
+            </h2>
+          </div>
+          <div style={{ width: '100%', height: '300px' }}>
+            <MyResponsiveBar data={queueData} />
+          </div>
+        </div>
+        <div className="text-center">
+          <button onClick={() => { window.location.href = "/supervisor/agent-transfer"; }} className="rounded-full px-4 py-2 text-white font-semibold hover:bg-green-400 bg-green-600" data-cy='button' title='Click here to move agents within queues'>Manage Queues</button>
+        </div>
+      </div>
+
+
     </div>
+
+
   );
 };
 
