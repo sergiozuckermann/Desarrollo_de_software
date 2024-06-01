@@ -1,10 +1,10 @@
-# Installation Manual
+# Installation Manual.
 
 ## Install:
 - Node.js
   - https://nodejs.org/
 
-## Clone Repository 
+## Clone Repository.
 
 To clone the repository, open your preferred Command Line Interface (CLI) and type the following command in the directory where you want to clone the repository:
 
@@ -18,11 +18,45 @@ After cloning the repository, navigate into the folder:
 cd ..\Desarrollo_de_software\mexicana-callcenter
 ```
 
-## BACKEND
+## Environmental Variables.
 
-### Installation of dependencies
+Create a .env file with the Amazon Web Services Identity and Access Management (IAM) Access Keys.
+    
+```bash
+ACCESS_KEY_ID = YOUR_ACCESS_KEY_ID
+SECRET_ACCESS_KEY = YOUR_SECRET_ACCESS_KEY
+```
 
-Open your preferred Command Line Interface (CLI) and navigate to the location 
+Go to the root directory of the repository at:
+```sh
+..\Desarrollo_de_software\mexicana-callcenter
+```
+
+### Backend
+
+Go to the root backend directory of the repository at:
+
+```sh
+..\Desarrollo_de_software\mexicana-callcenter\backend
+```
+
+and drag the .env file in. You are done!
+
+### Frontend
+
+Go to the root frontend directory of the repository at:
+
+```sh
+..\Desarrollo_de_software\mexicana-callcenter\frontend
+```
+
+and drag the .env file in. You are done!
+
+## BACKEND.
+
+### Installation of dependencies.
+
+Open your preferred Command Line Interface (CLI) and navigate to the location.
 
 ```bash
 cd ..\Desarrollo_de_software\mexicana-callcenter\backend
@@ -40,7 +74,7 @@ After having installed the dependencies, run the server with the command:
 node index.js
 ```
 
-The next message should be displayed in the Command Line Interface (CLI)
+The next message should be displayed in the Command Line Interface (CLI).
 
 ```bash
 Server is running at http://localhost:3000
@@ -48,9 +82,9 @@ Server is running at http://localhost:3000
 
 ## Frontend
 
-### Installation of dependencies
+### Installation of dependencies.
 
-Open your preferred Command Line Interface (CLI) and navigate to the location 
+Open your preferred Command Line Interface (CLI) and navigate to the location.
 
 ```bash
 cd ..\Desarrollo_de_software\mexicana-callcenter\frontend
@@ -86,46 +120,11 @@ When entering the website for first time, the next message will appear.
 
 <img src="assets/warning.png" alt="warning" style="width:500px">
 
-1. Click on Advanced
-2. Proceed to localhost(unsafe)
-3. You are in
+1. Click on Advanced.
+2. Proceed to localhost(unsafe).
+3. Congrats! You are in.
 
 <img src="assets/homepage.png" alt="homepage" style="width:500px">
-
-## Environmental Variables
-
-Create a .env file with the Amazon Web Services Identity and Access Management (IAM) Access Keys
-    
-```bash
-ACCESS_KEY_ID = YOUR_ACCESS_KEY_ID
-SECRET_ACCESS_KEY = YOUR_SECRET_ACCESS_KEY
-```
-
-Go to the root directory of the repository at:
-```sh
-..\Desarrollo_de_software\mexicana-callcenter
-```
-
-### Backend
-
-Go to the root backend directory of the repository at:
-
-```sh
-..\Desarrollo_de_software\mexicana-callcenter\backend
-```
-
-and drag the .env file in 
-
-
-### Frontend
-
-Go to the root frontend directory of the repository at:
-
-```sh
-..\Desarrollo_de_software\mexicana-callcenter\frontend
-```
-
-and drag the .env file in 
 
 
 
