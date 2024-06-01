@@ -36,8 +36,8 @@ npm install
 
 After having installed the dependencies, run the server with the command:
 
-```sh
-node .\index.js
+```js
+node index.js
 ```
 
 The next message should be displayed in the Command Line Interface (CLI)
