@@ -67,7 +67,8 @@ Once the installation has finished, run the server with the command:
 npm run dev
 ```
 
-Something similar to the next message should be displayed in the Command Line Interface (CLI)
+Something similar to the next message should be displayed in the Command Line Interface (CLI).
+Click on either of the two HTTPS links to be redirected to the Call Center Mexicana Web App.
 
 ```bash
 > mexicana-callcenter@0.0.0 dev
@@ -89,8 +90,7 @@ When entering the website for first time, the next message will appear.
 2. Proceed to localhost(unsafe)
 3. You are in
 
-
-
+<img src="assets/homepage.pgn" alt="homepage" style="width:500px">
 
 ## Environmental Variables
 
