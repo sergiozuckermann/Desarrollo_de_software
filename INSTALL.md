@@ -67,7 +67,8 @@ Once the installation has finished, run the server with the command:
 npm run dev
 ```
 
-Something similar to the next message should be displayed in the Command Line Interface (CLI)
+Something similar to the next message should be displayed in the Command Line Interface (CLI).
+Click on either of the two HTTPS links to be redirected to the Call Center Mexicana Web App.
 
 ```bash
 > mexicana-callcenter@0.0.0 dev
@@ -81,31 +82,50 @@ Something similar to the next message should be displayed in the Command Line In
   ➜  press h + enter to show help
 ```
 
+When entering the website for first time, the next message will appear. 
+
+<img src="assets/warning.png" alt="warning" style="width:500px">
+
+1. Click on Advanced
+2. Proceed to localhost(unsafe)
+3. You are in
+
+<img src="assets/homepage.png" alt="homepage" style="width:500px">
+
 ## Environmental Variables
 
 Create a .env file with the Amazon Web Services Identity and Access Management (IAM) Access Keys
-
-<details>
-1. Go to your Amazon Web Services IAM Managment Console 
-2. Users
-4. Select a user with the appropiate permissions
-5. Go to security credentials
-6. Scroll down to Access Keys
-7. Click on create access keys
-8. Fill the form
-   1. CLI
-   2. Tag
-   3. Retrieve Access Keys
-9. Save both Access and Secret Access Keys
-10. Write them down to an .env file
     
-    ```bash
-    ACCESS_KEY_ID = YOUR_ACCESS_KEY_ID
-    SECRET_ACCESS_KEY = YOUR_SECRET_ACCESS_KEY
-    ```
-</details>
+```bash
+ACCESS_KEY_ID = YOUR_ACCESS_KEY_ID
+SECRET_ACCESS_KEY = YOUR_SECRET_ACCESS_KEY
+```
 
-Go to the root directory of the reposotory
+Go to the root directory of the repository at:
+```sh
+..\Desarrollo_de_software\mexicana-callcenter
+```
+
+### Backend
+
+Go to the root backend directory of the repository at:
+
+```sh
+..\Desarrollo_de_software\mexicana-callcenter\backend
+```
+
+and drag the .env file in 
+
+
+### Frontend
+
+Go to the root frontend directory of the repository at:
+
+```sh
+..\Desarrollo_de_software\mexicana-callcenter\frontend
+```
+
+and drag the .env file in 
 
 
 
