@@ -154,6 +154,27 @@ export const notifications = [
     title: "High Call Volume Alert",
     message: "Our customer service department is currently experiencing a high volume of incoming calls. All available agents are requested to log in and assist with the call queue to ensure prompt customer support.",
     date: "2024-05-16 14:20:00"
-  }
+  },
+
+  {
+    id: 27,
+    title: "Bad Sentiment during ongoing call",
+    message: "Mark Wilson has requested a schedule change for next week due to a personal commitment. Please review the request and provide a response by the end of the day.",
+    date: "2024-05-20 14:30:00",
+  },
+
+  {
+    id: 28,
+    title: "Flight Management queue is too long",
+    message: "Please rearrange your agents to manage the long queue of Flight Management",
+    date: "2024-05-20 14:30:00",
+  },
+
+  {id: 29,
+    title: "Lost bagagge queue is too long",
+    message: "Please rearrange your agents to manage the long queue of Lost Baggage",
+    date: "2024-05-22 14:30:00",
+  },
 
   ];
+  

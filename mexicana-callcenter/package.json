@@ -1,8 +1,0 @@
-{
-  "dependencies": {
-    "@material-ui/core": "^4.12.4",
-    "react-apexcharts": "^1.4.1",
-    "react-tooltip": "^5.26.4",
-    "recharts": "^2.12.7"
-  }
-}
