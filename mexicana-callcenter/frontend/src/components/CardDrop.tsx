@@ -4,8 +4,8 @@ import { useDrop } from 'react-dnd';
 import styled from 'styled-components';
 
 const CardContainer = styled.div`
-  width: 200px;
-  height: 300px;
+  width: 13em;
+  height: 23em;
   background-color: rgba(255, 255, 255, 0.9); /* Añadir opacidad constante */
   padding: 1em;
   margin: 1em;
@@ -48,12 +48,18 @@ const AgentsContainer = styled.div`
   width: 100%;
   height: calc(100% - 40px); /* Ajustar para el título fijo */
   overflow-y: auto; /* Habilitar desplazamiento vertical */
-  scrollbar-width: none; /* Ocultar barra de desplazamiento en Firefox */
-  -ms-overflow-style: none;  /* Ocultar barra de desplazamiento en IE y Edge */
-  
+
   &::-webkit-scrollbar {
-    width: 0;
-    height: 0; /* Ocultar barra de desplazamiento en Chrome, Safari y Opera */
+    width: 8px; /* Customize scrollbar width for WebKit browsers */
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent; /* Customize scrollbar track color */
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.3); /* Customize scrollbar thumb color */
+    border-radius: 4px; /* Customize scrollbar thumb border radius */
   }
 
   &:after {
