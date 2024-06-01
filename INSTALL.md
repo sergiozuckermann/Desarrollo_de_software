@@ -29,14 +29,14 @@ cd ..\Desarrollo_de_software\mexicana-callcenter\backend
 ```
 In that same location, execute the next command to install the dependencies:
 
-```bash
+```node
 npm install
 ```
 ### Running the server
 
 After having installed the dependencies, run the server with the command:
 
-```bash
+```node
 node .\index.js
 ```
 
@@ -57,13 +57,13 @@ cd ..\Desarrollo_de_software\mexicana-callcenter\frontend
 ```
 In that same location, execute the next command to install the dependencies:
 
-```bash
+```node
 npm install
 ```
 
 Once the installation has finished, run the server with the command:
 
-```bash
+```node
 npm run dev
 ```
 
