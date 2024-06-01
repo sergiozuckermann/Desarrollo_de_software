@@ -120,13 +120,17 @@ Click on either of the two HTTPS links to be redirected to the Call Center Mexic
 
 When entering the website for first time, the next message will appear. 
 
-<img src="assets/warning.png" alt="warning" style="width:500px">
+<div style="text-align: center;">
+  <img src="assets/warning.png" alt="warning" style="width:500px">
+</div>
 
 1. Click on Advanced.
 2. Proceed to localhost(unsafe).
 3. Congrats! You are in.
 
-<img src="assets/homepage.png" alt="homepage" style="width:500px">
+<div style="text-align: center;">
+  <img src="assets/homepage.png" alt="homepage" style="width:500px">
+</div>
 
 
 
