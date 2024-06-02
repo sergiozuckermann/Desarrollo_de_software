@@ -1,6 +1,7 @@
 import { FunctionComponent } from "react";
 import FrameComponent from "../components/FrameComponent";
 import CCPComponent from "../components/CCPComponent";
+import Chatbot from "../components/Chatbot";
 
 const AgentHome: FunctionComponent = () => {
 
@@ -20,72 +21,14 @@ const AgentHome: FunctionComponent = () => {
 
               {/* add Amazon connect CCP for the agent to receive calls */}
             <CCPComponent />
-            </div>
-           
-            <div className="flex-1 flex flex-col items-start justify-start py-0 pr-1.5 pl-0 box-border gap-[22px] min-w-[325px] max-w-full">
+          </div>
+            <div className="flex-1 flex flex-col items-center justify-center py-0 pr-1.5 pl-0 box-border gap-[22px] min-w-[325px] max-w-full">
               <div className="self-stretch flex flex-row items-start justify-start py-0 pr-0 pl-0.5 box-border max-w-full">
                 <div className="flex flex-col items-start justify-start flex-1 max-w-full">
-                  <h1 className="m-0 w-[114px] relative text-inherit font-semibold font-inherit inline-block min-w-[114px] z-[1] mq450:text-[24px] mq750:text-[32px]">
-                    Client
-                  </h1>
-                  <div className="box-border flex flex-row items-start self-stretch justify-start max-w-full py-0 pl-px pr-0 text-lg text-left">
-                    <div className="flex-1 rounded-3xs bg-tertiary box-border flex flex-col items-start justify-start pt-[13px] pb-3.5 pr-2.5 pl-[17px] gap-[5px] max-w-full border-[1px] border-solid border-marco">
-                      <div className="w-[491px] h-[262px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
-                      <div className="self-stretch flex flex-row items-start justify-start gap-[13px] max-w-full text-center mq675:flex-wrap">
-                        <div className="w-[59px] flex flex-col items-start justify-start pt-[9px] px-0 pb-0 box-border">
-                          <div className="self-stretch flex flex-col items-start justify-start gap-[17.5px]">
-                            <div className="w-[55px] relative inline-block min-w-[55px] z-[1]">{`Name: `}</div>
-                            <div className="self-stretch relative inline-block min-w-[59px] z-[1]">{`E-mail: `}</div>
-                            <div className="relative text-left inline-block min-w-[59px] z-[1]">{`Phone: `}</div>
-                          </div>
-                        </div>
-                        <div className="flex-1 flex flex-col items-start justify-start min-w-[250px] max-w-full text-left text-xl font-roboto">
-                          <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start py-0 px-[17px] max-w-full z-[1] border-[1px] border-solid border-marco">
-                            <div className="h-9 w-96 relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
-                            <div className="w-[222px] flex flex-row items-start justify-start">
-                              <i className="h-10 flex-1 relative flex items-center z-[2] mq450:text-base">
-                                Gorem
-                              </i>
-                              <i className="h-10 flex-1 relative flex items-center z-[3] ml-[-222px] mq450:text-base">
-                                Gorem
-                              </i>
-                            </div>
-                          </div>
-                          <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start py-0 px-[17px] max-w-full z-[1] border-[1px] border-solid border-marco">
-                            <div className="h-9 w-96 relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
-                            <i className="h-10 w-[222px] relative flex items-center shrink-0 z-[3] mq450:text-base">
-                              Gorem
-                            </i>
-                          </div>
-                          <div className="relative self-stretch h-10">
-                            <div className="absolute top-[4px] left-[0px] rounded-3xs bg-tertiary box-border w-96 h-9 z-[1] border-[1px] border-solid border-marco" />
-                            <i className="absolute top-[0px] left-[17px] flex items-center w-[222px] h-10 z-[2] mq450:text-base">
-                              55 5544 6677
-                            </i>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="relative z-[1]">{`Call descriptions: `}</div>
-                      <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start py-0 pr-[5px] pl-[9px] max-w-full z-[1] text-xl font-roboto border-[1px] border-solid border-marco">
-                        <div className="self-stretch w-[462px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
-                        <i className="h-[83px] flex-1 relative flex items-center max-w-full z-[2] mq450:text-base">
-                          Jorem ipsum dolor sit amet, consectetur adipiscing
-                          elit. Nunc vulputate libero et velit interdum, ac
-                          aliquet odio mattis.
-                        </i>
-                      </div>
-                    </div>
-                  </div>
+                  <div className="flex-1 flex flex-col items-center justify-center min-w-[100%] max-w-full text-left text-xl font-roboto">
+                    <Chatbot /> 
+                  </div> 
                 </div>
-              </div>
-              <div className="self-stretch h-[308px] rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-4 pb-[21px] pr-4 pl-[23px] max-w-full border-[1px] border-solid border-marco">
-                <div className="h-[308px] w-[491px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
-                <img
-                  className="h-[271px] flex-1 relative rounded-3xs max-w-full overflow-hidden object-cover z-[1]"
-                  loading="lazy"
-                  alt=""
-                  src="/captura-de-pantalla-20240314-a-las-1118-1@2x.png"
-                />
               </div>
             </div>
             <div className="h-[532px] w-[260px] flex flex-col items-start justify-start pt-6 px-0 pb-0 box-border text-lg text-primary">
