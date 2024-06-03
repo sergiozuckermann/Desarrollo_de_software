@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { useAuth } from '../hooks/useAuth'; // Importa el hook useAuth
+import { useAuth } from '../hooks/useAuth';
 
 const URL = 'wss://8qombs74rl.execute-api.us-east-1.amazonaws.com/production/';
 
@@ -14,32 +14,42 @@ const useChatProvider = () => {
   const socket = useRef<WebSocket | null>(null);
   const [isConnected, setIsConnected] = useState(false);
   const [members, setMembers] = useState<string[]>([]);
-  const [chatRows, setChatRows] = useState<string[]>([]);
-  const { username } = useAuth(); // Obtener el nombre de usuario desde useAuth
+  const [publicMessages, setPublicMessages] = useState<string[]>([]);
+  const [privateMessages, setPrivateMessages] = useState<{ [key: string]: string[] }>({});
+  const { username } = useAuth();
 
   const onSocketOpen = useCallback(() => {
     setIsConnected(true);
-    socket.current?.send(JSON.stringify({ action: 'setName', name: username })); // Enviar el nombre de usuario al abrir la conexión
+    socket.current?.send(JSON.stringify({ action: 'setName', name: username }));
   }, [username]);
 
   const onSocketClose = useCallback(() => {
     setMembers([]);
     setIsConnected(false);
-    setChatRows([]);
+    setPublicMessages([]);
+    setPrivateMessages({});
   }, []);
 
   const onSocketMessage = useCallback((dataStr: string) => {
     const data: MessageData = JSON.parse(dataStr);
     if (data.members) {
-      setMembers(data.members);
+        setMembers(data.members);
     } else if (data.publicMessage && typeof data.publicMessage === 'string') {
-      setChatRows(oldArray => [...oldArray, data.publicMessage || '']);
+        setPublicMessages(oldArray => [...oldArray, data.publicMessage]);
     } else if (data.privateMessage && typeof data.privateMessage === 'string') {
-      setChatRows(oldArray => [...oldArray, `Private message from ${data.privateMessage}`]);
+        const [from, message] = data.privateMessage.split(': ');
+        setPrivateMessages(oldPrivateMessages => {
+            const newPrivateMessages = { ...oldPrivateMessages };
+            if (!newPrivateMessages[from]) {
+                newPrivateMessages[from] = [];
+            }
+            newPrivateMessages[from].push(`${from}: ${message}`);
+            return newPrivateMessages;
+        });
     } else if (data.systemMessage && typeof data.systemMessage === 'string') {
-      setChatRows(oldArray => [...oldArray, data.systemMessage || '']);
+        setPublicMessages(oldArray => [...oldArray, `system: ${data.systemMessage}`]);
     }
-  }, []);
+}, []);
 
   const onConnect = useCallback(() => {
     if (socket.current?.readyState !== WebSocket.OPEN) {
@@ -64,7 +74,14 @@ const useChatProvider = () => {
       message,
       to,
     }));
-    setChatRows(oldArray => [...oldArray, `Private message to ${to}: ${message}`]); // Agregar mensaje privado al chat
+    setPrivateMessages(oldPrivateMessages => {
+      const newPrivateMessages = { ...oldPrivateMessages };
+      if (!newPrivateMessages[to]) {
+        newPrivateMessages[to] = [];
+      }
+      newPrivateMessages[to].push(`You: ${message}`);
+      return newPrivateMessages;
+    });
   }, []);
 
   const onSendPublicMessage = useCallback((message: string) => {
@@ -74,19 +91,20 @@ const useChatProvider = () => {
     }));
   }, []);
 
-  const { logout } = useAuth(); // Obtener la función logout desde el contexto de autenticación
+  const { logout } = useAuth();
 
   const onDisconnect = useCallback(() => {
     if (isConnected) {
       socket.current?.close();
-      logout(); // Llamar a la función logout al desconectarse
+      logout();
     }
   }, [isConnected, logout]);
 
   return {
     isConnected,
     members,
-    chatRows,
+    publicMessages,
+    privateMessages,
     onPublicMessage: onSendPublicMessage,
     onPrivateMessage: onSendPrivateMessage,
     onConnect,
