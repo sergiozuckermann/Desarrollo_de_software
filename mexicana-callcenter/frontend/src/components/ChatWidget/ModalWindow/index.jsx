@@ -7,7 +7,8 @@ function ModalWindow(props) {
     const {
         isConnected,
         members,
-        chatRows,
+        publicMessages,
+        privateMessages,
         onPublicMessage,
         onPrivateMessage,
         onConnect,
@@ -16,15 +17,18 @@ function ModalWindow(props) {
     const { username } = useAuth();
 
     const [message, setMessage] = useState('');
-    const [selectedMember, setSelectedMember] = useState('sendToAll');
+    const [selectedMember, setSelectedMember] = useState('');
+    const [activeTab, setActiveTab] = useState('public');
     const chatEndRef = useRef(null);
 
     const handleSendMessage = () => {
         if (message.trim() !== '') {
-            if (selectedMember === 'sendToAll') {
+            if (selectedMember) {
+                onPrivateMessage(message, selectedMember);
+            } else if (activeTab === 'public') {
                 onPublicMessage(message);
             } else {
-                onPrivateMessage(message, selectedMember);
+                onPrivateMessage(message, activeTab);
             }
             setMessage('');
         }
@@ -41,128 +45,34 @@ function ModalWindow(props) {
     }, [username]);
 
     useEffect(() => {
-        console.log(chatRows);
         scrollToBottom();
-    }, [chatRows]);
+    }, [publicMessages, privateMessages]);
 
-    const headerStyles = {
-        backgroundColor: '#20253F',
-        color: 'white',
-        padding: '10px 5px',
-        textAlign: 'center',
-        position: 'sticky',
-        top: 0,
-        zIndex: 10,
+    const renderMessages = () => {
+        const messages = activeTab === 'public' ? publicMessages : privateMessages[activeTab] || [];
+        return messages.map((msg, index) => {
+            if (msg.startsWith('system:')) {
+                const systemMessage = msg.replace('system:', '').trim();
+                return (
+                    <li key={index} style={styles.systemMessageStyles}>
+                        {systemMessage}
+                    </li>
+                );
+            }
+
+            const isOwnMessage = msg.startsWith(`${username}:`) || msg.startsWith(`You:`);
+            const messageText = isOwnMessage ? msg.replace(`${username}:`, '').replace(`You:`, '') : msg;
+            return (
+                <li key={index} style={isOwnMessage ? styles.myMessageStyles : styles.otherMessageStyles}>
+                    {isOwnMessage ? `You: ${messageText}` : `${messageText}`}
+                </li>
+            );
+        });
     };
 
-    const titleStyles = {
-        margin: '0',
-        fontSize: '24px',
-        color: 'white',
-        lineHeight: '1.2',
-    };
-
-    const subtitleStyles = {
-        margin: '0',
-        fontSize: '18px',
-        color: 'white',
-        lineHeight: '1.2',
-    };
-
-    const closeButtonStyles = {
-        position: 'absolute',
-        top: '10px',
-        right: '10px',
-        backgroundColor: 'transparent',
-        border: 'none',
-        fontSize: '16px',
-        color: 'white',
-        cursor: 'pointer',
-    };
-
-    const activeUsersContainerStyles = {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginBottom: '20px',
-        marginTop: '20px',
-    };
-
-    const labelStyles = {
-        marginRight: '10px',
-        fontSize: '16px',
-        color: '#20253F',
-    };
-
-    const selectStyles = {
-        padding: '5px',
-        fontSize: '16px',
-        borderRadius: '5px',
-        border: '1px solid #20253F',
-        backgroundColor: '#f9f9f9',
-    };
-
-    const chatListStyles = {
-        listStyleType: 'none',
-        padding: 0,
-        flex: 1,
-        overflowY: 'auto',
-        marginBottom: '10px',
-    };
-
-    const chatItemStyles = {
-        padding: '5px',
-        borderBottom: '1px solid #ddd',
-        display: 'flex',
-    };
-
-    const myMessageStyles = {
-        ...chatItemStyles,
-        justifyContent: 'flex-end',
-        backgroundColor: '#54d3fa',
-    };
-
-    const otherMessageStyles = {
-        ...chatItemStyles,
-        justifyContent: 'flex-start',
-        backgroundColor: '#f1f0f0',
-    };
-
-    const inputContainerStyles = {
-        display: 'flex',
-        alignItems: 'center',
-        gap: '10px',
-        padding: '10px 0',
-        position: 'sticky',
-        bottom: 0,
-        backgroundColor: 'white',
-        zIndex: 10,
-    };
-
-    const inputStyles = {
-        padding: '5px',
-        fontSize: '16px',
-        borderRadius: '5px',
-        border: '1px solid #ddd',
-        flex: 1,
-    };
-
-    const buttonStyles = {
-        padding: '10px 15px',
-        fontSize: '16px',
-        borderRadius: '5px',
-        border: 'none',
-        backgroundColor: '#20253F',
-        color: 'white',
-        cursor: 'pointer',
-    };
-
-    const modalContentStyles = {
-        display: 'flex',
-        flexDirection: 'column',
-        height: '100%',
-        overflowY: 'auto',
-    };
+    const availableMembers = members.filter(
+        member => member !== username && !privateMessages[member]
+    );
 
     return (
         <>
@@ -176,54 +86,63 @@ function ModalWindow(props) {
                     height: '100vh',
                 }}
             >
-                <div style={headerStyles}>
-                    <h1 style={titleStyles}>MexicanaAirlines</h1>
-                    <h2 style={subtitleStyles}>Live Chat</h2>
-                    <button style={closeButtonStyles} onClick={props.onClose}>X</button>
+                <div style={styles.headerStyles}>
+                    <h1 style={styles.titleStyles}>MexicanaAirlines</h1>
+                    <h2 style={styles.subtitleStyles}>Live Chat</h2>
+                    <button style={styles.closeButtonStyles} onClick={props.onClose}>X</button>
                 </div>
                 {isConnected ? (
-                    <div style={modalContentStyles}>
-                        <div style={activeUsersContainerStyles}>
-                            <label htmlFor="activeUsers" style={labelStyles}>Active Users:</label>
+                    <div style={styles.modalContentStyles}>
+                        <div style={styles.activeUsersContainerStyles}>
+                            <label htmlFor="activeUsers" style={styles.labelStyles}>Active Users:</label>
                             <select
                                 id="activeUsers"
                                 value={selectedMember}
                                 onChange={(e) => setSelectedMember(e.target.value)}
-                                style={selectStyles}
+                                style={styles.selectStyles}
                             >
-                                <option value="sendToAll">Send to All</option>
-                                {members.map((member) => (
+                                <option value="">Select a member</option>
+                                {availableMembers.map((member) => (
                                     <option key={member} value={member}>
                                         {member}
                                     </option>
                                 ))}
                             </select>
                         </div>
+                        <div style={styles.tabsContainer}>
+                            <button
+                                style={activeTab === 'public' ? styles.activeTab : styles.inactiveTab}
+                                onClick={() => setActiveTab('public')}
+                            >
+                                Public
+                            </button>
+                            {Object.keys(privateMessages).map((member) => (
+                                <button
+                                    key={member}
+                                    style={activeTab === member ? styles.activeTab : styles.inactiveTab}
+                                    onClick={() => {
+                                        setActiveTab(member);
+                                        setSelectedMember('');
+                                    }}
+                                >
+                                    {member}
+                                </button>
+                            ))}
+                        </div>
                         <div style={{ flex: 1, overflowY: 'auto' }}>
-                            <div>Chat Messages:</div>
-                            <ul style={chatListStyles}>
-                                {chatRows.map((row, index) => {
-                                    const isPrivateMessageTo = row.startsWith('Private message to ');
-                                    const isPrivateMessageFrom = row.startsWith('Private message from ');
-                                    const rowStyle = row.startsWith(username) || isPrivateMessageTo ? myMessageStyles : otherMessageStyles;
-
-                                    return (
-                                        <li key={index} style={rowStyle}>
-                                            {row}
-                                        </li>
-                                    );
-                                })}
+                            <ul style={styles.chatListStyles}>
+                                {renderMessages()}
                                 <div ref={chatEndRef} />
                             </ul>
                         </div>
-                        <div style={inputContainerStyles}>
+                        <div style={styles.inputContainerStyles}>
                             <input
                                 type="text"
                                 value={message}
                                 onChange={(e) => setMessage(e.target.value)}
-                                style={inputStyles}
+                                style={styles.inputStyles}
                             />
-                            <button onClick={handleSendMessage} style={buttonStyles}>Send</button>
+                            <button onClick={handleSendMessage} style={styles.buttonStyles}>Send</button>
                         </div>
                     </div>
                 ) : (
