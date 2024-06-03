@@ -1,245 +1,152 @@
+import React, { useState } from 'react';
 import PageStructure from '../components/PageStructure';
 import { FetchMetrics } from '../services/metrics';
 import '../css/global.css';
-import MyResponsiveBar from '../components/Charts/barChart2';
+import MyBarChart2 from '../components/Charts/barChart2';
 import GaugeChart from 'react-gauge-chart';
 import Filter from '../components/filters';
-import { useState } from 'react';
+import MyBarChart from '../components/Charts/BarChartV';
+import MyPieChart from '../components/Charts/piechart'; // Assuming MyPieChart is a pie chart component
 
 const MainContent = () => {
     const [filters, setFilters] = useState({
-        name: '',
-        manufacturer: '',
-        date: new Date(),
-        status: ''
+        agent: '',
+        startTime: '',
+        endTime: ''
     });
 
     const handleApplyFilters = (newFilters) => {
         setFilters(newFilters);
     };
 
-    const { averageAbandonmentRate, averageAbandonTime, averageQueueAnswerTime, averageAnswerTime } = FetchMetrics();
-    console.log(averageAbandonTime, averageQueueAnswerTime, averageAnswerTime);
+    const { averageAbandonmentRate, averageAbandonTime, averageQueueAnswerTime, averageAnswerTime, ServiceLevel, averageContactDuration, contactsHandeled, contactFlowTime, agentOccupancy } = FetchMetrics(filters);
+    console.log(averageAbandonmentRate, averageAbandonTime, averageQueueAnswerTime, averageAnswerTime, averageContactDuration, contactsHandeled, contactFlowTime, agentOccupancy);
 
     if (averageAbandonTime === null || averageQueueAnswerTime === null) {
         return <div>Loading...</div>;
     }
 
+    const ServiceData = [{ metric: "Service Level", percentage: ServiceLevel }];
+
+    const AbandonData = [
+        ...averageAbandonTime.map(item => ({ metric: item.label, value: item.value })),
+    ];
+
+    const AnswerData = [
+        ...averageQueueAnswerTime.map(item => ({ metric: item.label, value: item.value })),
+    ];
+
+    const OccupancyData = agentOccupancy !== null ? [
+        { metric: "Occupied", value: agentOccupancy },
+        { metric: "Unoccupied", value: 100 - agentOccupancy }
+    ] : [];
+
+    const formatTime = (seconds) => {
+        if (seconds >= 3600) {
+            const hours = Math.floor(seconds / 3600);
+            const remainingMinutes = Math.floor((seconds % 3600) / 60);
+            const remainingSeconds = seconds % 60;
+            return `${hours}:${remainingMinutes}:${remainingSeconds} hours`;
+        } else if (seconds >= 60) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            return `${minutes}:${remainingSeconds} minutes`;
+        } else {
+            return `${seconds} seconds`;
+        }
+    };
+
     return (
         <div className="grid w-full h-full grid-cols-12 grid-rows-6 gap-4 p-2 pt-5 overflow-y-auto">
-            {/* Abandonment Rate */}
             <div className="col-span-3 row-span-2 card bg-tertiary">
                 <p>Abandonment Rate</p>
                 <GaugeChart id="gauge-chart1" nrOfLevels={20} colors={["#84BF68", "#FF5F6D", "#FFC371"]} arcWidth={0.3} percent={averageAbandonmentRate / 100} textColor="#20253F" />
             </div>
-
-            {/* Average Case Resolution Time */}
-            {/* <div className="col-span-3 row-span-2 card bg-tertiary">
-                <p>Average Case Resolution Time</p>
-                {/* <MyResponsiveBar data={averageAbandonTime} />
-                <p>{averageAbandonTime}</p> */}
-            {/* </div> */} 
-            <div className="col-span-3 row-span-2 shadow-lg card bg-tertiary ">
-                {/* hover:bg-gradient-to-br hover:from-purple-400 hover:via-blue-400 hover:to-blue-500 rounded-xl hover:shadow-2xl group */}
+            <div className="col-span-3 row-span-2 shadow-lg card bg-tertiary">
                 <div className="flex flex-row items-center justify-between">
                     <div className="px-4 py-4 bg-gray-300 rounded-xl bg-opacity-30">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 group-hover:text-gray-50" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M10.293 15.707a1 1 0 010-1.414L14.586 10l-4.293-4.293a1 1 0 111.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                            <path fillRule="evenodd" d="M4.293 15.707a1 1 0 010-1.414L8.586 10 4.293 5.707a1 1 0 011.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                        </svg>
                     </div>
-                    <div className="inline-flex text-sm text-gray-600 group-hover:text-gray-200 sm:text-base">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 mr-2 text-green-500 group-hover:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
+                    <div className="inline-flex text-sm text-gray-600 sm:text-base">
                         12%
                     </div>
                 </div>
-                <h1 className="mt-1 text-3xl font-bold text-gray-700 sm:text-m xl:text-4xl group-hover:text-gray-50"> 2:43 minutes</h1>
-                <div className="flex flex-row justify-between mt-2 group-hover:text-gray-200">
-                    <p>Average Case Resolution Time</p>
-                    <span>
-                        {/* <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-indigo-600 group-hover:text-gray-200" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
-                        </svg> */}
-                    </span>
+                <h1 className="mt-1 text-3xl font-bold text-gray-700 sm:text-m xl:text-4xl"></h1>
+                <div className="flex flex-row justify-between mt-2">
+                    <p>Agent Occupancy </p>
+                    {/* {agentOccupancy !== null && (
+                    <div className="w-full h-full">
+                        <MyPieChart data={OccupancyData} unit="%" />
+                    </div>
+                )} */}
                 </div>
+                <h1 className="mt-1 text-3xl font-bold text-gray-700 sm:text-m xl:text-4xl">No Available Data</h1>
             </div>
-
-            {/* Average Contacts per Case */}
-             {/* Average Queue Answer Time (ASA) */}
-            <div className="col-span-3 row-span-2 shadow-lg card bg-tertiary ">
-                {/* hover:bg-gradient-to-br hover:from-purple-400 hover:via-blue-400 hover:to-blue-500 rounded-xl hover:shadow-2xl group */}
+            <div className="col-span-3 row-span-2 shadow-lg card bg-tertiary">
                 <div className="flex flex-row items-center justify-between">
                     <div className="px-4 py-4 bg-gray-300 rounded-xl bg-opacity-30">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 group-hover:text-gray-50" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M10.293 15.707a1 1 0 010-1.414L14.586 10l-4.293-4.293a1 1 0 111.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                            <path fillRule="evenodd" d="M4.293 15.707a1 1 0 010-1.414L8.586 10 4.293 5.707a1 1 0 011.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                        </svg>
                     </div>
-                    <div className="inline-flex text-sm text-gray-600 group-hover:text-gray-200 sm:text-base">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 mr-2 text-green-500 group-hover:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
+                    <div className="inline-flex text-sm text-gray-600 sm:text-base">
                         12%
                     </div>
                 </div>
-                <h1 className="mt-1 text-3xl font-bold text-gray-700 sm:text-m xl:text-4xl group-hover:text-gray-50">{averageAnswerTime} seconds</h1>
-                <div className="flex flex-row justify-between mt-2 group-hover:text-gray-200">
+                <h1 className="mt-1 text-3xl font-bold text-gray-700 sm:text-m xl:text-4xl">{formatTime(averageAnswerTime)}</h1>
+                <div className="flex flex-row justify-between mt-2">
                     <p>Average Queue Answer Time (ASA)</p>
-                    <span>
-                        {/* <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-indigo-600 group-hover:text-gray-200" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
-                        </svg> */}
-                    </span>
                 </div>
             </div>
-
-
-            {/* Average Contacts per Case */}
-            
-            {/* Filters */}
             <div className="relative w-full h-full col-span-3 row-span-1 p-2 border-gray-400">
                 <Filter onApplyFilters={handleApplyFilters} />
             </div>
-            
-            {/* Average Queue Answer Time (ASA) */}
             <div className="col-span-3 col-start-10 row-span-3 card bg-tertiary">
-            <p>Average Answer Time per Queue</p>
-                <MyResponsiveBar data={averageQueueAnswerTime} />
+                <p>Average Answer Time per Queue</p>
+                <MyBarChart2 data={AnswerData} />
             </div>
-
-            {/* Average Queue Abandon Time */}
             <div className="col-span-5 row-span-2 card bg-tertiary">
                 <p>Average Queue Abandon Time</p>
-                <MyResponsiveBar data={averageAbandonTime} />
+                <MyBarChart2 data={AbandonData} />
             </div>
-
-            {/* Cases Resolved on the First Contact */}
-            {/* <div className="col-span-5 row-span-2 card bg-tertiary">
-                <p>Average Answer Time per Queue</p>
-                <MyResponsiveBar data={averageQueueAnswerTime} />
-            </div> */}
-             <div className="col-span-4 row-span-2 card bg-tertiary">
-                {/* hover:bg-gradient-to-br hover:from-purple-400 hover:via-blue-400 hover:to-blue-500 rounded-xl hover:shadow-2xl group */}
-                <div className="flex flex-row justify-between mt-2 group-hover:text-gray-200 pb-5">
-                    <p>Cases Resolved on the First Contact</p>
-                    <span>
-                        {/* <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-indigo-600 group-hover:text-gray-200" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
-                        </svg> */}
-                    </span>
-                </div>
-                <div className="flex flex-row items-center justify-between">
-                    <div className="px-4 py-4 bg-gray-300 rounded-xl bg-opacity-30">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 group-hover:text-gray-50" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M10.293 15.707a1 1 0 010-1.414L14.586 10l-4.293-4.293a1 1 0 111.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                            <path fillRule="evenodd" d="M4.293 15.707a1 1 0 010-1.414L8.586 10 4.293 5.707a1 1 0 011.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                        </svg>
-                    </div>
-                    <div className="inline-flex text-sm text-gray-600 group-hover:text-gray-200 sm:text-base">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 mr-2 text-green-500 group-hover:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        12%
-                    </div>
-                </div>
-                <h1 className="mt-1 text-3xl font-bold text-gray-700 sm:text-m xl:text-4xl group-hover:text-gray-50">7 cases</h1>
-            </div>
-
-            {/* Cases Created */}
-            {/* <div className="col-span-4 row-span-2 card bg-tertiary">
-                <p>Cases Created</p>
-            </div> */}
-            <div className="col-span-4 row-span-2 card bg-tertiary ">
-                {/* hover:bg-gradient-to-br hover:from-purple-400 hover:via-blue-400 hover:to-blue-500 rounded-xl hover:shadow-2xl group */}
-                <div className="flex flex-row justify-between mt-2 group-hover:text-gray-200 pb-5">
-                    <p>Cases Created</p>
-                    <span>
-                        {/* <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-indigo-600 group-hover:text-gray-200" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
-                        </svg> */}
-                    </span>
-                </div>
-                <div className="flex flex-row items-center justify-between">
-                    <div className="px-4 py-4 bg-gray-300 rounded-xl bg-opacity-30">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 group-hover:text-gray-50" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M10.293 15.707a1 1 0 010-1.414L14.586 10l-4.293-4.293a1 1 0 111.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                            <path fillRule="evenodd" d="M4.293 15.707a1 1 0 010-1.414L8.586 10 4.293 5.707a1 1 0 011.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                        </svg>
-                    </div>
-                    <div className="inline-flex text-sm text-gray-600 group-hover:text-gray-200 sm:text-base">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 mr-2 text-green-500 group-hover:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        12%
-                    </div>
-                </div>
-                <h1 className="mt-1 text-3xl font-bold text-gray-700 sm:text-m xl:text-4xl group-hover:text-gray-50">8 cases</h1>
-            </div>
-
-
-            {/* Cases Resolved */}
-            {/* <div className="col-span-4 row-span-2 card bg-tertiary">
-                <p>Cases Resolved</p>
-            </div> */}
             <div className="col-span-4 row-span-2 card bg-tertiary">
-                {/* hover:bg-gradient-to-br hover:from-purple-400 hover:via-blue-400 hover:to-blue-500 rounded-xl hover:shadow-2xl group */}
-                <div className="flex flex-row justify-between mt-2 group-hover:text-gray-200 pb-5">
-                    <p>Cases Resolved</p>
-                    <span>
-                        {/* <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-indigo-600 group-hover:text-gray-200" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
-                        </svg> */}
-                    </span>
-                </div>
-                <div className="flex flex-row items-center justify-between">
-                    <div className="px-4 py-4 bg-gray-300 rounded-xl bg-opacity-30">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 group-hover:text-gray-50" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M10.293 15.707a1 1 0 010-1.414L14.586 10l-4.293-4.293a1 1 0 111.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                            <path fillRule="evenodd" d="M4.293 15.707a1 1 0 010-1.414L8.586 10 4.293 5.707a1 1 0 011.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                        </svg>
-                    </div>
-                    <div className="inline-flex text-sm text-gray-600 group-hover:text-gray-200 sm:text-base">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 mr-2 text-green-500 group-hover:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        12%
-                    </div>
-                </div>
-                <h1 className="mt-1 text-3xl font-bold text-gray-700 sm:text-m xl:text-4xl group-hover:text-gray-50">6 cases</h1>
+                <p>Service Level</p>
+                <MyBarChart data={ServiceData} />
             </div>
-
-
-            {/* Cases Reopened */}
-            {/* <div className="col-span-4 row-span-2 card bg-tertiary">
-                <p>Cases Reopened</p>
-            </div> */}
             <div className="col-span-4 row-span-2 card bg-tertiary">
-                {/* hover:bg-gradient-to-br hover:from-purple-400 hover:via-blue-400 hover:to-blue-500 rounded-xl hover:shadow-2xl group */}
-                <div className="flex flex-row justify-between mt-2 group-hover:text-gray-200 pb-5">
-                    <p>Cases Reopened</p>
-                    <span>
-                        {/* <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-indigo-600 group-hover:text-gray-200" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
-                        </svg> */}
-                    </span>
+                <div className="flex flex-row justify-between pb-5 mt-2">
+                    <p>Average Contact Duration</p>
                 </div>
                 <div className="flex flex-row items-center justify-between">
                     <div className="px-4 py-4 bg-gray-300 rounded-xl bg-opacity-30">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 group-hover:text-gray-50" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M10.293 15.707a1 1 0 010-1.414L14.586 10l-4.293-4.293a1 1 0 111.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                            <path fillRule="evenodd" d="M4.293 15.707a1 1 0 010-1.414L8.586 10 4.293 5.707a1 1 0 011.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                        </svg>
                     </div>
-                    <div className="inline-flex text-sm text-gray-600 group-hover:text-gray-200 sm:text-base">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 mr-2 text-green-500 group-hover:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
+                    <div className="inline-flex text-sm text-gray-600 sm:text-base">
                         12%
                     </div>
                 </div>
-                <h1 className="mt-1 text-3xl font-bold text-gray-700 sm:text-m xl:text-4xl group-hover:text-gray-50">4 cases</h1>
+                <h1 className="mt-1 text-3xl font-bold text-gray-700 sm:text-m xl:text-4xl">{formatTime(averageContactDuration)}</h1>
+            </div>
+            <div className="col-span-4 row-span-2 card bg-tertiary">
+                <div className="flex flex-row justify-between pb-5 mt-2">
+                    <p>Contacts Handled</p>
+                </div>
+                <div className="flex flex-row items-center justify-between">
+                    <div className="px-4 py-4 bg-gray-300 rounded-xl bg-opacity-30">
+                    </div>
+                    <div className="inline-flex text-sm text-gray-600 sm:text-base">
+                        12%
+                    </div>
+                </div>
+                <h1 className="mt-1 text-3xl font-bold text-gray-700 sm:text-m xl:text-4xl">{contactsHandeled} contacts</h1>
+            </div>
+            <div className="col-span-4 row-span-2 card bg-tertiary">
+                <div className="flex flex-row justify-between pb-5 mt-2">
+                    <p>Contact Flow Time</p>
+                </div>
+                <div className="flex flex-row items-center justify-between">
+                    <div className="px-4 py-4 bg-gray-300 rounded-xl bg-opacity-30">
+                    </div>
+                    <div className="inline-flex text-sm text-gray-600 sm:text-base">
+                        12%
+                    </div>
+                </div>
+                <h1 className="mt-1 text-3xl font-bold text-gray-700 sm:text-m xl:text-4xl">{formatTime(contactFlowTime)}</h1>
             </div>
         </div>
     );

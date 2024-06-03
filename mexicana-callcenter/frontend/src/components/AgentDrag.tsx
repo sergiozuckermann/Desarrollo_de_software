@@ -27,27 +27,16 @@ const AgentContainer = styled.div`
 const AgentUsername = styled.div`
   font-size: 16px;
   font-weight: bold;
-  color: #333;
-`;
-
-// Aget Username Styles
-const AgentName = styled.div`
-  font-size: 14px;
-  color: #20253f;
+  color: #16a34a;
 `;
 
 // Agent Type
-const AgentType = styled.div`
+const AgentName = styled.div`
   font-size: 14px;
-  color: #16a34a;
+  color: #333;
   font-style: italic;
 `;
 
-const securityProfilesMap = {
-  '27178b20-0435-4bfa-8962-803d8fa01b95': 'Supervisor',
-  '6853576e-8cb9-49d9-8d2f-9e6e36a6c003': 'Agent',
-  '9c183cea-9741-4bf6-a745-e235dbdd3973': 'Admin'
-};
 
 
 const Agent = ({ agent }) => {
@@ -59,14 +48,10 @@ const Agent = ({ agent }) => {
     }),
   }));
 
-  // Map securityProfileId to agent type
-  const agentType = securityProfilesMap[agent.type] || 'Unknown';
-
   return (
     <AgentContainer ref={drag} style={{ opacity: isDragging ? 0.5 : 1 }} data-testid={`agent-${agent.id}`}>
       <AgentUsername>{agent.username}</AgentUsername>
-      <AgentName>{agent.name}</AgentName>
-      <AgentType>{agentType}</AgentType>
+      <AgentName>{agent.name} {agent.lastname}</AgentName>
     </AgentContainer>
   );
 };

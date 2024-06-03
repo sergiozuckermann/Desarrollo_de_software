@@ -19,7 +19,6 @@ interface GraphAgentStructureProps {
   agentsState: Array<PieChartDataItem>,
   agentsAvailability: Array<PieChartDataItem>
 }
-
   
   const GraphAgentStructure: React.FunctionComponent<GraphAgentStructureProps> = ({agentsState, agentsAvailability}) => {
   const [queueData, setQueueData] = useState<QueueDataItem[]>([]);
@@ -37,7 +36,7 @@ interface GraphAgentStructureProps {
   };
 
   useEffect(() => {
-    const interval = setInterval(loadMetricsEverySecond, 5000);
+    const interval = setInterval(loadMetricsEverySecond, 1000);
     return () => clearInterval(interval);
   }, []);
 
@@ -77,8 +76,7 @@ interface GraphAgentStructureProps {
           <div className="text-center">
             <h2 className="text-3xl font-roboto text-red-600">{totalCustomersWaiting}</h2>
             <h2 className="text-xl font-roboto">
-              <a href="/supervisor/agent-transfer" className="text-black-900 font-semibold hover:text-green-500"
-                data-cy='link' title='Click here to move agents within queues'>Customer Waiting</a>
+              <a>Customer Waiting</a>
             </h2>
           </div>
           <div style={{ width: '100%', height: '300px' }}>
@@ -88,6 +86,9 @@ interface GraphAgentStructureProps {
               <MyResponsiveBar data={queueData} />
             }
           </div>
+        </div>
+        <div className="text-center">
+          <button onClick={() => { window.location.href = "/supervisor/agent-transfer"; }} className="rounded-full px-4 py-2 text-white font-semibold hover:bg-green-400 bg-green-600" data-cy='button' title='Click here to move agents within queues'>Manage Queues</button>
         </div>
       </div>
 
