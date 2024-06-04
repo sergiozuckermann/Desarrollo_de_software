@@ -1,7 +1,7 @@
 import React from 'react';
 import { WorkerCardProps } from '../utils/interfaces';
 
-const WorkerCard: React.FC<WorkerCardProps> = ({ name, position, experience, points, status, imageURL }) => {
+const WorkerCard: React.FC<WorkerCardProps> = ({ imageURL, name, position, experience, points, status }) => {
   const statusClass = status === 'Active' ? 'bg-green-500' : 'bg-red-500';
 
   return (

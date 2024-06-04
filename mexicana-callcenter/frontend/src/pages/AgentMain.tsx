@@ -14,8 +14,10 @@ import CCPComponent from "../components/CCPComponent";
 const MainContent = () => {
   const [buttonMode, setButtonMode] = useState('workspace');
   const [userInfo, setUserInfo] = useState<WorkerCardProps | null>(null);
+  const [getURL, setImageURL] = useState<string>("");
   const { role, username, logout } = useAuth()
   const { showError } = useCustomToast();
+  
 
 
   useEffect(() => {
@@ -41,12 +43,25 @@ const MainContent = () => {
 
   }, [])
 
+  useEffect(() => {
+    userService
+      .GetImageUrl(username!) // call function that makes axios request
+      .then((url) => setImageURL(url)) // set imageURL state with the result from the request if it is successful
+      .catch(error => {
+        if(error.response.status === 401) { // check for an authorization error
+            showError(error.response.data.error) // display error
+            setTimeout(() => {logout()}, 4000) // log user out
+        }
+      })
+  }, [])
+
   return (
     <div className="grid w-full h-full grid-cols-1 gap-4 p-4 md:grid-cols-12">
       <div className="md:col-span-4">
        
         { userInfo !== null ? 
           <WorkerCard 
+           imageURL={getURL}
            name={userInfo.name} 
            position={userInfo.position} 
            experience={userInfo.experience} 

@@ -14,12 +14,12 @@ export interface AuthContextType {
   }
 
 export interface WorkerCardProps {
+  imageURL: string;
   name: string;
   position: string;
   experience: number;
   points: number;
   status?: string;
-  imageURL?: string;
 }
 
 // Define the type for the context value
