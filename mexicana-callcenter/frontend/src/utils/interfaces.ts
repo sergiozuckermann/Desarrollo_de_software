@@ -52,3 +52,8 @@ export interface SentimentSegment {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   IssuesDetected: Array<any>; // Use specific type instead of `any` if you know what will be in the array
 }
+
+export interface AgentsOnCall {
+  key: string,
+  state: string
+}

@@ -10,7 +10,7 @@ import CCPComponent from "../components/CCPComponent";
 const BargeIn: FunctionComponent = () => (
   <PageStructure title="Ongoing Calls">
     <div className="overflow-y-auto max-h-full">
-            <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
         <div className="col-span-1">
           <div className="h-[100%]">
           <ConnectHere />
