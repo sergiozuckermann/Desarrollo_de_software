@@ -14,6 +14,7 @@ export interface AuthContextType {
   }
 
 export interface WorkerCardProps {
+  imageURL: string;
   name: string;
   position: string;
   experience: number;
@@ -51,4 +52,9 @@ export interface SentimentSegment {
   contactId?:string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   IssuesDetected: Array<any>; // Use specific type instead of `any` if you know what will be in the array
+}
+
+export interface AgentsOnCall {
+  key: string,
+  state: string
 }

@@ -6,21 +6,36 @@ const CardsContainer = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   gap: 10px;
-  width: calc(4 * (250px + 10px)); // Width of 4 cards plus gaps
+  width: 100%;
+  max-width: 100%; // Ensure the container doesn't exceed the screen width
   margin: 0 auto; // Center the container
+  padding: 10px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 const SearchContainer = styled.div`
   margin: 20px 0;
   text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
 `;
 
 const SearchInput = styled.input`
   padding: 10px;
   width: 10em;
-  font-size: 16px;
+  font-size: 25px;
   border: 3px solid #ccc;
   border-radius: 5px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 const SearchButton = styled.button<{ clicked: boolean }>`
@@ -36,13 +51,22 @@ const SearchButton = styled.button<{ clicked: boolean }>`
   &:hover {
     background-color: ${props => props.clicked ? 'darkgreen' : '#0056b3'};
   }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 10px;
+  }
 `;
 
 const InstructionText = styled.div`
   text-align: center;
   margin: 20px 0;
-  font-size: 18px;
+  font-size: 25px;
   font-weight: bold;
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
 `;
 
 const AgentContainer = styled.div`
@@ -54,10 +78,10 @@ const AgentContainer = styled.div`
 `;
 
 export {
-    CardsContainer,
-    SearchContainer,
-    SearchInput,
-    SearchButton,
-    InstructionText,
-    AgentContainer
-    };
+  CardsContainer,
+  SearchContainer,
+  SearchInput,
+  SearchButton,
+  InstructionText,
+  AgentContainer
+};
