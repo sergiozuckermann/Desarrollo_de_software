@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import useCustomToast from "../components/LoginNotification";
 import "../css/global.css";
+import axios from "axios";
+import { redirect } from "react-router-dom";
+
 
 const SignUp: React.FC = () => {
   const [firstName, setFirstName] = useState("");
@@ -17,6 +20,7 @@ const SignUp: React.FC = () => {
   const [passwordTextValue, setPasswordTextValue] = useState("");
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
   const { showError, showSuccess } = useCustomToast();
+  const [file, setFile] = useState()
 
   const checkPasswordRequirements = (password: string) => {
     return /[a-z]/.test(password) && /[A-Z]/.test(password) && /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{8,}$/.test(password);
@@ -29,6 +33,10 @@ const SignUp: React.FC = () => {
       showError(`🚨 Passwords do not match!`);
       return;
     }
+    const formData = new FormData();
+    formData.append("profilePicture", file);
+    formData.append("preferred_username", preferred_username);
+    await axios.post('http://localhost:3000/upload', formData, { headers: {'Content-Type': 'multipart/form-data'}})
 
     const data = {
       name: firstName,
@@ -55,6 +63,7 @@ const SignUp: React.FC = () => {
         showSuccess(
           "🎉 User is registered but confirmation is needed by Admin.\n You will be notified via email when confirmation is done."
         );
+        redirect('/login');
       } else {
         const errorData = await response.json();
         showError(`🚨 ${errorData.message}`);
@@ -75,7 +84,7 @@ const SignUp: React.FC = () => {
   };
 
   return (
-    <div className="w-full relative bg-white overflow-hidden flex flex-col items-center justify-start gap-[64px] tracking-[normal] mq450:gap-[16px] mq700:gap-[32px] mt-[10%]">
+    <div className="w-full relative bg-white flex flex-col items-center justify-start gap-[64px] tracking-[normal] mq450:gap-[16px] mq700:gap-[32px] mt-[10%] overflow-hidden ">
       <main className="w-[1210px] flex flex-row items-start justify-start py-0 pr-0 box-border gap-[67px] max-w-full cellphone:items-center cellphone:grid cellphone:justify-center">
         <form
           onSubmit={handleSignUp}
@@ -85,7 +94,7 @@ const SignUp: React.FC = () => {
           <div className="self-stretch flex flex-col items-start justify-start gap-[15.57px] max-w-full text-left text-lg text-marco font-paragraph cellphone:items-center cellphone:grid cellphone:justify-center pl-[20px] pr-[20px]">
             <div className="w-full md:w-[573px] flex-1 flex flex-row items-start justify-start py-0 px-4 box-border max-w-full md:pl-4 md:pr-4">
               <img
-                className="h-auto w-full object-cover"
+                className="object-cover w-full h-auto"
                 loading="lazy"
                 alt=""
                 src="/untitled-design-2-2@2x.png"
@@ -221,6 +230,11 @@ const SignUp: React.FC = () => {
                   </select>
                 </div>
               </div>
+            </div>
+
+            <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15px] px-5 pb-[9.600000000000364px] max-w-full border-[1px] border-solid border-marco">
+              <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
+              <input onChange={e => setFile(e.target.files[0])} type="file" accept="image/*"></input>
             </div>
 
 
