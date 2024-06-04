@@ -19,6 +19,7 @@ export interface WorkerCardProps {
   experience: number;
   points: number;
   status?: string;
+  imageURL?: string;
 }
 
 // Define the type for the context value

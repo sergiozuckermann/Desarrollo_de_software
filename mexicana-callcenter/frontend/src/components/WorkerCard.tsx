@@ -1,7 +1,7 @@
 import React from 'react';
 import { WorkerCardProps } from '../utils/interfaces';
 
-const WorkerCard: React.FC<WorkerCardProps> = ({ name, position, experience, points, status }) => {
+const WorkerCard: React.FC<WorkerCardProps> = ({ name, position, experience, points, status, imageURL }) => {
   const statusClass = status === 'Active' ? 'bg-green-500' : 'bg-red-500';
 
   return (
@@ -9,7 +9,7 @@ const WorkerCard: React.FC<WorkerCardProps> = ({ name, position, experience, poi
       {/* Large Device Layout */}
       <div className="hidden h-[65%] max-w-sm p-4 overflow-hidden border-2 border-gray-400 shadow-lg rounded-xl md:block bg-tertiary">
         <div className="flex justify-center">
-          <img className="w-[65%] h-[65%] rounded-full" src="/avatar.png" alt="User avatar" />
+          <img className="w-[65%] h-[65%] rounded-full" src={imageURL} alt="User avatar" />
         </div>
         <div className="items-center px-6 py-4 text-center">
           <h2 className="pb-5 mb-2">{name}</h2>
