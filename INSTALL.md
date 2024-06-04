@@ -27,6 +27,7 @@ Create a `.env` file with the Amazon Web Services Identity and Access Management
 ```sh
 ACCESS_KEY_ID = YOUR_ACCESS_KEY_ID
 SECRET_ACCESS_KEY = YOUR_SECRET_ACCESS_KEY
+NODE_ENV = development
 ```
 
 Go to the root directory of the repository at:
