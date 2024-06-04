@@ -1,10 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import PageStructure from "../components/PageStructure";
 import CellGrid from "../components/CellGrid";
 import GraphAgentStructure from "../components/GraphAgentStructure";
 import { useWebSocket } from "../hooks/useWebSocket";
-import { Interaction, SentimentSegment } from "../utils/interfaces";
-import userService from "../services/user";
+import { Interaction, SentimentSegment, AgentsOnCall } from "../utils/interfaces";
+import InfoCard from "../components/InfoCard";
 
 interface PieChartDataItem {
   id: string | number;
@@ -46,6 +47,19 @@ const OngoingCalls: React.FunctionComponent = () => {
     }
   }, []);
 
+  // useEffect to fetch information from session storage on every rerender
+  useEffect(() => {
+    const agentsOnCallData = sessionStorage.getItem("agentsOnCall"); // check if agentsOnCall key exists
+    const agentsAvailabilityData = sessionStorage.getItem("agentsAvailability"); // check if agentsOnCall key exists
+    if (!agentsOnCallData) {
+      sessionStorage.setItem("agentsOnCall", JSON.stringify([])); // create the key if it does not exist
+    }
+    if(agentsAvailabilityData) {
+      setAgentsAvailability(JSON.parse(agentsAvailabilityData))
+    }
+
+  }, []);
+
   // Define a function to process events, which takes a 'segment' of type Interaction as an argument
   const processEvent = (segment: Interaction) => {
     // Retrieve 'interactions' data from local storage
@@ -84,6 +98,7 @@ const OngoingCalls: React.FunctionComponent = () => {
           // Update the state or context with the filtered interactions array
           setInteractions(filteredInteractions);
 
+          // update agents status
           updateAllAgentStatus(Action.END)
 
           return;
@@ -105,7 +120,6 @@ const OngoingCalls: React.FunctionComponent = () => {
         setInteractions(updatedInteractions);
       } else {
         // If no established interaction was found
-        // Create a new array with all current interactions
         const newData = [...currentInteractions];
         // Add the new segment to the array
         newData.push(segment);
@@ -114,6 +128,27 @@ const OngoingCalls: React.FunctionComponent = () => {
         sessionStorage.setItem("interactions", JSON.stringify(newData));
         // Update the state or context with the new interactions array
         setInteractions(newData);
+      }
+
+      // check if a previous call was already ended to update the graph
+      const tryGetCurrentData = sessionStorage.getItem('interactions')
+      const tryGetAgentsOnCall = sessionStorage.getItem('agentsOnCall')
+      if(tryGetCurrentData && tryGetAgentsOnCall) {
+        const currentInteractions = JSON.parse(tryGetCurrentData)
+          const agentsOnCall:Array<AgentsOnCall> = JSON.parse(tryGetAgentsOnCall)
+          // check if the state of the current interaction changed from on call to some other state
+          for(const currentInteraction of currentInteractions) {
+            for(const agentOnCall of agentsOnCall) {
+              // if state of ongoing interaction changed from on call to some other then update the graph
+              if(currentInteraction.key === agentOnCall.key && currentInteraction.state !== agentOnCall.state) { 
+                updateAgentsAvailability(currentInteraction, Action.START)
+              }
+            }
+          }
+          // on call segments
+          if(segment.state === "ON CALL" && !agentsOnCall.find(a => a.key === segment.key)) {
+            updateAgentsAvailability(segment, Action.END)
+          }
       }
 
       // update agents status
@@ -165,38 +200,111 @@ const OngoingCalls: React.FunctionComponent = () => {
     }
   };
 
-  // Function to update agent status
-  const updateAllAgentStatus = (action:string) => {
-    const callStates = [...agentsState]
 
-    const data = sessionStorage.getItem('interactions')
-
-    if(data) {
-      const interactionsData = JSON.parse(data)
-
-      for(const interaction of interactionsData) {
-        for(const callState of callStates) {
-          if(callState.id === interaction.state) {
-            switch(action) {
-              case Action.START:
-                callState.value -= 1 
-                break
-              case Action.END:
-                callState.value += 1
-                break
-              default:
-                break
-             } 
+  const updateAgentsAvailability = (segment: Interaction, action: string) => {
+    // Clone the existing agentsAvailability array to avoid direct mutation
+    const newAgentsAvailability = [
+      ...agentsAvailability
+    ]
+  
+    // Loop through the cloned array to update availability based on the action
+    for (let i = 0; i < newAgentsAvailability.length; i++) {
+      // Check if the current item matches the queueName in the segment
+      if (newAgentsAvailability[i].id === segment.queueName) {
+        // Retrieve 'agentsOnCall' data from session storage
+        const tryGetAgentsOnCall = sessionStorage.getItem('agentsOnCall')
+        // Proceed if data exists
+        if (tryGetAgentsOnCall) {
+          // Parse the JSON string back to an array
+          const agentsOnCall: Array<AgentsOnCall> = JSON.parse(tryGetAgentsOnCall)
+          // Find the agent with the matching key in the array
+          const agentOnCall = agentsOnCall.find(a => a.key === segment.key)
+          // Switch between START and END actions to update availability
+          switch (action) {
+            case Action.START:
+              // Log to console when action is START
+              console.log('entered here START')
+              // Decrease the availability count for the agent
+              newAgentsAvailability[i].value -= 1
+              // Remove the agent from session if no availability left
+              if (newAgentsAvailability[i].value === 0) {
+                const filteredAgentsOnCall = agentsOnCall.filter(a => a.key !== segment.key)
+                sessionStorage.setItem('agentsOnCall', JSON.stringify(filteredAgentsOnCall))
+              }
+              break
+            case Action.END:
+              // Log to console when action is END
+              console.log('entered here END')
+              // Increase the availability count for the agent
+              newAgentsAvailability[i].value += 1
+              // If agent is not currently on call, add them to session storage
+              if (!agentOnCall) {
+                const cachedRecord = {
+                  key: segment.key,
+                  state: segment.state
+                }
+                agentsOnCall.push(cachedRecord)
+                sessionStorage.setItem('agentsOnCall', JSON.stringify(agentsOnCall))
+              }
+              break
+            default:
+              // Handle any other unspecified action
+              break
           }
         }
       }
-
-      sessionStorage.setItem('callStates', JSON.stringify(callStates))
-      setAgentsState(callStates)
-
     }
-    
+    // Save the updated agentsAvailability array back to session storage
+    sessionStorage.setItem("agentsAvailability", JSON.stringify(newAgentsAvailability));
+  
+    // Update the state to reflect changes in the component or context
+    setAgentsAvailability(newAgentsAvailability)
   }
+  
+  // Function to update agent status based on action START or END
+const updateAllAgentStatus = (action: string) => {
+  // Clone the current agentsState to avoid direct mutations
+  const callStates = [...agentsState]
+
+  // Retrieve 'interactions' data from session storage
+  const data = sessionStorage.getItem('interactions')
+
+  // Check if there is data in the storage
+  if (data) {
+    // Parse the JSON string back to an array
+    const interactionsData = JSON.parse(data)
+
+    // Iterate over each interaction from the data
+    for (const interaction of interactionsData) {
+      // Iterate over each call state in the cloned array
+      for (const callState of callStates) {
+        // Check if the call state ID matches the interaction state
+        if (callState.id === interaction.state) {
+          // Use a switch statement to handle different actions
+          switch (action) {
+            case Action.START:
+              // Decrease the call state value by 1 when action is START
+              callState.value -= 1
+              break
+            case Action.END:
+              // Increase the call state value by 1 when action is END
+              callState.value += 1
+              break
+            default:
+              // Do nothing if the action does not match START or END
+              break
+          }
+        }
+      }
+    }
+
+    // Save the updated callStates array back to session storage
+    sessionStorage.setItem('callStates', JSON.stringify(callStates))
+    // Update the state to reflect changes in the component or context
+    setAgentsState(callStates)
+  }
+}
+
 
   // web socket connection to get real time information from ongoing intereaction
   useEffect(() => {
@@ -232,11 +340,13 @@ const OngoingCalls: React.FunctionComponent = () => {
       <div className="overflow-y-auto h-full pb-[3%] pt-[2%] pl-[2%]">
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
           <div className="col-span-1">
-            <GraphAgentStructure agentsState={agentsState} />
+            <GraphAgentStructure 
+              agentsState={agentsState}
+              agentsAvailability={agentsAvailability} />
           </div>
           <div className="col-span-1">
             {!interactions.length ? (
-              <h1>No ongoing interactions</h1>
+              <InfoCard description='No ongoing interactions' />
             ) : (
               <CellGrid data={interactions} />
             )}

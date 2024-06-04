@@ -52,15 +52,17 @@ const MainContent = () => {
       </div>
       <div className="flex flex-col space-y-4 md:col-span-8">
   <div className="flex flex-col gap-10">
+
   <div className="grid justify-center grid-cols-1 gap-6 md:grid-cols-2 md:col-span-2">
       <HomeButton icon="/phone.svg" title="Call Overview" subtitle="See the status of the ongoing calls" handleClick={() => window.location.href = '/supervisor/onGoingCalls'}/>
       <HomeButton icon="/Switch.svg" title="Agent Queue Transfer" subtitle="Transfer agents from one queue to another" handleClick={() => window.location.href = '/supervisor/agent-transfer'}/>
       <HomeButton icon="/MetricsSymbol.svg" title="Historical Metrics" subtitle="See the historical metrics of the call center" handleClick={() => window.location.href = '/supervisor/metrics'}/>
-      <HomeButton icon="/SpotlightSymbol.svg" title="Agent Spotlight" subtitle="Weekly best agents" handleClick={() => window.location.href = '/AgentSpotlight'}/>
-      <HomeButton icon="/costumer.svg" title="Agent Performance" subtitle="See the weekly metrics of agent perfomance" handleClick={() => window.location.href = '/supervisor/AgentSpotlight'}/>
+      <HomeButton icon="/SpotlightSymbol.svg" title="Agent Spotlight" subtitle="Weekly best agents" handleClick={() => window.location.href = '/supervisor/AgentSpotlight'}/>
+      <HomeButton icon="/costumer.svg" title="Agent Performance" subtitle="See the weekly metrics of agent perfomance" handleClick={() => window.location.href = '/supervisor/AgentPerformance'}/>
       <HomeButton icon="/BreakSymbol.svg" title="Take a break" subtitle="Go to take a break to clear the mind" handleClick={() => window.location.href = '/supervisor/TakeABreak'}/>
       <div className="flex justify-center w-full md:col-span-2">
       </div>
+
     </div>
    
   </div> 

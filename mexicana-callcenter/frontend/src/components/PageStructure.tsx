@@ -2,21 +2,22 @@ import { FunctionComponent, ReactNode } from "react";
 import "../css/PageStructure.css";
 import Button from "./Buttons";
 import SettingsButton from "./SettingsButton";
-
 import NotificationBadge from "./notificationComponent";
 import { useNavigate, useLocation } from 'react-router-dom';
 import TimestampDisplay from "./TimestampDisplay";
 import NotificationsDropDown from "./NotificationsDropDown";
 import { notifications } from "./notificationsData";
+import { useAuth } from "../hooks/useAuth"; 
 
-// Page structure component
 interface PageStructureProps {
   title: string;
   children?: ReactNode;
 }
 
+
 // Page structure component
 const PageStructure: FunctionComponent<PageStructureProps> = ({ title, children }) => {
+  const { isAuthenticated, role } = useAuth(); 
   const navigate = useNavigate(); // Hook to navigate between pages
   const location = useLocation(); // Hook to get the current location
 
@@ -33,6 +34,7 @@ const PageStructure: FunctionComponent<PageStructureProps> = ({ title, children 
   // Routes where the arrows should not be displayed
   const noArrowsRoutes = ['/Supervisor/home', '/Agent/home'];
 
+
   return (
     <div className="flex flex-col h-screen pl-2 pr-2 md:overflow-hidden">
       {/* Top bar */}
@@ -45,7 +47,8 @@ const PageStructure: FunctionComponent<PageStructureProps> = ({ title, children 
         <div className="flex items-center">
           <h1 className="hidden md:block font">{title}</h1>
           <div className="h-10 mx-2 border-l-2 border-primary"></div> {/* Divisory line */}
-          <NotificationsDropDown notificationsData={notifications} /> {/* Add the notification dropdown */}
+          {/* Notificaciones renderizadas para supervisor */}
+          {isAuthenticated && role === 'Supervisor' && <NotificationsDropDown notificationsData={notifications} />}
           <div className="flex items-center">
             <SettingsButton />
             {!noArrowsRoutes.includes(location.pathname) && (
