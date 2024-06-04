@@ -15,13 +15,13 @@ const WorkerCard: React.FC<WorkerCardProps> = ({ imageURL, name, position, exper
           <h2 className="pb-5 mb-2">{name}</h2>
           <p className="pb-1 text-base text-gray-700">{position}</p>
           <p className="pb-5 text-sm text-gray-600">{experience} years</p>
-          <div className="flex items-center justify-center w-full pb-9">
-            <div className="text-gray-800 text-[60px] font-roboto mr-4">{points}</div>
-            <img src="/plane.svg" alt="Plane" className="w-10 h-10 rotate(-45deg)" />
+          <div className="flex flex-col"> 
+            <h3 className="text-gray-800 text-[30px] font-roboto mr-4">Experience Points: </h3> {/* ESTE COMPONENTE TAMBIÉN LO QUIERO RENDERIZADO PARA EL SUPERVISOR, para el agente PONERLO para el supervisor quitarlo*/}
+            <div className="flex items-center justify-center w-full pb-9">
+              <div className="text-gray-800 text-[60px] font-roboto mr-4">{points}</div>
+              <img src="/plane.svg" alt="Plane" className="w-10 h-10 rotate(-45deg)" />
+            </div>
           </div>
-          <button className={`${statusClass} text-white font-bold py-2 px-4 rounded-lg w-full h-10`}>
-            {status}
-          </button>
         </div>
       </div>
 

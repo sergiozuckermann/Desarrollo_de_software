@@ -1,29 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import Agent from '../components/AgentDrag';
+import React, { useEffect, useState, useRef } from 'react';
+import Agent from '../components/Agent';
 import CardDrop from '../components/CardDrop';
 import userService from "../services/user";
-import styled from 'styled-components';
 import PageStructure from '../components/PageStructure';
 import axios from 'axios';
-
-// Styled components
-const CardsContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px;
-`;
+import { NotificationContainer, NotificationManager } from 'react-notifications';
+import 'react-notifications/lib/notifications.css';
+import { CardsContainer, SearchContainer, SearchInput, SearchButton, InstructionText, AgentContainer } from '../components/AgentTransferComponents';
 
 const AgentRoutingProfile = () => {
   type Agent = {
     id: string;
     name: string;
+    lastname: string;
     username: string;
     routingProfileId: string;
   };
 
   const [agents, setAgents] = useState<Agent[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchName, setSearchName] = useState('');
+  const [searchLastName, setSearchLastName] = useState('');
+  const [searchUsername, setSearchUsername] = useState('');
+  const [buttonClicked, setButtonClicked] = useState(false);
 
   const routingProfilesMap = {
     'cef57a3d-e69c-410f-a52a-511cdd89664b': 'Flight Management',
@@ -33,9 +32,9 @@ const AgentRoutingProfile = () => {
     '2d25f6a6-a8c9-4cf3-aacb-ad3338c699fc': 'Special Assistance',
     'ac2bd63f-1865-4bc6-821f-36f2dbd19ecc': 'Travel Information',
     'e2ab2ae8-dc73-490e-9147-196ad04c7e87': 'Test Profile',
-    '91d0f15f-3020-4ecb-bf54-6e5f50b85137': 'Supervisor',
-    '13a54127-9cff-44e8-804f-689c05089faf': 'Basic Routing Profile',
   };
+
+  const agentRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
   const loadAgents = async () => {
     try {
@@ -52,7 +51,6 @@ const AgentRoutingProfile = () => {
   }, []);
 
   const handleAgentDrop = async (agentId: string, newRoutingProfileId: string) => {
-
     try {
       const config = {
         headers: {
@@ -64,24 +62,43 @@ const AgentRoutingProfile = () => {
         { userId: agentId, routingProfileId: newRoutingProfileId }, config
       );
 
-    // Update the agents state
-    setAgents((prevAgents) => {
-      // Find the moved agent
-      const movedAgent = prevAgents.find(agent => agent.id === agentId);
-      if (!movedAgent) return prevAgents; // If the agent is not found, do nothing
+      setAgents((prevAgents) => {
+        const movedAgent = prevAgents.find(agent => agent.id === agentId);
+        if (!movedAgent) return prevAgents;
 
-      // Delete the moved agent from the previous routing profile
-      const updatedAgents = prevAgents.filter(agent => agent.id !== agentId);
-
-      // Update the routing profile of the moved agent
-      movedAgent.routingProfileId = newRoutingProfileId;
-
-      // Add the moved agent to the new routing profile
-      return [...updatedAgents, movedAgent];
-    });
-
+        const updatedAgents = prevAgents.filter(agent => agent.id !== agentId);
+        movedAgent.routingProfileId = newRoutingProfileId;
+        return [...updatedAgents, movedAgent];
+      });
+      NotificationManager.success('Agent queue updated', 'Update Success');
     } catch (error) {
-      console.error('Error al actualizar el perfil de enrutamiento:', error);
+      NotificationManager.error('Failed to update the queue', 'Update Error');
+    }
+  };
+
+  const handleSearch = () => {
+    const agent = agents.find(agent =>
+      agent.name.toLowerCase().includes(searchName.toLowerCase()) &&
+      agent.lastname.toLowerCase().includes(searchLastName.toLowerCase()) &&
+      agent.username === searchUsername
+    );
+  
+    if (agent) {
+      NotificationManager.success('User found', 'Search Success');
+      const agentElement = agentRefs.current[agent.id];
+  
+      if (agentElement) {
+        setTimeout(() => {
+          agentElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          agentElement.classList.add('highlight');
+  
+          setTimeout(() => {
+            agentElement.classList.remove('highlight');
+          }, 2000);
+        }, 100);
+      }
+    } else {
+      NotificationManager.error('User not found', 'Search Error');
     }
   };
 
@@ -89,8 +106,7 @@ const AgentRoutingProfile = () => {
     return <div>Loading...</div>;
   }
 
-  // Group agents by routing profile
-  const agentsByRoutingProfile = agents.reduce((acc, agent) => {
+  const agentsByRoutingProfile: { [key: string]: any[] } = agents.reduce((acc, agent) => {
     const { routingProfileId } = agent;
     if (!acc[routingProfileId]) {
       acc[routingProfileId] = [];
@@ -100,7 +116,33 @@ const AgentRoutingProfile = () => {
   }, {});
 
   return (
-    <div>
+    <div style={{ height: '100%', overflowY: 'auto' }}>
+      <InstructionText>
+        Drag and drop an agent according to the current Contact Center needs.
+      </InstructionText>
+      <SearchContainer>
+        <SearchInput
+          type="text"
+          placeholder="Name"
+          value={searchName}
+          onChange={(e) => setSearchName(e.target.value)}
+        />
+        <SearchInput
+          type="text"
+          placeholder="Last Name"
+          value={searchLastName}
+          onChange={(e) => setSearchLastName(e.target.value)}
+        />
+        <SearchInput
+          type="text"
+          placeholder="Username"
+          value={searchUsername}
+          onChange={(e) => setSearchUsername(e.target.value)}
+        />
+        <SearchButton clicked={buttonClicked} onClick={handleSearch}>
+          Search
+        </SearchButton>
+      </SearchContainer>
       <CardsContainer>
         {Object.keys(routingProfilesMap).map((routingProfileId) => (
           <CardDrop
@@ -110,11 +152,17 @@ const AgentRoutingProfile = () => {
             onAgentDrop={handleAgentDrop}
           >
             {(agentsByRoutingProfile[routingProfileId] || []).map((agent: Agent) => (
-              <Agent key={agent.id} agent={agent} />
+              <AgentContainer
+                key={agent.id}
+                ref={el => agentRefs.current[agent.id] = el}
+              >
+                <Agent key={agent.id} agent={agent} />
+              </AgentContainer>
             ))}
           </CardDrop>
         ))}
       </CardsContainer>
+      <NotificationContainer />
     </div>
   );
 };

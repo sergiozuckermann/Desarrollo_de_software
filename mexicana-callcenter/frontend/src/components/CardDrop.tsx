@@ -1,12 +1,12 @@
-// src/components/CardDrag.tsx
 import React from 'react';
 import { useDrop } from 'react-dnd';
 import styled from 'styled-components';
 
 const CardContainer = styled.div`
-  width: 200px;
-  height: 300px;
-  background-color: rgba(255, 255, 255, 0.9); /* Añadir opacidad constante */
+  width: 100%;
+  max-width: 13em;
+  height: 23em;
+  background-color: rgba(255, 255, 255, 0.9);
   padding: 1em;
   margin: 1em;
   border: 1px solid #ccc;
@@ -14,22 +14,27 @@ const CardContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative; /* Para el título fijo */
-  overflow: hidden; /* Para ocultar el scroll bar */
+  position: relative;
+  overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: background-color 0.2s;
 
   &.isOver {
     background-color: lightgreen;
   }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    margin: 5px 0;
+  }
 `;
 
 const CardTitle = styled.h3`
   margin-bottom: 10px;
   text-align: center;
-  position: sticky; /* Mantener el título fijo */
+  position: sticky;
   top: 0;
-  background: rgba(255, 255, 255, 0.9); /* Añadir opacidad constante */
+  background: rgba(255, 255, 255, 0.9);
   width: 100%;
   padding: 0.5em 0;
   border-bottom: 1px solid #ccc;
@@ -37,7 +42,7 @@ const CardTitle = styled.h3`
   font-size: 1.2em;
   font-weight: bold;
   color: #333;
-  border-top-left-radius: 8px; /* Esquinas redondeadas arriba */
+  border-top-left-radius: 8px;
   border-top-right-radius: 8px;
 `;
 
@@ -46,14 +51,20 @@ const AgentsContainer = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  height: calc(100% - 40px); /* Ajustar para el título fijo */
-  overflow-y: auto; /* Habilitar desplazamiento vertical */
-  scrollbar-width: none; /* Ocultar barra de desplazamiento en Firefox */
-  -ms-overflow-style: none;  /* Ocultar barra de desplazamiento en IE y Edge */
-  
+  height: calc(100% - 40px);
+  overflow-y: auto;
+
   &::-webkit-scrollbar {
-    width: 0;
-    height: 0; /* Ocultar barra de desplazamiento en Chrome, Safari y Opera */
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
   }
 
   &:after {
@@ -62,9 +73,9 @@ const AgentsContainer = styled.div`
     bottom: 0;
     left: 0;
     right: 0;
-    height: 20px; /* Altura del fondo transparente */
+    height: 20px;
     background: linear-gradient(to top, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0));
-    z-index: 1; /* Colocar por encima del contenido */
+    z-index: 1;
   }
 `;
 
@@ -72,7 +83,6 @@ const CardDrop = ({ profileName, routingProfileId, onAgentDrop, children }) => {
   const [{ isOver }, drop] = useDrop(() => ({
     accept: 'AGENT',
     drop: (item) => {
-      console.log('Dropped Agent:', item);
       onAgentDrop(item.id, routingProfileId);
     },
     collect: (monitor) => ({

@@ -2,7 +2,6 @@ import React from 'react';
 import { useDrag } from 'react-dnd';
 import styled from 'styled-components';
 
-// Agent Container Styles
 const AgentContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -21,23 +20,24 @@ const AgentContainer = styled.div`
   }
 
   opacity: ${(props) => (props.isdragging ? 0.5 : 1)};
+
+  @media (max-width: 768px) {
+    width: 100%;
+    margin: 5px 0;
+  }
 `;
 
-// Agent Name Styles
 const AgentUsername = styled.div`
   font-size: 16px;
   font-weight: bold;
   color: #16a34a;
 `;
 
-// Agent Type
 const AgentName = styled.div`
   font-size: 14px;
   color: #333;
   font-style: italic;
 `;
-
-
 
 const Agent = ({ agent }) => {
   const [{ isDragging }, drag] = useDrag(() => ({

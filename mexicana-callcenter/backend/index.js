@@ -40,9 +40,24 @@ app.use('/get-image', getImageRouter);
 
 
 
-const port = process.env.PORT || 3000; // Use the port defined in environment variable or default to 3000
+const awsServerlessExpress = require('aws-serverless-express');
 
-// Start the server
-app.listen(port, () => {
-  console.log(`Server is running at http://localhost:${port}`);
-});
+if (process.env.NODE_ENV === 'development') {
+  const port = process.env.PORT || 3000; // Use 3000 port or default port loaded from environment variables
+
+  // start server in local environment
+  app.listen(port, () => {
+    console.log(`Server is running at http://localhost:${port}`);
+  });
+} else if (process.env.NODE_ENV === 'production') {
+  // start server for aws-serverless-express
+  const server = awsServerlessExpress.createServer(app);
+
+  // export lambda handler
+  exports.handler = (event, context) => {
+    awsServerlessExpress.proxy(server, event, context);
+  };
+} else {
+  console.error('NODE_ENV is not set to a valid value. Expected "development" or "production".');
+  process.exit(1);
+}
