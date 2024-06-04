@@ -26,6 +26,7 @@ import AgentRoutingProfile from './pages/QueueTransfer';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import AgentMetrics from './pages/AgentMetrics';
+import MyBadges from './pages/MyBadges';
 
 
 function App() {
@@ -48,6 +49,7 @@ function App() {
           <Route path="/agent/TakeABreak" element={<TakeABreak />} />
           <Route path="/agent/MoveYourBody" element={<MoveYourBody />} />
           <Route path="/agent/BreathingExcer" element={<BreathingExcer />} />
+          <Route path="/agent/MyBadges" element={<MyBadges />} />
       </Route>
       <Route element={<ProtectedRoute isAllowed={isAuthenticated && role === 'Supervisor'} />}>
           <Route path="/supervisor/bargein" element={<BargeIn />} />
