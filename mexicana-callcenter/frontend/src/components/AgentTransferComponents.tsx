@@ -29,7 +29,7 @@ const SearchContainer = styled.div`
 const SearchInput = styled.input`
   padding: 10px;
   width: 10em;
-  font-size: 16px;
+  font-size: 25px;
   border: 3px solid #ccc;
   border-radius: 5px;
 
@@ -61,7 +61,7 @@ const SearchButton = styled.button<{ clicked: boolean }>`
 const InstructionText = styled.div`
   text-align: center;
   margin: 20px 0;
-  font-size: 18px;
+  font-size: 25px;
   font-weight: bold;
 
   @media (max-width: 768px) {
