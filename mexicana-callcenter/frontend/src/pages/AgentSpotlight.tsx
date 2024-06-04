@@ -8,7 +8,6 @@ interface Agent {
   performance: string;
   image: string;
   lastname: string;
-  type: string;
 }
 
 const AgentSpotlight = () => {
@@ -26,7 +25,7 @@ const AgentSpotlight = () => {
       .then((fetchedAgents) => {
         console.log('Fetched agents:', fetchedAgents);
         // Get only the agent type 6853576e-8cb9-49d9-8d2f-9e6e36a6c003
-        fetchedAgents = fetchedAgents.filter((agent)=> agent.performance !== null);
+        fetchedAgents = fetchedAgents.filter((agent:Agent)=> agent.performance !== null);
         // Update the agents state with the fetched data
         setAgents(fetchedAgents);
         setLoading(false);
