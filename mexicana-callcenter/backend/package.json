@@ -16,8 +16,9 @@
   },
   "dependencies": {
     "@aws-sdk/client-connect": "^3.582.0",
-    "@aws-sdk/client-dynamodb": "^3.556.0",
+    "@aws-sdk/client-dynamodb": "^3.588.0",
     "@aws-sdk/client-s3": "^3.588.0",
+    "@aws-sdk/s3-request-presigner": "^3.588.0",
     "@aws-sdk/util-dynamodb": "^3.556.0",
     "@prisma/client": "^5.14.0",
     "amazon-cognito-identity-js": "^6.3.12",
