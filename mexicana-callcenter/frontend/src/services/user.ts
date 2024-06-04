@@ -36,8 +36,23 @@ const GetQueueMetrics = () => {
         .then(response => response.data);
 }
 
+const GetImageUrl = (username: string) => {
+    const config = { // set headers
+        headers: {
+            Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+        }
+    };
+    return axios
+        .get(`${baseUrl}/get-image/get-image-url/${username}`, config)
+        .then(response => {
+            console.log('Image URL:', response.data.imageUrl); // Add console log here
+            return response.data;
+        });
+};
+
 export default {
     GetInfo,
     GetAgents,
-    GetQueueMetrics
+    GetQueueMetrics,
+    GetImageUrl
 }

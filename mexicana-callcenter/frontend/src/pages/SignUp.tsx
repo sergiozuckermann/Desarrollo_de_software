@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import useCustomToast from "../components/LoginNotification";
 import "../css/global.css";
+import axios from "axios";
 import { redirect } from "react-router-dom";
+
 
 const SignUp: React.FC = () => {
   const [firstName, setFirstName] = useState("");
@@ -18,6 +20,7 @@ const SignUp: React.FC = () => {
   const [passwordTextValue, setPasswordTextValue] = useState("");
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
   const { showError, showSuccess } = useCustomToast();
+  const [file, setFile] = useState()
 
   const checkPasswordRequirements = (password: string) => {
     return /[a-z]/.test(password) && /[A-Z]/.test(password) && /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{8,}$/.test(password);
@@ -30,6 +33,10 @@ const SignUp: React.FC = () => {
       showError(`🚨 Passwords do not match!`);
       return;
     }
+    const formData = new FormData();
+    formData.append("profilePicture", file);
+    formData.append("preferred_username", preferred_username);
+    await axios.post('http://localhost:3000/upload', formData, { headers: {'Content-Type': 'multipart/form-data'}})
 
     const data = {
       name: firstName,
@@ -223,6 +230,11 @@ const SignUp: React.FC = () => {
                   </select>
                 </div>
               </div>
+            </div>
+
+            <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15px] px-5 pb-[9.600000000000364px] max-w-full border-[1px] border-solid border-marco">
+              <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
+              <input onChange={e => setFile(e.target.files[0])} type="file" accept="image/*"></input>
             </div>
 
 
