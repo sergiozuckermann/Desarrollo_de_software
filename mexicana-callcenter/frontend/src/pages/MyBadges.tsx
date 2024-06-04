@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import PageStructure from "../components/PageStructure";
-import AgentSpotlightComp from "../components/AgentSpotlightComp";
+import MyBadgesComp from "../components/MyBadgesComp";
 import myBadgesService from "../services/myBadges";
 
 interface Agent {
@@ -54,7 +54,7 @@ const MyBadges = () => {
           <div className="flex flex-col items-center">
             {/* Render the current badge */}
             <div className="flex-shrink-0">
-              <AgentSpotlightComp
+              <MyBadgesComp
                 name={currentBadge?.name || ''}
                 performance={currentBadge?.performance || ''}
                 image={currentBadge?.image || ''}
