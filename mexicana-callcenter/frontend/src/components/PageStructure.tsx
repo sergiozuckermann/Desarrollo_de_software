@@ -31,10 +31,10 @@ const PageStructure: FunctionComponent<PageStructureProps> = ({ title, children 
           {/* LA RUTA ESTA A UNA PÁGINA VACIA */}
 
           <NotificationsDropDown notificationsData={notifications} /> {/* Add the notification dropdown */}
-          <SettingsButton />
+          <h1 className="hidden md:block font">{title}</h1>
           <div className="h-10 mx-2 border-l-2 border-primary"></div> {/* Divisory line */}
           <div className="flex items-center">
-            <h1 className="hidden md:block font">{title}</h1>
+            <SettingsButton />
           </div>
           
         </div>

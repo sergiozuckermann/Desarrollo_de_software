@@ -7,6 +7,8 @@ import axios from 'axios';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 import { CardsContainer, SearchContainer, SearchInput, SearchButton, InstructionText, AgentContainer } from '../components/AgentTransferComponents';
+import { PieChartDataItem } from '../components/GraphAgentStructure';
+import PopUp from '../components/QueuesPopup';
 
 const AgentRoutingProfile = () => {
   type Agent = {
@@ -23,6 +25,8 @@ const AgentRoutingProfile = () => {
   const [searchLastName, setSearchLastName] = useState(''); // State to store the last name
   const [searchUsername, setSearchUsername] = useState(''); // State to store the username
   const [buttonClicked, setButtonClicked] = useState(false); // State to store the button clicked status
+  const [isPopUpVisible, setPopUpVisible] = useState(false); //State to store the pop-up visibility
+  const [agentsState, setAgentsState] = useState<PieChartDataItem[]>([]); // State to store the agents state
 
 
   const routingProfilesMap = { // Map of routing profiles
@@ -114,6 +118,17 @@ const AgentRoutingProfile = () => {
     }
   };
 
+  // Function to handle opening the pop-up
+  const handleOpenPopUp = () => {
+    setAgentsState(agents.map(agent => ({ id: `${agent.id}-${agent.username}`, label: agent.name, value: 1 }))); // Use unique id combination
+    setPopUpVisible(true);
+  };
+
+  // Function to handle closing the pop-up
+  const handleClosePopUp = () => { 
+    setPopUpVisible(false);
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -156,6 +171,7 @@ const AgentRoutingProfile = () => {
           Search
         </SearchButton>
       </SearchContainer>
+      <button onClick={handleOpenPopUp}className="px-4 py-2 font-semibold text-white bg-green-600 rounded-full hover:bg-green-400" data-cy='button' title='Click here to see information regarding queues distribution'>Queues Overview</button>
       <CardsContainer>
         {Object.keys(routingProfilesMap).map((routingProfileId) => (
           <CardDrop
@@ -176,6 +192,7 @@ const AgentRoutingProfile = () => {
         ))}
       </CardsContainer>
       <NotificationContainer />
+      <PopUp isVisible={isPopUpVisible} onClose={handleClosePopUp} agentsState={agentsState} /> 
     </div>
   );
 };

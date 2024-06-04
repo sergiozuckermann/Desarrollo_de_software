@@ -3,7 +3,7 @@ import MyPieChart from './Charts/piechart';
 import MyResponsiveBar from './Charts/barChart';
 import userService from '../services/user';
 
-interface PieChartDataItem {
+export interface PieChartDataItem {
   id: string | number;
   label: string;
   value: number;
@@ -57,9 +57,9 @@ const GraphAgentStructure: React.FunctionComponent<GraphAgentStructureProps> = (
 
   return (
     <div className="box-border border-[1px] rounded-lg shadow p-4 border-solid border-marco shadow-lg lg:h-[700px] overflow-y-auto">
-      <div className="flex flex-col items-center space-y-8 w-full">
+      <div className="flex flex-col items-center w-full space-y-8">
         <div className="w-full">
-          <h1 className="text-3xl font-roboto mb-4 text-center sm:text-left">Agent Status</h1>
+          <h1 className="mb-4 text-3xl text-center font-roboto sm:text-left">Agent Status</h1>
           <div className="flex justify-center">
             <div style={{ width: '100%', height: '300px' }}>
               {
@@ -71,7 +71,7 @@ const GraphAgentStructure: React.FunctionComponent<GraphAgentStructureProps> = (
           </div>
         </div>
         <div className="w-full">
-          <h1 className="text-3xl font-roboto mb-4 text-center sm:text-left">Agent Availability</h1>
+          <h1 className="mb-4 text-3xl text-center font-roboto sm:text-left">Agent Availability</h1>
           <div className="flex justify-center">
             <div style={{ width: '100%', height: '300px' }}>
               <MyPieChart data={chartData2} unit="Agents" />
@@ -80,10 +80,10 @@ const GraphAgentStructure: React.FunctionComponent<GraphAgentStructureProps> = (
         </div>
       </div>
       <div className="flex flex-col">
-        <h1 className="text-3xl font-roboto mb-0 text-center sm:text-left">Contacts Queued</h1>
-        <div className="flex flex-col sm:flex-col md:flex-col lg:flex-row items-center justify-center space-y-4 lg:space-y-0 lg:space-x-4">
+        <h1 className="mb-0 text-3xl text-center font-roboto sm:text-left">Contacts Queued</h1>
+        <div className="flex flex-col items-center justify-center space-y-4 sm:flex-col md:flex-col lg:flex-row lg:space-y-0 lg:space-x-4">
           <div className="text-center">
-            <h2 className="text-3xl font-roboto text-red-600">{totalCustomersWaiting}</h2>
+            <h2 className="text-3xl text-red-600 font-roboto">{totalCustomersWaiting}</h2>
             <h2 className="text-xl font-roboto">
               <a>Customer Waiting</a>
             </h2>
@@ -93,7 +93,7 @@ const GraphAgentStructure: React.FunctionComponent<GraphAgentStructureProps> = (
           </div>
         </div>
         <div className="text-center">
-          <button onClick={() => { window.location.href = "/supervisor/agent-transfer"; }} className="rounded-full px-4 py-2 text-white font-semibold hover:bg-green-400 bg-green-600" data-cy='button' title='Click here to move agents within queues'>Manage Queues</button>
+          <button onClick={() => { window.location.href = "/supervisor/agent-transfer"; }} className="px-4 py-2 font-semibold text-white bg-green-600 rounded-full hover:bg-green-400" data-cy='button' title='Click here to move agents within queues'>Manage Queues</button>
         </div>
       </div>
 

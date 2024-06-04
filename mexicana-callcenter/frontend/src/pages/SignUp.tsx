@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import useCustomToast from "../components/LoginNotification";
 import "../css/global.css";
+import { redirect } from "react-router-dom";
 
 const SignUp: React.FC = () => {
   const [firstName, setFirstName] = useState("");
@@ -55,6 +56,7 @@ const SignUp: React.FC = () => {
         showSuccess(
           "🎉 User is registered but confirmation is needed by Admin.\n You will be notified via email when confirmation is done."
         );
+        redirect('/login');
       } else {
         const errorData = await response.json();
         showError(`🚨 ${errorData.message}`);
@@ -75,7 +77,7 @@ const SignUp: React.FC = () => {
   };
 
   return (
-    <div className="w-full relative bg-white overflow-hidden flex flex-col items-center justify-start gap-[64px] tracking-[normal] mq450:gap-[16px] mq700:gap-[32px] mt-[10%]">
+    <div className="w-full relative bg-white flex flex-col items-center justify-start gap-[64px] tracking-[normal] mq450:gap-[16px] mq700:gap-[32px] mt-[10%] overflow-hidden ">
       <main className="w-[1210px] flex flex-row items-start justify-start py-0 pr-0 box-border gap-[67px] max-w-full cellphone:items-center cellphone:grid cellphone:justify-center">
         <form
           onSubmit={handleSignUp}
@@ -85,7 +87,7 @@ const SignUp: React.FC = () => {
           <div className="self-stretch flex flex-col items-start justify-start gap-[15.57px] max-w-full text-left text-lg text-marco font-paragraph cellphone:items-center cellphone:grid cellphone:justify-center pl-[20px] pr-[20px]">
             <div className="w-full md:w-[573px] flex-1 flex flex-row items-start justify-start py-0 px-4 box-border max-w-full md:pl-4 md:pr-4">
               <img
-                className="h-auto w-full object-cover"
+                className="object-cover w-full h-auto"
                 loading="lazy"
                 alt=""
                 src="/untitled-design-2-2@2x.png"

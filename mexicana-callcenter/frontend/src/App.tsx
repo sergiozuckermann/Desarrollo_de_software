@@ -43,6 +43,7 @@ function App() {
           <Route path="/agent/home" element={< HomePage />} />
           <Route path="agent/workspace" element={< AgentHome />} />
           <Route path="Agent/home/notifications" element={< NotficationCenter />} />
+          <Route path="Agent/TakeABreak" element={<TakeABreak />} />
       </Route>
       <Route element={<ProtectedRoute isAllowed={isAuthenticated && role === 'Supervisor'} />}>
           <Route path="/supervisor/ongoingcalls" element={<OngoingCalls />} />
