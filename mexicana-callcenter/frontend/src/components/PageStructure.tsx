@@ -2,22 +2,21 @@ import { FunctionComponent, ReactNode } from "react";
 import "../css/PageStructure.css";
 import Button from "./Buttons";
 import SettingsButton from "./SettingsButton";
-
 import NotificationBadge from "./notificationComponent";
 import { useNavigate } from 'react-router-dom';
 import TimestampDisplay from "./TimestampDisplay";
 import NotificationsDropDown from "./NotificationsDropDown";
 import { notifications } from "./notificationsData";
-
+import { useAuth } from "../hooks/useAuth"; 
 
 interface PageStructureProps {
   title: string;
   children?: ReactNode;
 }
 
-
 const PageStructure: FunctionComponent<PageStructureProps> = ({ title, children }) => {
-    
+  const { isAuthenticated, role } = useAuth(); 
+
   return (
     <div className="flex flex-col h-screen pl-2 pr-2 md:overflow-hidden">
       {/* Top bar */}
@@ -28,15 +27,13 @@ const PageStructure: FunctionComponent<PageStructureProps> = ({ title, children 
           </Button>
         </div>
         <div className="flex items-center">
-          {/* LA RUTA ESTA A UNA PÁGINA VACIA */}
-
-          <NotificationsDropDown notificationsData={notifications} /> {/* Add the notification dropdown */}
+          {/* Notificaciones renderizadas para supervisor */}
+          {isAuthenticated && role === 'Supervisor' && <NotificationsDropDown notificationsData={notifications} />}
           <SettingsButton />
           <div className="h-10 mx-2 border-l-2 border-primary"></div> {/* Divisory line */}
           <div className="flex items-center">
             <h1 className="hidden md:block font">{title}</h1>
           </div>
-          
         </div>
       </div>
 
@@ -46,7 +43,7 @@ const PageStructure: FunctionComponent<PageStructureProps> = ({ title, children 
       </div>
 
       {/* Bottom bar */}
-     <TimestampDisplay/>
+      <TimestampDisplay/>
     </div>
   );
 };
