@@ -2,7 +2,7 @@ const express = require('express');
 const supervisorRouter = express.Router();
 const dynamoDBClient = require('../utils/dynamoDBClient')
 const connectClient = require('../utils/connectClient')
-const { ScanCommand } = require("@aws-sdk/client-dynamodb"); // CommonJS import
+const { ScanCommand, ProjectionType } = require("@aws-sdk/client-dynamodb"); // CommonJS import
 const { ListUsersCommand, DescribeUserCommand, UpdateUserRoutingProfileCommand, GetCurrentMetricDataCommand } = require("@aws-sdk/client-connect"); // CommonJS import
 const { unmarshall } = require('@aws-sdk/util-dynamodb');
 
@@ -21,7 +21,7 @@ supervisorRouter.get('/myInfo/:username', async (req, res, next) => {
   try {
     const command = new ScanCommand(params);
     const response = await dynamoDBClient.send(command);
-    console.log("this is response: ", response)
+    // console.log("this is response: ", response)
     const [userInfo] = response.Items // extract the info of the user
     res.status(200).json(unmarshall(userInfo)) // return info to the client as an object that contains info of the user
   } catch (err) {
@@ -30,6 +30,8 @@ supervisorRouter.get('/myInfo/:username', async (req, res, next) => {
 
   }
 })
+
+
 
 // Get agents
 supervisorRouter.get('/agents', async (req, res) => {
@@ -55,18 +57,33 @@ supervisorRouter.get('/agents', async (req, res) => {
 
       const userResponse = await connectClient.send(usercommand);
 
+      const performanceParams = {
+        TableName: 'Agent',
+        FilterExpression: 'username = :u',
+        ExpressionAttributeValues: { // use expression to filter by username
+          ':u': { S: userResponse.User.Username }
+        },
+        ProjectionExpression: 'performance'
+      };
+
+      const performanceData = new ScanCommand(performanceParams);
+      const performanceResponse = await dynamoDBClient.send(performanceData);
+      const [performance] = performanceResponse.Items
+
       return {
         id: user.Id,
         username: userResponse.User.Username,
         routingProfileId: userResponse.User.RoutingProfileId,
         name: userResponse.User.IdentityInfo.FirstName,
         lastname: userResponse.User.IdentityInfo.LastName,
-        type: userResponse.User.SecurityProfileIds,
+        type: userResponse.User.SecurityProfileIds[0],
+        performance: performance ? unmarshall(performance).performance : null
       };
 
     });
 
     const userDetails = await Promise.all(userDetailsPromises);
+    // console.log('Agents:', userDetails);
 
     res.json(userDetails);
   } catch (error) {
