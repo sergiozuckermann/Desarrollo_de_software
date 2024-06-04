@@ -11,6 +11,7 @@ const loginRouter = require('./controllers/login')
 const supervisorRouter = require('./controllers/supervisor')
 const agentRouter = require('./controllers/agent')
 const metricsRouter = require('./controllers/historicMetrics')
+const uploadRouter = require('./controllers/uploadPicture'); // Asegúrate de que la ruta es correcta
 
 // Create an Express application
 const app = express();
@@ -33,6 +34,8 @@ app.use('/auth/login', loginRouter)
 app.use('/supervisor', verifyToken, verifyRole(roles.supervisor), supervisorRouter)
 app.use('/agent', verifyToken, verifyRole(roles.agent), agentRouter)
 app.use('/historicmetrics',  metricsRouter)
+app.use('/upload', uploadRouter); // Añadir la ruta del uploadRouter
+
 
 
 const port = process.env.PORT || 3000; // Use the port defined in environment variable or default to 3000

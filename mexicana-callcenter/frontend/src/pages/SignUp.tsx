@@ -33,7 +33,7 @@ const SignUp: React.FC = () => {
     }
     const formData = new FormData();
     formData.append("profilePicture", file)
-    await axios.post('http://localhost:8080/upload', formData, { headers: {'Content-Type': 'multipart/form-data'}})
+    await axios.post('http://localhost:3000/upload', formData, { headers: {'Content-Type': 'multipart/form-data'}})
 
     const data = {
       name: firstName,
