@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import MyPieChart from './Charts/piechart';
-import MyResponsiveBar from './Charts/barChart';
 import userService from '../services/user';
+import MyBarChart2 from './Charts/barChart2';
 
 interface PieChartDataItem {
   id: string | number;
@@ -90,7 +90,7 @@ interface GraphAgentStructureProps {
             </h2>
           </div>
           <div style={{ width: '100%', height: '300px' }}>
-            <MyResponsiveBar data={queueData} />
+            <MyBarChart2 data={queueData} />
           </div>
         </div>
       </div>
