@@ -1,3 +1,5 @@
+import userService from '../services/user';
+
 const AverageResolutionTime = () => {
     const ScaleIcon = '/scale.svg';
   
@@ -21,7 +23,8 @@ const AverageResolutionTime = () => {
         { name: 'Natalia', time: '00:00:00' },
         { name: 'Valeria', time: '00:00:00' }
     ];
-  
+    const data2 = userService.GetPerformanceMetrics("ACRT");
+    console.log(data2);
     return (
       <div className="w-full p-4 sm:p-6 lg:p-8 card overflow-hidden" style={{ backgroundColor: '#F8F9FA'}}>
         <div className="max-w-xl mx-auto">

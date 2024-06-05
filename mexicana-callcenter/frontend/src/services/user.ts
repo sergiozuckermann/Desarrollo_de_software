@@ -25,7 +25,7 @@ const GetAgents = () => {
         .then(response => response.data);
 };
 
-const GetQueueMetrics = () => {
+const GetQueueMetrics = () => { 
     const config = { // set headers
         headers: {
             Authorization: `Bearer ${sessionStorage.getItem('token')}`,
@@ -36,8 +36,24 @@ const GetQueueMetrics = () => {
         .then(response => response.data);
 }
 
+const GetPerformanceMetrics = (type: string) => { //Average case resolution time (ACRT), Average customer hold time (ACHT), Average interaction time (AIT)
+    console.log(type);
+    const config = { // set headers
+        headers: {
+            Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+        }
+    };
+    const body = {
+        type: type
+    };
+    return axios
+        .post(`${baseUrl}/Supervisor/metrics/performance`,body, config)
+        .then(response => response.data);
+}
+
 export default {
     GetInfo,
     GetAgents,
-    GetQueueMetrics
+    GetQueueMetrics,
+    GetPerformanceMetrics
 }
