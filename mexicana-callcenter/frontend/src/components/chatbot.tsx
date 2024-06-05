@@ -39,8 +39,8 @@ const Chatbot: React.FC = () => {
         <div className="flex flex-col items-start justify-start flex-1 w-full h-full">
           <div className="flex flex-col items-start justify-start w-full h-full text-xl text-left font-roboto">
             <div className="box-border flex flex-col items-start self-stretch justify-center w-full h-full py-0 pl-px pr-0 text-lg text-left">
-              <div className="flex-1 rounded-3xs bg-tertiary box-border flex flex-col items-start justify-start pt-[13px] pb-3.5 pr-2.5 pl-[17px] gap-[5px] w-full h-full border-[1px] border-solid border-marco">
-                <div className="w-full h-full relative rounded-3xs bg-tertiary box-border overflow-y-auto border-[1px] border-solid border-marco p-4">
+              <div className="flex-1 rounded-3xs box-border flex flex-col items-start justify-start pt-[13px] pb-3.5 pr-2.5 pl-[17px] gap-[5px] w-full h-full" style={{ backgroundColor: "#E8E9EA" }}>
+                <div className="box-border relative w-full h-full p-4 overflow-y-auto rounded-3xs" style={{ backgroundColor: "#E8E9EA" }}>
                   {messages.map((message, index) => (
                     <div
                       key={index}
@@ -52,7 +52,7 @@ const Chatbot: React.FC = () => {
                         className={`p-2 m-1 rounded ${
                           message.sender === "user"
                             ? "bg-blue-500 text-white"
-                            : "bg-gray-200 text-black"
+                            : "bg-green-700 text-white"
                         }`}
                       >
                         {message.text}
@@ -62,7 +62,7 @@ const Chatbot: React.FC = () => {
                 </div>
                 <div className="flex items-center justify-between w-full mt-4">
                   <input
-                    className="flex-1 p-2 mr-2 border rounded"
+                    className="flex-1 p-2 mr-2 border rounded bg-slate-50"
                     type="text"
                     placeholder="Write a message..."
                     value={input}
