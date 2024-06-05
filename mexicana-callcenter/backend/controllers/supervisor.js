@@ -77,7 +77,7 @@ supervisorRouter.get('/agents', async (req, res) => {
         name: userResponse.User.IdentityInfo.FirstName,
         lastname: userResponse.User.IdentityInfo.LastName,
         type: userResponse.User.SecurityProfileIds[0],
-        performance: performance ? unmarshall(performance).performance : null
+        performance: performance ? unmarshall(performance).performance : null,
       };
 
     });

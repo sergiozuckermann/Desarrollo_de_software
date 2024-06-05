@@ -8,6 +8,7 @@ interface Agent {
   performance: string;
   image: string;
   lastname: string;
+  username: string;
 }
 
 const AgentSpotlight = () => {
@@ -20,22 +21,22 @@ const AgentSpotlight = () => {
 
   // useEffect hook to fetch all agents when the component mounts
   useEffect(() => {
+    let fetchedAgents: Agent[]; // Declare the variable fetchedAgents
     userService
       .GetAgents()
-      .then((fetchedAgents) => {
-        console.log('Fetched agents:', fetchedAgents);
-        // Get only the agent type 6853576e-8cb9-49d9-8d2f-9e6e36a6c003
-        fetchedAgents = fetchedAgents.filter((agent:Agent)=> agent.performance !== null);
-        // Update the agents state with the fetched data
-        setAgents(fetchedAgents);
+      .then((agents) => {
+        fetchedAgents = agents.filter((agent: Agent) => agent.performance !== null);
+        return Promise.all(fetchedAgents.map((agent: Agent) => userService.GetImageUrl(agent.username)));
+      })
+      .then((imageUrls) => {
+        setAgents(fetchedAgents.map((agent, index) => ({ ...agent, image: imageUrls[index].imageUrl })));
         setLoading(false);
       })
       .catch((error) => {
         // Log any errors that occur during the API call
-        console.error('Failed to fetch agents:', error);
+        console.error('Failed to fetch agents:',error);
       });
   }, []); // Empty dependency array to run the effect only once
-
   // Function to handle the previous button click
   const handlePrevClick = () => {
     setCurrentIndex((prevIndex) =>

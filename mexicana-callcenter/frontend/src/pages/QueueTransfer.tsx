@@ -8,6 +8,7 @@ import { NotificationContainer, NotificationManager } from 'react-notifications'
 import 'react-notifications/lib/notifications.css';
 import { CardsContainer, SearchContainer, SearchInput, SearchButton, InstructionText, AgentContainer } from '../components/AgentTransferComponents';
 
+
 const AgentRoutingProfile = () => {
   type Agent = {
     id: string;
@@ -17,12 +18,14 @@ const AgentRoutingProfile = () => {
     routingProfileId: string;
   };
 
-  const [agents, setAgents] = useState<Agent[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [searchName, setSearchName] = useState('');
-  const [searchLastName, setSearchLastName] = useState('');
-  const [searchUsername, setSearchUsername] = useState('');
-  const [buttonClicked] = useState(false);
+
+  const [agents, setAgents] = useState<Agent[]>([]); // State to store the agents
+  const [loading, setLoading] = useState(true); // State to store the loading status
+  const [searchName, setSearchName] = useState(''); // State to store the name
+  const [searchLastName, setSearchLastName] = useState(''); // State to store the last name
+  const [searchUsername, setSearchUsername] = useState(''); // State to store the username
+  const [buttonClicked, setButtonClicked] = useState(false); // State to store the button clicked status
+
 
   const routingProfilesMap = {
     'cef57a3d-e69c-410f-a52a-511cdd89664b': 'Flight Management',
@@ -101,6 +104,8 @@ const AgentRoutingProfile = () => {
       NotificationManager.error('User not found', 'Search Error');
     }
   };
+
+
 
   if (loading) {
     return <div>Loading...</div>;
