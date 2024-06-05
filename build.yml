@@ -13,10 +13,10 @@ phases:
       - zip -r ../../deployment_package.zip . # Empaqueta todo el contenido del directorio backend, incluidos node_modules
   post_build:
     commands:
-      - echo "Changing to root directory..."
-      - cd ../..
+      - echo "Uploading to S3..."
+      - aws s3 cp ../../deployment_package.zip s3://deployment-back/
       - echo "Updating lambda function..."
-      - aws lambda update-function-code --function-name lambda-api-back --zip-file fileb://deployment_package.zip
+      - aws lambda update-function-code --function-name lambda-api-back --s3-bucket deployment-back --s3-key deployment_package.zip
       - echo "DONE!!"
 artifacts:
   files:
