@@ -180,7 +180,7 @@ supervisorRouter.get('/metrics', async (req, res) => {
     }));
 
     // Return the array to the client
-    console.log('Filtered MetricsResults:', JSON.stringify(filteredResults, null, 2));
+    // console.log('Filtered MetricsResults:', JSON.stringify(filteredResults, null, 2));
     res.status(200).json(filteredResults);
 
   } catch (error) {
@@ -196,7 +196,7 @@ supervisorRouter.post('/barge-in', async (req, res) => {
     InstanceId: 'd90b8836-8188-46c5-a73c-20cbee3a8ded',
     ContactId: req.body.contactId,
     UserId: req.body.participantId,
-    AllowedMonitorCapabilities: ['BARGE']
+    AllowedMonitorCapabilities: ['BARGE', 'SILENT_MONITOR']
   };
   try {
     const command = new MonitorContactCommand(params);

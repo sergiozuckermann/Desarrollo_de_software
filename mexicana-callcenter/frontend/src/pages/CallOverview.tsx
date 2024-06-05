@@ -9,6 +9,7 @@ import userService from "../services/user";
 import { useAuth } from '../hooks/useAuth'
 import axios from "axios";
 import useCustomToast from "../components/LoginNotification";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -30,6 +31,7 @@ const MainContent = () => {
   const [userInfo, setUserInfo] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
   const { showError } = useCustomToast();
+  const navigate = useNavigate();
 
 
 
@@ -71,7 +73,7 @@ const MainContent = () => {
       .GetInfo(role!, username!) // call function that makes axios request
       .then((user) => {
         setUserInfo(user); // set userInfo state with the result from the request if it is successful
-        setUserId(user.user_id); // store the user's id in the userId state variable
+        setUserId(user.connectUserId); // store the user's id in the userId state variable
         console.log('User info:', user); // Print the user info
       })
       .catch(error => {
@@ -94,8 +96,11 @@ const MainContent = () => {
       console.log('Sending data:', data); // Print the data
 
       await axios.post('http://localhost:3000/Supervisor/barge-in', data, config);
+      console.log('Barged in successfully');
+      navigate('/Supervisor/bargein');
     } catch (error) {
       console.log('Failed to barge in:', error);
+      navigate('/Supervisor/bargein');
     }
   }
 
@@ -115,7 +120,7 @@ const MainContent = () => {
       <div className="z-30 h-full lg:col-span-8 sm:col-span-12">
         <div className="flex items-center justify-between pt-4 mb-4">
           <h2 className="text-xl text-gray-600 font-roboto">Call Metrics</h2>
-          <button className="w-5/12 px-4 py-3 text-white rounded-lg shadow bg-secondary hover:opacity-75 mr-7" onClick={() => handleBargeIn('947a2efa-f7d2-43cd-843d-580537966a43')}>Barge In</button>
+          <button className="w-5/12 px-4 py-3 text-white rounded-lg shadow bg-secondary hover:opacity-75 mr-7" onClick={() => handleBargeIn('18ae95bc-4d0f-48b0-8def-68673747f13b')}>Barge In</button>
         </div>
         <div className="grid w-[100%] h-[80%]  grid-cols-1 gap-2 lg:grid-cols-2 lg:col-span-8 z-30">
           <Card title="Talk time">

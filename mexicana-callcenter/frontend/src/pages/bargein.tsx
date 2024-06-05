@@ -5,7 +5,6 @@ import ConnectHere from "../components/ConnectHere";
 import ClientForm from "../components/ClientForm";
 import Suggestions from "../components/Suggestions";
 import Popup from "../components/Popup";
-import CCPComponent from "../components/CCPComponent";
 
 const BargeIn: FunctionComponent = () => (
   <PageStructure title="Ongoing Calls">
