@@ -13,6 +13,9 @@ body {
   border-width: 0;
 }
 
+* {
+  @apply transition-colors duration-300
+}
 
 .home-button {
   position: relative; /* This is needed for absolute positioning of children */

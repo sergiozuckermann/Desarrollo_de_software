@@ -42,9 +42,9 @@ const NotificationsDropDown: React.FC<NotificationsDropDownProps> = ({ notificat
         <NotificationBadge count={unreadCount} />
       </button>
       {isDropdownOpen && (
-        <div className="absolute right-0 mt-2 w-64 bg-white border rounded-lg shadow-lg max-h-60 overflow-y-auto">
+        <div className="absolute right-0 mt-2 w-64 bg-white border rounded-lg shadow-lg max-h-60 overflow-y-auto dark:bg-gray-900">
           <div className="p-2">
-            <h3 className="text-lg font-semibold mb-4">Notifications</h3>
+            <h3 className="text-lg font-semibold mb-4 dark:text-white">Notifications</h3>
             {unreadUrgentNotifications.slice(0, 5).map((notification) => (
               <div
                 key={notification.id}
