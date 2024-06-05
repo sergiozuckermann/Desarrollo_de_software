@@ -3,6 +3,7 @@ import useCustomToast from "../components/LoginNotification";
 import "../css/global.css";
 import axios from "axios";
 import { redirect } from "react-router-dom";
+import { FaUpload } from 'react-icons/fa';
 
 
 const SignUp: React.FC = () => {
@@ -21,6 +22,8 @@ const SignUp: React.FC = () => {
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
   const { showError, showSuccess } = useCustomToast();
   const [file, setFile] = useState()
+  const [fileLabel, setFileLabel] = useState("Choose your profile picture");
+
 
   const checkPasswordRequirements = (password: string) => {
     return /[a-z]/.test(password) && /[A-Z]/.test(password) && /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{8,}$/.test(password);
@@ -81,10 +84,25 @@ const SignUp: React.FC = () => {
     } else if (field === "confirmPassword") {
       setShowPasswordConfirm(!showPasswordConfirm);
     }
+  
+  
   };
 
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+      setFileLabel(selectedFile.name);
+    }
+  };
+
+  const handleContainerClick = () => {
+    const fileInput = document.getElementById('profilePictureInput');
+    fileInput.click();
+  }
+
   return (
-    <div className="w-full relative bg-white flex flex-col items-center justify-start gap-[64px] tracking-[normal] mq450:gap-[16px] mq700:gap-[32px] mt-[10%] overflow-hidden ">
+    <div className="w-full relative bg-white flex flex-col items-center justify-start gap-[64px] tracking-[normal] mq450:gap-[16px] mq700:gap-[32px] mt-[5%] overflow-hidden mb-[5%]">
       <main className="w-[1210px] flex flex-row items-start justify-start py-0 pr-0 box-border gap-[67px] max-w-full cellphone:items-center cellphone:grid cellphone:justify-center">
         <form
           onSubmit={handleSignUp}
@@ -115,7 +133,11 @@ const SignUp: React.FC = () => {
             <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.899999999999636px] px-[21px] pb-[9.700000000000728px] max-w-full border-[1px] border-solid border-marco">
               <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
               <input
-                className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[25px] w-[100%] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
+                className="[border:none] [outline:none] 
+                
+                
+                
+                text-lg bg-[transparent] h-[25px] w-[100%] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
                 placeholder="Surname"
                 type="text"
                 value={lastName}
@@ -200,10 +222,10 @@ const SignUp: React.FC = () => {
 
             {/* DROPDOWN JOB LEVEL */}
             <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.600000000000364px] px-[21px] pb-2.5 relative max-w-full border-[1px] border-solid border-marco">
-              <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
-              <div className="relative flex-1">
-                <div className="custom-select-wrapper">
-                  <select className="custom-select " value={jobLevel} onChange={(event) => setJobLevel(event.currentTarget.value)}  required data-cy='job-level-input'>
+              <div className=" h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
+              <div className="relative flex-1 ">
+                <div className="custom-select-wrapper ">
+                  <select className="custom-select drop-down " value={jobLevel} onChange={(event) => setJobLevel(event.currentTarget.value)}  required data-cy='job-level-input'>
                     <option value="" disabled>Job Level</option>
                     <option value="Agent">Agent</option>
                     <option value="Supervisor">Supervisor</option>
@@ -212,12 +234,12 @@ const SignUp: React.FC = () => {
               </div>
             </div>
             
-            {/* DROPDOWN JOB LEVEL */}
+            {/* DROPDOWN QUEUE */}
             <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.600000000000364px] px-[21px] pb-2.5 relative max-w-full border-[1px] border-solid border-marco">
-              <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
+              <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] [border-none] border-marco" />
               <div className="relative flex-1">
                 <div className="custom-select-wrapper">
-                  <select className="custom-select " value={agentType} onChange={(event) => setAgentType(event.currentTarget.value)} required data-cy='agent-type-input' >
+                  <select className="custom-select drop-down" value={agentType} onChange={(event) => setAgentType(event.currentTarget.value)} required data-cy='agent-type-input' >
                   <option value="" disabled>
                     Agent Type
                   </option>
@@ -232,17 +254,29 @@ const SignUp: React.FC = () => {
               </div>
             </div>
 
-            <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15px] px-5 pb-[9.600000000000364px] max-w-full border-[1px] border-solid border-marco">
-              <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
-              <input onChange={e => setFile(e.target.files[0])} type="file" accept="image/*"></input>
+            {/* profile picture */}
+            <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15px] px-5 pb-[9.600000000000364px] max-w-full border-[1px] border-solid border-marco"
+            onClick={handleContainerClick} style={{cursor:'pointer'}}>
+              <div className="color: #9CA3AF;h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full [border:none]" 
+              style={{color:'#9CA3AF' }}/>
+              <label className="mr-4" htmlFor="profilePictureInput">{fileLabel}</label>
+              <input 
+                id ="profilePictureInput" 
+                onChange={handleFileChange} 
+                type="file" 
+                accept="image/*"
+                className="file-input"
+                style={{ display: 'none' }}>
+              </input>
+                <FaUpload className="upload-icon" />
             </div>
 
 
             {/* button */}
-            <div className="self-stretch flex flex-row items-start justify-center py-0 pr-5 pl-[30px]">
+            <div className="self-stretch flex flex-row items-start justify-center py-0 pr-5 pl-[30px] mt-[2%]">
               <button
                 type="submit"
-                className="cursor-pointer [border:none] py-2.5 px-5 bg-primary w-[300px] rounded-3xs flex flex-row items-start justify-center box-border hover:bg-slategray"
+                className="cursor-pointer [border:none] py-2.5 px-5 bg-primary w-[300px] rounded-3xs flex flex-row items-start justify-center box-border hover:bg-[#4A8B51]"
                 data-cy="submit-button"
               >
                 <div className="h-[22px] w-[58px] relative text-lg font-paragraph text-tertiary text-center inline-block min-w-[58px]">
@@ -256,7 +290,7 @@ const SignUp: React.FC = () => {
         <div className="w-[533px] flex flex-col items-start justify-start px-0 pb-0 box-border min-w-[533px] max-w-full mq700:min-w-full mq975:flex-1 cellphone:hidden pl-[10%]">
           <div className="self-stretch h-[654px]">
             <img
-              className="absolute h-[644px]"
+              className="absolute h-[80%]"
               alt=""
               src="/signup_blurb.png"
             />
