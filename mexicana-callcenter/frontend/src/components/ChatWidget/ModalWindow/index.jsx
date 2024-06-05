@@ -54,7 +54,7 @@ function ModalWindow(props) {
             if (msg.startsWith('system:')) {
                 const systemMessage = msg.replace('system:', '').trim();
                 return (
-                    <li key={index} style={styles.systemMessageStyles}>
+                    <li key={`system-${index}`} style={styles.systemMessageStyles}>
                         {systemMessage}
                     </li>
                 );
@@ -63,7 +63,7 @@ function ModalWindow(props) {
             const isOwnMessage = msg.startsWith(`${username}:`) || msg.startsWith(`You:`);
             const messageText = isOwnMessage ? msg.replace(`${username}:`, '').replace(`You:`, '') : msg;
             return (
-                <li key={index} style={isOwnMessage ? styles.myMessageStyles : styles.otherMessageStyles}>
+                <li key={`msg-${index}`} style={isOwnMessage ? styles.myMessageStyles : styles.otherMessageStyles}>
                     {isOwnMessage ? `You: ${messageText}` : `${messageText}`}
                 </li>
             );
@@ -102,8 +102,8 @@ function ModalWindow(props) {
                                 style={styles.selectStyles}
                             >
                                 <option value="">Select a member</option>
-                                {availableMembers.map((member) => (
-                                    <option key={member} value={member}>
+                                {availableMembers.map((member, index) => (
+                                    <option key={`member-${index}`} value={member}>
                                         {member}
                                     </option>
                                 ))}
@@ -116,9 +116,9 @@ function ModalWindow(props) {
                             >
                                 Public
                             </button>
-                            {Object.keys(privateMessages).map((member) => (
+                            {Object.keys(privateMessages).map((member, index) => (
                                 <button
-                                    key={member}
+                                    key={`tab-${index}`}
                                     style={activeTab === member ? styles.activeTab : styles.inactiveTab}
                                     onClick={() => {
                                         setActiveTab(member);

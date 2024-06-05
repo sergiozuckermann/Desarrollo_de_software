@@ -50,6 +50,7 @@ function App() {
           <Route path="/agent/MoveYourBody" element={<MoveYourBody />} />
           <Route path="/agent/BreathingExcer" element={<BreathingExcer />} />
           <Route path="/agent/MyBadges" element={<MyBadges />} />
+
       </Route>
       <Route element={<ProtectedRoute isAllowed={isAuthenticated && role === 'Supervisor'} />}>
           <Route path="/supervisor/bargein" element={<BargeIn />} />
