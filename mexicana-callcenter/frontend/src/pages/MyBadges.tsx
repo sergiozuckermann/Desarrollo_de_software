@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import PageStructure from "../components/PageStructure";
 import MyBadgesComp from "../components/MyBadgesComp";
-import myBadgesService from "../services/myBadges";
+import userService from "../services/user";
+import { useAuth } from "../hooks/useAuth";
 
 interface Agent {
   name: string;
@@ -10,49 +11,66 @@ interface Agent {
 }
 
 const MyBadges = () => {
-  // State to store the fetched agents
   const [agents, setAgents] = useState<Agent[]>([]);
-  // State to keep track of the current index for the carousel
   const [currentIndex, setCurrentIndex] = useState(0);
+  const { role, username } = useAuth();
+  const [isLoading, setIsLoading] = useState(true);  // Loading state
+  const [error, setError] = useState<string | null>(null);  // Error state
 
-  // useEffect hook to fetch all agents when the component mounts
   useEffect(() => {
-    myBadgesService
-      .getAgent()
+    console.log('Fetching agent info for:', { role, username });
+
+    let fetchedAgents: Agent[] = [];
+
+    userService
+      .GetInfo(role!, username!)
       .then((fetchedAgent) => {
-        // Update the agents state with the fetched data
-        setAgents(fetchedAgent);
+        console.log('Fetched agent:', fetchedAgent);
+        // If fetchedAgent is an object, convert it to an array
+        const agentsArray = Array.isArray(fetchedAgent) ? fetchedAgent : [fetchedAgent];
+        fetchedAgents = agentsArray;
+        // Fetch image URLs for each agent
+        return Promise.all(agentsArray.map((agent) => userService.GetImageUrl(agent.username)));
+      })
+      .then((imageUrls) => {
+        setAgents(fetchedAgents.map((agent, index) => ({ ...agent, image: imageUrls[index].imageUrl })));
+        setIsLoading(false);  // Set loading to false after data is fetched
       })
       .catch((error) => {
-        // Log any errors that occur during the API call
         console.error('Failed to fetch agents:', error);
+        setError('Failed to fetch agents');
+        setIsLoading(false);  // Set loading to false even if there is an error
       });
-  }, []); // Empty dependency array to run the effect only once
+  }, [role, username]);
 
-  // Function to handle the previous button click
   const handlePrevClick = () => {
     setCurrentIndex((prevIndex) =>
       prevIndex === 0 ? agents.length - 1 : prevIndex - 1
     );
   };
 
-  // Function to handle the next button click
   const handleNextClick = () => {
     setCurrentIndex((prevIndex) =>
       prevIndex === agents.length - 1 ? 0 : prevIndex + 1
     );
   };
 
-  // Get the current badge to display
   const currentBadge = agents[currentIndex];
+  console.log('Current badge:', currentBadge);
+
+  if (isLoading) {
+    return <PageStructure title="My Badges"><div>Loading...</div></PageStructure>;
+  }
+
+  if (error) {
+    return <PageStructure title="My Badges"><div>{error}</div></PageStructure>;
+  }
 
   return (
     <PageStructure title="My Badges">
-      {/* Render the carousel */}
       <div className="flex flex-col items-center justify-center h-full">
         <div className="flex items-center">
           <div className="flex flex-col items-center">
-            {/* Render the current badge */}
             <div className="flex-shrink-0">
               <MyBadgesComp
                 name={currentBadge?.name || ''}
@@ -61,16 +79,12 @@ const MyBadges = () => {
               />
             </div>
           </div>
-
-          {/* Render the buttons */}
           <div className="flex flex-col ml-8">
-            {/* Render the previous button */}
             <button onClick={handlePrevClick} className="mb-4">
-              <img src="/public/up.svg" alt="Previous Arrow" />
+              <img src="/up.svg" alt="Previous Arrow" />
             </button>
-            {/* Render the next button */}
             <button onClick={handleNextClick}>
-              <img src="/public/down.svg" alt="Next Arrow" />
+              <img src="/down.svg" alt="Next Arrow" />
             </button>
           </div>
         </div>
