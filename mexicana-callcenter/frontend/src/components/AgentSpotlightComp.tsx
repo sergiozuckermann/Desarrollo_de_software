@@ -22,6 +22,8 @@ const AgentSpotlightComp: React.FC<AgentSpotlightCompProps> = ({
           <div className="flex items-center">
             <img src="/badge.svg" alt="Badge" className="w-12 h-12 mr-2" />
             <p className="text-gray-600">{performance}</p>
+
+
           </div>
         </div>
       </div>
