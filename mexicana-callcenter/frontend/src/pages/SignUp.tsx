@@ -4,9 +4,12 @@ import "../css/global.css";
 import axios from "axios";
 import { redirect } from "react-router-dom";
 import { FaUpload } from 'react-icons/fa';
+import { useNavigate } from "react-router-dom";
+
 
 
 const SignUp: React.FC = () => {
+  const navigate = useNavigate();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -21,8 +24,10 @@ const SignUp: React.FC = () => {
   const [passwordTextValue, setPasswordTextValue] = useState("");
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
   const { showError, showSuccess } = useCustomToast();
-  const [file, setFile] = useState()
+  const [file, setFile] = useState<File | null>(null);
   const [fileLabel, setFileLabel] = useState("Choose your profile picture");
+  const [fileLabelColor, setFileLabelColor] = useState(""); 
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
 
   const checkPasswordRequirements = (password: string) => {
@@ -66,7 +71,7 @@ const SignUp: React.FC = () => {
         showSuccess(
           "🎉 User is registered but confirmation is needed by Admin.\n You will be notified via email when confirmation is done."
         );
-        redirect('/login');
+        navigate('/signin');
       } else {
         const errorData = await response.json();
         showError(`🚨 ${errorData.message}`);
@@ -88,18 +93,46 @@ const SignUp: React.FC = () => {
   
   };
 
-  const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0] || null;
     if (selectedFile) {
       setFile(selectedFile);
-      setFileLabel(selectedFile.name);
+      uploadFile(selectedFile)
+        .then(() => {
+          setFileLabel("The image has been uploaded successfully");
+          setFileLabelColor("green"); 
+          setPreviewUrl(URL.createObjectURL(selectedFile));
+        })
+        .catch((error) => {
+          console.error("Error uploading file:", error);
+          setFileLabel("Error uploading the image. Please try again.");
+          setFileLabelColor("red"); 
+        });
+      e.target.value = '';
+    }
+  };
+
+  const uploadFile = async (file: File) => {
+    const formData = new FormData();
+    formData.append("profilePicture", file);
+    formData.append("preferred_username", preferred_username);
+  
+    try {
+      await axios.post('http://localhost:3000/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+    } catch (error) {
+      throw new Error("Error uploading file");
     }
   };
 
   const handleContainerClick = () => {
-    const fileInput = document.getElementById('profilePictureInput');
-    fileInput.click();
-  }
+    const fileInput = document.getElementById('profilePictureInput') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.click();
+    }
+  };
+  
 
   return (
     <div className="w-full relative bg-white flex flex-col items-center justify-start gap-[64px] tracking-[normal] mq450:gap-[16px] mq700:gap-[32px] mt-[5%] overflow-hidden mb-[5%]">
@@ -259,7 +292,7 @@ const SignUp: React.FC = () => {
             onClick={handleContainerClick} style={{cursor:'pointer'}}>
               <div className="color: #9CA3AF;h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full [border:none]" 
               style={{color:'#9CA3AF' }}/>
-              <label className="mr-4" htmlFor="profilePictureInput">{fileLabel}</label>
+              <label className="mr-4" htmlFor="profilePictureInput" style={{ color: fileLabelColor }}>{fileLabel}</label>
               <input 
                 id ="profilePictureInput" 
                 onChange={handleFileChange} 
@@ -270,7 +303,14 @@ const SignUp: React.FC = () => {
               </input>
                 <FaUpload className="upload-icon" />
             </div>
-
+            <p style={{ color: 'gray', fontSize: '12px', margin: '0' }}>Accepted files: .png </p>
+            <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.5px] px-[19.699999999999815px] pb-[10.100000000000364px] max-w-full border-[1px] border-solid border-marco justify-center">
+            {previewUrl ? (
+                  <img src={previewUrl} alt="Preview" className="max-w-full max-h-64" />
+                ) : (
+                  <img src="/default-image.png" alt="Image Preview" className="max-w-full max-h-64" />
+                )}
+            </div>
 
             {/* button */}
             <div className="self-stretch flex flex-row items-start justify-center py-0 pr-5 pl-[30px] mt-[2%]">
