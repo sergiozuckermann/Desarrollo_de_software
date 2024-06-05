@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import useCustomToast from "../components/LoginNotification";
 import "../css/global.css";
 import axios from "axios";
-import { redirect } from "react-router-dom";
 import { FaUpload } from 'react-icons/fa';
 import { useNavigate } from "react-router-dom";
 
@@ -42,7 +41,10 @@ const SignUp: React.FC = () => {
       return;
     }
     const formData = new FormData();
-    formData.append("profilePicture", file);
+    if (file) {
+      const blob = new Blob([file], { type: file.type });
+      formData.append("profilePicture", blob);
+    }
     formData.append("preferred_username", preferred_username);
     await axios.post('http://localhost:3000/upload', formData, { headers: {'Content-Type': 'multipart/form-data'}})
 
