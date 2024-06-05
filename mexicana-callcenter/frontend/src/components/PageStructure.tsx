@@ -8,7 +8,7 @@ import TimestampDisplay from "./TimestampDisplay";
 import NotificationsDropDown from "./NotificationsDropDown";
 import { notifications } from "./notificationsData";
 import { useAuth } from "../hooks/useAuth";
-import { DarkModeContext } from "../Provider/ThemeProvider"; // Importa el contexto
+import { DarkModeContext } from "../Provider/ThemeProvider"; 
 
 interface PageStructureProps {
   title: string;
@@ -17,7 +17,7 @@ interface PageStructureProps {
 
 const PageStructure: FunctionComponent<PageStructureProps> = ({ title, children }) => {
   const { isAuthenticated, role } = useAuth();
-  const { darkMode } = useContext(DarkModeContext); // Usa el contexto del tema
+  const { darkMode } = useContext(DarkModeContext);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -38,7 +38,7 @@ const PageStructure: FunctionComponent<PageStructureProps> = ({ title, children 
         <div>
           <Button onClick={() => window.location.href = '/'}>
             <img
-              src={darkMode ? "/logo_pageS_NOBG_DARK.png" : "/logo_pageS_NOBG.png"}
+              src={darkMode ? "/newLogo_DARK_1.png" : "/newLogo_LIGHT_1.png"}
               alt="Logo"
               className="w-[115px] sm:w-[230px] ml-3"
             />

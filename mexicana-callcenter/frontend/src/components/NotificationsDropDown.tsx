@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import NotificationBadge from "./notificationComponent";
 import { useNavigate } from "react-router-dom";
 import { getUnreadNotificationsCount } from "../pages/SupervisorNotifications";
+import { DarkModeContext } from "../Provider/ThemeProvider"; // Asegúrate de importar el contexto
 
 interface NotificationsDropDownProps {
   notificationsData: {
@@ -15,6 +16,7 @@ interface NotificationsDropDownProps {
 const NotificationsDropDown: React.FC<NotificationsDropDownProps> = ({ notificationsData }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
+  const { darkMode } = useContext(DarkModeContext); // Obtén el estado del tema desde el contexto
 
   const unreadCount = getUnreadNotificationsCount();
 
@@ -38,7 +40,8 @@ const NotificationsDropDown: React.FC<NotificationsDropDownProps> = ({ notificat
   return (
     <div className="relative">
       <button className="p-2" onClick={handleToggleDropdown}>
-        <img src="/notifications_iconn.png" alt="" className="w-[45px] mr-2" />
+        {/* Utiliza la clase condicional para cambiar el color del trazo en modo oscuro */}
+        <img src={darkMode ? "/notifications_iconn.svg" : "/notifications_iconn_dark.svg"} alt="" className={`w-[45px] mr-2 ${darkMode ? 'stroke-white' : ''}`} />
         <NotificationBadge count={unreadCount} />
       </button>
       {isDropdownOpen && (
