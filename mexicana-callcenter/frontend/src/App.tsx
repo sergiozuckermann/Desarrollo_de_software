@@ -1,4 +1,3 @@
-import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Hello from './pages/Hello';
 import SignIn from './pages/SignIn';
@@ -21,7 +20,6 @@ import AgentSpotlight from "./pages/AgentSpotlight";
 import TakeABreak from './pages/TakeABreak';
 import MoveYourBody from './pages/MoveYourBody';
 import BreathingExcer from './pages/BreathingExcer';
-
 import AgentRoutingProfile from './pages/QueueTransfer';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
