@@ -45,7 +45,7 @@ const SignUp: React.FC = () => {
       const blob = new Blob([file], { type: file.type });
       formData.append("profilePicture", blob);
     }
-    formData.append("preferred_username", preferred_username);
+    formData.append("preferred_username", preferred_username.trim());
     await axios.post('http://localhost:3000/upload', formData, { headers: {'Content-Type': 'multipart/form-data'}})
 
     const data = {
