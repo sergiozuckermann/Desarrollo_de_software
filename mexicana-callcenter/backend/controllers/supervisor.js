@@ -2,8 +2,8 @@ const express = require('express');
 const supervisorRouter = express.Router();
 const dynamoDBClient = require('../utils/dynamoDBClient')
 const connectClient = require('../utils/connectClient')
-const { ScanCommand, ProjectionType } = require("@aws-sdk/client-dynamodb"); // CommonJS import
-const { ListUsersCommand, DescribeUserCommand, UpdateUserRoutingProfileCommand, GetCurrentMetricDataCommand } = require("@aws-sdk/client-connect"); // CommonJS import
+const { ScanCommand } = require("@aws-sdk/client-dynamodb"); // CommonJS import
+const { ListUsersCommand, DescribeUserCommand, UpdateUserRoutingProfileCommand, GetCurrentMetricDataCommand, MonitorContactCommand } = require("@aws-sdk/client-connect"); // CommonJS import
 const { unmarshall } = require('@aws-sdk/util-dynamodb');
 
 supervisorRouter.get('/myInfo/:username', async (req, res, next) => {
@@ -30,7 +30,6 @@ supervisorRouter.get('/myInfo/:username', async (req, res, next) => {
 
   }
 })
-
 
 
 // Get agents
@@ -190,5 +189,25 @@ supervisorRouter.get('/metrics', async (req, res) => {
   }
 }
 );
+
+//barge in
+supervisorRouter.post('/barge-in', async (req, res) => {
+  const params = {
+    InstanceId: 'd90b8836-8188-46c5-a73c-20cbee3a8ded',
+    ContactId: req.body.contactId,
+    UserId: req.body.participantId,
+    AllowedMonitorCapabilities: ['BARGE']
+  };
+  try {
+    const command = new MonitorContactCommand(params);
+    const response = await connectClient.send(command);
+    console.log('Barge-in successful:', response);
+    res.status(200).send('Barge-in successful');
+
+  } catch (error) {
+    console.error('Error at barge-in:', error);
+    res.status(500).send('Error at barge-in');
+  }
+});
 
 module.exports = supervisorRouter
