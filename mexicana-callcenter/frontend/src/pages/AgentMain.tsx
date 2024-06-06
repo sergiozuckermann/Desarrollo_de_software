@@ -14,6 +14,7 @@ import CCPComponent from "../components/CCPComponent";
 const MainContent = () => {
   const [buttonMode, setButtonMode] = useState('workspace');
   const [userInfo, setUserInfo] = useState<WorkerCardProps | null>(null);
+  const [userImage, setImageURL] = useState<string | null>(null);
   const { role, username, logout } = useAuth()
   const { showError } = useCustomToast();
 
@@ -37,9 +38,25 @@ const MainContent = () => {
             setTimeout(() => {logout()}, 4000) // log user out
         }
       })
-
-
   }, [])
+
+
+  useEffect(() => {
+    userService
+      .GetImageUrl(username!) // Llamada a la función que realiza la solicitud axios
+      .then((url) => {
+        console.log("URL obtenida:", url); // Mostrar el valor de url en la consola
+        setImageURL(url.imageUrl); // Establecer el estado de imageURL con el resultado de la solicitud si es exitosa
+      })
+      .catch(error => {
+        if (error.response && error.response.status === 401) { // Verificar si hay un error de autorización
+          showError(error.response.data.error); // Mostrar el error
+          setTimeout(() => { logout() }, 4000); // Cerrar la sesión del usuario
+        } else {
+          console.error("Error en la solicitud:", error); // Manejar otros posibles errores
+        }
+      });
+  }, []);
 
   return (
     <div className="grid w-full h-full grid-cols-1 gap-4 p-4 md:grid-cols-12">
@@ -47,6 +64,7 @@ const MainContent = () => {
        
         { userInfo !== null ? 
           <WorkerCard 
+          imageURL={userImage || ''}
            name={userInfo.name} 
            position={userInfo.position} 
            experience={userInfo.experience} 
@@ -61,7 +79,7 @@ const MainContent = () => {
           <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
             <HomeButton icon="/MetricsSymbol.svg" title="My Metrics" subtitle="See the real time metrics for all the agents" handleClick={() => window.location.href = '/Metrics'}/>
             <HomeButton icon="/SpotlightSymbol.svg" title="Agent Spotlight" subtitle="Weekly best agents" handleClick={() => window.location.href = '/AgentSpotlight'}/>
-            <HomeButton icon="/BadgesSymbol.svg" title="My Badges" subtitle="See all the awards and badges earned" handleClick={() => window.location.href = '/badges'}/>
+            <HomeButton icon="/BadgesSymbol.svg" title="My Badges" subtitle="See all the awards and badges earned" handleClick={() => window.location.href = '/agent/MyBadges'}/>
             <HomeButton icon="/BreakSymbol.svg" title="Take a break" subtitle="Go to take a break to clear the mind" handleClick={() => window.location.href = '/agent/TakeABreak'}/>
           </div>
             <GradientButton mode={buttonMode} handleClick={() => window.location.href = '/agent/workspace'} />

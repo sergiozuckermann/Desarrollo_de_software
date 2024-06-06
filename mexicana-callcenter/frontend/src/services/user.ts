@@ -51,9 +51,29 @@ const GetPerformanceMetrics = (type: string) => { //Average case resolution time
         .then(response => response.data);
 }
 
+const GetImageUrl = (username: string) => {
+  const config = { // set headers
+    headers: {
+      Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+    }
+  };
+  return axios
+    .get(`${baseUrl}/get-image/get-image-url/${username}`, config)
+    .then(response => {
+      console.log('Image URL:', response.data.imageUrl); // Add console log here
+      return response.data;
+    })
+    .catch((error) => {
+      console.error('Failed to fetch image:', error);
+      // Return the path to the default image
+      return { imageUrl: '/avatar.png' };
+    });
+};
+
 export default {
     GetInfo,
     GetAgents,
     GetQueueMetrics,
-    GetPerformanceMetrics
+    GetPerformanceMetrics,
+    GetImageUrl
 }
