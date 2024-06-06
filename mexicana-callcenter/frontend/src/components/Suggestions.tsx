@@ -8,13 +8,13 @@ const Suggestions: React.FC<SuggestionsProps> = ({ onSuggestionSelect }) => {
     onSuggestionSelect(suggestionText);
   };
     return (
-        <div className="w-full h-[93%] max-w-screen-md pt-2 mx-auto rounded-lg shadow-xl sm:p-8" style={{ backgroundColor: "#E8E9EA" }}>
+        <div className="w-full h-[93%] max-w-screen-md pt-2 mx-auto rounded-lg shadow-xl sm:p-8 overflow-hidden" style={{ backgroundColor: "#E8E9EA" }}>
             <div>
-                <h1 className="text-5xl md:text-6xl lg:text-6xl xl:text-6xl font-roboto mb-8"> Hi, looking for help? </h1>
-                <h2 className="text-3xl md:text-4xl lg:text-4xl xl:text-4xl font-roboto mb-8"> Suggestions </h2>
+                <h1 className="text-4xl md:text-4xl lg:text-4xl xl:text-4xl font-roboto mb-8"> Hi, looking for help? </h1>
+                <h2 className="text-3xl md:text-3xl lg:text-3xl xl:text-3xl font-roboto mb-8"> Suggestions </h2>
 
                 <div className="max-h-[400px] sm:max-h-[400px] overflow-y-auto">
-                    <ul className="divide-y-2 divide-gray-500">
+                    <ul className="divide-y-2 divide-gray-500 overflow-hidden">
                         <li onClick={() => handleClick("How do I help a customer book a flight?")}>
                             <a href="#" className="block p-5 hover:bg-gray-200">
                                 <h3 className="text-lg md:text-xl lg:text-xl xl:text-xl font-roboto">How do I help a customer book a flight?</h3>
