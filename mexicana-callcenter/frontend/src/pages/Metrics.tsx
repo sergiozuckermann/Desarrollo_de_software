@@ -128,7 +128,7 @@ const MainContent = () => {
             data-tooltip-content="This metric measures the average amount of time it takes for calls to be answered in a specific queue. A low average answer time indicates that calls are being answered quickly, while a high average answer time indicates that callers are waiting a long time to speak with an agent."
             data-tooltip-place="bottom">
                 <p>Average Answer Time per Queue</p>
-                <MyBarChart2 data={AnswerData} />
+                <MyBarChart2 data={AnswerData}  unit="secs"/>
             </div>
             <Tooltip id="tooltipAverageAnswerTimePerQueue" className="custom-tooltip" />
 
@@ -138,7 +138,7 @@ const MainContent = () => {
             data-tooltip-content="This metric measures the average amount of time callers wait in a queue before abandoning the call. A high average queue abandon time indicates that callers are waiting a long time before abandoning the call."
             data-tooltip-place="right">
                 <p>Average Queue Abandon Time</p>
-                <MyBarChart2 data={AbandonData} />
+                <MyBarChart2 data={AbandonData} unit="secs"/>
             </div>
             <Tooltip id="tooltipAverageQueueAbandonTime" className="custom-tooltip" />
 
