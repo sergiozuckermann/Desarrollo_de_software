@@ -8,6 +8,10 @@ import Card from '../components/Card';
 import AHT from "../components/Charts/AHT";
 import userService from "../services/user"
 import useCustomToast from "../components/LoginNotification";
+import { useAuth } from '../hooks/useAuth'
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 const { showError } = useCustomToast();
 
 export interface PieChartDataItem {
@@ -16,14 +20,11 @@ export interface PieChartDataItem {
   value: number;
 }
 
-
-
-
 const CallOverview: React.FunctionComponent = () => {
   const { socket } = useWebSocket(); // get web socket connection
   const [agentInfo, setAgentInfo] = useState<{
     agentFirstName: string;
-    key? : string;
+    key?: string;
     contactId?: string;
     state: string;
     sentiment?: string;
@@ -32,6 +33,13 @@ const CallOverview: React.FunctionComponent = () => {
     routingProfile: string;
   } | null>(null);
   const [userImage, setImageURL] = useState<string | null>(null);
+  const { role, username, logout } = useAuth()
+  const [userInfo, setUserInfo] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
+  const { showError } = useCustomToast();
+  const navigate = useNavigate();
+
+
 
   const [chartData, setChartData] = useState<PieChartDataItem[]>([
     { id: "Customer", label: "Customer Time", value: 0 },
@@ -109,6 +117,42 @@ const CallOverview: React.FunctionComponent = () => {
     }
   }, [agentInfo]);
 
+  useEffect(() => {
+    userService
+      .GetInfo(role!, username!) // call function that makes axios request
+      .then((user) => {
+        setUserInfo(user); // set userInfo state with the result from the request if it is successful
+        setUserId(user.connectUserId); // store the user's id in the userId state variable
+        console.log('User info:', user); // Print the user info
+      })
+      .catch(error => {
+        if (error.response.status === 401) { // check for an authorization error
+          showError(error.response.data.error); // display error
+          setTimeout(() => { logout() }, 4000); // log user out
+        }
+      });
+  }, []);
+
+  const handleBargeIn = async (contactId: string) => {
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+        },
+      };
+
+      const data = { participantId: userId, contactId: contactId };
+      console.log('Sending data:', data); // Print the data
+
+      await axios.post('http://localhost:3000/Supervisor/barge-in', data, config);
+      console.log('Barged in successfully');
+      navigate('/Supervisor/bargein');
+    } catch (error) {
+      console.log('Failed to barge in:', error);
+      navigate('/Supervisor/bargein');
+    }
+  }
+
   const updateMetrics = (metrics: any) => {
     // Update your metrics based on the segment data
     console.log("Metrics:", metrics); // Mostrar los datos de los segmentos en la consola
@@ -138,7 +182,7 @@ const CallOverview: React.FunctionComponent = () => {
     setsentimentData([
       {
         id: "sentiment",
-        data: sentimentTrend.map(trend=>({x:trend.x, y:trend.y}))
+        data: sentimentTrend.map((trend: { x: any; y: any; }) => ({ x: trend.x, y: trend.y }))
       },
     ]);
 
@@ -167,7 +211,7 @@ const CallOverview: React.FunctionComponent = () => {
               contactID={agentInfo.contactId || "No agent in call"}
               talktime="00:03:10"
               username={agentInfo.username || "No data available"}
-              routingProfile={agentInfo.routingProfile || "No data available" }
+              routingProfile={agentInfo.routingProfile || "No data available"}
               imageURL={userImage || "/avatar.png"}
             />
           ) : (
@@ -178,8 +222,13 @@ const CallOverview: React.FunctionComponent = () => {
         <div className="z-30 h-full lg:col-span-8 sm:col-span-12">
           <div className="flex items-center justify-between pt-4 mb-4">
             <h2 className="text-xl text-gray-600 font-roboto">Call Metrics</h2>
-            <button className="w-5/12 px-4 py-3 text-white rounded-lg shadow bg-secondary hover:opacity-75 mr-7" onClick={() => window.location.href = '/supervisor/bargein'}>Barge In</button>
-          </div>
+            <button
+              className="w-5/12 px-4 py-3 text-white rounded-lg shadow bg-secondary hover:opacity-75 mr-7"
+              onClick={() => handleBargeIn(agentInfo?.contactId || '')} // Use agentInfo.contactId here
+              disabled={!agentInfo?.contactId} // Disable the button if contactId is not available
+            >
+              Barge In
+            </button>          </div>
           <div className="grid w-[100%] h-[80%] grid-cols-1 gap-2 lg:grid-cols-2 lg:col-span-8 z-30">
             <Card title="Talk time">
               <MyPieChart data={chartData} unit="seconds" />
