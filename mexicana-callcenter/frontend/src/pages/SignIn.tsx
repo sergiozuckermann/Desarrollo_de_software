@@ -37,7 +37,7 @@ const SignIn: FunctionComponent = () => {
         <div className="flex flex-col ml-5 w-6/12 max-md:ml-0 max-md:w-full cellphone:w-full cellphone:max-w-xs cellphone:px-4">
           <section className="flex flex-col mt-28 mr-auto text-lg text-slate-800 text-opacity-50 max-md:mt-10 max-md:max-w-full ">
             <div className="tablet:p-50 cellphone:justify-center">
-              <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/f9b49ac30b1360c78aaee84af182c069847bf947406edfc0f8e4a1d3a3605a86?apiKey=c75bef4eb26d40e482592a37bfd0f8b8&" alt="" className="ml-3 max-w-full aspect-[3.7] w-[489px] cellphone:ml-0" />
+              <img loading="lazy" src="/newLogo_LIGHT_1.png" alt="" className="ml-3 max-w-full aspect-[3.7] w-[489px] cellphone:ml-0" />
             </div>
             {/* <div className="w-full md:w-1/2"> */}
           <section className="flex flex-col items-center mt-10 tablet:p-10 cellphone:items-center"> 
