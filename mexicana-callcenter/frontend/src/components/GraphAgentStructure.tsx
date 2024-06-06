@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import MyPieChart from './Charts/piechart';
 import MyResponsiveBar from './Charts/barChart';
+import MyBarChart2 from './Charts/barChart2';
 import userService from '../services/user';
 import InfoCard from './InfoCard';
 
@@ -83,7 +84,7 @@ interface GraphAgentStructureProps {
             {
               !queueData || queueData.every(a => a.value === 0) ?
               <InfoCard description='Information about contacts waiting in queue will display here' /> :
-              <MyResponsiveBar data={queueData} />
+              <MyBarChart2 data={queueData} />
             }
           </div>
         </div>
