@@ -2,10 +2,7 @@ import { FunctionComponent } from "react";
 import "../bargeIn.css";
 import PageStructure from "../components/PageStructure";
 import ConnectHere from "../components/ConnectHere";
-import ClientForm from "../components/ClientForm";
 import Suggestions from "../components/Suggestions";
-import Popup from "../components/Popup";
-import CCPComponent from "../components/CCPComponent";
 import Chatbot from "../components/chatbot";
 
 const BargeIn: FunctionComponent = () => (
@@ -25,7 +22,6 @@ const BargeIn: FunctionComponent = () => (
         </div>
       </div>
     </div>
-    {/* <Popup onClose={() => console.log("Popup closed")} /> */}
   </PageStructure>
 );
 
