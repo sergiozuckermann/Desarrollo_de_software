@@ -8,7 +8,7 @@ const Suggestions: React.FC<SuggestionsProps> = ({ onSuggestionSelect }) => {
     onSuggestionSelect(suggestionText);
   };
     return (
-        <div className="w-full rounded-lg bg-gray-100 border border-gray-400 p-4 sm:p-8" style={{backgroundColor: "#F8F9FA", borderColor: "rgba(32, 37, 63, 0.5)", borderWidth: "1px", borderStyle: "solid"}}>
+        <div className="w-full h-[93%] max-w-screen-md pt-2 mx-auto rounded-lg shadow-xl sm:p-8" style={{ backgroundColor: "#E8E9EA" }}>
             <div>
                 <h1 className="text-5xl md:text-6xl lg:text-6xl xl:text-6xl font-roboto mb-8"> Hi, looking for help? </h1>
                 <h2 className="text-3xl md:text-4xl lg:text-4xl xl:text-4xl font-roboto mb-8"> Suggestions </h2>
