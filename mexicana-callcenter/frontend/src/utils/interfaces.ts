@@ -37,6 +37,8 @@ export interface Interaction {
   contactId?: string,
   Sentiment?: string,
   queueName?: string,
+  username: string;
+  routingProfile: string;
   
 }
 

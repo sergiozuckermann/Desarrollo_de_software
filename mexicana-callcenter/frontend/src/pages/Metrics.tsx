@@ -13,9 +13,9 @@ import MyBarChart2 from '../components/Charts/barChart2';
 import GaugeChart from 'react-gauge-chart';
 import Filter from '../components/filters';
 import MyBarChart from '../components/Charts/BarChartV';
-import MyPieChart from '../components/Charts/piechart'; // Assuming MyPieChart is a pie chart component
 import 'react-tooltip/dist/react-tooltip.css'
 import { Tooltip } from 'react-tooltip'
+import MyPieChart from '../components/Charts/piechart';
 
 const MainContent = () => {
     // State to manage the filter values
