@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import "amazon-connect-streams";
 
 const CCPComponent = () => {
-  const [selectedQueueName, setSelectedQueueName] = useState('');
-  const [selectedQueueValue, setSelectedQueueValue] = useState('');
 
   useEffect(() => {
     const containerDiv = document.getElementById("ccp-container")!;
