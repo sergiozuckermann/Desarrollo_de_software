@@ -57,8 +57,9 @@ const Chatbot: React.FC<ChatbotProps> = ({ selectedSuggestion }) => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
   };
-  // Render the Chatbot component
-  return (
+
+   // Render the Chatbot component
+   return (
     <div className="flex flex-col items-start justify-start py-0 pr-1.5 pl-0 box-border w-full h-[93%]">
       <div className="self-stretch flex flex-row items-start justify-start py-0 pr-0 pl-0.5 box-border w-full h-full">
         <div className="flex flex-col items-start justify-start flex-1 w-full h-full">
@@ -85,9 +86,9 @@ const Chatbot: React.FC<ChatbotProps> = ({ selectedSuggestion }) => {
                     </div>
                   ))}
                 </div>
-                <div className="flex items-center justify-between w-full mt-4">
+                <div className="flex items-center justify-between w-full mt-4 ">
                   <input
-                    className="flex-1 p-2 border rounded bg-gray-50"
+                    className="flex-1 p-2 border rounded bg-gray-50 focus:outline-none"
                     type="text"
                     placeholder="Write a message..."
                     value={input}
