@@ -150,7 +150,7 @@ const SignUp: React.FC = () => {
                 className="object-cover w-full h-auto"
                 loading="lazy"
                 alt=""
-                src="/untitled-design-2-2@2x.png"
+                src="/newLogo_LIGHT_1.png"
               />
             </div>
             <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15px] px-5 pb-[9.600000000000364px] max-w-full border-[1px] border-solid border-marco">

@@ -18,10 +18,10 @@ const Suggestions = () => {
   };
 
   return (
-    <div className="w-full h-[93%] max-w-screen-md pt-2 mx-auto rounded-lg shadow-xl sm:p-8" style={{ backgroundColor: "#E8E9EA" }}>
+    <div className="w-full h-[93%] max-w-screen-md pt-2 mx-auto rounded-lg shadow-xl sm:p-8 bg-[#F8F9FA] dark:bg-primary">
       <div>
-        <h1 className="mb-2 text-3xl md:text-4xl lg:text-3xl font-roboto"> Hi, looking for help? </h1>
-        <h2 className="mb-2 text-2xl md:text-3xl lg:text-2xl font-roboto"> Suggestions </h2>
+        <h1 className="mb-2 text-3xl md:text-4xl lg:text-3xl font-roboto dark:text-white"> Hi, looking for help? </h1>
+        <h2 className="mb-2 text-2xl md:text-3xl lg:text-2xl font-roboto dark:text-white"> Suggestions </h2>
 
         <div className="max-h-[400px] sm:max-h-[400px] overflow-y-auto">
           <ul className="space-y-4 divide-y divide-gray-400">
@@ -29,13 +29,13 @@ const Suggestions = () => {
               <li key={index} className="mt-4">
                 <button
                   onClick={() => toggleQuestion(index)}
-                  className="block w-full p-5 text-left transition-shadow duration-200 rounded-md shadow-sm bg-gray-50 hover:shadow-md"
+                  className="block w-full p-5 text-left transition-shadow duration-200 rounded-md shadow-sm bg-gray-50 hover:shadow-md dark:bg-gray-900"
                 >
-                  <h3 className="text-lg md:text-xl lg:text-xl xl:text-xl font-roboto">{item.question}</h3>
+                  <h3 className="text-lg md:text-xl lg:text-xl xl:text-xl font-roboto dark:text-white">{item.question}</h3>
                 </button>
                 {openIndex === index && (
-                  <div className="p-4 mt-2 rounded-md shadow-inner bg-gray-50">
-                    <p className="text-gray-700 text-md md:text-lg lg:text-lg xl:text-lg font-roboto">{item.answer}</p>
+                  <div className="p-4 mt-2 rounded-md shadow-inner bg-gray-50 dark:bg-primary">
+                    <p className="text-gray-700 text-md md:text-lg lg:text-lg xl:text-lg font-roboto dark:text-white">{item.answer}</p>
                   </div>
                 )}
               </li>
