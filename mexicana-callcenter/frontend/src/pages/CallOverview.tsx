@@ -38,7 +38,7 @@ const CallOverview: React.FunctionComponent = () => {
   const [userId, setUserId] = useState<string | null>(null);
   const { showError } = useCustomToast();
   const navigate = useNavigate();
-
+  
 
 
   const [chartData, setChartData] = useState<PieChartDataItem[]>([
@@ -62,12 +62,69 @@ const CallOverview: React.FunctionComponent = () => {
 
   const [callDuration, setCallDuration] = useState<string>("00:00:00");
 
+
   // Load selected agent info from sessionStorage
   useEffect(() => {
     const selectedAgent = sessionStorage.getItem("selectedAgent");
     if (selectedAgent) {
       setAgentInfo(JSON.parse(selectedAgent));
     }
+  }, []);
+
+  // Function to generate random data
+  const generateRandomData = () => {
+    const randomValue = () => Math.floor(Math.random() * 100);
+    const randomTrendValue = () => (Math.random() * 10 - 5).toFixed(2); // Range -5 to 5
+    const randomDuration = () => {
+      const minutes = Math.floor(Math.random() * 2);
+      const seconds = Math.floor(Math.random() * 60);
+      const milliseconds = Math.floor(Math.random() * 60);
+      return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}:${String(milliseconds).padStart(2, '0')}`;
+    };
+
+    return {
+      agentTalk: randomValue(),
+      customerTalk: randomValue(),
+      nonTalk: randomValue(),
+      sentimentTrend: Array.from({ length: 10 }, (_, i) => ({ x: i, y: randomTrendValue() })),
+      sentimentPercentages: {
+        positive: randomValue(),
+        neutral: randomValue(),
+        negative: randomValue(),
+      },
+      callDuration: randomDuration(),
+    };
+  };
+
+  // Function to set new data
+  const setNewData = () => {
+    const fakeData = generateRandomData();
+
+    setChartData([
+      { id: "Customer", label: "Customer Time", value: fakeData.customerTalk },
+      { id: "Agent", label: "Agent Time", value: fakeData.agentTalk },
+      { id: "Non-talk", label: "NonTalk Time", value: fakeData.nonTalk },
+    ]);
+
+    setChartData2([
+      { id: "Positive", label: "Positive", value: fakeData.sentimentPercentages.positive },
+      { id: "Neutral", label: "Neutral", value: fakeData.sentimentPercentages.neutral },
+      { id: "Negative", label: "Negative", value: fakeData.sentimentPercentages.negative },
+    ]);
+
+    setsentimentData([
+      {
+        id: "sentiment",
+        data: fakeData.sentimentTrend.map((trend: { x: any; y: any; }) => ({ x: trend.x, y: trend.y }))
+      },
+    ]);
+
+    setCallDuration(fakeData.callDuration);
+  };
+
+  // Set new data once on component mount
+  useEffect(() => {
+    setNewData();
   }, []);
 
   // Handle incoming WebSocket messages
@@ -88,10 +145,10 @@ const CallOverview: React.FunctionComponent = () => {
             updateSentiment(segment);
           }
         }
-        if (metrics) {
-          // Update metrics
-          updateMetrics(metrics);
-        }
+        // if (metrics) {
+        //   // Update metrics
+        //   updateMetrics(metrics);
+        // }
       };
     }
   }, [socket]);
@@ -196,6 +253,8 @@ const CallOverview: React.FunctionComponent = () => {
     // Example logic to update sentiment data
     // setChartData2(...);
   };
+
+
   return (
     <PageStructure title="Call Overview">
       <div className="grid items-center justify-center w-full h-full grid-cols-1 gap-4 p-2 overflow-y-auto lg:grid-cols-12">
@@ -209,7 +268,7 @@ const CallOverview: React.FunctionComponent = () => {
               agentQueue={agentInfo.queueName || "No data available"}
               actualSentiment={agentInfo.sentiment || "No agent in call"}
               contactID={agentInfo.contactId || "No agent in call"}
-              talktime="00:03:10"
+              talktime={callDuration}
               username={agentInfo.username || "No data available"}
               routingProfile={agentInfo.routingProfile || "No data available"}
               imageURL={userImage || "/avatar.png"}
