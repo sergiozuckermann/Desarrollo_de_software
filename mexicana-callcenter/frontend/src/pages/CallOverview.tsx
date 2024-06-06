@@ -6,6 +6,8 @@ import MyLineChart from "../components/Charts/linechart";
 import CallCard from '../components/Callinfo';
 import Card from '../components/Card';
 import AHT from "../components/Charts/AHT";
+import CallStatusIndicator from '../components/callStatusIndicator';
+
 
 export interface PieChartDataItem {
   id: string | number;
@@ -17,9 +19,11 @@ const CallOverview: React.FunctionComponent = () => {
   const { socket } = useWebSocket(); // get web socket connection
   const [agentInfo, setAgentInfo] = useState<{
     agentFirstName: string;
+    key? : string;
     contactId?: string;
     state: string;
     sentiment?: string;
+    queueName?: string;
   } | null>(null);
 
   const [chartData, setChartData] = useState<PieChartDataItem[]>([
@@ -96,13 +100,12 @@ const CallOverview: React.FunctionComponent = () => {
       <div className="grid items-center justify-center w-full h-full grid-cols-1 gap-4 p-2 overflow-y-auto lg:grid-cols-12">
         {/* AGENT CARD */}
         <div className="flex items-center justify-center lg:col-span-4 sm:col-span-12">
-          {"agentInfo" ? (
+          {agentInfo ? (
             <CallCard
-              agentname='.' //{agentInfo.agentFirstName}
+              agentname={agentInfo.agentFirstName} //{agentInfo.agentFirstName}
               agentposition="" 
-              agentState="." 
-              agentStandarQueue="." 
-              ongoingCallQueue="."
+              agentState={agentInfo.state}
+              agentQueue="."
               actualSentiment="." 
               contactID="." 
               talktime="."  
