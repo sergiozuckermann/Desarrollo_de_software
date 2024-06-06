@@ -33,7 +33,7 @@ const MyPieChart: React.FC<MyPieChartProps> = ({ data,unit }) => {
         setColors(shuffleArray(brightColors));
     }, []); 
     
-    const handleMouseEnter = (datum: any, event: React.MouseEvent) => {
+    const handleMouseEnter = (datum: any, _event: React.MouseEvent) => {
         setHovered(datum.data);  // Ensure datum.data is used to refer to the slice's data
     };
 

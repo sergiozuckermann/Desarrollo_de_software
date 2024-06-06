@@ -85,7 +85,7 @@ const MyBarChart2 = ({ data }) => {
                     fill="#8884d8"
                     label={{ position: 'top', fill: '#333', fontSize: 12 }}
                 >
-                    {data.map((entry, index) => (
+                    {data.map((_entry: any, index: number) => (
                         <Cell key={`cell-${index}`} fill={barColors[index % barColors.length]} />
                     ))}
                 </Bar>

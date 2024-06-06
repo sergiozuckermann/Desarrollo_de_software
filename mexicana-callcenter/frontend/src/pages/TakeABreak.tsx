@@ -1,4 +1,3 @@
-import React from 'react';
 import PageStructure from "../components/PageStructure"
 import TABreakButtons from "../components/TABreakButtons"
 import { useAuth } from "../hooks/useAuth";

@@ -2,7 +2,6 @@
 import { useState, useEffect } from 'react';
 import PageStructure from "../components/PageStructure";
 import HomeButton from "../components/HomeButtons"; 
-import SupervisorButton from "../components/SupervisorButton";
 import WorkerCard from '../components/WorkerCard';
 import userService from "../services/user"
 import { useAuth } from '../hooks/useAuth'
@@ -12,7 +11,7 @@ import useCustomToast from "../components/LoginNotification";
 
 
 const MainContent = () => {
-  const [buttonMode, setButtonMode] = useState('workspace');
+  const [, setButtonMode] = useState('workspace');
   const [userInfo, setUserInfo] = useState<WorkerCardProps | null>(null);
   const [userImage, setImageURL] = useState<string | null>(null);
   const { showError } = useCustomToast();
