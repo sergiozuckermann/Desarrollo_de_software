@@ -58,15 +58,14 @@ const Chatbot: React.FC<ChatbotProps> = ({ selectedSuggestion }) => {
     setInput(e.target.value);
   };
 
-   // Render the Chatbot component
-   return (
-    <div className="flex flex-col items-start justify-start py-0 pr-1.5 pl-0 box-border w-full h-[93%]">
-      <div className="self-stretch flex flex-row items-start justify-start py-0 pr-0 pl-0.5 box-border w-full h-full">
-        <div className="flex flex-col items-start justify-start flex-1 w-full h-full">
-          <div className="flex flex-col items-start justify-start w-full h-full text-xl text-left font-roboto">
-            <div className="box-border flex flex-col items-start self-stretch justify-center w-full h-full py-0 pl-px pr-0 text-lg text-left">
-              <div className="flex-1 rounded-3xs box-border flex flex-col items-start justify-start pt-[13px] pb-3.5 pr-2.5 pl-[17px] gap-[5px] w-full h-full" style={{ backgroundColor: "#E8E9EA" }}>
-                <div className="box-border relative w-full h-full p-4 overflow-y-auto bg-gray-50 rounded-3xs">
+  return (
+    <div className="flex-1 flex flex-col items-start justify-start py-0 pr-1.5 pl-0 box-border gap-[22px] min-w-[325px] max-w-full">
+      <div className="self-stretch flex flex-row items-start justify-start py-0 pr-0 pl-0.5 box-border max-w-full">
+        <div className="flex flex-col items-start justify-start flex-1 max-w-full">
+          <div className="flex-1 flex flex-col items-start justify-start min-w-[100%] max-w-full text-left text-xl font-roboto">
+            <div className="box-border flex flex-col items-start self-stretch justify-center max-w-full py-0 pl-px pr-0 text-lg text-left">
+              <div className="flex-1 rounded-3xs bg-tertiary box-border flex flex-col items-start justify-start pt-[13px] pb-3.5 pr-2.5 pl-[17px] gap-[5px] max-w-full border-[1px] border-solid border-marco">
+                <div className="w-full h-[50vh] md:h-[400px] relative rounded-3xs bg-tertiary box-border overflow-y-auto border-[1px] border-solid border-marco p-4 max-w-[400px]">
                   {messages.map((message, index) => (
                     <div
                       key={index}
@@ -78,7 +77,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ selectedSuggestion }) => {
                         className={`p-2 m-1 rounded ${
                           message.sender === "user"
                             ? "bg-blue-500 text-white"
-                            : "bg-green-700 text-white"
+                            : "bg-gray-200 text-black"
                         }`}
                       >
                         {message.text}
@@ -86,16 +85,16 @@ const Chatbot: React.FC<ChatbotProps> = ({ selectedSuggestion }) => {
                     </div>
                   ))}
                 </div>
-                <div className="flex items-center justify-between w-full mt-4 ">
+                <div className="flex items-center justify-between w-full mt-4">
                   <input
-                    className="flex-1 p-2 border rounded bg-gray-50 focus:outline-none"
+                    className="flex-1 p-2 border rounded mr-2"
                     type="text"
                     placeholder="Write a message..."
                     value={input}
                     onChange={handleInputChange}
                   />
                   <button
-                    className="p-2 text-white bg-blue-500 rounded hover:bg-blue-600"
+                    className="p-2 bg-blue-500 text-white rounded hover:bg-blue-600"
                     onClick={handleSendMessage}
                   >
                     Send
