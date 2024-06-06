@@ -48,6 +48,7 @@ function App() {
           <Route path="/agent/MoveYourBody" element={<MoveYourBody />} />
           <Route path="/agent/BreathingExcer" element={<BreathingExcer />} />
           <Route path="/agent/MyBadges" element={<MyBadges />} />
+          <Route path="/Metrics" element={<HistoricalMetrics />} />
 
 
       </Route>

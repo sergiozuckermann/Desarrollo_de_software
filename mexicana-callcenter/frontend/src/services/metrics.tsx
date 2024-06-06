@@ -6,7 +6,7 @@ const queueNames = {
     '292d0398-6089-42cc-9ec9-aee43d6202a6': "Travel logistics"
 };
 
-export function FetchMetrics(filters) {
+export function FetchMetrics(filters, role, username) {
     const [averageAbandonmentRate, setAverageAbandonmentRate] = useState<number | null>(null);
     const [averageAbandonTime, setAverageAbandonTime] = useState<Array<{ label: string, value: number }> | null>(null);
     const [averageQueueAnswerTime, setAverageQueueAnswerTime] = useState<Array<{ label: string, value: number }> | null>(null);
@@ -21,7 +21,11 @@ export function FetchMetrics(filters) {
         const fetchData = async () => {
             try {
                 // Use empty filters if none provided
-                const requestFilters = filters || {};
+                const requestFilters = {
+                    ...filters,
+                    role,
+                    agentId: username
+                };
                 console.log("Filters before sending request:", requestFilters);  // Log filters
                 const response = await axios.post("http://localhost:3000/historicmetrics", requestFilters, {
                     headers: {
@@ -131,7 +135,7 @@ export function FetchMetrics(filters) {
         };
 
         fetchData();
-    }, [filters]);
+    }, [filters, role, username]);
 
     return {
         averageAbandonmentRate,
