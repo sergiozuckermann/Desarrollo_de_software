@@ -10,18 +10,14 @@ import userService from "../services/user"
 import useCustomToast from "../components/LoginNotification";
 const { showError } = useCustomToast();
 
-
-
 export interface PieChartDataItem {
   id: string | number;
   label: string;
   value: number;
 }
-export interface PieChartDataItem {
-  id: string | number;
-  label: string;
-  value: number;
-}
+
+
+
 
 const CallOverview: React.FunctionComponent = () => {
   const { socket } = useWebSocket(); // get web socket connection
@@ -38,30 +34,25 @@ const CallOverview: React.FunctionComponent = () => {
   const [userImage, setImageURL] = useState<string | null>(null);
 
   const [chartData, setChartData] = useState<PieChartDataItem[]>([
-    { id: "Customer", label: "Talk Time", value: 64 },
-    { id: "Agent", label: "Wait Time", value: 35 },
-    { id: "Non-talk", label: "Hold Time", value: 20 },
+    { id: "Customer", label: "Customer Time", value: 0 },
+    { id: "Agent", label: "Agent Time", value: 0 },
+    { id: "Non-talk", label: "NonTalk Time", value: 0 },
   ]);
 
   const [chartData2, setChartData2] = useState<PieChartDataItem[]>([
-    { id: "Positive", label: "Positive", value: 64 },
-    { id: "Neutral", label: "Neutral", value: 52 },
-    { id: "Negative", label: "Negative", value: 12 },
+    { id: "Positive", label: "Positive", value: 0 },
+    { id: "Neutral", label: "Neutral", value: 0 },
+    { id: "Negative", label: "Negative", value: 0 },
   ]);
 
-  const sentimentData = [
+  const [sentimentData, setsentimentData] = useState([
     {
       id: "sentiment",
-      data: [
-        { x: "0", y: 0 },
-        { x: "10", y: 2 },
-        { x: "20", y: -3 },
-        { x: "30", y: 1 },
-        { x: "40", y: 4 },
-        { x: "50", y: -1 },
-      ],
+      data: [],
     },
-  ];
+  ]);
+
+  const [callDuration, setCallDuration] = useState<string>("00:00:00");
 
   // Load selected agent info from sessionStorage
   useEffect(() => {
@@ -77,6 +68,7 @@ const CallOverview: React.FunctionComponent = () => {
       socket.onmessage = (event) => {
         const data = JSON.parse(event.data);
         const segment = data.message;
+        const metrics = data.metrics;
 
         if (segment) {
           const { segmentType } = segment;
@@ -87,6 +79,10 @@ const CallOverview: React.FunctionComponent = () => {
             // Update sentiment analysis
             updateSentiment(segment);
           }
+        }
+        if (metrics) {
+          // Update metrics
+          updateMetrics(metrics);
         }
       };
     }
@@ -112,11 +108,34 @@ const CallOverview: React.FunctionComponent = () => {
         });
     }
   }, [agentInfo]);
+  
   const updateMetrics = (segment: any) => {
     // Update your metrics based on the segment data
-    console.log('Updating metrics with segment: ', segment);
-    // Example logic to update chart data
-    // setChartData(...);
+    console.log("Metrics:", metrics); // Mostrar los datos de los segmentos en la consola
+    console.log('Updating metrics with segment: ', metrics);
+    const { agentTalk, customerTalk, nonTalk, sentimentTrend, sentimentPercentages, callDuration } = metrics;
+
+    setChartData([
+      { id: "Customer", label: "Customer Time", value: customerTalk },
+      { id: "Agent", label: "Agent Time", value: agentTalk },
+      { id: "Non-talk", label: "NonTalk Time", value: nonTalk },
+    ]);
+
+    setChartData2([
+      { id: "Positive", label: "Positive", value: sentimentPercentages.positive },
+      { id: "Neutral", label: "Neutral", value: sentimentPercentages.neutral },
+      { id: "Negative", label: "Negative", value: sentimentPercentages.negative },
+    ]);
+
+    setsentimentData([
+      {
+        id: "sentiment",
+        data: sentimentTrend.map(trend=>({x:trend.x, y:trend.y}))
+      },
+    ]);
+
+    setCallDuration(callDuration);
+
   };
 
   const updateSentiment = (segment: any) => {
@@ -164,7 +183,7 @@ const CallOverview: React.FunctionComponent = () => {
               <MyLineChart data={sentimentData} />
             </Card>
             <Card title="Average Handling Time">
-              <AHT classificationTime="00:03:10" currentTime="00:04:12" exceededTime="00:01:02" />
+              <AHT classificationTime="00:03:10" currentTime={callDuration} exceededTime="00:01:02" />
             </Card>
           </div>
         </div>
