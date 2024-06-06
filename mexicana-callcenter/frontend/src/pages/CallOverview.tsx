@@ -1,11 +1,18 @@
-import React, { useState } from 'react';
-import PageStructure from '../components/PageStructure';
-import MyPieChart from '../components/Charts/piechart';
-import MyLineChart from '../components/Charts/linechart';
+import React, { useEffect, useState } from 'react';
+import { useWebSocket } from "../hooks/useWebSocket";
+import PageStructure from "../components/PageStructure";
+import MyPieChart from "../components/Charts/piechart";
+import MyLineChart from "../components/Charts/linechart";
 import CallCard from '../components/Callinfo';
-import AHT from '../components/Charts/AHT';
-import { Tooltip } from 'react-tooltip';
-import 'react-tooltip/dist/react-tooltip.css';
+import Card from '../components/Card';
+import AHT from "../components/Charts/AHT";
+import userService from "../services/user"
+import useCustomToast from "../components/LoginNotification";
+import { useAuth } from '../hooks/useAuth'
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
+const { showError } = useCustomToast();
 
 export interface PieChartDataItem {
   id: string | number;
@@ -13,108 +20,231 @@ export interface PieChartDataItem {
   value: number;
 }
 
-const MainContent = () => {
-  // Mock data
-  const mockData: PieChartDataItem[] = [
-    { id: "Customer", label: "Talk Time", value: 64 },
-    { id: "Agent", label: "Wait Time", value: 35 },
-    { id: "Non-talk", label: "Hold Time", value: 20 },
-  ];
+const CallOverview: React.FunctionComponent = () => {
+  const { socket } = useWebSocket(); // get web socket connection
+  const [agentInfo, setAgentInfo] = useState<{
+    agentFirstName: string;
+    key?: string;
+    contactId?: string;
+    state: string;
+    sentiment?: string;
+    queueName?: string;
+    username: string;
+    routingProfile: string;
+  } | null>(null);
+  const [userImage, setImageURL] = useState<string | null>(null);
+  const { role, username, logout } = useAuth()
+  const [userInfo, setUserInfo] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
+  const { showError } = useCustomToast();
+  const navigate = useNavigate();
 
-  const [chartData, setChartData] = useState<PieChartDataItem[]>(mockData);
 
-  const analysisData: PieChartDataItem[] = [
-    { id: "Positive", label: "Positive", value: 64 },
-    { id: "Neutral", label: "Neutral", value: 52 },
-    { id: "Negative", label: "Negative", value: 12 },
-  ];
 
-  const [chartData2, setChartData2] = useState<PieChartDataItem[]>(analysisData);
+  const [chartData, setChartData] = useState<PieChartDataItem[]>([
+    { id: "Customer", label: "Customer Time", value: 0 },
+    { id: "Agent", label: "Agent Time", value: 0 },
+    { id: "Non-talk", label: "NonTalk Time", value: 0 },
+  ]);
 
-  const sentimentData = [
+  const [chartData2, setChartData2] = useState<PieChartDataItem[]>([
+    { id: "Positive", label: "Positive", value: 0 },
+    { id: "Neutral", label: "Neutral", value: 0 },
+    { id: "Negative", label: "Negative", value: 0 },
+  ]);
+
+  const [sentimentData, setsentimentData] = useState([
     {
       id: "sentiment",
-      data: [
-        { x: "0", y: 0 },
-        { x: "10", y: 2 },
-        { x: "20", y: -3 },
-        { x: "30", y: 1 },
-        { x: "40", y: 4 },
-        { x: "50", y: -1 },
-      ],
+      data: [],
     },
-  ];
+  ]);
 
-  return (
-    <div className="grid items-center justify-center w-full h-screen grid-cols-1 gap-4 p-2 lg:grid-cols-12">
-      {/* AGENT CARD */}
-      <div className="flex items-center justify-center pt-[12%] lg:col-span-4 sm:col-span-12">
-        <CallCard
-          agentname="Juan"
-          agentposition="agent"
-          callclasification="Buy a ticket"
-          clientname="Natalia"
-          priority="high"
-          reason="High voice volume"
-          talktime={"05:30"}
-        />
-      </div>
-      {/* Tables Grid */}
-      <div className="z-30 lg:col-span-8 sm:col-span-12">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-4xl text-gray-600 font-roboto dark:text-white">Call Metrics</h2>
-          <button className="w-5/12 px-4 py-2 text-white rounded-lg shadow bg-secondary hover:opacity-75 mr-7" onClick={() => window.location.href = '/supervisor/bargein'}>Barge In</button>
-        </div>
-        <div className="grid w-full h-full grid-cols-1 gap-2 lg:grid-cols-2 lg:col-span-8">
-          <div className="p-4 bg-white rounded-md shadow-lg card dark:bg-primary"
-            data-tooltip-id="tooltipTalkTime"
-            data-tooltip-content="This is the total talk time.">
-            <h3 className="text-lg font-bold dark:text-white">Talk time</h3>
-            <div className="h-[92%]">
-              <MyPieChart data={chartData} unit="seconds" />
-            </div>
-            <Tooltip id="tooltipTalkTime" className="custom-tooltip" />
-          </div>
+  const [callDuration, setCallDuration] = useState<string>("00:00:00");
 
-          <div className="p-4 bg-white rounded-md shadow-lg card dark:bg-primary"
-            data-tooltip-id="tooltipSentiment"
-            data-tooltip-content="This is the sentiment analysis.">
-            <h3 className="text-lg font-bold dark:text-white">Sentiment</h3>
-            <div className="h-[92%]">
-              <MyPieChart data={chartData2} unit="percent" />
-            </div>
-            <Tooltip id="tooltipSentiment" className="custom-tooltip" />
-          </div>
+  // Load selected agent info from sessionStorage
+  useEffect(() => {
+    const selectedAgent = sessionStorage.getItem("selectedAgent");
+    if (selectedAgent) {
+      setAgentInfo(JSON.parse(selectedAgent));
+    }
+  }, []);
 
-          <div className="p-4 bg-white rounded-md shadow-lg card dark:bg-primary"
-            data-tooltip-id="tooltipSentimentTrend"
-            data-tooltip-content="This shows the sentiment trend over time.">
-            <h3 className="text-lg font-bold dark:text-white">Sentiment Trend</h3>
-            <div className="h-[92%]">
-              <MyLineChart data={sentimentData} />
-            </div>
-            <Tooltip id="tooltipSentimentTrend" className="custom-tooltip" />
-          </div>
+  // Handle incoming WebSocket messages
+  useEffect(() => {
+    if (socket !== null) {
+      socket.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        const segment = data.message;
+        const metrics = data.metrics;
 
-          <div className="p-4 bg-white rounded-md shadow-lg card dark:bg-primary"
-            data-tooltip-id="tooltipAHT"
-            data-tooltip-content="Average Handling Time">
-            <h3 className="text-lg font-bold dark:text-white">Average Handling Time</h3>
-            <div className="h-[92%]">
-              <AHT classificationTime="00:03:10" currentTime="00:04:12" exceededTime="00:01:02" />
-            </div>
-            <Tooltip id="tooltipAHT" className="custom-tooltip" />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
+        if (segment) {
+          const { segmentType } = segment;
+          if (segmentType === "AGENT_EVENT") {
+            // Update metrics or handle AGENT_EVENT
+            //updateMetrics(segment);
+          } else if (segmentType === "SENTIMENT_ANALYSIS") {
+            // Update sentiment analysis
+            updateSentiment(segment);
+          }
+        }
+        if (metrics) {
+          // Update metrics
+          updateMetrics(metrics);
+        }
+      };
+    }
+  }, [socket]);
 
-const CallOverview = () => {
+  const usernamePic = agentInfo?.username;
+  console.log("UsernamePic:", usernamePic);
+
+  useEffect(() => {
+    if (agentInfo && agentInfo.username) {
+      userService
+        .GetImageUrl(agentInfo.username)
+        .then((url) => {
+          console.log("URL obtenida:", url); // Mostrar el valor de url en la consola
+          setImageURL(url.imageUrl); // Establecer el estado de imageURL con el resultado de la solicitud si es exitosa
+        })
+        .catch(error => {
+          if (error.response && error.response.status === 401) { // Verificar si hay un error de autorización
+            showError(error.response.data.error); // Mostrar el error
+          } else {
+            console.error("Error en la solicitud:", error); // Manejar otros posibles errores
+          }
+        });
+    }
+  }, [agentInfo]);
+
+  useEffect(() => {
+    userService
+      .GetInfo(role!, username!) // call function that makes axios request
+      .then((user) => {
+        setUserInfo(user); // set userInfo state with the result from the request if it is successful
+        setUserId(user.connectUserId); // store the user's id in the userId state variable
+        console.log('User info:', user); // Print the user info
+      })
+      .catch(error => {
+        if (error.response.status === 401) { // check for an authorization error
+          showError(error.response.data.error); // display error
+          setTimeout(() => { logout() }, 4000); // log user out
+        }
+      });
+  }, []);
+
+  const handleBargeIn = async (contactId: string) => {
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+        },
+      };
+
+      const data = { participantId: userId, contactId: contactId };
+      console.log('Sending data:', data); // Print the data
+
+      await axios.post('http://localhost:3000/Supervisor/barge-in', data, config);
+      console.log('Barged in successfully');
+      navigate('/Supervisor/bargein');
+    } catch (error) {
+      console.log('Failed to barge in:', error);
+      navigate('/Supervisor/bargein');
+    }
+  }
+
+  const updateMetrics = (metrics: any) => {
+    // Update your metrics based on the segment data
+    console.log("Metrics:", metrics); // Mostrar los datos de los segmentos en la consola
+    console.log('Updating metrics with segment: ', metrics);
+
+    const { agentTalk, customerTalk, nonTalk, sentimentTrend, sentimentPercentages, callDuration } = metrics;
+
+    console.log("Agent Talk:", agentTalk);
+    console.log("Customer Talk:", customerTalk);
+    console.log("Non Talk:", nonTalk);
+    console.log("Sentiment Trend:", sentimentTrend);
+    console.log("Sentiment Percentages:", sentimentPercentages);
+    console.log("Call Duration:", callDuration);
+
+    setChartData([
+      { id: "Customer", label: "Customer Time", value: customerTalk },
+      { id: "Agent", label: "Agent Time", value: agentTalk },
+      { id: "Non-talk", label: "NonTalk Time", value: nonTalk },
+    ]);
+
+    setChartData2([
+      { id: "Positive", label: "Positive", value: sentimentPercentages.positive },
+      { id: "Neutral", label: "Neutral", value: sentimentPercentages.neutral },
+      { id: "Negative", label: "Negative", value: sentimentPercentages.negative },
+    ]);
+
+    setsentimentData([
+      {
+        id: "sentiment",
+        data: sentimentTrend.map((trend: { x: any; y: any; }) => ({ x: trend.x, y: trend.y }))
+      },
+    ]);
+
+    setCallDuration(callDuration);
+
+  };
+
+  const updateSentiment = (segment: any) => {
+    // Update your sentiment data based on the segment data
+    console.log('Updating sentiment with segment: ', segment);
+    // Example logic to update sentiment data
+    // setChartData2(...);
+  };
   return (
     <PageStructure title="Call Overview">
-      <MainContent />
+      <div className="grid items-center justify-center w-full h-full grid-cols-1 gap-4 p-2 overflow-y-auto lg:grid-cols-12">
+        {/* AGENT CARD */}
+        <div className="flex items-center justify-center lg:col-span-4 sm:col-span-12">
+          {agentInfo ? (
+            <CallCard
+              agentname={agentInfo.agentFirstName} //{agentInfo.agentFirstName}
+              agentposition="Agent"
+              agentState={agentInfo.state}
+              agentQueue={agentInfo.queueName || "No data available"}
+              actualSentiment={agentInfo.sentiment || "No agent in call"}
+              contactID={agentInfo.contactId || "No agent in call"}
+              talktime="00:03:10"
+              username={agentInfo.username || "No data available"}
+              routingProfile={agentInfo.routingProfile || "No data available"}
+              imageURL={userImage || "/avatar.png"}
+            />
+          ) : (
+            <div>Loading...</div>
+          )}
+        </div>
+        {/* Tables Grid */}
+        <div className="z-30 h-full lg:col-span-8 sm:col-span-12">
+          <div className="flex items-center justify-between pt-4 mb-4">
+            <h2 className="text-xl text-gray-600 font-roboto">Call Metrics</h2>
+            <button
+              className="w-5/12 px-4 py-3 text-white rounded-lg shadow bg-secondary hover:opacity-75 mr-7"
+              onClick={() => handleBargeIn(agentInfo?.contactId || '')} // Use agentInfo.contactId here
+              disabled={!agentInfo?.contactId} // Disable the button if contactId is not available
+            >
+              Barge In
+            </button>          </div>
+          <div className="grid w-[100%] h-[80%] grid-cols-1 gap-2 lg:grid-cols-2 lg:col-span-8 z-30">
+            <Card title="Talk time">
+              <MyPieChart data={chartData} unit="seconds" />
+            </Card>
+            <Card title="Sentiment">
+              <MyPieChart data={chartData2} unit="percent" />
+            </Card>
+            <Card title="Sentiment Trend">
+              <MyLineChart data={sentimentData} />
+            </Card>
+            <Card title="Average Handling Time">
+              <AHT classificationTime="00:03:10" currentTime={callDuration} exceededTime="00:01:02" />
+            </Card>
+          </div>
+        </div>
+      </div>
     </PageStructure>
   );
 };
