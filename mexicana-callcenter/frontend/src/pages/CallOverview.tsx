@@ -62,44 +62,44 @@ const MainContent = () => {
       {/* Tables Grid */}
       <div className="z-30 lg:col-span-8 sm:col-span-12">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-4xl text-gray-600 font-roboto">Call Metrics</h2>
+          <h2 className="text-4xl text-gray-600 font-roboto dark:text-white">Call Metrics</h2>
           <button className="w-5/12 px-4 py-2 text-white rounded-lg shadow bg-secondary hover:opacity-75 mr-7" onClick={() => window.location.href = '/supervisor/bargein'}>Barge In</button>
         </div>
         <div className="grid w-full h-full grid-cols-1 gap-2 lg:grid-cols-2 lg:col-span-8">
-          <div className="p-4 bg-white rounded-md shadow-lg card"
+          <div className="p-4 bg-white rounded-md shadow-lg card dark:bg-primary"
             data-tooltip-id="tooltipTalkTime"
             data-tooltip-content="This is the total talk time.">
-            <h3 className="text-lg font-bold">Talk time</h3>
+            <h3 className="text-lg font-bold dark:text-white">Talk time</h3>
             <div className="h-[92%]">
               <MyPieChart data={chartData} unit="seconds" />
             </div>
             <Tooltip id="tooltipTalkTime" className="custom-tooltip" />
           </div>
 
-          <div className="p-4 bg-white rounded-md shadow-lg card"
+          <div className="p-4 bg-white rounded-md shadow-lg card dark:bg-primary"
             data-tooltip-id="tooltipSentiment"
             data-tooltip-content="This is the sentiment analysis.">
-            <h3 className="text-lg font-bold">Sentiment</h3>
+            <h3 className="text-lg font-bold dark:text-white">Sentiment</h3>
             <div className="h-[92%]">
               <MyPieChart data={chartData2} unit="percent" />
             </div>
             <Tooltip id="tooltipSentiment" className="custom-tooltip" />
           </div>
 
-          <div className="p-4 bg-white rounded-md shadow-lg card"
+          <div className="p-4 bg-white rounded-md shadow-lg card dark:bg-primary"
             data-tooltip-id="tooltipSentimentTrend"
             data-tooltip-content="This shows the sentiment trend over time.">
-            <h3 className="text-lg font-bold">Sentiment Trend</h3>
+            <h3 className="text-lg font-bold dark:text-white">Sentiment Trend</h3>
             <div className="h-[92%]">
               <MyLineChart data={sentimentData} />
             </div>
             <Tooltip id="tooltipSentimentTrend" className="custom-tooltip" />
           </div>
 
-          <div className="p-4 bg-white rounded-md shadow-lg card"
+          <div className="p-4 bg-white rounded-md shadow-lg card dark:bg-primary"
             data-tooltip-id="tooltipAHT"
             data-tooltip-content="Average Handling Time">
-            <h3 className="text-lg font-bold">Average Handling Time</h3>
+            <h3 className="text-lg font-bold dark:text-white">Average Handling Time</h3>
             <div className="h-[92%]">
               <AHT classificationTime="00:03:10" currentTime="00:04:12" exceededTime="00:01:02" />
             </div>

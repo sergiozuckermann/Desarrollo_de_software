@@ -12,7 +12,7 @@ interface CallCardProps {
 
 const CallCard: React.FC<CallCardProps> = ({ agentname, agentposition, callclasification, clientname, priority, reason, talktime }) => {
   return (
-    <div className="p-4 bg-white rounded-md shadow-lg card">
+    <div className="p-4 bg-white rounded-md shadow-lg card dark:bg-primary">
       {/* Large Device Layout */}
       <div className="flex-col items-center justify-center hidden h-full md:flex">
         <div className="max-w-sm">
@@ -21,7 +21,7 @@ const CallCard: React.FC<CallCardProps> = ({ agentname, agentposition, callclasi
           </div>
           <div className="text-center">
           <h2 className="pb-0 mb-2 dark:text-white">{agentname}</h2>
-            <p className="pb-6 lg:pb-7 text-base text-gray-700 "><strong>{agentposition}</strong></p>
+            <p className="pb-6 lg:pb-7 text-base text-gray-700 dark:text-[#808080]"><strong>{agentposition}</strong></p>
             <p className="pb-6 lg:pb-7text-sm text-gray-600 dark:text-white"> <strong>Classification: </strong>{callclasification} </p>
             <p className="pb-6 lg:pb-7 text-base text-gray-600 dark:text-white"><strong>Client name: </strong> {clientname}</p>
             <p className="pb-6 lg:pb-7 text-base text-gray-600 dark:text-white"><strong>Priority : </strong>{priority}</p>
