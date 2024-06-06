@@ -103,7 +103,7 @@ const MainContent = () => {
                     <div className="px-4 py-4 bg-gray-300 rounded-xl bg-opacity-30">
                     </div>
                     <div className="inline-flex text-sm text-gray-600 sm:text-base">
-                        12%
+                         {/* 12% */}
                     </div>
                 </div>
                 <h1 className="mt-1 text-3xl font-bold text-gray-700 sm:text-m xl:text-4xl">{formatTime(averageAnswerTime)}</h1>
@@ -164,7 +164,7 @@ const MainContent = () => {
                     <div className="px-4 py-4 bg-gray-300 rounded-xl bg-opacity-30">
                     </div>
                     <div className="inline-flex text-sm text-gray-600 sm:text-base">
-                        12%
+                         {/* 12% */}%
                     </div>
                 </div>
                 <h1 className="mt-1 text-3xl font-bold text-gray-700 sm:text-m xl:text-4xl">{formatTime(averageContactDuration)}</h1>
@@ -183,7 +183,7 @@ const MainContent = () => {
                     <div className="px-4 py-4 bg-gray-300 rounded-xl bg-opacity-30">
                     </div>
                     <div className="inline-flex text-sm text-gray-600 sm:text-base">
-                        12%
+                         {/* 12% */}%
                     </div>
                 </div>
                 <h1 className="mt-1 text-3xl font-bold text-gray-700 sm:text-m xl:text-4xl">{contactsHandeled} contacts</h1>
@@ -202,7 +202,7 @@ const MainContent = () => {
                     <div className="px-4 py-4 bg-gray-300 rounded-xl bg-opacity-30">
                     </div>
                     <div className="inline-flex text-sm text-gray-600 sm:text-base">
-                        12%
+                        {/* 12% */}
                     </div>
                 </div>
                 <h1 className="mt-1 text-3xl font-bold text-gray-700 sm:text-m xl:text-4xl">{formatTime(contactFlowTime)}</h1>
