@@ -96,21 +96,22 @@ const CallOverview: React.FunctionComponent = () => {
   console.log("UsernamePic:", usernamePic);
 
   useEffect(() => {
-    userService
-      .GetImageUrl(usernamePic!) // Llamada a la función que realiza la solicitud axios
-      .then((url) => {
-        console.log("URL obtenida:", url); // Mostrar el valor de url en la consola
-        setImageURL(url.imageUrl); // Establecer el estado de imageURL con el resultado de la solicitud si es exitosa
-      })
-      .catch(error => {
-        if (error.response && error.response.status === 401) { // Verificar si hay un error de autorización
-          showError(error.response.data.error); // Mostrar el error
-        } else {
-          console.error("Error en la solicitud:", error); // Manejar otros posibles errores
-        }
-      });
-  }, []);
-
+    if (agentInfo && agentInfo.username) {
+      userService
+        .GetImageUrl(agentInfo.username)
+        .then((url) => {
+          console.log("URL obtenida:", url); // Mostrar el valor de url en la consola
+          setImageURL(url.imageUrl); // Establecer el estado de imageURL con el resultado de la solicitud si es exitosa
+        })
+        .catch(error => {
+          if (error.response && error.response.status === 401) { // Verificar si hay un error de autorización
+            showError(error.response.data.error); // Mostrar el error
+          } else {
+            console.error("Error en la solicitud:", error); // Manejar otros posibles errores
+          }
+        });
+    }
+  }, [agentInfo]);
   const updateMetrics = (segment: any) => {
     // Update your metrics based on the segment data
     console.log('Updating metrics with segment: ', segment);
@@ -140,7 +141,7 @@ const CallOverview: React.FunctionComponent = () => {
               talktime="00:03:10"
               username={agentInfo.username || "No data available"}
               routingProfile={agentInfo.routingProfile || "No data available" }
-              imageURL={userImage || "../public/avatar.png"}
+              imageURL={userImage || "/avatar.png"}
             />
           ) : (
             <div>Loading...</div>
