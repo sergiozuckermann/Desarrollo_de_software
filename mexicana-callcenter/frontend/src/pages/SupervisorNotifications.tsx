@@ -27,16 +27,20 @@ const SupervisorNotifications: React.FunctionComponent = () => {
   const [urgentNotifications, setUrgentNotifications] = useState<any[]>([]);
   const [nonUrgentNotifications, setNonUrgentNotifications] = useState<any[]>([]);
   const [hasNewUrgent, setHasNewUrgent] = useState<boolean>(false);
+  const [unreadNotificationsCount, setUnreadNotificationsCount] = useState(0);
+
 
   useEffect(() => {
     const storedReadNotifications = localStorage.getItem("readNotifications");
     const storedDeletedNotifications = localStorage.getItem("deletedNotifications");
+    
     if (storedReadNotifications) {
       setReadNotifications(JSON.parse(storedReadNotifications));
     }
     if (storedDeletedNotifications) {
       setDeletedNotifications(JSON.parse(storedDeletedNotifications));
     }
+    
   }, []);
 
   useEffect(() => {
@@ -82,6 +86,10 @@ const SupervisorNotifications: React.FunctionComponent = () => {
 
       const hasUnreadUrgent = filteredUrgent.some(notification => !readNotifications.includes(notification.id));
       setHasNewUrgent(hasUnreadUrgent);
+
+      const unreadCount = filteredUrgent.filter(notification => !readNotifications.includes(notification.id)).length +
+                          filteredNonUrgent.filter(notification => !readNotifications.includes(notification.id)).length;
+      setUnreadNotificationsCount(unreadCount);
     };
 
     fetchData();
@@ -101,6 +109,10 @@ const SupervisorNotifications: React.FunctionComponent = () => {
       
       const allUrgentRead = urgentNotifications.every(notification => updatedReadNotifications.includes(notification.id));
       setHasNewUrgent(!allUrgentRead);
+
+      const unreadCount = urgentNotifications.filter(notification => !updatedReadNotifications.includes(notification.id)).length +
+                          nonUrgentNotifications.filter(notification => !updatedReadNotifications.includes(notification.id)).length;
+      setUnreadNotificationsCount(unreadCount);
     }
   };
 
@@ -112,6 +124,10 @@ const SupervisorNotifications: React.FunctionComponent = () => {
 
       setUrgentNotifications(prev => prev.filter(notification => notification.id !== notificationId));
       setNonUrgentNotifications(prev => prev.filter(notification => notification.id !== notificationId));
+
+      const unreadCount = updatedUrgent.filter(notification => !readNotifications.includes(notification.id)).length +
+                          updatedNonUrgent.filter(notification => !readNotifications.includes(notification.id)).length;
+      setUnreadNotificationsCount(unreadCount);
     }
   };
 
