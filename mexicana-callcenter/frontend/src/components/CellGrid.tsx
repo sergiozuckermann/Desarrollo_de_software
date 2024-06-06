@@ -20,7 +20,8 @@ const CellGrid: React.FunctionComponent<CellGridProps> = ({ data }) => {
       contactId: interaction.contactId,
       state: interaction.state,
       sentiment: interaction.Sentiment,
-      queueName: interaction.queueName
+      routingProfile: interaction.routingProfile,
+      username: interaction.username,
     };
     sessionStorage.setItem("selectedAgent", JSON.stringify(agentInfo));
     navigate('/Supervisor/calloverview');

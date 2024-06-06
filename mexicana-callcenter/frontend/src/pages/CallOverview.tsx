@@ -6,7 +6,10 @@ import MyLineChart from "../components/Charts/linechart";
 import CallCard from '../components/Callinfo';
 import Card from '../components/Card';
 import AHT from "../components/Charts/AHT";
-import CallStatusIndicator from '../components/callStatusIndicator';
+import userService from "../services/user"
+import useCustomToast from "../components/LoginNotification";
+const { showError } = useCustomToast();
+
 
 
 export interface PieChartDataItem {
@@ -24,7 +27,10 @@ const CallOverview: React.FunctionComponent = () => {
     state: string;
     sentiment?: string;
     queueName?: string;
+    username: string;
+    routingProfile: string;
   } | null>(null);
+  const [userImage, setImageURL] = useState<string | null>(null);
 
   const [chartData, setChartData] = useState<PieChartDataItem[]>([
     { id: "Customer", label: "Talk Time", value: 64 },
@@ -81,6 +87,25 @@ const CallOverview: React.FunctionComponent = () => {
     }
   }, [socket]);
 
+  const usernamePic = agentInfo?.username;
+  console.log("UsernamePic:", usernamePic);
+
+  useEffect(() => {
+    userService
+      .GetImageUrl(usernamePic!) // Llamada a la función que realiza la solicitud axios
+      .then((url) => {
+        console.log("URL obtenida:", url); // Mostrar el valor de url en la consola
+        setImageURL(url.imageUrl); // Establecer el estado de imageURL con el resultado de la solicitud si es exitosa
+      })
+      .catch(error => {
+        if (error.response && error.response.status === 401) { // Verificar si hay un error de autorización
+          showError(error.response.data.error); // Mostrar el error
+        } else {
+          console.error("Error en la solicitud:", error); // Manejar otros posibles errores
+        }
+      });
+  }, []);
+
   const updateMetrics = (segment: any) => {
     // Update your metrics based on the segment data
     console.log('Updating metrics with segment: ', segment);
@@ -94,7 +119,6 @@ const CallOverview: React.FunctionComponent = () => {
     // Example logic to update sentiment data
     // setChartData2(...);
   };
-
   return (
     <PageStructure title="Call Overview">
       <div className="grid items-center justify-center w-full h-full grid-cols-1 gap-4 p-2 overflow-y-auto lg:grid-cols-12">
@@ -103,12 +127,15 @@ const CallOverview: React.FunctionComponent = () => {
           {agentInfo ? (
             <CallCard
               agentname={agentInfo.agentFirstName} //{agentInfo.agentFirstName}
-              agentposition="" 
+              agentposition="Agent"
               agentState={agentInfo.state}
-              agentQueue="."
-              actualSentiment="." 
-              contactID="." 
-              talktime="."  
+              agentQueue={agentInfo.queueName || "No data available"}
+              actualSentiment={agentInfo.sentiment || "No agent in call"}
+              contactID={agentInfo.contactId || "No agent in call"}
+              talktime="00:03:10"
+              username={agentInfo.username || "No data available"}
+              routingProfile={agentInfo.routingProfile || "No data available" }
+              imageURL={userImage || "../public/avatar.png"}
             />
           ) : (
             <div>Loading...</div>
