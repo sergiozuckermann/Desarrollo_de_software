@@ -141,3 +141,72 @@ p {
   word-wrap: break-word;
   background-color: #4A8B51 !important;
 }
+
+.file-input {
+  display: none;
+}
+
+.file-input + label {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.file-input + label:hover {
+  background-color: #0056b3;
+}
+
+.drop-down {
+  background-color: transparent;
+}
+.custom-select-wrapper {
+  width: 100%;
+  position: relative;
+}
+
+.custom-select {
+  width: 100%;
+  appearance: none;
+  background-color: transparent;
+  border: none;
+  padding: 10px 40px 10px 10px; 
+  font-size: 18px;
+  color: #9CA3AF;
+}
+
+.custom-select.drop-down:focus {
+  outline: none;
+}
+
+.custom-select-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 10px; 
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid #20253F;
+  pointer-events: none;
+}
+
+.file-input {
+  display: none;
+  
+}
+
+.upload-icon {
+  font-size: 20px; 
+  color: #20253F;
+  margin-left: auto; 
+  pointer-events: none; 
+}
+
+.self-stretch {
+  cursor: pointer;
+}

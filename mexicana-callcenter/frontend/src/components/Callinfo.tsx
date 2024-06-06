@@ -1,6 +1,5 @@
 import React from 'react';
 
-// variables 
 interface CallCardProps {
   agentname: string;
   agentposition: string;
@@ -9,31 +8,25 @@ interface CallCardProps {
   priority: string;
   reason: string;
   talktime: string;
-
 }
 
-
 const CallCard: React.FC<CallCardProps> = ({ agentname, agentposition, callclasification, clientname, priority, reason, talktime }) => {
-    return(
-    <div>
+  return (
+    <div className="p-4 bg-white rounded-md shadow-lg card">
       {/* Large Device Layout */}
-      <div className="hidden md:block lg:mt-20 lg:h-[95%] ">
-        <div className="hidden max-w-sm p-4 overflow-hidden border-2 border-gray-400 shadow-lg rounded-xl md:block bg-tertiary h-[20%] justify-center items-center dark:bg-primary"> 
-          <div className="flex justify-center">
+      <div className="flex-col items-center justify-center hidden h-full md:flex">
+        <div className="max-w-sm">
+          <div className="flex justify-center mb-4">
             <img className="w-[65%] h-[65%] rounded-full" src="/avatar.png" alt="User avatar" />
           </div>
-          <div className="items-center px-6 py-4 text-center">
-            <h2 className="pb-0 mb-2 dark:text-white">{agentname}</h2>
+          <div className="text-center">
+          <h2 className="pb-0 mb-2 dark:text-white">{agentname}</h2>
             <p className="pb-6 lg:pb-7 text-base text-gray-700 "><strong>{agentposition}</strong></p>
             <p className="pb-6 lg:pb-7text-sm text-gray-600 dark:text-white"> <strong>Classification: </strong>{callclasification} </p>
             <p className="pb-6 lg:pb-7 text-base text-gray-600 dark:text-white"><strong>Client name: </strong> {clientname}</p>
             <p className="pb-6 lg:pb-7 text-base text-gray-600 dark:text-white"><strong>Priority : </strong>{priority}</p>
             <p className="pb-6 lg:pb-7 text-base text-gray-600 dark:text-white"><strong>Reason: </strong>{reason}</p>
             <p className="pb-6 lg:pb-7 text-base text-gray-600 dark:text-white"><strong>Talk time: </strong>{talktime}</p>
-            {/* <div className="flex items-center justify-center w-full pb-9">
-              <div className="text-gray-800 text-[60px] font-roboto mr-4">{points}</div>
-              <img src="/plane.svg" alt="Plane" className="w-10 h-10 rotate(-45deg)" />
-            </div> */}
           </div>
         </div>
       </div>
@@ -45,12 +38,13 @@ const CallCard: React.FC<CallCardProps> = ({ agentname, agentposition, callclasi
           <p><strong>{agentposition}</strong></p>
           <p><strong>Classification: </strong> {callclasification}</p>
           <p><strong>Client name: </strong> {clientname}</p>
-          <p><strong>Priority : </strong> {priority}</p>
+          <p><strong>Priority: </strong> {priority}</p>
           <p><strong>Reason: </strong> {reason}</p>
           <p><strong>Talk time: </strong> {talktime}</p>
         </div>
       </div>
     </div>
-    )
+  );
 };
+
 export default CallCard;

@@ -1,8 +1,7 @@
-import React from 'react';
 import { useDrag } from 'react-dnd';
 import styled from 'styled-components';
 
-const AgentContainer = styled.div`
+const AgentContainer = styled.div<{ isDragging: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -18,13 +17,6 @@ const AgentContainer = styled.div`
   &:hover {
     background-color: #f1f1f1;
   }
-
-  opacity: ${(props) => (props.isdragging ? 0.5 : 1)};
-
-  @media (max-width: 768px) {
-    width: 100%;
-    margin: 5px 0;
-  }
 `;
 
 const AgentUsername = styled.div`
@@ -39,7 +31,8 @@ const AgentName = styled.div`
   font-style: italic;
 `;
 
-const Agent = ({ agent }) => {
+
+const Agent = ({ agent }: { agent: any }) => {
   const [{ isDragging }, drag] = useDrag(() => ({
     type: 'AGENT',
     item: { id: agent.id },
@@ -49,7 +42,7 @@ const Agent = ({ agent }) => {
   }));
 
   return (
-    <AgentContainer ref={drag} style={{ opacity: isDragging ? 0.5 : 1 }} data-testid={`agent-${agent.id}`}>
+    <AgentContainer ref={drag} style={{ opacity: isDragging ? 0.5 : 1 }} data-testid={`agent-${agent.id}`} isDragging>
       <AgentUsername>{agent.username}</AgentUsername>
       <AgentName>{agent.name} {agent.lastname}</AgentName>
     </AgentContainer>

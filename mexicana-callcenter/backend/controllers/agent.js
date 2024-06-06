@@ -1,6 +1,7 @@
 const express = require('express');
 const agentRouter = express.Router();
 const dynamoDBClient = require('../utils/dynamoDBClient')
+const connectClient = require('../utils/connectClient')
 const { ScanCommand } = require("@aws-sdk/client-dynamodb"); // CommonJS import
 const { unmarshall } = require('@aws-sdk/util-dynamodb');
 
@@ -30,5 +31,7 @@ agentRouter.get('/myInfo/:username', async (req, res, next) => {
 
   }
 })
+
+
 
 module.exports = agentRouter
