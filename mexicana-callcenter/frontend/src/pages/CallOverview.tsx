@@ -17,6 +17,11 @@ export interface PieChartDataItem {
   label: string;
   value: number;
 }
+export interface PieChartDataItem {
+  id: string | number;
+  label: string;
+  value: number;
+}
 
 const CallOverview: React.FunctionComponent = () => {
   const { socket } = useWebSocket(); // get web socket connection

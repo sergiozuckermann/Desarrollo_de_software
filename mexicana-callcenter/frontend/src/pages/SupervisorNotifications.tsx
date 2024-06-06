@@ -102,7 +102,7 @@ const SupervisorNotifications: React.FunctionComponent = () => {
       label: "Urgent",
       icon: <FaExclamationCircle className={hasNewUrgent ? 'flash-red' : ''} />,
       content: (
-        <div className="w-full pr-8 pl-16 space-y-4">
+        <div className="w-full pr-8 pl-16 space-y-4 ">
           {urgentNotifications.map((notification) => (
             <NotificationItem
               key={notification.id}
@@ -138,7 +138,7 @@ const SupervisorNotifications: React.FunctionComponent = () => {
 
   return (
     <PageStructure title="Notifications">
-      <div className="flex flex-col w-full h-[90%] overflow-y-auto">
+      <div className="flex flex-col w-full h-[90%] overflow-y-auto ">
         <HorizontalTabs data={tabData} onTabChange={handleTabChange} />
       </div>
     </PageStructure>

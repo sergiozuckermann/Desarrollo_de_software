@@ -54,7 +54,7 @@ const GraphAgentStructure: React.FunctionComponent<GraphAgentStructureProps> = (
     <div className="box-border border-[1px] rounded-lg p-4 border-solid border-marco shadow-lg lg:h-[700px] overflow-y-auto">
       <div className="flex flex-col items-center w-full space-y-8">
         <div className="w-full">
-          <h1 className="mb-4 text-3xl text-center font-roboto sm:text-left">Agent Status</h1>
+          <h1 className="mb-4 text-3xl text-center font-roboto sm:text-left dark:text-white">Agent Status</h1>
           <div className="flex justify-center">
             <div style={{ width: '100%', height: '300px' }}>
               {agentsState.every(state => state.value === 0) ? (
@@ -66,7 +66,7 @@ const GraphAgentStructure: React.FunctionComponent<GraphAgentStructureProps> = (
           </div>
         </div>
         <div className="w-full">
-          <h1 className="mb-4 text-3xl text-center font-roboto sm:text-left">Agent Availability</h1>
+          <h1 className="mb-4 text-3xl text-center font-roboto sm:text-left dark:text-white">Agent Availability</h1>
           <div className="flex justify-center">
             <div style={{ width: '100%', height: '300px' }}>
               {agentsAvailability.every(a => a.value === 0) ? (
@@ -79,11 +79,11 @@ const GraphAgentStructure: React.FunctionComponent<GraphAgentStructureProps> = (
         </div>
       </div>
       <div className="flex flex-col">
-        <h1 className="mb-0 text-3xl text-center font-roboto sm:text-left">Contacts Queued</h1>
+        <h1 className="mb-0 text-3xl text-center font-roboto sm:text-left dark:text-white">Contacts Queued</h1>
         <div className="flex flex-col items-center justify-center space-y-4 sm:flex-col md:flex-col lg:flex-row lg:space-y-0 lg:space-x-4">
           <div className="text-center">
             <h2 className="text-3xl text-red-600 font-roboto">{totalCustomersWaiting}</h2>
-            <h2 className="text-xl font-roboto">
+            <h2 className="text-xl font-roboto dark:text-white">
               <a>Customer Waiting</a>
             </h2>
           </div>

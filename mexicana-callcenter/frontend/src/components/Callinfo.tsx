@@ -2,7 +2,6 @@ import React from 'react';
 import CallStatusIndicator from '../components/callStatusIndicator';
 
 
-// variables 
 interface CallCardProps {
   agentname: string;
   agentposition: string;
@@ -43,7 +42,7 @@ const CallCard: React.FC<CallCardProps> = ({ agentname, agentposition, agentStat
       </div>
 
       {/* Small Device Layout */}
-      <div className="pt-40 overflow-hidden bg-white border border-gray-300 rounded-lg 2sm:p-2 md:hidden">
+      <div className="pt-40 overflow-hidden bg-white border border-gray-300 rounded-lg 2sm:p-2 md:hidden ">
         <div className="text-center">
           <p>{agentname}</p>
           <p><strong>{agentposition}</strong></p>
@@ -55,6 +54,7 @@ const CallCard: React.FC<CallCardProps> = ({ agentname, agentposition, agentStat
         </div>
       </div>
     </div>
-    )
+  );
 };
+
 export default CallCard;
