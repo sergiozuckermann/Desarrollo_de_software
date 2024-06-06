@@ -27,7 +27,7 @@ const CellGrid: React.FunctionComponent<CellGridProps> = ({ data }) => {
     navigate('/Supervisor/calloverview');
   };
   return (
-    <div className="box-border border-[1px] rounded-lg shadow p-4 border-solid border-marco shadow-lg lg:h-[700px] overflow-y-auto">
+    <div className="box-border border-[1px] rounded-lg p-4 border-solid border-marco lg:h-[700px] overflow-y-auto">
       <div className="grid sm:grid-cols-2 gap-4">
         
         {data.map((interaction) => (
