@@ -23,14 +23,19 @@ const fetchQueueData = async () => {
 
 const SupervisorNotifications: React.FunctionComponent = () => {
   const [readNotifications, setReadNotifications] = useState<number[]>([]);
+  const [deletedNotifications, setDeletedNotifications] = useState<number[]>([]);
   const [urgentNotifications, setUrgentNotifications] = useState<any[]>([]);
   const [nonUrgentNotifications, setNonUrgentNotifications] = useState<any[]>([]);
   const [hasNewUrgent, setHasNewUrgent] = useState<boolean>(false);
 
   useEffect(() => {
     const storedReadNotifications = localStorage.getItem("readNotifications");
+    const storedDeletedNotifications = localStorage.getItem("deletedNotifications");
     if (storedReadNotifications) {
       setReadNotifications(JSON.parse(storedReadNotifications));
+    }
+    if (storedDeletedNotifications) {
+      setDeletedNotifications(JSON.parse(storedDeletedNotifications));
     }
   }, []);
 
@@ -69,15 +74,18 @@ const SupervisorNotifications: React.FunctionComponent = () => {
         !sortedUrgent.some(urgentNotification => urgentNotification.id === notification.id)
       );
 
-      setUrgentNotifications(sortedUrgent);
-      setNonUrgentNotifications(nonUrgent);
-      
-      const hasUnreadUrgent = sortedUrgent.some(notification => !readNotifications.includes(notification.id));
+      const filteredUrgent = sortedUrgent.filter(notification => !deletedNotifications.includes(notification.id));
+      const filteredNonUrgent = nonUrgent.filter(notification => !deletedNotifications.includes(notification.id));
+
+      setUrgentNotifications(filteredUrgent);
+      setNonUrgentNotifications(filteredNonUrgent);
+
+      const hasUnreadUrgent = filteredUrgent.some(notification => !readNotifications.includes(notification.id));
       setHasNewUrgent(hasUnreadUrgent);
     };
 
     fetchData();
-  }, [readNotifications]);
+  }, [readNotifications, deletedNotifications]);
 
   const handleTabChange = (index: number) => {
     if (index === 0 && hasNewUrgent) {
@@ -91,9 +99,19 @@ const SupervisorNotifications: React.FunctionComponent = () => {
       setReadNotifications(updatedReadNotifications);
       localStorage.setItem("readNotifications", JSON.stringify(updatedReadNotifications));
       
-      // Check if all urgent notifications are read
       const allUrgentRead = urgentNotifications.every(notification => updatedReadNotifications.includes(notification.id));
       setHasNewUrgent(!allUrgentRead);
+    }
+  };
+
+  const handleDeleteNotification = (notificationId: number) => {
+    if (!deletedNotifications.includes(notificationId)) {
+      const updatedDeletedNotifications = [...deletedNotifications, notificationId];
+      setDeletedNotifications(updatedDeletedNotifications);
+      localStorage.setItem("deletedNotifications", JSON.stringify(updatedDeletedNotifications));
+
+      setUrgentNotifications(prev => prev.filter(notification => notification.id !== notificationId));
+      setNonUrgentNotifications(prev => prev.filter(notification => notification.id !== notificationId));
     }
   };
 
@@ -111,6 +129,7 @@ const SupervisorNotifications: React.FunctionComponent = () => {
               date={notification.date}
               isRead={readNotifications.includes(notification.id)}
               onRead={() => handleNotificationRead(notification.id)}
+              onDelete={() => handleDeleteNotification(notification.id)}
             />
           ))}
         </div>
@@ -129,6 +148,7 @@ const SupervisorNotifications: React.FunctionComponent = () => {
               date={notification.date}
               isRead={readNotifications.includes(notification.id)}
               onRead={() => handleNotificationRead(notification.id)}
+              onDelete={() => handleDeleteNotification(notification.id)}
             />
           ))}
         </div>
@@ -145,10 +165,12 @@ const SupervisorNotifications: React.FunctionComponent = () => {
   );
 };
 
+export default SupervisorNotifications;
+
 export const getUnreadNotificationsCount = () => {
   const storedReadNotifications = localStorage.getItem("readNotifications");
   const readNotifications = storedReadNotifications ? JSON.parse(storedReadNotifications) : [];
-  return notifications.filter((notification) => !readNotifications.includes(notification.id)).length;
+  const storedDeletedNotifications = localStorage.getItem("deletedNotifications");
+  const deletedNotifications = storedDeletedNotifications ? JSON.parse(storedDeletedNotifications) : [];
+  return notifications.filter((notification) => !readNotifications.includes(notification.id) && !deletedNotifications.includes(notification.id)).length;
 };
-
-export default SupervisorNotifications;

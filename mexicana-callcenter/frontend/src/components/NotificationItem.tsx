@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import CircleNotification from "../components/CircleNotifications";
 import { useNavigate } from "react-router-dom";
+import { FaTrash } from 'react-icons/fa';
 
 interface NotificationItemProps {
   title: string;
@@ -8,6 +9,7 @@ interface NotificationItemProps {
   date: string;
   isRead: boolean;
   onRead: () => void;
+  onDelete: () => void;
 }
 
 const NotificationItem: React.FC<NotificationItemProps> = ({
@@ -16,6 +18,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
   date,
   isRead,
   onRead,
+  onDelete,
 }) => {
   const [expanded, setExpanded] = useState(false);
   const navigate = useNavigate();
@@ -38,16 +41,13 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
     };
     return new Date(dateString).toLocaleDateString("en-US", options);
   };
-  // performance
+
   const handleShowMetrics = () => {
     navigate(`/supervisor/AgentSpotlight`);
-  }
-  
-  const shouldShowMetricsButton =
-    title.toLowerCase().includes("performance");
-    
+  };
 
-  // call overview, bad call, bad sentiment
+  const shouldShowMetricsButton = title.toLowerCase().includes("performance");
+
   const handleCallOverview = () => {
     navigate(`/supervisor/calloverview`);
   };
@@ -56,11 +56,15 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
     title.toLowerCase().includes("call") ||
     title.toLowerCase().includes("bad sentiment");
 
-  // agent overview, queue graphs
-  const handleOnGoingCalls= () => {
+  const handleOnGoingCalls = () => {
     navigate(`/supervisor/ongoingcalls`);
   };
-  
+
+  const handleDeleteClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onDelete();
+  };
+
   const shouldShowOnGoingCallsButton =
     title.toLowerCase().includes("queue is too long");
 
@@ -74,29 +78,35 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
         {expanded && (
           <>
             <p className="text-base">{message}</p>
-             {/* call */}
             {shouldShowCallOverviewButton && (
               <button
                 className="bg-[#4A8B51] hover:bg-[#4A8B51] text-white font-bold py-2 px-4 rounded mb-2 mt-4"
-                onClick={handleCallOverview}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleCallOverview();
+                }}
               >
                 Call Overview
               </button>
             )}
-            {/* performance */}
             {shouldShowMetricsButton && (
               <button
                 className="bg-[#4A8B51] hover:bg-[#4A8B51] text-white font-bold py-2 px-4 rounded mb-2 mt-4"
-                onClick={handleShowMetrics}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleShowMetrics();
+                }}
               >
                 Agent Performance
               </button>
             )}
-            {/* queue */}
-            {shouldShowOnGoingCallsButton&& (
+            {shouldShowOnGoingCallsButton && (
               <button
                 className="bg-[#4A8B51] hover:bg-[#4A8B51] text-white font-bold py-2 px-4 rounded mb-2 mt-4"
-                onClick={handleOnGoingCalls}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleOnGoingCalls();
+                }}
               >
                 On Going Calls
               </button>
@@ -105,7 +115,15 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
         )}
         <p className="text-sm text-gray-500 mt-2">{formatDate(date)}</p>
       </div>
-      <CircleNotification isSeen={isRead} isExpanded={expanded} />
+      <div className="flex flex-col items-center justify-between space-y-2">
+        <CircleNotification isSeen={isRead} isExpanded={expanded} />
+        <button
+          className="text-red-500 hover:text-red-700"
+          onClick={handleDeleteClick} 
+        >
+          <FaTrash />
+        </button>
+      </div>
     </div>
   );
 };
