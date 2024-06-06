@@ -58,3 +58,4 @@ const AverageHoldTime = () => {
     };
 
 export default AverageHoldTime;
+ 
