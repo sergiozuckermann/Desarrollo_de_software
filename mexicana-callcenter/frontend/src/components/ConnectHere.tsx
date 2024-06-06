@@ -3,7 +3,7 @@ import CCPComponent from "../components/CCPComponent";
 const ConnectHere: React.FC = () => {
     return (
         <div className="w-full h-full rounded-xl bg-[#F8F9FA]">
-            <div className='h-full'>
+            <div className='h-[93%]'>
                 <CCPComponent />
                 
             </div>
