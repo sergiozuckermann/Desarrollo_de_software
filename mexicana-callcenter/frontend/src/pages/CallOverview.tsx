@@ -74,7 +74,7 @@ const CallOverview: React.FunctionComponent = () => {
           const { segmentType } = segment;
           if (segmentType === "AGENT_EVENT") {
             // Update metrics or handle AGENT_EVENT
-            updateMetrics(segment);
+            //updateMetrics(segment);
           } else if (segmentType === "SENTIMENT_ANALYSIS") {
             // Update sentiment analysis
             updateSentiment(segment);
@@ -108,12 +108,20 @@ const CallOverview: React.FunctionComponent = () => {
         });
     }
   }, [agentInfo]);
-  
-  const updateMetrics = (segment: any) => {
+
+  const updateMetrics = (metrics: any) => {
     // Update your metrics based on the segment data
     console.log("Metrics:", metrics); // Mostrar los datos de los segmentos en la consola
     console.log('Updating metrics with segment: ', metrics);
+
     const { agentTalk, customerTalk, nonTalk, sentimentTrend, sentimentPercentages, callDuration } = metrics;
+
+    console.log("Agent Talk:", agentTalk);
+    console.log("Customer Talk:", customerTalk);
+    console.log("Non Talk:", nonTalk);
+    console.log("Sentiment Trend:", sentimentTrend);
+    console.log("Sentiment Percentages:", sentimentPercentages);
+    console.log("Call Duration:", callDuration);
 
     setChartData([
       { id: "Customer", label: "Customer Time", value: customerTalk },
