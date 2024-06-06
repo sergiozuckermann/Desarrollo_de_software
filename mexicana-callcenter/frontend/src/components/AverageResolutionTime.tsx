@@ -1,35 +1,33 @@
 import userService from '../services/user';
+import { useState, useEffect } from 'react';
+
+interface Metric {
+  name: string;
+  percentage: string;
+}
 
 const AverageResolutionTime = () => {
     const ScaleIcon = '/scale.svg';
   
-    // Example data
-    const data = [
-      { name: 'Ian', time: '00:00:00' },
-        { name: 'Melissa', time: '00:00:00' },
-        { name: 'Fernanda', time: '00:00:00' },
-        { name: 'Karla', time: '00:00:00' },
-        { name: 'Javier', time: '00:00:00' },
-        { name: 'Fausto', time: '00:00:00' },
-        { name: 'Luis', time: '00:00:00' },
-        { name: 'Alfredo', time: '00:00:00' },
-        { name: 'Fernanda', time: '00:00:00' },
-        { name: 'Mauricio', time: '00:00:00' },
-        { name: 'Joaquin', time: '00:00:00' },
-        { name: 'Alejandra', time: '00:00:00' },
-        { name: 'Pablo', time: '00:00:00' },
-        { name: 'Ruben', time: '00:00:00' },
-        { name: 'Andrea', time: '00:00:00' },
-        { name: 'Natalia', time: '00:00:00' },
-        { name: 'Valeria', time: '00:00:00' }
-    ];
-    const data2 = userService.GetPerformanceMetrics("ACRT");
-    console.log(data2);
+    const [data, setData] = useState<Metric[]>([]);
+
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const response = await userService.GetPerformanceMetrics("ACRT");
+          setData(response);
+        } catch (error) {
+          console.error('Error fetching metric data:', error);
+        }
+      };
+      fetchData();
+    }, []);
+
     return (
       <div className="w-full p-4 sm:p-6 lg:p-8 card overflow-hidden" style={{ backgroundColor: '#F8F9FA'}}>
         <div className="max-w-xl mx-auto">
           <h1 className="md:text-6xl lg:text-6xl xl:text-6xl font-roboto mb-8">
-            Average Case Resolution Time
+            Agent Answer Rate
           </h1>
           <div
             className="rounded-lg p-2 overflow-y-auto mt-4 overflow-hidden pb-16"
@@ -52,7 +50,7 @@ const AverageResolutionTime = () => {
                       <span className="text-lg font-bold mr-2">{index + 1}.</span>
                       <span className="text-lg">{item.name}</span>
                     </div>
-                    <span className="text-lg">{item.time}</span>
+                    <span className="text-lg">{item.percentage}</span>
                   </div>
                 ))}
               </div>
@@ -67,3 +65,7 @@ const AverageResolutionTime = () => {
   };
   
   export default AverageResolutionTime;
+
+
+  
+  
