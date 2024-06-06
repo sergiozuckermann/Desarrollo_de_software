@@ -13,7 +13,7 @@ import MyBarChart2 from '../components/Charts/barChart2';
 import GaugeChart from 'react-gauge-chart';
 import Filter from '../components/filters';
 import MyBarChart from '../components/Charts/BarChartV';
-import MyPieChart from '../components/Charts/piechart'; // Assuming MyPieChart is a pie chart component
+import MyPieChart from '../components/Charts/piechart'; 
 import 'react-tooltip/dist/react-tooltip.css'
 import { Tooltip } from 'react-tooltip'
 
@@ -84,31 +84,16 @@ const MainContent = () => {
             </div>
             <Tooltip id="tooltipAbandonmentRate" className="custom-tooltip" />
 
-            {/* Agent Occupancy */}
-            <div className="col-span-3 row-span-2 shadow-lg card bg-tertiary dark:bg-primary"
-            data-tooltip-id="my-tooltipAgentOccupancy" 
-            data-tooltip-content="Agent Occupancy is the percentage of time agents are actively engaged in customer interactions in relation to their available or idle time. As a statistic, it's used to calculate call center productivity." 
-            data-tooltip-place="right">
-                <div className="flex flex-row items-center justify-between">
-                    <div className="px-4 py-4 bg-gray-300 rounded-xl bg-opacity-30">
-                    </div>
-                    <div className="inline-flex text-sm text-gray-600 sm:text-base dark:text-white">
-                        12%
-                    </div>
-                </div>
-                <h1 className="mt-1 text-3xl font-bold text-gray-700 sm:text-m xl:text-4xl"></h1>
-                <div className="flex flex-row justify-between mt-2">
-                    <p className='dark:text-white'>Agent Occupancy </p>
-                    {/* {agentOccupancy !== null && (
-                    <div className="w-full h-full">
-                        <MyPieChart data={OccupancyData} unit="%" />
-                    </div>
-                )} */}
-                </div>
-                <h1 className="mt-1 text-3xl font-bold text-gray-700 sm:text-m xl:text-4xl dark:text-white">No Available Data</h1>    
+            {/* Agent Occupancy */} 
+            <div className="col-span-3 row-span-2 card bg-tertiary dark:bg-primary"
+                data-tooltip-id="my-tooltipAgentOccupancy" 
+                data-tooltip-content= "Agent Occupancy is the percentage of time agents are actively engaged in customer interactions in relation to their available or idle time. As a statistic, it's used to calculate call center productivity."
+                data-tooltip-place="right">
+                <p className='dark:text-white'>Agent Occupancy</p>
+                <MyPieChart data={OccupancyData} unit="%" />
             </div>
-            <Tooltip id="my-tooltipAgentOccupancy" className="custom-tooltip"  />
             
+            <Tooltip id="my-tooltipAgentOccupancy" className="custom-tooltip"  />
             {/* Average Queue Answer Time (ASA) */}
             <div className="col-span-3 row-span-2 shadow-lg card bg-tertiary dark:bg-primary"
             data-tooltip-id="tooltipAverageQueueAnswerTime"
@@ -118,7 +103,7 @@ const MainContent = () => {
                     <div className="px-4 py-4 bg-gray-300 rounded-xl bg-opacity-30">
                     </div>
                     <div className="inline-flex text-sm text-gray-600 sm:text-base dark:text-white">
-                        12%
+                        {/* 12% */}
                     </div>
                 </div>
                 <h1 className="mt-1 text-3xl font-bold text-gray-700 sm:text-m xl:text-4xl dark:text-white">{formatTime(averageAnswerTime)}</h1>
@@ -143,7 +128,7 @@ const MainContent = () => {
             data-tooltip-content="This metric measures the average amount of time it takes for calls to be answered in a specific queue. A low average answer time indicates that calls are being answered quickly, while a high average answer time indicates that callers are waiting a long time to speak with an agent."
             data-tooltip-place="bottom">
                 <p className='dark:text-white'>Average Answer Time per Queue</p>
-                <MyBarChart2 data={AnswerData} />
+                <MyBarChart2 data={AnswerData} unit="secs" />
             </div>
             <Tooltip id="tooltipAverageAnswerTimePerQueue" className="custom-tooltip" />
 
@@ -153,7 +138,7 @@ const MainContent = () => {
             data-tooltip-content="This metric measures the average amount of time callers wait in a queue before abandoning the call. A high average queue abandon time indicates that callers are waiting a long time before abandoning the call."
             data-tooltip-place="right">
                 <p className='dark:text-white'>Average Queue Abandon Time</p>
-                <MyBarChart2 data={AbandonData} />
+                <MyBarChart2 data={AbandonData} unit="secs" />
             </div>
             <Tooltip id="tooltipAverageQueueAbandonTime" className="custom-tooltip" />
 
@@ -179,7 +164,7 @@ const MainContent = () => {
                     <div className="px-4 py-4 bg-gray-300 rounded-xl bg-opacity-30">
                     </div>
                     <div className="inline-flex text-sm text-gray-600 sm:text-base dark:text-white">
-                        12%
+                         {/* 12% */}
                     </div>
                 </div>
                 <h1 className="mt-1 text-3xl font-bold text-gray-700 sm:text-m xl:text-4xl dark:text-white">{formatTime(averageContactDuration)}</h1>
@@ -198,7 +183,7 @@ const MainContent = () => {
                     <div className="px-4 py-4 bg-gray-300 rounded-xl bg-opacity-30">
                     </div>
                     <div className="inline-flex text-sm text-gray-600 sm:text-base dark:text-white">
-                        12%
+                         {/* 12% */}
                     </div>
                 </div>
                 <h1 className="mt-1 text-3xl font-bold text-gray-700 sm:text-m xl:text-4xl dark:text-white">{contactsHandeled} contacts</h1>
@@ -217,7 +202,7 @@ const MainContent = () => {
                     <div className="px-4 py-4 bg-gray-300 rounded-xl bg-opacity-30">
                     </div>
                     <div className="inline-flex text-sm text-gray-600 sm:text-base dark:text-white">
-                        12%
+                         {/* 12% */}
                     </div>
                 </div>
                 <h1 className="mt-1 text-3xl font-bold text-gray-700 sm:text-m xl:text-4xl dark:text-white">{formatTime(contactFlowTime)}</h1>
