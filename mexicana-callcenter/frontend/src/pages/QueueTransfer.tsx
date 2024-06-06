@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Agent from '../components/Agent';
 import CardDrop from '../components/CardDrop';
 import userService from "../services/user";
@@ -118,7 +118,7 @@ const AgentRoutingProfile = () => {
     }
     acc[routingProfileId].push(agent);
     return acc;
-  }, {});
+  }, {} as { [key: string]: any[] }); // Add index signature to allow indexing with a string parameter
 
   return (
     <div style={{ height: '100%', overflowY: 'auto' }}>
@@ -152,7 +152,7 @@ const AgentRoutingProfile = () => {
         {Object.keys(routingProfilesMap).map((routingProfileId) => (
           <CardDrop
             key={routingProfileId}
-            profileName={routingProfilesMap[routingProfileId]}
+            profileName={routingProfilesMap[routingProfileId as keyof typeof routingProfilesMap]}
             routingProfileId={routingProfileId}
             onAgentDrop={handleAgentDrop}
           >

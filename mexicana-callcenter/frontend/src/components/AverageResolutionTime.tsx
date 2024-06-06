@@ -23,13 +23,13 @@ const AverageResolutionTime = () => {
     ];
   
     return (
-      <div className="w-full p-4 sm:p-6 lg:p-8 card overflow-hidden" style={{ backgroundColor: '#F8F9FA'}}>
+      <div className="w-full p-4 sm:p-6 lg:p-8 card overflow-hidden bg-[#F8F9FA] dark:bg-primary" >
         <div className="max-w-xl mx-auto">
-          <h1 className="md:text-6xl lg:text-6xl xl:text-6xl font-roboto mb-8">
+          <h1 className="md:text-6xl lg:text-6xl xl:text-6xl font-roboto mb-8 dark:text-white">
             Average Case Resolution Time
           </h1>
           <div
-            className="rounded-lg p-2 overflow-y-auto mt-4 overflow-hidden pb-16"
+            className="rounded-lg p-2 overflow-y-auto mt-4 overflow-hidden pb-16 dark:text-white"
             style={{
               WebkitOverflowScrolling: 'touch',
               msOverflowStyle: 'none',
