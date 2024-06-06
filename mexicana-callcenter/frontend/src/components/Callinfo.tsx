@@ -20,19 +20,19 @@ const CallCard: React.FC<CallCardProps> = ({ agentname, agentposition, callclasi
             <img className="w-[65%] h-[65%] rounded-full" src="/avatar.png" alt="User avatar" />
           </div>
           <div className="text-center">
-            <h2 className="pb-0 mb-2">{agentname}</h2>
-            <p className="pb-6 text-base text-gray-700"><strong>{agentposition}</strong></p>
-            <p className="pb-6 text-sm text-gray-600"><strong>Classification: </strong>{callclasification}</p>
-            <p className="pb-6 text-base text-gray-600"><strong>Client name: </strong>{clientname}</p>
-            <p className="pb-6 text-base text-gray-600"><strong>Priority: </strong>{priority}</p>
-            <p className="pb-6 text-base text-gray-600"><strong>Reason: </strong>{reason}</p>
-            <p className="pb-6 text-base text-gray-600"><strong>Talk time: </strong>{talktime}</p>
+          <h2 className="pb-0 mb-2 dark:text-white">{agentname}</h2>
+            <p className="pb-6 lg:pb-7 text-base text-gray-700 "><strong>{agentposition}</strong></p>
+            <p className="pb-6 lg:pb-7text-sm text-gray-600 dark:text-white"> <strong>Classification: </strong>{callclasification} </p>
+            <p className="pb-6 lg:pb-7 text-base text-gray-600 dark:text-white"><strong>Client name: </strong> {clientname}</p>
+            <p className="pb-6 lg:pb-7 text-base text-gray-600 dark:text-white"><strong>Priority : </strong>{priority}</p>
+            <p className="pb-6 lg:pb-7 text-base text-gray-600 dark:text-white"><strong>Reason: </strong>{reason}</p>
+            <p className="pb-6 lg:pb-7 text-base text-gray-600 dark:text-white"><strong>Talk time: </strong>{talktime}</p>
           </div>
         </div>
       </div>
 
       {/* Small Device Layout */}
-      <div className="flex flex-col items-center justify-center h-full md:hidden">
+      <div className="pt-40 overflow-hidden bg-white border border-gray-300 rounded-lg 2sm:p-2 md:hidden ">
         <div className="text-center">
           <p>{agentname}</p>
           <p><strong>{agentposition}</strong></p>
