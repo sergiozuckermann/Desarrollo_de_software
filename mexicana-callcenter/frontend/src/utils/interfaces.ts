@@ -57,3 +57,12 @@ export interface AgentsOnCall {
   key: string,
   state: string
 }
+
+
+export interface Notification {
+  id: number;
+  title: string;
+  message: string;
+  date: string;
+  isRead: boolean;
+}
