@@ -20,9 +20,8 @@ export function FetchMetrics(filters) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // Use empty filters if none provided
                 const requestFilters = filters || {};
-                console.log("Filters before sending request:", requestFilters);  // Log filters
+                console.log("Filters before sending request:", requestFilters);
                 const response = await axios.post("http://localhost:3000/historicmetrics", requestFilters, {
                     headers: {
                         'Content-Type': 'application/json',
@@ -44,7 +43,7 @@ export function FetchMetrics(filters) {
                 let contactsHandeled = 0;
                 let contactFlowTime = 0;
                 let contactFlowTimeCount = 0;
-                let agentOccupancyArray = []; // Initialize as an array
+                let agentOccupancyArray = [];
 
                 queueMetrics.forEach((queue) => {
                     if (queue.Dimensions && queue.Dimensions.QUEUE) {
@@ -59,19 +58,19 @@ export function FetchMetrics(filters) {
                                     break;
                                 case "AVG_ABANDON_TIME":
                                     if (metric.Value !== undefined) {
-                                        abandonTimes.push({ label: queueName, value: metric.Value });
+                                        abandonTimes.push({ label: queueName, value: Math.round(metric.Value) });
                                     }
                                     break;
                                 case "AVG_QUEUE_ANSWER_TIME":
                                     if (metric.Value !== undefined) {
-                                        queueAnswerTimes.push({ label: queueName, value: metric.Value });
+                                        queueAnswerTimes.push({ label: queueName, value: Math.round(metric.Value) });
                                         totalAnswerTime += metric.Value;
                                         AnswerTimeCount++;
                                     }
                                     break;
                                 case "SERVICE_LEVEL":
                                     if (metric.Value !== undefined) {
-                                        serviceLevelValue = metric.Value;
+                                        serviceLevelValue = Math.round(metric.Value);
                                     }
                                     break;
                                 case "AVG_CONTACT_DURATION":
@@ -99,8 +98,8 @@ export function FetchMetrics(filters) {
                 if (abandonmentRateCount > 0) {
                     setAverageAbandonmentRate(Math.round(totalAbandonmentRate / abandonmentRateCount));
                 }
-                setAverageAbandonTime(abandonTimes);
-                setAverageQueueAnswerTime(queueAnswerTimes);
+                setAverageAbandonTime(abandonTimes.map(item => ({ ...item, value: Math.round(item.value) })));
+                setAverageQueueAnswerTime(queueAnswerTimes.map(item => ({ ...item, value: Math.round(item.value) })));
 
                 if (AnswerTimeCount > 0) {
                     setAverageAnswerTime(Math.round(totalAnswerTime / AnswerTimeCount));
@@ -123,7 +122,7 @@ export function FetchMetrics(filters) {
                     });
                 });
 
-                setAgentOccupancy(agentOccupancyArray); // Update state with the array
+                setAgentOccupancy(agentOccupancyArray);
 
             } catch (error) {
                 console.error("Error fetching data", error);

@@ -6,7 +6,7 @@ const FrameComponent1: FunctionComponent = () => {
       <img
         className="object-contain header-img" 
         alt="Call Center Logo"
-        src="/logo_callCenter_color.png"
+        src="/newLogo_LIGHT_1.png"
       />
     </header>
   );
