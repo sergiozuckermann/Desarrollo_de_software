@@ -1,3 +1,10 @@
+// This code is a React component that displays the main content of the historical metrics page. 
+// It uses the FetchMetrics function to fetch the metrics data and displays it in various charts and cards. 
+//The component also includes a Filter component to allow users to filter the metrics data by agent, start time, and end time.
+//The component uses the useState hook to manage the filter state and the handleApplyFilters function to update the filter state when the user applies new filters.
+// The component also includes tooltips to provide additional information about each metric.
+
+
 import React, { useState } from 'react';
 import PageStructure from '../components/PageStructure';
 import { FetchMetrics } from '../services/metrics';
@@ -11,23 +18,29 @@ import 'react-tooltip/dist/react-tooltip.css'
 import { Tooltip } from 'react-tooltip'
 
 const MainContent = () => {
+    // State to manage the filter values
     const [filters, setFilters] = useState({
         agent: '',
         startTime: '',
         endTime: ''
     });
 
+    // Function to handle applying new filters
     const handleApplyFilters = (newFilters) => {
         setFilters(newFilters);
     };
 
+    // Fetch metrics data using the filters
     const { averageAbandonmentRate, averageAbandonTime, averageQueueAnswerTime, averageAnswerTime, ServiceLevel, averageContactDuration, contactsHandeled, contactFlowTime, agentOccupancy } = FetchMetrics(filters);
+    // A console.log to check the data
     console.log(averageAbandonmentRate, averageAbandonTime, averageQueueAnswerTime, averageAnswerTime, averageContactDuration, contactsHandeled, contactFlowTime, agentOccupancy);
 
+    // Display a loading message while fetching data
     if (averageAbandonTime === null || averageQueueAnswerTime === null) {
         return <div>Loading...</div>;
     }
 
+    // Data for the charts
     const ServiceData = [{ metric: "Service Level", percentage: ServiceLevel }];
 
     const AbandonData = [
@@ -43,6 +56,7 @@ const MainContent = () => {
         { metric: "Unoccupied", value: 100 - agentOccupancy }
     ] : [];
 
+    // Function to format time in hours, minutes, and seconds
     const formatTime = (seconds) => {
         if (seconds >= 3600) {
             const hours = Math.floor(seconds / 3600);
@@ -213,6 +227,7 @@ const MainContent = () => {
     );
 };
 
+// Metrics page component that displays the main content in a page structure
 const Metrics = () => {
     return (
         <PageStructure title="Metrics">
