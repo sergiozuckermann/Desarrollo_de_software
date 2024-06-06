@@ -23,10 +23,10 @@ const MyBarChart2: React.FC<MyBarChart2Props> = ({ data, unit }) => {
       <BarChart
         data={data}
         margin={{
-          top: 10,
-          right: 30,
-          left: 60,
-          bottom: 20,
+          top: 20,
+          right: 50,
+          left: 80,
+          bottom: 40,
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />

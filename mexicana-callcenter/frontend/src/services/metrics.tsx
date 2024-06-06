@@ -58,7 +58,7 @@ export function FetchMetrics(filters) {
                                     break;
                                 case "AVG_ABANDON_TIME":
                                     if (metric.Value !== undefined) {
-                                        abandonTimes.push({ label: queueName, value: metric.Value });
+                                        abandonTimes.push({ label: queueName, value: Math.round(metric.Value) });
                                     }
                                     break;
                                 case "AVG_QUEUE_ANSWER_TIME":
@@ -98,7 +98,7 @@ export function FetchMetrics(filters) {
                 if (abandonmentRateCount > 0) {
                     setAverageAbandonmentRate(Math.round(totalAbandonmentRate / abandonmentRateCount));
                 }
-                setAverageAbandonTime(abandonTimes);
+                setAverageAbandonTime(abandonTimes.map(item => ({ ...item, value: Math.round(item.value) })));
                 setAverageQueueAnswerTime(queueAnswerTimes.map(item => ({ ...item, value: Math.round(item.value) })));
 
                 if (AnswerTimeCount > 0) {
