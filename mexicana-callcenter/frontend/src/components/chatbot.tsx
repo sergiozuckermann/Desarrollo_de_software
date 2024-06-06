@@ -34,7 +34,7 @@ const Chatbot: React.FC = () => {
 
   // Render the Chatbot component
   return (
-    <div className="flex flex-col h-full items-start justify-start py-0 pr-1.5 pl-0 box-border w-full">
+    <div className="flex flex-col items-start justify-start py-0 pr-1.5 pl-0 box-border w-full h-[93%]">
       <div className="self-stretch flex flex-row items-start justify-start py-0 pr-0 pl-0.5 box-border w-full h-full">
         <div className="flex flex-col items-start justify-start flex-1 w-full h-full">
           <div className="flex flex-col items-start justify-start w-full h-full text-xl text-left font-roboto">

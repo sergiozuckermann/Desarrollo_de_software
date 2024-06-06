@@ -7,26 +7,27 @@ import ConnectHere from "../components/ConnectHere";
 import Suggestions from "../components/Suggestions";
 import Chatbot from "../components/chatbot";
 
+
 const AgentMain: FunctionComponent = () => (
-  // Page structure used in all pages
-  <PageStructure title="Ongoing Calls">
-    <div className="w-full max-h-full">
-      <div className="grid h-full grid-cols-1 gap-4 xl:grid-cols-3">
-        <div className="h-full col-span-1">
-          {/* Connect component (ccp) */}
-          <div className="w-full h-full pt-3 pl-12">
+  // PageStructure is a component that provides a basic structure for the page
+  <PageStructure title="Workspace">
+    <div className="max-h-full p-4 overflow-y-hidden">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="flex justify-center col-span-1">
+          {/* Connect cpp */}
+          <div className="w-full max-w-md h-[85vh]">
             <ConnectHere />
           </div>
         </div>
-      {/* Chatbot component */}
-        <div className="w-full h-full col-span-1">
-          <div className="w-full h-full pt-3">
+        <div className="flex justify-center col-span-1">
+          {/* Chatbot */}
+          <div className="w-full max-w-md h-[85vh]">
             <Chatbot />
           </div>
         </div>
-        {/* Suggestions to ask the bot */}
-        <div className="h-full col-span-1">
-          <div className="h-full pt-3">
+        <div className="flex justify-center col-span-1">
+          {/* Suggestions for chatbot */}
+          <div className="w-full max-w-md h-[85vh]">
             <Suggestions />
           </div>
         </div>
