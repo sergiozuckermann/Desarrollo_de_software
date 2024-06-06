@@ -1,4 +1,3 @@
-import React from 'react';
 import { useDrop } from 'react-dnd';
 import styled from 'styled-components';
 
@@ -79,10 +78,10 @@ const AgentsContainer = styled.div`
   }
 `;
 
-const CardDrop = ({ profileName, routingProfileId, onAgentDrop, children }) => {
+const CardDrop = ({ profileName, routingProfileId, onAgentDrop, children }: {profileName:string, routingProfileId:string, onAgentDrop:any, children:any}) => {
   const [{ isOver }, drop] = useDrop(() => ({
     accept: 'AGENT',
-    drop: (item) => {
+    drop: (item: any) => { // Add type assertion here
       onAgentDrop(item.id, routingProfileId);
     },
     collect: (monitor) => ({

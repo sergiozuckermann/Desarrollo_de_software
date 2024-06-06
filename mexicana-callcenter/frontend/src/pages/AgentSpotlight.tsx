@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import PageStructure from "../components/PageStructure";
 import AgentSpotlightComp from "../components/AgentSpotlightComp";
-import agentService from "../services/agentSpotlight";
+import userService from "../services/user";
 
 interface Agent {
   name: string;
   performance: string;
   image: string;
+  lastname: string;
+  username: string;
 }
 
 const AgentSpotlight = () => {
@@ -14,21 +16,27 @@ const AgentSpotlight = () => {
   const [agents, setAgents] = useState<Agent[]>([]);
   // State to keep track of the current index for the carousel
   const [currentIndex, setCurrentIndex] = useState(0);
+  // State to keep track of the loading state
+  const [loading, setLoading] = useState(true);
 
   // useEffect hook to fetch all agents when the component mounts
   useEffect(() => {
-    agentService
-      .getAllAgents()
-      .then((fetchedAgents) => {
-        // Update the agents state with the fetched data
-        setAgents(fetchedAgents);
+    let fetchedAgents: Agent[]; // Declare the variable fetchedAgents
+    userService
+      .GetAgents()
+      .then((agents) => {
+        fetchedAgents = agents.filter((agent: Agent) => agent.performance !== null);
+        return Promise.all(fetchedAgents.map((agent: Agent) => userService.GetImageUrl(agent.username)));
+      })
+      .then((imageUrls) => {
+        setAgents(fetchedAgents.map((agent, index) => ({ ...agent, image: imageUrls[index].imageUrl })));
+        setLoading(false);
       })
       .catch((error) => {
         // Log any errors that occur during the API call
-        console.error('Failed to fetch agents:', error);
+        console.error('Failed to fetch agents:',error);
       });
   }, []); // Empty dependency array to run the effect only once
-
   // Function to handle the previous button click
   const handlePrevClick = () => {
     setCurrentIndex((prevIndex) =>
@@ -42,6 +50,12 @@ const AgentSpotlight = () => {
       prevIndex === agents.length - 1 ? 0 : prevIndex + 1
     );
   };
+
+  if (loading) {
+    return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      Loading...
+    </div>;
+  }
 
   // Compute the agents to display in the carousel based on the current index
   const showingAgents = [
@@ -58,7 +72,8 @@ const AgentSpotlight = () => {
           {/* Render the previous agent */}
           <div className="col-span-1 p-4 flex-shrink-0 scale-75 lg:block hidden">
             <AgentSpotlightComp
-              name={showingAgents[0]?.name || ''}
+              name={(showingAgents[0]?.name.charAt(0).toUpperCase() + showingAgents[0]?.name.slice(1)) + ' '}
+              lastname={(showingAgents[0]?.lastname.charAt(0).toUpperCase() + showingAgents[0]?.lastname.slice(1)) + ' '}
               performance={showingAgents[0]?.performance || ''}
               image={showingAgents[0]?.image || ''}
             />
@@ -66,7 +81,8 @@ const AgentSpotlight = () => {
           {/* Render the current agent */}
           <div className="col-span-1 p-4 flex-shrink-0 scale-120">
             <AgentSpotlightComp
-              name={showingAgents[1]?.name || ''}
+              name={(showingAgents[1]?.name.charAt(0).toUpperCase() + showingAgents[1]?.name.slice(1)) + ' '}
+              lastname={(showingAgents[1]?.lastname.charAt(0).toUpperCase() + showingAgents[1]?.lastname.slice(1)) + ' '}
               performance={showingAgents[1]?.performance || ''}
               image={showingAgents[1]?.image || ''}
             />
@@ -74,7 +90,8 @@ const AgentSpotlight = () => {
           {/* Render the next agent */}
           <div className="col-span-1 p-4 flex-shrink-0 scale-75 lg:block hidden">
             <AgentSpotlightComp
-              name={showingAgents[2]?.name || ''}
+              name={(showingAgents[2]?.name.charAt(0).toUpperCase() + showingAgents[2]?.name.slice(1)) + ' '}
+              lastname={(showingAgents[2]?.lastname.charAt(0).toUpperCase() + showingAgents[2]?.lastname.slice(1)) + ' '}
               performance={showingAgents[2]?.performance || ''}
               image={showingAgents[2]?.image || ''}
             />
@@ -83,10 +100,10 @@ const AgentSpotlight = () => {
         {/* Render the previous and next buttons */}
         <div className="flex justify-center mt-6 ml-4">
           <button onClick={handlePrevClick} className="mr-12">
-            <img src="/public/back.svg" alt="Previous Arrow" />
+            <img src="/back.svg" alt="Previous Arrow" />
           </button>
           <button onClick={handleNextClick}>
-            <img src="/public/next.svg" alt="Next Arrow" />
+            <img src="/next.svg" alt="Next Arrow" />
           </button>
         </div>
       </div>

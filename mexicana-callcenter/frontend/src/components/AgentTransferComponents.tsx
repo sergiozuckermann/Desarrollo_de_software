@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { useContext } from 'react';
+import { DarkModeContext } from '../context/DarkModeContext';
 
 // Styled components
 const CardsContainer = styled.div`
@@ -63,6 +65,7 @@ const InstructionText = styled.div`
   margin: 20px 0;
   font-size: 25px;
   font-weight: bold;
+  color: ${(props) => (props.darkMode ? 'white' : 'black')};
 
   @media (max-width: 768px) {
     font-size: 16px;

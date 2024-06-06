@@ -48,7 +48,7 @@ const SignIn: FunctionComponent = () => {
                 name="Username"
                 required={true}
                 value={usernameTextValue}
-                onChange={(e) => setUsernameTextValue(e.target.value)}
+                onChange={(e:any) => setUsernameTextValue(e.target.value)}
                 data-cy="username-input"
                 />
               <FormInput
@@ -57,7 +57,7 @@ const SignIn: FunctionComponent = () => {
                 name="password"
                 required={true}
                 value={passwordTextValue}
-                onChange={(e) => setPasswordTextValue(e.target.value)}
+                onChange={(e:any) => setPasswordTextValue(e.target.value)}
                 icon="/eye_password.png"
                 onIconClick={togglePasswordVisibility}
                 data-cy="password-input"
