@@ -1,32 +1,46 @@
-import React, { useState } from 'react';
+// This code is a React component that displays the main content of the historical metrics page. 
+// It uses the FetchMetrics function to fetch the metrics data and displays it in various charts and cards. 
+//The component also includes a Filter component to allow users to filter the metrics data by agent, start time, and end time.
+//The component uses the useState hook to manage the filter state and the handleApplyFilters function to update the filter state when the user applies new filters.
+// The component also includes tooltips to provide additional information about each metric.
+
+
+import  { useState } from 'react';
 import PageStructure from '../components/PageStructure';
 import { FetchMetrics } from '../services/metrics';
 import '../css/global.css';
 import MyBarChart2 from '../components/Charts/barChart2';
 import GaugeChart from 'react-gauge-chart';
 import Filter from '../components/filters';
-import MyBarChart from '../components/Charts/BarChartV'; // Assuming MyPieChart is a pie chart component
+import MyBarChart from '../components/Charts/BarChartV';
 import 'react-tooltip/dist/react-tooltip.css'
 import { Tooltip } from 'react-tooltip'
+import MyPieChart from '../components/Charts/piechart';
 
 const MainContent = () => {
+    // State to manage the filter values
     const [filters, setFilters] = useState({
         agent: '',
         startTime: '',
         endTime: ''
     });
 
+    // Function to handle applying new filters
     const handleApplyFilters = (newFilters) => {
         setFilters(newFilters);
     };
 
+    // Fetch metrics data using the filters
     const { averageAbandonmentRate, averageAbandonTime, averageQueueAnswerTime, averageAnswerTime, ServiceLevel, averageContactDuration, contactsHandeled, contactFlowTime, agentOccupancy } = FetchMetrics(filters);
+    // A console.log to check the data
     console.log(averageAbandonmentRate, averageAbandonTime, averageQueueAnswerTime, averageAnswerTime, averageContactDuration, contactsHandeled, contactFlowTime, agentOccupancy);
 
+    // Display a loading message while fetching data
     if (averageAbandonTime === null || averageQueueAnswerTime === null) {
         return <div>Loading...</div>;
     }
 
+    // Data for the charts
     const ServiceData = [{ metric: "Service Level", percentage: ServiceLevel }];
 
     const AbandonData = [
@@ -42,6 +56,7 @@ const MainContent = () => {
         { metric: "Unoccupied", value: 100 - agentOccupancy }
     ] : [];
 
+        
     const formatTime = (seconds) => {
         if (seconds >= 3600) {
             const hours = Math.floor(seconds / 3600);
@@ -70,27 +85,12 @@ const MainContent = () => {
             <Tooltip id="tooltipAbandonmentRate" className="custom-tooltip" />
 
             {/* Agent Occupancy */}
-            <div className="col-span-3 row-span-2 shadow-lg card bg-tertiary"
-            data-tooltip-id="my-tooltipAgentOccupancy" 
-            data-tooltip-content="Agent Occupancy is the percentage of time agents are actively engaged in customer interactions in relation to their available or idle time. As a statistic, it's used to calculate call center productivity." 
-            data-tooltip-place="right">
-                <div className="flex flex-row items-center justify-between">
-                    <div className="px-4 py-4 bg-gray-300 rounded-xl bg-opacity-30">
-                    </div>
-                    <div className="inline-flex text-sm text-gray-600 sm:text-base">
-                        12%
-                    </div>
-                </div>
-                <h1 className="mt-1 text-3xl font-bold text-gray-700 sm:text-m xl:text-4xl"></h1>
-                <div className="flex flex-row justify-between mt-2">
-                    <p>Agent Occupancy </p>
-                    {/* {agentOccupancy !== null && (
-                    <div className="w-full h-full">
-                        <MyPieChart data={OccupancyData} unit="%" />
-                    </div>
-                )} */}
-                </div>
-                <h1 className="mt-1 text-3xl font-bold text-gray-700 sm:text-m xl:text-4xl">No Available Data</h1>    
+            <div className="col-span-3 row-span-2 card bg-tertiary"
+                data-tooltip-id="my-tooltipAgentOccupancy"
+                data-tooltip-content="Agent Occupancy is the percentage of time agents are actively engaged in customer interactions in relation to their available or idle time. As a statistic, it's used to calculate call center productivity."
+                data-tooltip-place="right">
+                <p>Agent Occupancy</p>
+                <MyPieChart data={OccupancyData} unit="%" />
             </div>
             <Tooltip id="my-tooltipAgentOccupancy" className="custom-tooltip"  />
             
@@ -103,7 +103,7 @@ const MainContent = () => {
                     <div className="px-4 py-4 bg-gray-300 rounded-xl bg-opacity-30">
                     </div>
                     <div className="inline-flex text-sm text-gray-600 sm:text-base">
-                        12%
+                         {/* 12% */}
                     </div>
                 </div>
                 <h1 className="mt-1 text-3xl font-bold text-gray-700 sm:text-m xl:text-4xl">{formatTime(averageAnswerTime)}</h1>
@@ -164,7 +164,7 @@ const MainContent = () => {
                     <div className="px-4 py-4 bg-gray-300 rounded-xl bg-opacity-30">
                     </div>
                     <div className="inline-flex text-sm text-gray-600 sm:text-base">
-                        12%
+                         {/* 12% */}%
                     </div>
                 </div>
                 <h1 className="mt-1 text-3xl font-bold text-gray-700 sm:text-m xl:text-4xl">{formatTime(averageContactDuration)}</h1>
@@ -183,7 +183,7 @@ const MainContent = () => {
                     <div className="px-4 py-4 bg-gray-300 rounded-xl bg-opacity-30">
                     </div>
                     <div className="inline-flex text-sm text-gray-600 sm:text-base">
-                        12%
+                         {/* 12% */}%
                     </div>
                 </div>
                 <h1 className="mt-1 text-3xl font-bold text-gray-700 sm:text-m xl:text-4xl">{contactsHandeled} contacts</h1>
@@ -202,7 +202,7 @@ const MainContent = () => {
                     <div className="px-4 py-4 bg-gray-300 rounded-xl bg-opacity-30">
                     </div>
                     <div className="inline-flex text-sm text-gray-600 sm:text-base">
-                        12%
+                        {/* 12% */}
                     </div>
                 </div>
                 <h1 className="mt-1 text-3xl font-bold text-gray-700 sm:text-m xl:text-4xl">{formatTime(contactFlowTime)}</h1>
