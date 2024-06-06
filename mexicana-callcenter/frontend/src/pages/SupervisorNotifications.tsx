@@ -5,18 +5,40 @@ import { notifications } from "../components/notificationsData";
 import HorizontalTabs from "../components/NotificationTabs";
 import { FaExclamationCircle, FaBook } from 'react-icons/fa';
 
-// Placeholder functions for fetching data
-const fetchSentimentAnalysis = async () => {
+interface Sentiment {
+  id: number;
+  isBad: boolean;
+}
+
+interface AgentPerformance {
+  id: number;
+  isPerformingBadly: boolean;
+}
+
+interface Queue {
+  id: number;
+  isTooLong: boolean;
+}
+
+interface Notification {
+  id: number;
+  title: string;
+  message: string;
+  date: string;
+}
+
+
+const fetchSentimentAnalysis = async (): Promise<Sentiment[]> => {
   // data fetching logic from kinesis
   return [];
 };
 
-const fetchAgentPerformance = async () => {
+const fetchAgentPerformance = async (): Promise<AgentPerformance[]> => {
   // data fetching logic from metrics
   return [];
 };
 
-const fetchQueueData = async () => {
+const fetchQueueData = async (): Promise<Queue[]> => {
   // data fetching logic from Amazon Connect
   return [];
 };
@@ -24,23 +46,19 @@ const fetchQueueData = async () => {
 const SupervisorNotifications: React.FunctionComponent = () => {
   const [readNotifications, setReadNotifications] = useState<number[]>([]);
   const [deletedNotifications, setDeletedNotifications] = useState<number[]>([]);
-  const [urgentNotifications, setUrgentNotifications] = useState<any[]>([]);
-  const [nonUrgentNotifications, setNonUrgentNotifications] = useState<any[]>([]);
+  const [urgentNotifications, setUrgentNotifications] = useState<Notification[]>([]);
+  const [nonUrgentNotifications, setNonUrgentNotifications] = useState<Notification[]>([]);
   const [hasNewUrgent, setHasNewUrgent] = useState<boolean>(false);
-  const [unreadNotificationsCount, setUnreadNotificationsCount] = useState(0);
-
 
   useEffect(() => {
     const storedReadNotifications = localStorage.getItem("readNotifications");
     const storedDeletedNotifications = localStorage.getItem("deletedNotifications");
-    
     if (storedReadNotifications) {
       setReadNotifications(JSON.parse(storedReadNotifications));
     }
     if (storedDeletedNotifications) {
       setDeletedNotifications(JSON.parse(storedDeletedNotifications));
     }
-    
   }, []);
 
   useEffect(() => {
@@ -50,25 +68,24 @@ const SupervisorNotifications: React.FunctionComponent = () => {
       const queueData = await fetchQueueData();
 
       const urgent = notifications.filter(notification => 
-        sentimentData.some(sentiment => sentiment.id === notification.id && sentiment.isBad) ||
-        agentPerformanceData.some(agent => agent.id === notification.id && agent.isPerformingBadly) ||
-        queueData.some(queue => queue.id === notification.id && queue.isTooLong) ||
+        sentimentData.some((sentiment: Sentiment) => sentiment.id === notification.id && sentiment.isBad) ||
+        agentPerformanceData.some((agent: AgentPerformance) => agent.id === notification.id && agent.isPerformingBadly) ||
+        queueData.some((queue: Queue) => queue.id === notification.id && queue.isTooLong) ||
         notification.title.toLowerCase().includes("call") ||
         notification.title.toLowerCase().includes("performance") ||
         notification.title.toLowerCase().includes("bad sentiment") ||
         notification.title.toLowerCase().includes("queue")
       );
 
-      // Sort urgent notifications by priority: "call", "queue", "performance"
       const sortedUrgent = urgent.sort((a, b) => {
         const keywords = ["call", "queue", "performance"];
-        const getPriority = (title) => {
+        const getPriority = (title: string) => {
           for (let i = 0; i < keywords.length; i++) {
             if (title.toLowerCase().includes(keywords[i])) {
               return i;
             }
           }
-          return keywords.length; // Default priority if no keywords match
+          return keywords.length;
         };
 
         return getPriority(a.title) - getPriority(b.title);
@@ -86,10 +103,6 @@ const SupervisorNotifications: React.FunctionComponent = () => {
 
       const hasUnreadUrgent = filteredUrgent.some(notification => !readNotifications.includes(notification.id));
       setHasNewUrgent(hasUnreadUrgent);
-
-      const unreadCount = filteredUrgent.filter(notification => !readNotifications.includes(notification.id)).length +
-                          filteredNonUrgent.filter(notification => !readNotifications.includes(notification.id)).length;
-      setUnreadNotificationsCount(unreadCount);
     };
 
     fetchData();
@@ -109,10 +122,6 @@ const SupervisorNotifications: React.FunctionComponent = () => {
       
       const allUrgentRead = urgentNotifications.every(notification => updatedReadNotifications.includes(notification.id));
       setHasNewUrgent(!allUrgentRead);
-
-      const unreadCount = urgentNotifications.filter(notification => !updatedReadNotifications.includes(notification.id)).length +
-                          nonUrgentNotifications.filter(notification => !updatedReadNotifications.includes(notification.id)).length;
-      setUnreadNotificationsCount(unreadCount);
     }
   };
 
@@ -122,12 +131,11 @@ const SupervisorNotifications: React.FunctionComponent = () => {
       setDeletedNotifications(updatedDeletedNotifications);
       localStorage.setItem("deletedNotifications", JSON.stringify(updatedDeletedNotifications));
 
-      setUrgentNotifications(prev => prev.filter(notification => notification.id !== notificationId));
-      setNonUrgentNotifications(prev => prev.filter(notification => notification.id !== notificationId));
+      const updatedUrgent = urgentNotifications.filter(notification => notification.id !== notificationId);
+      const updatedNonUrgent = nonUrgentNotifications.filter(notification => notification.id !== notificationId);
 
-      const unreadCount = updatedUrgent.filter(notification => !readNotifications.includes(notification.id)).length +
-                          updatedNonUrgent.filter(notification => !readNotifications.includes(notification.id)).length;
-      setUnreadNotificationsCount(unreadCount);
+      setUrgentNotifications(updatedUrgent);
+      setNonUrgentNotifications(updatedNonUrgent);
     }
   };
 
