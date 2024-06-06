@@ -51,11 +51,11 @@ const NotificationsDropDown: React.FC<NotificationsDropDownProps> = ({ notificat
             {unreadUrgentNotifications.slice(0, 5).map((notification) => (
               <div
                 key={notification.id}
-                className="notification-item mb-4 cursor-pointer"
+                className="notification-item mb-4 cursor-pointer dark:text-white"
                 onClick={handleNotificationClick}
               >
                 <strong>{notification.title}</strong>
-                <p className="text-sm mt-1 overflow-hidden text-ellipsis line-clamp-2">{notification.message}</p>
+                <p className="text-sm mt-1 overflow-hidden text-ellipsis line-clamp-2 dark:text-white">{notification.message}</p>
               </div>
             ))}
           </div>

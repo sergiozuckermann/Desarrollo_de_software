@@ -53,10 +53,18 @@ const PageStructure: FunctionComponent<PageStructureProps> = ({ title, children 
             {!noArrowsRoutes.includes(location.pathname) && (
               <div className="flex items-center space-x-0.1">
                 <button onClick={handleBack} className="p-0 m-0">
-                  <img src='/leftarrow.svg' alt="back arrow" className="md:w-[45px] w-[38px] space-x-0.1 ml-5" />
+                  <img 
+                    src={darkMode ? '/leftarrow_white.svg' : '/leftarrow.svg'} 
+                    alt="back arrow" 
+                    className="md:w-[45px] w-[38px] space-x-0.1 ml-5" 
+                  />
                 </button>
                 <button onClick={handleForward}>
-                  <img src='/rightarrow.svg' alt="forward arrow" className="md:w-[45px] w-[38px] p-0 mr-5" />
+                  <img 
+                    src={darkMode ? '/rightarrow_white.svg' : '/rightarrow.svg'} 
+                    alt="forward arrow" 
+                    className="md:w-[45px] w-[38px] p-0 mr-5" 
+                  />
                 </button>
               </div>
             )}
