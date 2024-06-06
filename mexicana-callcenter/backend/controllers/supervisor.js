@@ -181,7 +181,7 @@ supervisorRouter.get('/metrics', async (req, res) => {
     }));
 
     // Return the array to the client
-    console.log('Filtered MetricsResults:', JSON.stringify(filteredResults, null, 2));
+    // console.log('Filtered MetricsResults:', JSON.stringify(filteredResults, null, 2));
     res.status(200).json(filteredResults);
 
   } catch (error) {
