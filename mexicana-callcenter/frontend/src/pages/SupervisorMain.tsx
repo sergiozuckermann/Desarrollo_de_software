@@ -60,7 +60,7 @@ const MainContent = () => {
   
   return (
     <div className="grid w-full h-full grid-cols-1 gap-4 p-10 md:grid-cols-12">
-      <div className="md:col-span-4">
+      <div className="md:col-span-4" data-cy="user-info">
         { userInfo !== null ? 
         <WorkerCard 
           imageURL={userImage || ''}

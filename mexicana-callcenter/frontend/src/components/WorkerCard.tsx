@@ -14,7 +14,7 @@ const WorkerCard: React.FC<WorkerCardProps> = ({ imageURL, name, username, posit
           <img className="w-[65%] h-[65%] rounded-full" src={imageURL} alt="User avatar" />
         </div>
         <div className="items-center px-6 py-4 text-center">
-          <p className="pb-5 text-sm text-gray-600 dark:text-white italic">{username}</p>
+          <p className="pb-5 text-sm text-gray-600 dark:text-white italic" data-cy="user-login">{username}</p>
           <h2 className="pb-5 mb-2 dark:text-white">{name}</h2>
           <p className="pb-1 text-base text-gray-700 dark:text-white">{position}</p>
           <p className="pb-5 text-sm text-gray-600 dark:text-white">{experience} years</p>
