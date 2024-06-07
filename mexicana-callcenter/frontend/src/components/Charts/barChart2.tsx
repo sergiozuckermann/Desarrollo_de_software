@@ -1,25 +1,33 @@
-// Code to create the bar chart that can be used as a component 
-
 import React from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, LabelList } from 'recharts';
 
-// Interface that defines the structure of the data that will be used to create the bar chart
+// Define a type for the metrics
+type Metric = "Flight Management" | "Travel Information" | "Special Assistance" | "Website Assistance" | "Other Questions" | "Customer Service";
+
+// Interface that defines the structure of the data used for the bar chart
 interface DataPoint {
-  metric: string;
+  metric: Metric;
   value: number;
 }
 
-// Interface that defines the properties that the component will receive
+// Interface that defines the props received by the component
 interface MyBarChart2Props {
   data: DataPoint[];
   unit: string;
 }
 
-const MyBarChart2: React.FC<MyBarChart2Props> = ({ data, unit }) => {
-    // Array of colors that will be used to color the bars in the chart
-  const barColors = ['#F47560', '#E8C1A0', '#F1E15B', '#E8A838', '#61CDBB', '#97E3D5'];
+// Mapping colors for the metrics
+const barColors: Record<Metric, string> = {
+  "Flight Management": "#F47560",
+  "Travel Information": "#E8C1A0",
+  "Special Assistance": "#61CDBB",
+  "Website Assistance": "#E8A838",
+  "Other Questions": "#97E3D5",
+  "Customer Service": "#97E3D5"
+};
 
-//   If there is no data, a message will be displayed
+const MyBarChart2: React.FC<MyBarChart2Props> = ({ data, unit }) => {
+  // If there is no data, a message will be shown
   if (!data || data.length === 0) {
     return <p>No Available Data</p>;
   }
@@ -31,23 +39,24 @@ const MyBarChart2: React.FC<MyBarChart2Props> = ({ data, unit }) => {
         data={data}
         margin={{
           top: 20,
-          right: 50,
-          left: 80,
-          bottom: 40,
+          right: 20,
+          left: 20,
+          bottom: 60, // Increased the bottom margin
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="metric" />
+        <XAxis 
+          dataKey="metric" 
+          tick={{ angle: -30, textAnchor: 'end', fontSize: 10 }} // Adjusted angle and font size
+          interval={0} 
+        />
         <YAxis tickFormatter={(value) => `${value} ${unit}`} />
         <Tooltip formatter={(value) => `${value} ${unit}`} />
-        <Bar
-          dataKey="value"
-          fill="#8884d8"
-          label={{ position: 'top', fill: '#333', fontSize: 12 }}
-        >
+        <Bar dataKey="value" fill="#8884d8">
           {data.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={barColors[index % barColors.length]} />
+            <Cell key={`cell-${index}`} fill={barColors[entry.metric]} />
           ))}
+          <LabelList dataKey="value" position="top" fill="#333" fontSize={12} />
         </Bar>
       </BarChart>
     </ResponsiveContainer>
