@@ -66,6 +66,7 @@ const MainContent = () => {
           <WorkerCard 
           imageURL={userImage || ''}
            name={userInfo.name} 
+           username={userInfo.username}
            position={userInfo.position} 
            experience={userInfo.experience} 
            points={userInfo.points} 

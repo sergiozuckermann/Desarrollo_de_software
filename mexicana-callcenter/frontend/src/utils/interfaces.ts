@@ -16,6 +16,7 @@ export interface AuthContextType {
 export interface WorkerCardProps {
   imageURL: string;
   name: string;
+  username: string;
   position: string;
   experience: number;
   points: number;
