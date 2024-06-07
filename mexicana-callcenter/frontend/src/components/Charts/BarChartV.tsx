@@ -18,7 +18,7 @@ const MyBarChart = ({ data }) => {
                 <YAxis type="category" dataKey="metric" />
                 <Tooltip formatter={(value) => `${value}%`} />
                 <Legend />
-                <Bar dataKey="percentage" fill="#8884d8" background={{ fill: '#eee' }}/>
+                <Bar dataKey="percentage" fill="#8BC34A" background={{ fill: '#eee' }}/>
             </BarChart>
         </ResponsiveContainer>
     );

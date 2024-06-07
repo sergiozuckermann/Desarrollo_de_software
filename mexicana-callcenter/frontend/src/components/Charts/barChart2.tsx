@@ -18,12 +18,12 @@ interface MyBarChart2Props {
 
 // Mapping colors for the metrics
 const barColors: Record<Metric, string> = {
-  "Flight Management": "#F47560",
-  "Travel Information": "#E8C1A0",
-  "Special Assistance": "#61CDBB",
-  "Website Assistance": "#E8A838",
-  "Other Questions": "#97E3D5",
-  "Customer Service": "#97E3D5"
+  "Flight Management": "#20253F",
+  "Travel Information": "#4A8B51",
+  "Special Assistance": "#6BBF70",
+  "Website Assistance": "#FFA500",
+  "Other Questions": "#ADD8E6",
+  "Customer Service": "#4B4B4B"
 };
 
 const MyBarChart2: React.FC<MyBarChart2Props> = ({ data, unit }) => {
