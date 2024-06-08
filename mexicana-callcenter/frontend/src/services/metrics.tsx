@@ -1,9 +1,14 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
+// Mapa de IDs de colas a nombres legibles
 const queueNames = {
-    '99bfbe85-27ac-4384-8462-f01f75b53d32': "Flight Management",
-    '292d0398-6089-42cc-9ec9-aee43d6202a6': "Travel logistics"
+    'b65f8183-2d8b-42e4-9b37-f8dfa787c246': 'Flight Management',
+    'f6d70469-1449-47c5-b93e-53b42de6dcc3': 'Customer Service',
+    'd3fe43cd-5190-40ec-892b-741ffc4ccbd3': 'Other Questions',
+    '0b408b2d-26c5-4b59-b090-8f9422edb331': 'Special Assistance',
+    '81fad136-adf4-4fb6-9780-e46f53cb740d': 'Travel Information',
+    'd19f9426-d75f-48eb-a68c-0bbda4ced434': 'Website Assistance'
 };
 
 export function FetchMetrics(filters) {
