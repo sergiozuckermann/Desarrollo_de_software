@@ -40,13 +40,13 @@ const SignUp: React.FC = () => {
       showError(`🚨 Passwords do not match!`);
       return;
     }
-    const formData = new FormData();
-    if (file) {
-      const blob = new Blob([file], { type: file.type });
-      formData.append("profilePicture", blob);
-    }
-    formData.append("preferred_username", preferred_username.trim());
-    await axios.post('http://localhost:3000/upload', formData, { headers: {'Content-Type': 'multipart/form-data'}})
+    // const formData = new FormData();
+    // if (file) {
+    //   const blob = new Blob([file], { type: file.type });
+    //   formData.append("profilePicture", blob);
+    // }
+    // formData.append("preferred_username", preferred_username.trim());
+    // await axios.post('http://localhost:3000/upload', formData, { headers: {'Content-Type': 'multipart/form-data'}})
 
     const data = {
       name: firstName,

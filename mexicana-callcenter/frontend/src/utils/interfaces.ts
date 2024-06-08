@@ -16,6 +16,7 @@ export interface AuthContextType {
 export interface WorkerCardProps {
   imageURL: string;
   name: string;
+  username: string;
   position: string;
   experience: number;
   points: number;
@@ -37,6 +38,8 @@ export interface Interaction {
   contactId?: string,
   Sentiment?: string,
   queueName?: string,
+  username: string;
+  routingProfile: string;
   
 }
 

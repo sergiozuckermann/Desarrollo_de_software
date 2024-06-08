@@ -11,7 +11,7 @@ const CCPComponent = () => {
       connect.core.initCCP(containerDiv, {
         ccpUrl: instanceURL,
         loginPopup: true,
-        loginPopupAutoClose: true,
+        loginPopupAutoClose: false,
         loginOptions: {
           autoClose: true,
           height: 600,
