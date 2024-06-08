@@ -36,9 +36,9 @@ const CallOverview: React.FunctionComponent = () => {
   const { role, username, logout } = useAuth()
   const [userInfo, setUserInfo] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
+  const [activeState, setActiveState] = useState("No data available");
   const { showError } = useCustomToast();
   const navigate = useNavigate();
-  let activeState = agentInfo?.state;
 
 
 
@@ -68,6 +68,9 @@ const CallOverview: React.FunctionComponent = () => {
     const selectedAgent = sessionStorage.getItem("selectedAgent");
     if (selectedAgent) {
       setAgentInfo(JSON.parse(selectedAgent));
+      const agentState = JSON.parse(selectedAgent);
+      console.log("Selected agent:", agentState); // Mostrar los datos de los agentes seleccionados en la consola
+      setActiveState(agentState.state);
     }
   }, []);
 
@@ -86,7 +89,7 @@ const CallOverview: React.FunctionComponent = () => {
           if (segmentType === "AGENT_EVENT") {
             // Update metrics or handle AGENT_EVENT
             if (activeUsername === data.message.username) {
-              activeState = data.message.state;
+              setActiveState(data.message.state);
               console.log("Active State:", activeState);
             }
 
@@ -104,7 +107,7 @@ const CallOverview: React.FunctionComponent = () => {
         }
       };
     }
-  }, [socket]);
+  }, [socket, agentInfo, setActiveState]);
 
   const usernamePic = agentInfo?.username;
   console.log("UsernamePic:", usernamePic);
@@ -199,7 +202,6 @@ const CallOverview: React.FunctionComponent = () => {
     setCallDuration(callDuration);
 
   };
-  console.log("Active state global", activeState);
 
   const updateSentiment = (segment: any) => {
     // Update your sentiment data based on the segment data
