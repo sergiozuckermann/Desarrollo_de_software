@@ -1,27 +1,29 @@
+import userService from '../services/user';
+import { useState, useEffect } from 'react';
+
+interface Metric {
+  name: string;
+  time: string;
+}
+
 const AverageInteractionTime = () => {
     
     const ScaleIcon = '/scale.svg';
 
-    // Example data
-    const data = [
-      { name: 'Ian', time: '00:00:00' },
-      { name: 'Melissa', time: '00:00:00' },
-      { name: 'Fernanda', time: '00:00:00' },
-      { name: 'Karla', time: '00:00:00' },
-      { name: 'Javier', time: '00:00:00' },
-      { name: 'Fausto', time: '00:00:00'},
-      { name: 'Luis', time: '00:00:00'},
-      { name: 'Alfredo', time: '00:00:00'},
-      { name: 'Fernanda',  time: '00:00:00'},
-      { name: 'Mauricio', time: '00:00:00'},
-      { name: 'Joaquin', time: '00:00:00'},
-      { name: 'Alejandra', time: '00:00:00'},
-      { name: 'Pablo', time: '00:00:00'},
-      { name: 'Ruben', time: '00:00:00'},
-      { name: 'Andrea', time: '00:00:00'},
-      { name: 'Natalia', time: '00:00:00'},
-      { name: 'Valeria', time: '00:00:00'}
-    ];
+    const [data, setData] = useState<Metric[]>([]);
+
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const response = await userService.GetPerformanceMetrics("AIT");
+          setData(response);
+        } catch (error) {
+          console.error('Error fetching metric data:', error);
+        }
+      };
+      fetchData();
+    }, []);
+
     return (
       <div className="w-full p-4 sm:p-6 lg:p-8 card overflow-hidden bg-[#F8F9FA] dark:bg-primary">
         <div className="max-w-xl mx-auto">
@@ -57,3 +59,4 @@ const AverageInteractionTime = () => {
   }
 
 export default AverageInteractionTime;
+ 
