@@ -36,6 +36,9 @@ const CallOverview: React.FunctionComponent = () => {
   const { role, username, logout } = useAuth()
   const [userInfo, setUserInfo] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
+  const [activeState, setActiveState] = useState("No data available");
+  const [activeContactID, setActiveContactID] = useState("No call in progess");
+  const [ActualSentiment, setActualSentiment] = useState("No call in progress");
   const { showError } = useCustomToast();
   const navigate = useNavigate();
 
@@ -67,6 +70,11 @@ const CallOverview: React.FunctionComponent = () => {
     const selectedAgent = sessionStorage.getItem("selectedAgent");
     if (selectedAgent) {
       setAgentInfo(JSON.parse(selectedAgent));
+      const agentState = JSON.parse(selectedAgent);
+      console.log("Selected agent:", agentState); // Mostrar los datos de los agentes seleccionados en la consola
+      setActiveState(agentState.state);
+      setActiveContactID(agentState.contactId);
+      setActualSentiment(agentState.sentiment);
     }
   }, []);
 
@@ -77,15 +85,32 @@ const CallOverview: React.FunctionComponent = () => {
         const data = JSON.parse(event.data);
         const segment = data.message;
         const metrics = data.metrics;
+        console.log("Data:", data); // Mostrar los datos en la consola
+        const activeUsername = agentInfo?.username;
 
         if (segment) {
           const { segmentType } = segment;
           if (segmentType === "AGENT_EVENT") {
             // Update metrics or handle AGENT_EVENT
+            if (activeUsername === data.message.username) {
+              const newState = data.message.state;
+              setActiveState(newState);
+              console.log("Active State:", newState);
+              if (activeState === "OFFLINE" || activeState === "AVAILABLE") {
+                setActiveContactID("No call in progress");
+                setActualSentiment("No call in progress");
+              }
+            }
+            console.log("Segment type = AGENT EVENT", data.message.state); // Mostrar los datos de los segmentos en la consola
+            
+            
             //updateMetrics(segment);
           } else if (segmentType === "SENTIMENT_ANALYSIS") {
             // Update sentiment analysis
+            setActiveContactID(data.message.contactId);
+            setActualSentiment(data.message.Sentiment);
             updateSentiment(segment);
+            console.log("Segment type = SENTIMENT ANALYSIS:"); // Mostrar los datos de los segmentos en la consola
           }
         }
         if (metrics) {
@@ -94,7 +119,7 @@ const CallOverview: React.FunctionComponent = () => {
         }
       };
     }
-  }, [socket]);
+  }, [socket, agentInfo, setActiveState]);
 
   const usernamePic = agentInfo?.username;
   console.log("UsernamePic:", usernamePic);
@@ -205,10 +230,10 @@ const CallOverview: React.FunctionComponent = () => {
             <CallCard
               agentname={agentInfo.agentFirstName} //{agentInfo.agentFirstName}
               agentposition="Agent"
-              agentState={agentInfo.state}
+              agentState={activeState || "No data available"}
               agentQueue={agentInfo.queueName || "No data available"}
-              actualSentiment={agentInfo.sentiment || "No agent in call"}
-              contactID={agentInfo.contactId || "No agent in call"}
+              actualSentiment={ActualSentiment || "No agent in call"}
+              contactID={activeContactID || "No call in progress"}
               talktime="00:03:10"
               username={agentInfo.username || "No data available"}
               routingProfile={agentInfo.routingProfile || "No data available"}
