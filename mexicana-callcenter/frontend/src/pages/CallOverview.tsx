@@ -38,6 +38,7 @@ const CallOverview: React.FunctionComponent = () => {
   const [userId, setUserId] = useState<string | null>(null);
   const { showError } = useCustomToast();
   const navigate = useNavigate();
+  let activeState = agentInfo?.state;
 
 
 
@@ -77,15 +78,24 @@ const CallOverview: React.FunctionComponent = () => {
         const data = JSON.parse(event.data);
         const segment = data.message;
         const metrics = data.metrics;
-
+        console.log("Data:", data); // Mostrar los datos en la consola
+        const activeUsername = agentInfo?.username;
+        
         if (segment) {
           const { segmentType } = segment;
           if (segmentType === "AGENT_EVENT") {
             // Update metrics or handle AGENT_EVENT
+            if (activeUsername === data.message.username) {
+              activeState = data.message.state;
+              console.log("Active State:", activeState);
+            }
+
+            console.log("Segment type = AGENT EVENT", data.message.state); // Mostrar los datos de los segmentos en la consola
             //updateMetrics(segment);
           } else if (segmentType === "SENTIMENT_ANALYSIS") {
             // Update sentiment analysis
             updateSentiment(segment);
+            console.log("Segment type = SENTIMENT ANALYSIS:"); // Mostrar los datos de los segmentos en la consola
           }
         }
         if (metrics) {
@@ -189,6 +199,7 @@ const CallOverview: React.FunctionComponent = () => {
     setCallDuration(callDuration);
 
   };
+  console.log("Active state global", activeState);
 
   const updateSentiment = (segment: any) => {
     // Update your sentiment data based on the segment data
@@ -205,7 +216,7 @@ const CallOverview: React.FunctionComponent = () => {
             <CallCard
               agentname={agentInfo.agentFirstName} //{agentInfo.agentFirstName}
               agentposition="Agent"
-              agentState={agentInfo.state}
+              agentState={activeState || "No data available"}
               agentQueue={agentInfo.queueName || "No data available"}
               actualSentiment={agentInfo.sentiment || "No agent in call"}
               contactID={agentInfo.contactId || "No agent in call"}
