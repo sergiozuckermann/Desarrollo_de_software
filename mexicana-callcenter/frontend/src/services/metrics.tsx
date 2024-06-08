@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-// Mapa de IDs de colas a nombres legibles
 const queueNames = {
     'b65f8183-2d8b-42e4-9b37-f8dfa787c246': 'Flight Management',
     'f6d70469-1449-47c5-b93e-53b42de6dcc3': 'Customer Service',
@@ -12,15 +11,15 @@ const queueNames = {
 };
 
 export function FetchMetrics(filters) {
-    const [averageAbandonmentRate, setAverageAbandonmentRate] = useState<number | null>(null);
-    const [averageAbandonTime, setAverageAbandonTime] = useState<Array<{ label: string, value: number }> | null>(null);
-    const [averageQueueAnswerTime, setAverageQueueAnswerTime] = useState<Array<{ label: string, value: number }> | null>(null);
-    const [averageAnswerTime, setAverageAnswerTime] = useState<number | null>(null);
-    const [ServiceLevel, setServiceLevel] = useState<number | null>(null);
-    const [averageContactDuration, setAverageContactDuration] = useState<number | null>(null);
-    const [contactsHandeled, setContactsHandeled] = useState<number | null>(null);
-    const [contactFlowTime, setContactFlowTime] = useState<number | null>(null);
-    const [agentOccupancy, setAgentOccupancy] = useState<Array<{ label: string, value: number }> | null>(null);
+    const [averageAbandonmentRate, setAverageAbandonmentRate] = useState(null);
+    const [averageAbandonTime, setAverageAbandonTime] = useState(null);
+    const [averageQueueAnswerTime, setAverageQueueAnswerTime] = useState(null);
+    const [averageAnswerTime, setAverageAnswerTime] = useState(null);
+    const [ServiceLevel, setServiceLevel] = useState(null);
+    const [averageContactDuration, setAverageContactDuration] = useState(null);
+    const [contactsHandeled, setContactsHandeled] = useState(null);
+    const [contactFlowTime, setContactFlowTime] = useState(null);
+    const [agentOccupancy, setAgentOccupancy] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {

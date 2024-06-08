@@ -6,14 +6,20 @@ import Modal from 'react-modal';
 
 const defaultStartDate = new Date();
 defaultStartDate.setDate(defaultStartDate.getDate() - 30);
-defaultStartDate.setHours(0, 0, 0, 0); 
+defaultStartDate.setHours(0, 0, 0, 0);
 
 const defaultEndDate = new Date();
+defaultEndDate.setDate(defaultEndDate.getDate() - 1);
 defaultEndDate.setHours(23, 59, 59, 999);
 
 const queueMap = {
     'Travel logistics': '292d0398-6089-42cc-9ec9-aee43d6202a6',
-    'Flight Management': '99bfbe85-27ac-4384-8462-f01f75b53d32'
+    'Flight Management': 'b65f8183-2d8b-42e4-9b37-f8dfa787c246',
+    'Customer Service': 'f6d70469-1449-47c5-b93e-53b42de6dcc3',
+    'Other Questions': 'd3fe43cd-5190-40ec-892b-741ffc4ccbd3',
+    'Special Assistance': '0b408b2d-26c5-4b59-b090-8f9422edb331',
+    'Travel Information': '81fad136-adf4-4fb6-9780-e46f53cb740d',
+    'Website Assistance': 'd19f9426-d75f-48eb-a68c-0bbda4ced434'
 };
 
 const Filter = ({ onApplyFilters }) => {
@@ -29,8 +35,8 @@ const Filter = ({ onApplyFilters }) => {
     const handleReset = () => {
         setAgent('');
         setQueue('');
-        setStartDate(new Date());
-        setEndDate(new Date());
+        setStartDate(defaultStartDate);
+        setEndDate(defaultEndDate);
     };
 
     const showModal = (message) => {
@@ -160,6 +166,10 @@ const Filter = ({ onApplyFilters }) => {
                                         <option value="">Select Queue</option>
                                         <option>Travel logistics</option>
                                         <option>Flight Management</option>
+                                        <option>Special Assistance</option>
+                                        <option>Website Assistance</option>
+                                        <option>Other Questions</option>
+                                        <option>Customer Service</option>
                                     </select>
                                 </div>
                                 <div className="flex flex-col">

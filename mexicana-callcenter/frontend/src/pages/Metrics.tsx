@@ -10,13 +10,12 @@ import MyPieChart from '../components/Charts/piechart';
 import 'react-tooltip/dist/react-tooltip.css';
 import { Tooltip } from 'react-tooltip';
 
-
-
 const MainContent = () => {
     const [filters, setFilters] = useState({
         agent: '',
         startTime: '',
-        endTime: ''
+        endTime: '',
+        queue: '', 
     });
 
     const handleApplyFilters = (newFilters) => {
@@ -71,26 +70,25 @@ const MainContent = () => {
             </div>
             <Tooltip id="tooltipAbandonmentRate" className="custom-tooltip" />
 
-            {/* Agent Occupancy */} 
+            {/* Agent Occupancy */}
             <div className="col-span-3 row-span-2 card bg-tertiary dark:bg-primary"
-                data-tooltip-id="my-tooltipAgentOccupancy" 
+                data-tooltip-id="my-tooltipAgentOccupancy"
                 data-tooltip-content= "Agent Occupancy is the percentage of time agents are actively engaged in customer interactions in relation to their available or idle time. As a statistic, it's used to calculate call center productivity."
                 data-tooltip-place="right">
                 <p className='dark:text-white'>Agent Occupancy</p>
                 <MyPieChart data={OccupancyData} unit="%" />
             </div>
+            <Tooltip id="my-tooltipAgentOccupancy" className="custom-tooltip" />
             
-            <Tooltip id="my-tooltipAgentOccupancy" className="custom-tooltip"  />
             {/* Average Queue Answer Time (ASA) */}
             <div className="col-span-3 row-span-2 shadow-lg card bg-tertiary dark:bg-primary"
                 data-tooltip-id="tooltipAverageQueueAnswerTime"
-                data-tooltip-content=" ASA is a more generalized metric that measures the average time it takes for all calls to be answered across the entire call center, regardless of the queue they are in. It provides an overall picture of the call center's efficiency in handling incoming calls. A low ASA indicates that calls are being answered quickly, while a high ASA indicates that callers are waiting a long time to speak with an agent."
+                data-tooltip-content="ASA is a more generalized metric that measures the average time it takes for all calls to be answered across the entire call center, regardless of the queue they are in. It provides an overall picture of the call center's efficiency in handling incoming calls. A low ASA indicates that calls are being answered quickly, while a high ASA indicates that callers are waiting a long time to speak with an agent."
                 data-tooltip-place="right">
                 <div className="flex flex-row items-center justify-between">
                     <div className="px-4 py-4 bg-gray-300 rounded-xl bg-opacity-30">
                     </div>
                     <div className="inline-flex text-sm text-gray-600 sm:text-base dark:text-white">
-                        {/* 12% */}
                     </div>
                 </div>
                 <h1 className="mt-1 text-3xl font-bold text-gray-700 sm:text-m xl:text-4xl dark:text-white">{formatTime(averageAnswerTime)}</h1>
@@ -101,13 +99,9 @@ const MainContent = () => {
             <Tooltip id="tooltipAverageQueueAnswerTime" className="custom-tooltip" />
 
             {/* FILTER */}
-            <div className="relative w-full h-full col-span-3 row-span-1 p-2 border-gray-400 "
-                data-tooltip-id="tooltipFilter"
-                data-tooltip-content=" Filter by agent, date, queue."
-                data-tooltip-place="bottom">
+            <div className="relative w-full h-full col-span-3 row-span-1 p-2 border-gray-400">
                 <Filter onApplyFilters={handleApplyFilters} />
             </div>
-            <Tooltip id="tooltipFilter" className="custom-tooltip" />
 
             {/* Average Answer Time per Queue */}
             <div className="col-span-3 col-start-10 row-span-3 card bg-tertiary dark:bg-primary"
@@ -151,7 +145,6 @@ const MainContent = () => {
                     <div className="px-4 py-4 bg-gray-300 rounded-xl bg-opacity-30">
                     </div>
                     <div className="inline-flex text-sm text-gray-600 sm:text-base dark:text-white">
-                        {/* 12% */}
                     </div>
                 </div>
                 <h1 className="mt-1 text-3xl font-bold text-gray-700 sm:text-m xl:text-4xl dark:text-white">{formatTime(averageContactDuration)}</h1>
@@ -170,7 +163,6 @@ const MainContent = () => {
                     <div className="px-4 py-4 bg-gray-300 rounded-xl bg-opacity-30">
                     </div>
                     <div className="inline-flex text-sm text-gray-600 sm:text-base dark:text-white">
-                        {/* 12% */}
                     </div>
                 </div>
                 <h1 className="mt-1 text-3xl font-bold text-gray-700 sm:text-m xl:text-4xl dark:text-white">{contactsHandeled} contacts</h1>
@@ -189,7 +181,6 @@ const MainContent = () => {
                     <div className="px-4 py-4 bg-gray-300 rounded-xl bg-opacity-30">
                     </div>
                     <div className="inline-flex text-sm text-gray-600 sm:text-base dark:text-white">
-                        {/* 12% */}
                     </div>
                 </div>
                 <h1 className="mt-1 text-3xl font-bold text-gray-700 sm:text-m xl:text-4xl dark:text-white">{formatTime(contactFlowTime)}</h1>
