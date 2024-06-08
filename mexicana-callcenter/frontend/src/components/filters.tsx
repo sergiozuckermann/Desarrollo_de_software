@@ -22,22 +22,31 @@ const queueMap = {
     'Website Assistance': 'd19f9426-d75f-48eb-a68c-0bbda4ced434'
 };
 
-const Filter = ({ onApplyFilters }) => {
-    const [agent, setAgent] = useState('');
+const Filter = ({ onApplyFilters, agentsList }) => {
+    const [agentId, setAgentId] = useState('');
     const [startDate, setStartDate] = useState(defaultStartDate);
     const [endDate, setEndDate] = useState(defaultEndDate);
     const [queue, setQueue] = useState('');
     const [showFilters, setShowFilters] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
+    const [isResetting, setIsResetting] = useState(false); // Track reset state
     const filterRef = useRef(null);
 
     const handleReset = () => {
-        setAgent('');
+        setAgentId('');
         setQueue('');
         setStartDate(defaultStartDate);
         setEndDate(defaultEndDate);
+        setIsResetting(true); // Indicate reset in progress
     };
+
+    useEffect(() => {
+        if (isResetting) {
+            handleSearch();
+            setIsResetting(false); // Reset the reset state
+        }
+    }, [isResetting]);
 
     const showModal = (message) => {
         setModalMessage(message);
@@ -81,11 +90,11 @@ const Filter = ({ onApplyFilters }) => {
     };
 
     const handleSearch = (e) => {
-        e.preventDefault();
+        if (e) e.preventDefault();
         if (!validateDates()) return;
 
         const filters = {
-            agent,
+            agentId,
             queue: queueMap[queue] || '',
             startTime: moment(startDate).format('YYYY-MM-DD HH:mm:ss'),
             endTime: moment(endDate).format('YYYY-MM-DD HH:mm:ss')
@@ -136,7 +145,7 @@ const Filter = ({ onApplyFilters }) => {
                             name="search"
                             className="w-full h-10 py-2 pl-10 pr-4 bg-gray-100 border border-gray-100 rounded-md shadow-sm outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
                             placeholder="Search by date, agent, queue, etc"
-                            onFocus={() => setShowFilters(true)}
+                            onFocus={toggleFilters}
                         />
                     </div>
 
@@ -145,14 +154,17 @@ const Filter = ({ onApplyFilters }) => {
                             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                 <div className="flex flex-col">
                                     <label htmlFor="agent" className="text-sm font-medium text-stone-600">Agent</label>
-                                    <input
-                                        type="text"
+                                    <select
                                         id="agent"
-                                        value={agent}
-                                        onChange={(e) => setAgent(e.target.value)}
-                                        placeholder="Fer"
-                                        className="block w-full px-2 py-1 mt-2 bg-gray-100 border border-gray-100 rounded-md shadow-sm outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-                                    />
+                                        value={agentId}
+                                        onChange={(e) => setAgentId(e.target.value)}
+                                        className="block w-full px-2 py-1 mt-2 bg-gray-100 rounded-md shadow-sm outline-none cursor-pointer focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                    >
+                                        <option value="">Select Agent</option>
+                                        {agentsList.map((agent, index) => (
+                                            <option key={index} value={agent}>{agent}</option>
+                                        ))}
+                                    </select>
                                 </div>
 
                                 <div className="flex flex-col">

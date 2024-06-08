@@ -15,14 +15,11 @@ const queueMap = {
 router.post('/', async (req, res) => {
     try {
         const filters = req.body;
+        console.log("Received filters:", filters); // Log received filters
 
         if (!filters || typeof filters !== 'object') {
             console.error("Invalid filters received:", filters);
             return res.status(400).json({ error: 'Invalid filters' });
-        }
-
-        if (filters.queue) {
-            filters.queue = queueMap[filters.queue] || '';
         }
 
         const response = await axios.post('https://glen3ula34.execute-api.us-east-1.amazonaws.com/default/EpochUnixDate', filters, {

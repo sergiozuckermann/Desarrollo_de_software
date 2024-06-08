@@ -20,6 +20,7 @@ export function FetchMetrics(filters) {
     const [contactsHandeled, setContactsHandeled] = useState(null);
     const [contactFlowTime, setContactFlowTime] = useState(null);
     const [agentOccupancy, setAgentOccupancy] = useState(null);
+    const [agentsList, setAgentsList] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -34,6 +35,7 @@ export function FetchMetrics(filters) {
 
                 const queueMetrics = response.data.QueueMetrics.MetricResults;
                 const agentMetrics = response.data.AgentMetrics.MetricResults;
+                const agents = response.data.AgentsList;
 
                 let totalAbandonmentRate = 0;
                 let abandonmentRateCount = 0;
@@ -127,6 +129,7 @@ export function FetchMetrics(filters) {
                 });
 
                 setAgentOccupancy(agentOccupancyArray);
+                setAgentsList(agents);
 
             } catch (error) {
                 console.error("Error fetching data", error);
@@ -145,6 +148,7 @@ export function FetchMetrics(filters) {
         averageContactDuration,
         contactsHandeled,
         contactFlowTime,
-        agentOccupancy
+        agentOccupancy,
+        agentsList 
     };
 }

@@ -12,17 +12,24 @@ import { Tooltip } from 'react-tooltip';
 
 const MainContent = () => {
     const [filters, setFilters] = useState({
-        agent: '',
+        agentId: '', 
         startTime: '',
         endTime: '',
         queue: '', 
     });
 
-    const handleApplyFilters = (newFilters) => {
-        setFilters(newFilters);
-    };
-
-    const { averageAbandonmentRate, averageAbandonTime, averageQueueAnswerTime, averageAnswerTime, ServiceLevel, averageContactDuration, contactsHandeled, contactFlowTime, agentOccupancy } = FetchMetrics(filters);
+    const { 
+        averageAbandonmentRate, 
+        averageAbandonTime, 
+        averageQueueAnswerTime, 
+        averageAnswerTime, 
+        ServiceLevel, 
+        averageContactDuration, 
+        contactsHandeled, 
+        contactFlowTime, 
+        agentOccupancy,
+        agentsList 
+    } = FetchMetrics(filters);
 
     if (averageAbandonTime === null || averageQueueAnswerTime === null) {
         return <div>Loading...</div>;
@@ -100,7 +107,7 @@ const MainContent = () => {
 
             {/* FILTER */}
             <div className="relative w-full h-full col-span-3 row-span-1 p-2 border-gray-400">
-                <Filter onApplyFilters={handleApplyFilters} />
+                <Filter onApplyFilters={setFilters} agentsList={agentsList} />
             </div>
 
             {/* Average Answer Time per Queue */}
