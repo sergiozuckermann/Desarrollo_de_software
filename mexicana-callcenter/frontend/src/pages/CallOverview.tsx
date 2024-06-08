@@ -273,5 +273,4 @@ const CallOverview: React.FunctionComponent = () => {
     </PageStructure>
   );
 };
-
 export default CallOverview;
