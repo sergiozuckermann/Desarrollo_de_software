@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { WorkerCardProps } from '../utils/interfaces';
 import { DarkModeContext } from '../Provider/ThemeProvider';
 
-const WorkerCard: React.FC<WorkerCardProps> = ({ imageURL, name, position, experience, points, status }) => {
+const WorkerCard: React.FC<WorkerCardProps> = ({ imageURL, name, username, position, experience, points, status }) => {
   const { darkMode } = useContext(DarkModeContext);
   const statusClass = status === 'Active' ? 'bg-green-500' : 'bg-red-500';
 
@@ -14,7 +14,8 @@ const WorkerCard: React.FC<WorkerCardProps> = ({ imageURL, name, position, exper
           <img className="w-[65%] h-[65%] rounded-full" src={imageURL} alt="User avatar" />
         </div>
         <div className="items-center px-6 py-4 text-center">
-          <h2 className="mb-1 dark:text-white">{name}</h2>
+          <p className="pb-5 text-sm text-gray-600 dark:text-white italic" data-cy="user-login">{username}</p>
+          <h2 className="pb-5 mb-2 dark:text-white">{name}</h2>
           <p className="pb-1 text-base text-gray-700 dark:text-white">{position}</p>
           <p className="pb-10 text-sm text-gray-600 dark:text-white">{experience} years</p>
           <div className="flex flex-col"> 
