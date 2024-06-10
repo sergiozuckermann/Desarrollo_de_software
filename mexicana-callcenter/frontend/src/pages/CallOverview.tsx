@@ -59,6 +59,12 @@ const CallOverview: React.FunctionComponent = () => {
     { id: "Negative", label: "Negative", value: 0 },
   ]);
 
+  const [sentimentCounts, setSentimentCounts] = useState({
+    Positive: 0,
+    Neutral: 0,
+    Negative: 0,
+  });
+
   const [sentimentData, setsentimentData] = useState<{ id: string; data: SentimentDataItem[] }[]>([
     {
       id: "sentiment",
@@ -113,6 +119,7 @@ const CallOverview: React.FunctionComponent = () => {
             setActiveContactID(data.message.contactId);
             setActualSentiment(data.message.Sentiment);
             updateSentiment(segment);
+            handleSentimentSegment(segment);
             console.log("Segment type = SENTIMENT ANALYSIS:"); // Mostrar los datos de los segmentos en la consola
           }
         }
@@ -239,6 +246,37 @@ const CallOverview: React.FunctionComponent = () => {
       return [{ id: "sentiment", data: updatedData }];
     });
   };
+
+  const updateSentimentChartData = (sentiment: string) => {
+    setSentimentCounts(prevCounts => {
+      const updatedCounts = { ...prevCounts, [sentiment]: prevCounts[sentiment] + 1 };
+      const total = updatedCounts.Positive + updatedCounts.Neutral + updatedCounts.Negative;
+      const positivePercentage = (updatedCounts.Positive / total) * 100;
+      const neutralPercentage = (updatedCounts.Neutral / total) * 100;
+      const negativePercentage = (updatedCounts.Negative / total) * 100;
+
+      setChartData2([
+        { id: "Positive", label: "Positive", value: positivePercentage },
+        { id: "Neutral", label: "Neutral", value: neutralPercentage },
+        { id: "Negative", label: "Negative", value: negativePercentage },
+      ]);
+
+      return updatedCounts;
+    });
+  };
+
+  // Función para manejar los segmentos de análisis de sentimiento
+  const handleSentimentSegment = (segment: any) => {
+    const sentimentValueMapping: { [key: string]: string } = {
+      "POSITIVE": "Positive",
+      "NEUTRAL": "Neutral",
+      "NEGATIVE": "Negative",
+    };
+
+    const sentiment = sentimentValueMapping[segment.Sentiment] || "Neutral";
+    updateSentimentChartData(sentiment); // Llama a la función para actualizar chartData2
+  };
+
 
   return (
     <PageStructure title="Call Overview">
