@@ -7,33 +7,35 @@ import Chatbot from "../components/Chatbot";
 
 
 const BargeIn: FunctionComponent = () => {
-  const [selectedSuggestion, setSelectedSuggestion] = useState<string | null>(null);
+  const [selectedSuggestion, setSelectedSuggestion] = useState<string | null>(
+    null
+  );
 
   const handleSuggestionSelect = (suggestionText: string) => {
     setSelectedSuggestion(suggestionText);
   };
-  return(
-  <PageStructure title="Barge In">
-    <div className="max-h-full p-4 overflow-y-hidden">
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <div className="flex justify-center col-span-1">
-          <div className="w-full max-w-md h-[85vh]">
-            <ConnectHere />
+  return (
+    <PageStructure title="Barge In">
+      <div className="max-h-full p-4 overflow-y-hidden">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div className="flex justify-center col-span-1">
+            <div className="w-full max-w-md h-[85vh]">
+              <ConnectHere />
+            </div>
           </div>
-        </div>
-        <div className="flex justify-center col-span-1">
-          <div className="w-full max-w-md h-[85vh]">
-          < Chatbot selectedSuggestion={selectedSuggestion} />
+          <div className="flex justify-center col-span-1">
+            <div className="w-full max-w-md h-[85vh]">
+              <Chatbot selectedSuggestion={selectedSuggestion} />
+            </div>
           </div>
-        </div>
-        <div className="flex justify-center col-span-1">
-          <div className="w-full max-w-md h-[85vh]">
-            <Suggestions onSuggestionSelect={handleSuggestionSelect} />
+          <div className="flex justify-center col-span-1">
+            <div className="w-full max-w-md h-[85vh]">
+              <Suggestions onSuggestionSelect={handleSuggestionSelect} />
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </PageStructure>
-);
-}
+    </PageStructure>
+  );
+};
 export default BargeIn;

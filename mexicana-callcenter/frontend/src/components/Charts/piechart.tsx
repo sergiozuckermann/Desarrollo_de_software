@@ -17,7 +17,7 @@ const MyPieChart: React.FC<MyPieChartProps> = ({ data,unit }) => {
     const [hovered, setHovered] = useState<PieChartDataItem | null>(null);
     const [colors, setColors] = useState<string[]>([]);
                                         
-    const brightColors = ['#5BC0EB', '#004BA8', '#4A525A', '#c7f9cc', '#57cc99', '#800080', '#FF4500', '#9ACD32'];
+    const brightColors = ['#ADB5BD'];
     
     const shuffleArray = (array: string[]) => {
         let result = [...array];
