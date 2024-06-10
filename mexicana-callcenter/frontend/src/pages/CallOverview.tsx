@@ -6,9 +6,9 @@ import MyLineChart from "../components/Charts/linechart";
 import CallCard from '../components/Callinfo';
 import Card from '../components/Card';
 import AHT from "../components/Charts/AHT";
-import userService from "../services/user"
+import userService from "../services/user";
 import useCustomToast from "../components/LoginNotification";
-import { useAuth } from '../hooks/useAuth'
+import { useAuth } from '../hooks/useAuth';
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -18,6 +18,11 @@ export interface PieChartDataItem {
   id: string | number;
   label: string;
   value: number;
+}
+
+export interface SentimentDataItem {
+  x: string;
+  y: number;
 }
 
 const CallOverview: React.FunctionComponent = () => {
@@ -33,7 +38,7 @@ const CallOverview: React.FunctionComponent = () => {
     routingProfile: string;
   } | null>(null);
   const [userImage, setImageURL] = useState<string | null>(null);
-  const { role, username, logout } = useAuth()
+  const { role, username, logout } = useAuth();
   const [userInfo, setUserInfo] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
   const [activeState, setActiveState] = useState("No data available");
@@ -41,8 +46,6 @@ const CallOverview: React.FunctionComponent = () => {
   const [ActualSentiment, setActualSentiment] = useState("No call in progress");
   const { showError } = useCustomToast();
   const navigate = useNavigate();
-
-
 
   const [chartData, setChartData] = useState<PieChartDataItem[]>([
     { id: "Customer", label: "Customer Time", value: 0 },
@@ -56,7 +59,7 @@ const CallOverview: React.FunctionComponent = () => {
     { id: "Negative", label: "Negative", value: 0 },
   ]);
 
-  const [sentimentData, setsentimentData] = useState([
+  const [sentimentData, setsentimentData] = useState<{ id: string; data: SentimentDataItem[] }[]>([
     {
       id: "sentiment",
       data: [],
@@ -214,13 +217,29 @@ const CallOverview: React.FunctionComponent = () => {
     setCallDuration(callDuration);
 
   };
+  
 
   const updateSentiment = (segment: any) => {
-    // Update your sentiment data based on the segment data
     console.log('Updating sentiment with segment: ', segment);
-    // Example logic to update sentiment data
-    // setChartData2(...);
+    
+    const sentimentValueMapping: { [key: string]: number } = {
+      "POSITIVE": 1,
+      "NEUTRAL": 0,
+      "NEGATIVE": -1,
+    };
+
+    const sentimentValue = sentimentValueMapping[segment.Sentiment] || 0;
+    const newSentimentDataPoint = {
+      x: new Date().toLocaleTimeString(), 
+      y: sentimentValue,
+    };
+
+    setsentimentData(prevData => {
+      const updatedData = [...prevData[0].data, newSentimentDataPoint];
+      return [{ id: "sentiment", data: updatedData }];
+    });
   };
+
   return (
     <PageStructure title="Call Overview">
       <div className="grid items-center justify-center w-full h-full grid-cols-1 gap-4 p-2 overflow-y-auto lg:grid-cols-12">
@@ -253,7 +272,8 @@ const CallOverview: React.FunctionComponent = () => {
               disabled={!agentInfo?.contactId} // Disable the button if contactId is not available
             >
               Barge In
-            </button>          </div>
+            </button>          
+          </div>
           <div className="grid w-[100%] h-[80%] grid-cols-1 gap-2 lg:grid-cols-2 lg:col-span-8 z-30">
             <Card title="Talk time">
               <MyPieChart data={chartData} unit="seconds" />
@@ -273,4 +293,5 @@ const CallOverview: React.FunctionComponent = () => {
     </PageStructure>
   );
 };
+
 export default CallOverview;
