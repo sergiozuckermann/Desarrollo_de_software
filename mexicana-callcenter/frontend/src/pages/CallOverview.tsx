@@ -11,8 +11,10 @@ import useCustomToast from "../components/LoginNotification";
 import { useAuth } from '../hooks/useAuth'
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import { useCallOverViewMetrics } from '../hooks/callOverviewMetrics';
 const { showError } = useCustomToast();
+import { Interaction } from '../utils/interfaces';
+import { callOverviewAnalytics } from '../utils/interfaces';
 
 export interface PieChartDataItem {
   id: string | number;
@@ -22,16 +24,7 @@ export interface PieChartDataItem {
 
 const CallOverview: React.FunctionComponent = () => {
   const { socket } = useWebSocket(); // get web socket connection
-  const [agentInfo, setAgentInfo] = useState<{
-    agentFirstName: string;
-    key?: string;
-    contactId?: string;
-    state: string;
-    sentiment?: string;
-    queueName?: string;
-    username: string;
-    routingProfile: string;
-  } | null>(null);
+  const [agentInfo, setAgentInfo] = useState<Interaction | null>(null);
   const [userImage, setImageURL] = useState<string | null>(null);
   const { role, username, logout } = useAuth()
   const [userInfo, setUserInfo] = useState<string | null>(null);
@@ -41,8 +34,21 @@ const CallOverview: React.FunctionComponent = () => {
   const [ActualSentiment, setActualSentiment] = useState("No call in progress");
   const { showError } = useCustomToast();
   const navigate = useNavigate();
-
-
+  const [metrics, setMetrics] = useState<callOverviewAnalytics>( () =>{
+    const savedMetrics = sessionStorage.getItem('callOverviewMetrics');
+    return savedMetrics ? JSON.parse(savedMetrics) : {
+    agentTalk: 0,
+    customerTalk: 0,
+    nonTalk: 0,
+    sentimentTrend: [],
+    sentimentPercentages: {
+      POSITIVE: 0,
+      NEGATIVE: 0,
+      NEUTRAL: 0,
+    },
+    callDuration: 0,
+  }
+  });
 
   const [chartData, setChartData] = useState<PieChartDataItem[]>([
     { id: "Customer", label: "Customer Time", value: 0 },
@@ -59,7 +65,7 @@ const CallOverview: React.FunctionComponent = () => {
   const [sentimentData, setsentimentData] = useState([
     {
       id: "sentiment",
-      data: [],
+      data: [{x: 0, y: 0 }],
     },
   ]);
 
@@ -78,13 +84,17 @@ const CallOverview: React.FunctionComponent = () => {
     }
   }, []);
 
+  //save metrics to session storage
+  useEffect(() => {
+    sessionStorage.setItem('callOverviewMetrics', JSON.stringify(metrics));
+  }, [metrics]);
+
   // Handle incoming WebSocket messages
   useEffect(() => {
     if (socket !== null) {
       socket.onmessage = (event) => {
         const data = JSON.parse(event.data);
         const segment = data.message;
-        const metrics = data.metrics;
         console.log("Data:", data); // Mostrar los datos en la consola
         const activeUsername = agentInfo?.username;
 
@@ -99,6 +109,7 @@ const CallOverview: React.FunctionComponent = () => {
               if (activeState === "OFFLINE" || activeState === "AVAILABLE") {
                 setActiveContactID("No call in progress");
                 setActualSentiment("No call in progress");
+
               }
             }
             console.log("Segment type = AGENT EVENT", data.message.state); // Mostrar los datos de los segmentos en la consola
@@ -110,12 +121,9 @@ const CallOverview: React.FunctionComponent = () => {
             setActiveContactID(data.message.contactId);
             setActualSentiment(data.message.Sentiment);
             updateSentiment(segment);
+            updateMetrics(segment);
             console.log("Segment type = SENTIMENT ANALYSIS:"); // Mostrar los datos de los segmentos en la consola
           }
-        }
-        if (metrics) {
-          // Update metrics
-          updateMetrics(metrics);
         }
       };
     }
@@ -178,42 +186,82 @@ const CallOverview: React.FunctionComponent = () => {
     }
   }
 
-  const updateMetrics = (metrics: any) => {
+  const updateMetrics = (segment: any) => {
     // Update your metrics based on the segment data
-    console.log("Metrics:", metrics); // Mostrar los datos de los segmentos en la consola
-    console.log('Updating metrics with segment: ', metrics);
+    console.log("Metrics:", segment); // Mostrar los datos de los segmentos en la consola
+    console.log('Updating metrics with segment: ', segment);
 
-    const { agentTalk, customerTalk, nonTalk, sentimentTrend, sentimentPercentages, callDuration } = metrics;
+    //format values for sentiment trend chart
+    const sentimentValue= segment.Sentiment==="POSITIVE" ? 3 : segment.Sentiment==="NEGATIVE" ? -3 : 0
+    const timeStamp=parseFloat((segment.BeginOffsetMillis/1000).toFixed(2));
 
-    console.log("Agent Talk:", agentTalk);
-    console.log("Customer Talk:", customerTalk);
-    console.log("Non Talk:", nonTalk);
-    console.log("Sentiment Trend:", sentimentTrend);
-    console.log("Sentiment Percentages:", sentimentPercentages);
-    console.log("Call Duration:", callDuration);
+    setMetrics(prevMetrics => {
+      const updatedMetrics: callOverviewAnalytics = {
+        agentTalk:prevMetrics.agentTalk,
+        customerTalk:prevMetrics.customerTalk,
+        nonTalk:prevMetrics.nonTalk,
+        sentimentTrend:[...prevMetrics.sentimentTrend,{x:timeStamp,y:sentimentValue}],
+        sentimentPercentages:{
+          POSITIVE:prevMetrics.sentimentPercentages.POSITIVE,
+          NEGATIVE:prevMetrics.sentimentPercentages.NEGATIVE,
+          NEUTRAL:prevMetrics.sentimentPercentages.NEUTRAL
+        },
+        callDuration:prevMetrics.callDuration
+      }
 
+    const sentimentKey = segment.Sentiment as 'POSITIVE' | 'NEGATIVE' | 'NEUTRAL';
+    updatedMetrics.sentimentPercentages[sentimentKey]+=1;
+
+    //increment intervention times by participant (for agent talk, customer talk, non talk)
+    if(segment.ParticipantRole==="AGENT") {
+        updatedMetrics.agentTalk+= parseFloat(((segment.EndOffsetMillis-segment.BeginOffsetMillis)/1000).toFixed(2));
+    }
+    else if(segment.ParticipantRole==="CUSTOMER") {
+        updatedMetrics.customerTalk+=parseFloat(((segment.EndOffsetMillis-segment.BeginOffsetMillis)/1000).toFixed(2));
+    }
+    else {
+        updatedMetrics.nonTalk+=parseFloat(((segment.EndOffsetMillis-segment.BeginOffsetMillis)/1000).toFixed(2));
+    }
+
+    //calculate call duration 
+    updatedMetrics.callDuration = updatedMetrics.callDuration + parseFloat(((segment.EndOffsetMillis - segment.BeginOffsetMillis) / 1000).toFixed(2));
+    
+    return updatedMetrics; // Return the updated metrics
+  });
+}
+
+
+useEffect(() => {
     setChartData([
-      { id: "Customer", label: "Customer Time", value: customerTalk },
-      { id: "Agent", label: "Agent Time", value: agentTalk },
-      { id: "Non-talk", label: "NonTalk Time", value: nonTalk },
-    ]);
-
-    setChartData2([
-      { id: "Positive", label: "Positive", value: sentimentPercentages.positive },
-      { id: "Neutral", label: "Neutral", value: sentimentPercentages.neutral },
-      { id: "Negative", label: "Negative", value: sentimentPercentages.negative },
+      { id: "Customer", label: "Customer Time", value: metrics.customerTalk },
+      { id: "Agent", label: "Agent Time", value: metrics.agentTalk },
+      { id: "Non-talk", label: "NonTalk Time", value: metrics.nonTalk },
     ]);
 
     setsentimentData([
       {
         id: "sentiment",
-        data: sentimentTrend.map((trend: { x: any; y: any; }) => ({ x: trend.x, y: trend.y }))
+        data: metrics.sentimentTrend,
       },
     ]);
 
-    setCallDuration(callDuration);
+    setChartData2([
+      { id: "Positive", label: "Positive", value: metrics.sentimentPercentages.POSITIVE },
+      { id: "Neutral", label: "Neutral", value: metrics.sentimentPercentages.NEUTRAL },
+      { id: "Negative", label: "Negative", value: metrics.sentimentPercentages.NEGATIVE },
+    ]);
 
-  };
+    setCallDuration(metrics.callDuration.toString());
+
+    console.log("Agent Talk:",metrics.agentTalk);
+    console.log("Customer Talk:", metrics.customerTalk);
+    console.log("Non Talk:", metrics.nonTalk);
+    console.log("Sentiment Trend:", metrics.sentimentTrend);
+    console.log("Sentiment Percentages:", metrics.sentimentPercentages);
+    console.log("Call Duration:", metrics.callDuration);
+
+
+  }, [metrics]);
 
   const updateSentiment = (segment: any) => {
     // Update your sentiment data based on the segment data
@@ -234,7 +282,7 @@ const CallOverview: React.FunctionComponent = () => {
               agentQueue={agentInfo.queueName || "No data available"}
               actualSentiment={ActualSentiment || "No agent in call"}
               contactID={activeContactID || "No call in progress"}
-              talktime="00:03:10"
+              talktime={metrics.callDuration || "00:00:00"}
               username={agentInfo.username || "No data available"}
               routingProfile={agentInfo.routingProfile || "No data available"}
               imageURL={userImage || "/avatar.png"}

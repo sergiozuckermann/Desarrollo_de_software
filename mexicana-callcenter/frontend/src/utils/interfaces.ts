@@ -26,6 +26,18 @@ export interface WorkerCardProps {
 // Define the type for the context value
 export interface WebSocketContextType {
   socket:  WebSocket | null;
+  onmessage?: ((this: WebSocket, ev: MessageEvent<any>) => any) | null;
+}
+
+
+//Define metrics for call overview
+export interface callOverviewAnalytics{
+  agentTalk: number,
+  customerTalk: number,
+  nonTalk: number,
+  sentimentTrend: Array<{x:number, y:number}>,
+  sentimentPercentages: {POSITIVE:number, NEGATIVE:number, NEUTRAL:number},
+  callDuration:number
 }
 
 // Define the type for an interaction
@@ -40,7 +52,7 @@ export interface Interaction {
   queueName?: string,
   username: string;
   routingProfile: string;
-  
+  callOverviewAnalytics?: callOverviewAnalytics;
 }
 
 // Define the type for an interaction
@@ -61,3 +73,4 @@ export interface AgentsOnCall {
   key: string,
   state: string
 }
+

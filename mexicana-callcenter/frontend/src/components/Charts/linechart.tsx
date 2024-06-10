@@ -6,10 +6,10 @@ import { ResponsiveLine } from '@nivo/line'
 // website examples showcase many properties,
 // you'll often use just a few of them.
 const MyLineChart = ({data}) => (
-    <div className='w-full h-full z-70' style={{ position: 'relative', zIndex:100, paddingBottom:10}}>
+    <div className='w-full h-full z-70' style={{ position: 'relative', zIndex:100, paddingBottom:10, height:'300px'}}>
     <ResponsiveLine
         data={data}
-        margin={{ top: 0, right: 10, bottom: 0, left: 10 }}
+        margin={{ top: 20, right: 20, bottom:60, left: 50 }}
         xScale={{ type: 'point' }}
         yScale={{
             type: 'linear',
@@ -25,7 +25,7 @@ const MyLineChart = ({data}) => (
             tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,
-            legend: 'time',
+            legend: 'Seconds',
             legendOffset: 36,
             legendPosition: 'middle',
             truncateTickAt: 0
@@ -34,18 +34,21 @@ const MyLineChart = ({data}) => (
             tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,
-            legend: 'count',
+            legend: 'Sentiment',
             legendOffset: -40,
             legendPosition: 'middle',
-            truncateTickAt: 0
+            truncateTickAt: 0,
+            tickValues:[3,0,-3]
         }}
         pointSize={10}
-        pointColor={{ theme: 'background' }}
+        pointColor={{"from": "color", "modifiers": [ [ "darker", 0.3 ] ]}}
         pointBorderWidth={2}
         pointBorderColor={{ from: 'serieColor' }}
         pointLabelYOffset={-12}
+        pointLabel="data.yFormatted"
         enableTouchCrosshair={true}
         useMesh={true}
+        colors={'#E13434'}
         legends={[
             {
                 anchor: 'bottom-right',
