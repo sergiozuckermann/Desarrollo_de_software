@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PageStructure from '../components/PageStructure';
 import { FetchMetrics } from '../services/metrics';
 import '../css/global.css';
@@ -6,60 +6,81 @@ import MyBarChart2 from '../components/Charts/barChart2';
 import MyBarChart from '../components/Charts/BarChartV';
 import GaugeChart from 'react-gauge-chart';
 import Filter from '../components/filters';
-import MyPieChart from '../components/Charts/piechart'; 
+import MyPieChart from '../components/Charts/piechart';
 import 'react-tooltip/dist/react-tooltip.css';
 import { Tooltip } from 'react-tooltip';
+import Modal from 'react-modal';
 
-const MainContent = () => {
+Modal.setAppElement('#root'); // Set the root element for accessibility
+
+const MainContent: React.FC = () => {
     const [filters, setFilters] = useState({
-        agentId: '', 
+        agentId: '',
         startTime: '',
         endTime: '',
-        queue: '', 
+        queue: '',
     });
 
-    const { 
-        averageAbandonmentRate, 
-        averageAbandonTime, 
-        averageQueueAnswerTime, 
-        averageAnswerTime, 
-        ServiceLevel, 
-        averageContactDuration, 
-        contactsHandeled, 
-        contactFlowTime, 
+    const [isApplyingFilters, setIsApplyingFilters] = useState(false);
+
+    const {
+        averageAbandonmentRate,
+        averageAbandonTime,
+        averageQueueAnswerTime,
+        averageAnswerTime,
+        ServiceLevel,
+        averageContactDuration,
+        contactsHandeled,
+        contactFlowTime,
         agentOccupancy,
-        agentsList 
+        agentsList
     } = FetchMetrics(filters);
+
+    useEffect(() => {
+        if (isApplyingFilters) {
+            // Assuming data fetching happens in the FetchMetrics hook
+            setIsApplyingFilters(false);
+        }
+    }, [averageAbandonTime, averageQueueAnswerTime]);
+
+    const handleApplyFilters = (newFilters) => {
+        setIsApplyingFilters(true);
+        setFilters(newFilters);
+    };
 
     if (averageAbandonTime === null || averageQueueAnswerTime === null) {
         return <div>Loading...</div>;
     }
 
-    const ServiceData = [{ metric: "Service Level", percentage: ServiceLevel }];
+    const ServiceData = [{ metric: "Service Level", percentage: ServiceLevel !== null ? ServiceLevel : 0 }];
 
-    const AbandonData = [
-        ...averageAbandonTime.map(item => ({ metric: item.label, value: item.value })),
+    const AbandonData = averageAbandonTime !== null && averageAbandonTime.length > 0
+        ? averageAbandonTime.map(item => ({ metric: item.label, value: item.value }))
+        : [{ metric: "No Data", value: 0 }];
+
+    const AnswerData = averageQueueAnswerTime !== null && averageQueueAnswerTime.length > 0
+        ? averageQueueAnswerTime.map(item => ({ metric: item.label, value: item.value }))
+        : [{ metric: "No Data", value: 0 }];
+
+    const totalOccupancy = agentOccupancy && agentOccupancy.length > 0
+        ? agentOccupancy.reduce((acc, curr) => acc + curr.value, 0)
+        : 0;
+
+    const formattedOccupancyData = [
+        { id: 'Occupied', label: 'Occupied', value: totalOccupancy, color: '#84BF68' },
+        { id: 'Unoccupied', label: 'Unoccupied', value: 100 - totalOccupancy, color: 'red' }
     ];
 
-    const AnswerData = [
-        ...averageQueueAnswerTime.map(item => ({ metric: item.label, value: item.value })),
-    ];
-
-    const OccupancyData = agentOccupancy !== null ? [
-        { metric: "Occupied", value: agentOccupancy },
-        { metric: "Unoccupied", value: 100 - agentOccupancy }
-    ] : [];
-
-    const formatTime = (seconds) => {
+    const formatTime = (seconds: number): string => {
         if (seconds >= 3600) {
             const hours = Math.floor(seconds / 3600);
             const remainingMinutes = Math.floor((seconds % 3600) / 60);
             const remainingSeconds = seconds % 60;
-            return `${hours}:${remainingMinutes}:${remainingSeconds} hours`;
+            return `${hours}:${remainingMinutes < 10 ? '0' : ''}${remainingMinutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds} hours`;
         } else if (seconds >= 60) {
             const minutes = Math.floor(seconds / 60);
             const remainingSeconds = seconds % 60;
-            return `${minutes}:${remainingSeconds} minutes`;
+            return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds} minutes`;
         } else {
             return `${seconds} seconds`;
         }
@@ -67,26 +88,43 @@ const MainContent = () => {
 
     return (
         <div className="grid w-full h-full grid-cols-12 grid-rows-6 gap-4 p-2 pt-5 overflow-y-auto">
+            <Modal
+                isOpen={isApplyingFilters}
+                onRequestClose={() => setIsApplyingFilters(false)}
+                contentLabel="Applying Filters"
+                className="modal"
+                overlayClassName="modal-overlay"
+            >
+                <div className="p-4 bg-white rounded-lg shadow-lg">
+                    <h2 className="text-lg font-bold font-roboto text-secondary">Applying Filters</h2>
+                    <p className=" font-roboto">Please wait while we apply your filters...</p>
+                </div>
+            </Modal>
+
             {/* Abandonment Rate */}
             <div className="col-span-3 row-span-2 card bg-tertiary dark:bg-primary"
                 data-tooltip-id="tooltipAbandonmentRate"
                 data-tooltip-content="Abandonment Rate is the percentage of calls that are abandoned by the caller before being answered by an agent. High abandonment rates can be a sign of poor customer service or long wait times. A low abandonment rate is a good indicator of customer satisfaction and efficient call handling by agents"
                 data-tooltip-place="right">
                 <p className='dark:text-white'>Abandonment Rate</p>
-                <GaugeChart id="gauge-chart1" nrOfLevels={20} colors={["#84BF68", "#FF5F6D", "#FFC371"]} arcWidth={0.3} percent={averageAbandonmentRate / 100} textColor="#20253F" />
+                {averageAbandonmentRate !== null ? (
+                    <GaugeChart id="gauge-chart1" nrOfLevels={20} colors={["#84BF68", "#FF5F6D", "#FFC371"]} arcWidth={0.3} percent={averageAbandonmentRate / 100} textColor="#20253F" />
+                ) : (
+                    <p className='dark:text-white'>No Data</p>
+                )}
             </div>
             <Tooltip id="tooltipAbandonmentRate" className="custom-tooltip" />
 
             {/* Agent Occupancy */}
             <div className="col-span-3 row-span-2 card bg-tertiary dark:bg-primary"
                 data-tooltip-id="my-tooltipAgentOccupancy"
-                data-tooltip-content= "Agent Occupancy is the percentage of time agents are actively engaged in customer interactions in relation to their available or idle time. As a statistic, it's used to calculate call center productivity."
+                data-tooltip-content="Agent Occupancy is the percentage of time agents are actively engaged in customer interactions in relation to their available or idle time. As a statistic, it's used to calculate call center productivity."
                 data-tooltip-place="right">
                 <p className='dark:text-white'>Agent Occupancy</p>
-                <MyPieChart data={OccupancyData} unit="%" />
+                <MyPieChart data={formattedOccupancyData} unit="%" />
             </div>
             <Tooltip id="my-tooltipAgentOccupancy" className="custom-tooltip" />
-            
+
             {/* Average Queue Answer Time (ASA) */}
             <div className="col-span-3 row-span-2 shadow-lg card bg-tertiary dark:bg-primary"
                 data-tooltip-id="tooltipAverageQueueAnswerTime"
@@ -98,7 +136,7 @@ const MainContent = () => {
                     <div className="inline-flex text-sm text-gray-600 sm:text-base dark:text-white">
                     </div>
                 </div>
-                <h1 className="mt-1 text-3xl font-bold text-gray-700 sm:text-m xl:text-4xl dark:text-white">{formatTime(averageAnswerTime)}</h1>
+                <h1 className="mt-1 text-3xl font-bold text-gray-700 sm:text-m xl:text-4xl dark:text-white">{formatTime(averageAnswerTime || 0)}</h1>
                 <div className="flex flex-row justify-between mt-2">
                     <p className='dark:text-white'>Average Queue Answer Time (ASA)</p>
                 </div>
@@ -107,7 +145,7 @@ const MainContent = () => {
 
             {/* FILTER */}
             <div className="relative w-full h-full col-span-3 row-span-1 p-2 border-gray-400">
-                <Filter onApplyFilters={setFilters} agentsList={agentsList} />
+                <Filter onApplyFilters={handleApplyFilters} agentsList={agentsList} />
             </div>
 
             {/* Average Answer Time per Queue */}
@@ -154,7 +192,9 @@ const MainContent = () => {
                     <div className="inline-flex text-sm text-gray-600 sm:text-base dark:text-white">
                     </div>
                 </div>
-                <h1 className="mt-1 text-3xl font-bold text-gray-700 sm:text-m xl:text-4xl dark:text-white">{formatTime(averageContactDuration)}</h1>
+                <h1 className="mt-1 text-3xl font-bold text-gray-700 sm:text-m xl:text-4xl dark:text-white">
+                    {averageContactDuration !== null ? formatTime(averageContactDuration) : "0 seconds"}
+                </h1>
             </div>
             <Tooltip id="tooltipAverageContactDuration" className="custom-tooltip" />
 
@@ -172,10 +212,10 @@ const MainContent = () => {
                     <div className="inline-flex text-sm text-gray-600 sm:text-base dark:text-white">
                     </div>
                 </div>
-                <h1 className="mt-1 text-3xl font-bold text-gray-700 sm:text-m xl:text-4xl dark:text-white">{contactsHandeled} contacts</h1>
+                <h1 className="mt-1 text-3xl font-bold text-gray-700 sm:text-m xl:text-4xl dark:text-white">{contactsHandeled || 0} contacts</h1>
             </div>
             <Tooltip id="tooltipContactsHandled" className="custom-tooltip" />
-                
+
             {/* Contact Flow Time */}
             <div className="col-span-4 row-span-2 card bg-tertiary dark:bg-primary"
                 data-tooltip-id="tooltipContactFlowTime"
@@ -190,7 +230,7 @@ const MainContent = () => {
                     <div className="inline-flex text-sm text-gray-600 sm:text-base dark:text-white">
                     </div>
                 </div>
-                <h1 className="mt-1 text-3xl font-bold text-gray-700 sm:text-m xl:text-4xl dark:text-white">{formatTime(contactFlowTime)}</h1>
+                <h1 className="mt-1 text-3xl font-bold text-gray-700 sm:text-m xl:text-4xl dark:text-white">{formatTime(contactFlowTime || 0)}</h1>
             </div>
             <Tooltip id="tooltipContactFlowTime" className="custom-tooltip" />
         </div>
@@ -198,7 +238,7 @@ const MainContent = () => {
 };
 
 // Metrics page component that displays the main content in a page structure
-const Metrics = () => {
+const Metrics: React.FC = () => {
     return (
         <PageStructure title="Metrics">
             <MainContent />
