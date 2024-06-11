@@ -22,7 +22,7 @@ const queueMap = {
     'Website Assistance': 'd19f9426-d75f-48eb-a68c-0bbda4ced434'
 };
 
-const Filter = ({ onApplyFilters, agentsList }) => {
+const Filter = ({ onApplyFilters, agentsList, isAgentFilterEditable }) => {
     const [agentId, setAgentId] = useState('');
     const [startDate, setStartDate] = useState(defaultStartDate);
     const [endDate, setEndDate] = useState(defaultEndDate);
@@ -152,20 +152,33 @@ const Filter = ({ onApplyFilters, agentsList }) => {
                     {showFilters && (
                         <div className="absolute left-0 z-20 w-full p-4 bg-white border border-gray-200 shadow-lg top-10 rounded-xl">
                             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                                <div className="flex flex-col">
-                                    <label htmlFor="agent" className="text-sm font-medium text-stone-600">Agent</label>
-                                    <select
-                                        id="agent"
-                                        value={agentId}
-                                        onChange={(e) => setAgentId(e.target.value)}
-                                        className="block w-full px-2 py-1 mt-2 bg-gray-100 rounded-md shadow-sm outline-none cursor-pointer focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-                                    >
-                                        <option value="">Select Agent</option>
-                                        {agentsList.map((agent, index) => (
-                                            <option key={index} value={agent}>{agent}</option>
-                                        ))}
-                                    </select>
-                                </div>
+                                {isAgentFilterEditable ? (
+                                    <div className="flex flex-col">
+                                        <label htmlFor="agent" className="text-sm font-medium text-stone-600">Agent</label>
+                                        <select
+                                            id="agent"
+                                            value={agentId}
+                                            onChange={(e) => setAgentId(e.target.value)}
+                                            className="block w-full px-2 py-1 mt-2 bg-gray-100 rounded-md shadow-sm outline-none cursor-pointer focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                        >
+                                            <option value="">Select Agent</option>
+                                            {agentsList.map((agent, index) => (
+                                                <option key={index} value={agent}>{agent}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                ) : (
+                                    <div className="flex flex-col">
+                                        <label htmlFor="agent" className="text-sm font-medium text-stone-600">Agent</label>
+                                        <input
+                                            id="agent"
+                                            type="text"
+                                            value={agentId}
+                                            readOnly
+                                            className="block w-full px-2 py-1 mt-2 bg-gray-100 rounded-md shadow-sm outline-none cursor-not-allowed focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                        />
+                                    </div>
+                                )}
 
                                 <div className="flex flex-col">
                                     <label htmlFor="queue" className="text-sm font-medium text-stone-600">Queue</label>
