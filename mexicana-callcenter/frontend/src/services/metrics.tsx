@@ -69,6 +69,18 @@ export function FetchMetrics(filters: Record<string, string>): FetchMetricsResul
 
     useEffect(() => {
         const fetchData = async () => {
+            // Reset state before fetching new data
+            setAverageAbandonmentRate(null);
+            setAverageAbandonTime(null);
+            setAverageQueueAnswerTime(null);
+            setAverageAnswerTime(null);
+            setServiceLevel(null);
+            setAverageContactDuration(null);
+            setContactsHandeled(null);
+            setContactFlowTime(null);
+            setAgentOccupancy(null);
+            setAgentsList([]);
+
             try {
                 const requestFilters = filters || {};
                 console.log("Filters before sending request:", requestFilters);
