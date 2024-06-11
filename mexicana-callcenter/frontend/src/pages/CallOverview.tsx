@@ -149,6 +149,9 @@ const CallOverview: React.FunctionComponent = () => {
                 setActualSentiment("No call in progress");
               }
             }
+            if (activeState === "ACW"){
+              sessionStorage.removeItem('unhandledInteractions');
+            }
             console.log("Segment type = AGENT EVENT", data.message.state); // Mostrar los datos de los segmentos en la consola
           } else if (segmentType === "SENTIMENT_ANALYSIS") {
             // Update sentiment analysis

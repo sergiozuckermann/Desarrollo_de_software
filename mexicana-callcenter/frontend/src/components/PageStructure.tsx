@@ -235,6 +235,12 @@ const PageStructure: FunctionComponent<PageStructureProps> = ({ title, children 
             }
           }
 
+          if (window.location.pathname === '/supervisor/ongoingcalls') {
+            const { segmentType } = segment
+            if(segmentType === 'SENTIMENT_ANALYSIS') {
+              processUnhandledSentimentEvent(segment)
+          }
+          }
         }
       };
     }
