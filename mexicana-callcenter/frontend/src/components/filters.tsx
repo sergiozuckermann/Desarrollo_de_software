@@ -6,32 +6,47 @@ import Modal from 'react-modal';
 
 const defaultStartDate = new Date();
 defaultStartDate.setDate(defaultStartDate.getDate() - 30);
-defaultStartDate.setHours(0, 0, 0, 0); 
+defaultStartDate.setHours(0, 0, 0, 0);
 
 const defaultEndDate = new Date();
+defaultEndDate.setDate(defaultEndDate.getDate() - 1);
 defaultEndDate.setHours(23, 59, 59, 999);
 
 const queueMap = {
     'Travel logistics': '292d0398-6089-42cc-9ec9-aee43d6202a6',
-    'Flight Management': '99bfbe85-27ac-4384-8462-f01f75b53d32'
+    'Flight Management': 'b65f8183-2d8b-42e4-9b37-f8dfa787c246',
+    'Customer Service': 'f6d70469-1449-47c5-b93e-53b42de6dcc3',
+    'Other Questions': 'd3fe43cd-5190-40ec-892b-741ffc4ccbd3',
+    'Special Assistance': '0b408b2d-26c5-4b59-b090-8f9422edb331',
+    'Travel Information': '81fad136-adf4-4fb6-9780-e46f53cb740d',
+    'Website Assistance': 'd19f9426-d75f-48eb-a68c-0bbda4ced434'
 };
 
-const Filter = ({ onApplyFilters }) => {
-    const [agent, setAgent] = useState('');
+const Filter = ({ onApplyFilters, agentsList, isAgentFilterEditable, defaultAgentId }) => {
+    const [agentId, setAgentId] = useState(defaultAgentId || '');
     const [startDate, setStartDate] = useState(defaultStartDate);
     const [endDate, setEndDate] = useState(defaultEndDate);
     const [queue, setQueue] = useState('');
     const [showFilters, setShowFilters] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
+    const [isResetting, setIsResetting] = useState(false); // Track reset state
     const filterRef = useRef(null);
 
     const handleReset = () => {
-        setAgent('');
+        setAgentId(defaultAgentId || '');
         setQueue('');
-        setStartDate(new Date());
-        setEndDate(new Date());
+        setStartDate(defaultStartDate);
+        setEndDate(defaultEndDate);
+        setIsResetting(true); // Indicate reset in progress
     };
+
+    useEffect(() => {
+        if (isResetting) {
+            handleSearch();
+            setIsResetting(false); // Reset the reset state
+        }
+    }, [isResetting]);
 
     const showModal = (message) => {
         setModalMessage(message);
@@ -75,11 +90,11 @@ const Filter = ({ onApplyFilters }) => {
     };
 
     const handleSearch = (e) => {
-        e.preventDefault();
+        if (e) e.preventDefault();
         if (!validateDates()) return;
 
         const filters = {
-            agent,
+            agentId,
             queue: queueMap[queue] || '',
             startTime: moment(startDate).format('YYYY-MM-DD HH:mm:ss'),
             endTime: moment(endDate).format('YYYY-MM-DD HH:mm:ss')
@@ -130,24 +145,40 @@ const Filter = ({ onApplyFilters }) => {
                             name="search"
                             className="w-full h-10 py-2 pl-10 pr-4 bg-gray-100 border border-gray-100 rounded-md shadow-sm outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
                             placeholder="Search by date, agent, queue, etc"
-                            onFocus={() => setShowFilters(true)}
+                            onFocus={toggleFilters}
                         />
                     </div>
 
                     {showFilters && (
                         <div className="absolute left-0 z-20 w-full p-4 bg-white border border-gray-200 shadow-lg top-10 rounded-xl">
                             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                                <div className="flex flex-col">
-                                    <label htmlFor="agent" className="text-sm font-medium text-stone-600">Agent</label>
-                                    <input
-                                        type="text"
-                                        id="agent"
-                                        value={agent}
-                                        onChange={(e) => setAgent(e.target.value)}
-                                        placeholder="Fer"
-                                        className="block w-full px-2 py-1 mt-2 bg-gray-100 border border-gray-100 rounded-md shadow-sm outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-                                    />
-                                </div>
+                                {isAgentFilterEditable ? (
+                                    <div className="flex flex-col">
+                                        <label htmlFor="agent" className="text-sm font-medium text-stone-600">Agent</label>
+                                        <select
+                                            id="agent"
+                                            value={agentId}
+                                            onChange={(e) => setAgentId(e.target.value)}
+                                            className="block w-full px-2 py-1 mt-2 bg-gray-100 rounded-md shadow-sm outline-none cursor-pointer focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                        >
+                                            <option value="">Select Agent</option>
+                                            {agentsList.map((agent, index) => (
+                                                <option key={index} value={agent}>{agent}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                ) : (
+                                    <div className="flex flex-col">
+                                        <label htmlFor="agent" className="text-sm font-medium text-stone-600">Agent</label>
+                                        <input
+                                            id="agent"
+                                            type="text"
+                                            value={agentId}
+                                            readOnly
+                                            className="block w-full px-2 py-1 mt-2 bg-gray-100 rounded-md shadow-sm outline-none cursor-not-allowed focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                        />
+                                    </div>
+                                )}
 
                                 <div className="flex flex-col">
                                     <label htmlFor="queue" className="text-sm font-medium text-stone-600">Queue</label>
@@ -160,6 +191,10 @@ const Filter = ({ onApplyFilters }) => {
                                         <option value="">Select Queue</option>
                                         <option>Travel logistics</option>
                                         <option>Flight Management</option>
+                                        <option>Special Assistance</option>
+                                        <option>Website Assistance</option>
+                                        <option>Other Questions</option>
+                                        <option>Customer Service</option>
                                     </select>
                                 </div>
                                 <div className="flex flex-col">

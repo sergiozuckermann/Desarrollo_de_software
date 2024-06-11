@@ -9,7 +9,7 @@ import useCustomToast from "../components/LoginNotification";
 import userService from "../services/user"
 import ChatWidget from '../components/ChatWidget';
 import CCPComponent from "../components/CCPComponent";
-
+import AgentMetrics from './AgentMetrics';
 
 const MainContent = () => {
   const [buttonMode, setButtonMode] = useState('workspace');
@@ -78,7 +78,7 @@ const MainContent = () => {
       <div className="flex flex-col space-y-4 md:col-span-8">
         <div className="flex flex-col gap-10">
           <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
-            <HomeButton icon="/MetricsSymbol.svg" title="My Metrics" subtitle="See the real time metrics for all the agents" handleClick={() => window.location.href = '/Metrics'}/>
+            <HomeButton icon="/MetricsSymbol.svg" title="My Metrics" subtitle="See the real time metrics for all the agents" handleClick={() => window.location.href = '/agent/Metrics'}/>
             <HomeButton icon="/SpotlightSymbol.svg" title="Agent Spotlight" subtitle="Weekly best agents" handleClick={() => window.location.href = '/AgentSpotlight'}/>
             <HomeButton icon="/BadgesSymbol.svg" title="My Badges" subtitle="See all the awards and badges earned" handleClick={() => window.location.href = '/agent/MyBadges'}/>
             <HomeButton icon="/BreakSymbol.svg" title="Take a break" subtitle="Go to take a break to clear the mind" handleClick={() => window.location.href = '/agent/TakeABreak'}/>
