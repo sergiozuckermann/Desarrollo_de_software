@@ -5,7 +5,7 @@ import SettingsButton from "./SettingsButton";
 import TimestampDisplay from "./TimestampDisplay";
 import NotificationsDropDown from "./NotificationsDropDown";
 import { useWebSocket } from "../hooks/useWebSocket";
-import { Notification } from "../utils/interfaces";
+import { Interaction, Notification, SentimentSegment, UnhandledInteractions } from "../utils/interfaces";
 
 
 interface PageStructureProps {
@@ -28,6 +28,13 @@ const PageStructure: FunctionComponent<PageStructureProps> = ({ title, children 
       sessionStorage.setItem('notifications', JSON.stringify([]))
     }
   }, [])
+
+  useEffect(() => {
+    const unhandledInteractionsData = sessionStorage.getItem('unhandledInteractions')
+    if(!unhandledInteractionsData) {
+      sessionStorage.setItem('unhandledInteractions', JSON.stringify([]))
+    }
+  }, [])
   
   const processNotification = (notification:Notification) => {
     const allNotifications = sessionStorage.getItem('notifications')
@@ -41,6 +48,77 @@ const PageStructure: FunctionComponent<PageStructureProps> = ({ title, children 
         setNotifications(notificationsData)
       }
     } 
+  }
+
+  const processUnhandledAgentEvent = (segment:Interaction) => {
+       
+        const unhandledInteractionsData = sessionStorage.getItem('unhandledInteractions') 
+        let unhandledInteractions:UnhandledInteractions[] = []
+        if(unhandledInteractionsData) { // check if there is data
+          unhandledInteractions = JSON.parse(unhandledInteractionsData) // unhandled interactions array
+  
+          const matchedInteraction = unhandledInteractions.find(i => i.state.key === segment.key)
+
+          console.log("matched inter: ", matchedInteraction)
+
+          if(matchedInteraction) { // If there is a matched interaction, update it in session storage
+
+            if(segment.state === 'LOGOUT') { // check if object needs to be removed
+              sessionStorage.setItem('unhandledInteractions', JSON.stringify(unhandledInteractions.filter(i => i.state.key !== segment.key)))
+              return
+            }
+
+            const updatedInteraction = segment.state === 'ON CALL' ? 
+            { // Updated interaction
+              ...matchedInteraction,
+              state: segment
+            } : 
+            {
+              state: segment
+            }
+            
+            console.log("this is updated interaction: ", updatedInteraction)
+
+            const updatedInteractions = unhandledInteractions.map(i => i.state.key === segment.key ? updatedInteraction : i) // make the update
+            sessionStorage.setItem('unhandledInteractions', JSON.stringify(updatedInteractions))
+          } 
+          else { // If there is no match, add the unhandled interaction to the array
+            const newUnhandled = {
+              state: segment
+            }
+            console.log('there was no match: ', newUnhandled)
+            unhandledInteractions.push(newUnhandled) // add the new unhandled interaction
+
+            sessionStorage.setItem('unhandledInteractions', JSON.stringify(unhandledInteractions)) // save it
+
+          }
+        }
+      
+  }
+
+  // functio to process unhandled sentiment segments
+  const processUnhandledSentimentEvent = (segment: SentimentSegment) => {
+    const unhandledInteractionsData = sessionStorage.getItem('unhandledInteractions') 
+    let unhandledInteractions:UnhandledInteractions[] = []
+    if(unhandledInteractionsData) { // check if there is data
+      unhandledInteractions = JSON.parse(unhandledInteractionsData) // unhandled interactions array
+
+      // find a matched interaction 
+      const matchedInteraction = unhandledInteractions.find(i => i.state.contactId === segment.contactId) 
+
+      console.log("matched inter when trying to adD sentiment: ", matchedInteraction)
+
+      if(matchedInteraction) { // if it exists, update the sentiment property of the object
+        const updatedInteraction = {
+          ...matchedInteraction,
+          sentiment: segment
+        }
+
+        // store the updated interactions to session storage
+        const updatedInteractions = unhandledInteractions.map(i => i.state.contactId === segment.contactId ? updatedInteraction : i)
+        sessionStorage.setItem('unhandledInteractions', JSON.stringify(updatedInteractions))
+      }
+    }
   }
 
   useEffect(() => {
@@ -61,6 +139,16 @@ const PageStructure: FunctionComponent<PageStructureProps> = ({ title, children 
             console.log("received notification: ", segment)
             processNotification(segment.notification)
           }
+
+          if (window.location.pathname !== '/supervisor/ongoingcalls') {
+            const { segmentType } = segment // check the segment type
+            if(segmentType === 'AGENT_EVENT') {
+              processUnhandledAgentEvent(segment)
+            } else if(segmentType === 'SENTIMENT_ANALYSIS') {
+              processUnhandledSentimentEvent(segment)
+            }
+          }
+
         }
       };
     }

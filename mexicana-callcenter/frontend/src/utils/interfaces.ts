@@ -36,6 +36,7 @@ export interface Interaction {
   contactId?: string,
   Sentiment?: string,
   queueName?: string,
+  // notification?: Notification
   
 }
 
@@ -51,6 +52,7 @@ export interface SentimentSegment {
   contactId?:string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   IssuesDetected: Array<any>; // Use specific type instead of `any` if you know what will be in the array
+  // notification?: Notification
 }
 
 export interface AgentsOnCall {
@@ -65,4 +67,9 @@ export interface Notification {
   message: string;
   date: string;
   isRead: boolean;
+}
+
+export interface UnhandledInteractions {
+  state: Interaction
+  sentiment?: SentimentSegment
 }
