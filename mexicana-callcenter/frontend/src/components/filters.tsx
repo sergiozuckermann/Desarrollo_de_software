@@ -22,8 +22,8 @@ const queueMap = {
     'Website Assistance': 'd19f9426-d75f-48eb-a68c-0bbda4ced434'
 };
 
-const Filter = ({ onApplyFilters, agentsList, isAgentFilterEditable }) => {
-    const [agentId, setAgentId] = useState('');
+const Filter = ({ onApplyFilters, agentsList, isAgentFilterEditable, defaultAgentId }) => {
+    const [agentId, setAgentId] = useState(defaultAgentId || '');
     const [startDate, setStartDate] = useState(defaultStartDate);
     const [endDate, setEndDate] = useState(defaultEndDate);
     const [queue, setQueue] = useState('');
@@ -34,7 +34,7 @@ const Filter = ({ onApplyFilters, agentsList, isAgentFilterEditable }) => {
     const filterRef = useRef(null);
 
     const handleReset = () => {
-        setAgentId('');
+        setAgentId(defaultAgentId || '');
         setQueue('');
         setStartDate(defaultStartDate);
         setEndDate(defaultEndDate);
