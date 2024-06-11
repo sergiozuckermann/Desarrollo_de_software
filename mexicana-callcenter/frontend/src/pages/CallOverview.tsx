@@ -26,7 +26,7 @@ export interface PieChartDataItem {
 const formatDuration = (seconds: number) => {
   const h = Math.floor(seconds / 3600).toString().padStart(2, '0');
   const m = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
-  const s = (seconds % 60).toString().padStart(2, '0');
+  const s = Math.floor(seconds % 60).toString().padStart(2, '0');
   return `${h}:${m}:${s}`;
 };
 
@@ -37,13 +37,13 @@ const calculateTimeDifference = (classificationTime: string, currentTime: string
   const classificationTotalSeconds = (classificationHours * 3600) + (classificationMinutes * 60) + classificationSeconds;
   const currentTotalSeconds = (currentHours * 3600) + (currentMinutes * 60) + currentSeconds;
 
+  if (currentTotalSeconds <= classificationTotalSeconds) {
+    return "00:00:00";
+  }
+
   const differenceInSeconds = currentTotalSeconds - classificationTotalSeconds;
 
-  const exceededHours = Math.abs(Math.floor(differenceInSeconds / 3600)).toString().padStart(2, '0');
-  const exceededMinutes = Math.abs(Math.floor((differenceInSeconds % 3600) / 60)).toString().padStart(2, '0');
-  const exceededSeconds = Math.abs(differenceInSeconds % 60).toString().padStart(2, '0');
-
-  return `${differenceInSeconds < 0 ? '-' : ''}${exceededHours}:${exceededMinutes}:${exceededSeconds}`;
+  return formatDuration(differenceInSeconds);
 };
 
 const CallOverview: React.FunctionComponent = () => {
@@ -59,44 +59,43 @@ const CallOverview: React.FunctionComponent = () => {
   const { showError } = useCustomToast();
   const navigate = useNavigate();
   const [metrics, setMetrics] = useState<callOverviewAnalytics>(() => ({
-          agentTalk: 0,
-          customerTalk: 0,
-          nonTalk: 0,
-          sentimentTrend: [],
-          sentimentPercentages: {
-            POSITIVE: 0,
-            NEGATIVE: 0,
-            NEUTRAL: 0
-          },
-          callDuration: 0,
-          key: '',
-          contactId: ''
-      }))
-
+    agentTalk: 0,
+    customerTalk: 0,
+    nonTalk: 0,
+    sentimentTrend: [],
+    sentimentPercentages: {
+      POSITIVE: 0,
+      NEGATIVE: 0,
+      NEUTRAL: 0
+    },
+    callDuration: 0,
+    key: '',
+    contactId: ''
+  }));
 
   const [chartData, setChartData] = useState<PieChartDataItem[]>([
     { id: "Customer", label: "Customer Time", value: 0 },
-    { id: "Agent", label: "Agent Time", value: 0, color:"#177E89"},
-    { id: "Non-talk", label: "NonTalk Time", value: 0, color:"#C4B1AE" },
+    { id: "Agent", label: "Agent Time", value: 0, color: "#177E89" },
+    { id: "Non-talk", label: "NonTalk Time", value: 0, color: "#C4B1AE" },
   ]);
 
   const [chartData2, setChartData2] = useState<PieChartDataItem[]>([
     { id: "Positive", label: "Positive", value: 0, color: "#6BBF70" },
-    { id: "Neutral", label: "Neutral", value: 0, color:"#7E7F83" },
-    { id: "Negative", label: "Negative", value: 0, color:"#E63B2E" },
+    { id: "Neutral", label: "Neutral", value: 0, color: "#7E7F83" },
+    { id: "Negative", label: "Negative", value: 0, color: "#E63B2E" },
   ]);
 
   const [sentimentData, setsentimentData] = useState([
     {
       id: "sentiment",
-      data: [{x: 0, y: 0 }],
+      data: [{ x: 0, y: 0 }],
     },
   ]);
 
   const [callDuration, setCallDuration] = useState<string>("00:00:00");
 
   // Static classification time
-  const classificationTime = "00:03:10";
+  const classificationTime = "00:00:50";
 
   // Load selected agent info from sessionStorage
   useEffect(() => {
@@ -111,8 +110,7 @@ const CallOverview: React.FunctionComponent = () => {
     }
   }, []);
 
-  
-  //Load metrics from session storage
+  // Load metrics from session storage
   useEffect(() => {
     if (activeContactID !== "No call in progress" && activeContactID !== undefined) {
       console.log("Active Contact ID:", activeContactID);
@@ -127,20 +125,7 @@ const CallOverview: React.FunctionComponent = () => {
         }
       }
     }
-    }, [activeContactID]);
-
-  // //save metrics to session storage
-  // useEffect(() => {
-  //   const storedMetrics = sessionStorage.getItem('unhandledInteractions');
-  //   const parsedMetrics = storedMetrics ? JSON.parse(storedMetrics) : [];
-  //   const interactionIndex = parsedMetrics.findIndex((i: any) => i.state.contactId === metrics.contactId);
-  //   if (interactionIndex !== -1) {
-  //     parsedMetrics[interactionIndex].sentiment.callOverviewAnalytics = metrics;
-  //   } else {
-  //     parsedMetrics.push({ state: { contactId: metrics.contactId, callOverviewAnalytics: metrics } });
-  //   }
-  //   sessionStorage.setItem('unhandledInteractions', JSON.stringify(parsedMetrics));   
-  // }, [metrics]);
+  }, [activeContactID]);
 
   // Handle incoming WebSocket messages
   useEffect(() => {
@@ -245,49 +230,49 @@ const CallOverview: React.FunctionComponent = () => {
       return;
     }
     //format values for sentiment trend chart
-    const sentimentValue= segment.Sentiment==="POSITIVE" ? 1 : segment.Sentiment==="NEGATIVE" ? -1 : 0
-    const timeStamp=parseFloat((segment.BeginOffsetMillis/1000).toFixed(2));
+    const sentimentValue = segment.Sentiment === "POSITIVE" ? 1 : segment.Sentiment === "NEGATIVE" ? -1 : 0;
+    const timeStamp = Math.floor(segment.BeginOffsetMillis / 1000);
 
     setMetrics(prevMetrics => {
       const updatedMetrics: callOverviewAnalytics = {
-        agentTalk:prevMetrics.agentTalk,
-        customerTalk:prevMetrics.customerTalk,
-        nonTalk:prevMetrics.nonTalk,
-        sentimentTrend:[...prevMetrics.sentimentTrend,{x:timeStamp,y:sentimentValue}],
-        sentimentPercentages:{
-          POSITIVE:prevMetrics.sentimentPercentages.POSITIVE,
-          NEGATIVE:prevMetrics.sentimentPercentages.NEGATIVE,
-          NEUTRAL:prevMetrics.sentimentPercentages.NEUTRAL
+        agentTalk: prevMetrics.agentTalk,
+        customerTalk: prevMetrics.customerTalk,
+        nonTalk: prevMetrics.nonTalk,
+        sentimentTrend: [...prevMetrics.sentimentTrend, { x: timeStamp, y: sentimentValue }],
+        sentimentPercentages: {
+          POSITIVE: prevMetrics.sentimentPercentages.POSITIVE,
+          NEGATIVE: prevMetrics.sentimentPercentages.NEGATIVE,
+          NEUTRAL: prevMetrics.sentimentPercentages.NEUTRAL
         },
-        callDuration:prevMetrics.callDuration
+        callDuration: prevMetrics.callDuration
+      };
+
+      const sentimentKey = segment.Sentiment as 'POSITIVE' | 'NEGATIVE' | 'NEUTRAL';
+      updatedMetrics.sentimentPercentages[sentimentKey] += 1;
+
+      //increment intervention times by participant (for agent talk, customer talk, non talk)
+      if (segment.ParticipantRole === "AGENT") {
+        updatedMetrics.agentTalk += Math.floor((segment.EndOffsetMillis - segment.BeginOffsetMillis) / 1000);
+      }
+      else if (segment.ParticipantRole === "CUSTOMER") {
+        updatedMetrics.customerTalk += Math.floor((segment.EndOffsetMillis - segment.BeginOffsetMillis) / 1000);
+      }
+      else {
+        updatedMetrics.nonTalk += Math.floor((segment.EndOffsetMillis - segment.BeginOffsetMillis) / 1000);
       }
 
-    const sentimentKey = segment.Sentiment as 'POSITIVE' | 'NEGATIVE' | 'NEUTRAL';
-    updatedMetrics.sentimentPercentages[sentimentKey]+=1;
+      //calculate call duration 
+      updatedMetrics.callDuration = updatedMetrics.callDuration + Math.floor((segment.EndOffsetMillis - segment.BeginOffsetMillis) / 1000);
 
-    //increment intervention times by participant (for agent talk, customer talk, non talk)
-    if(segment.ParticipantRole==="AGENT") {
-        updatedMetrics.agentTalk+= parseFloat(((segment.EndOffsetMillis-segment.BeginOffsetMillis)/1000).toFixed(2));
-    }
-    else if(segment.ParticipantRole==="CUSTOMER") {
-        updatedMetrics.customerTalk+=parseFloat(((segment.EndOffsetMillis-segment.BeginOffsetMillis)/1000).toFixed(2));
-    }
-    else {
-        updatedMetrics.nonTalk+=parseFloat(((segment.EndOffsetMillis-segment.BeginOffsetMillis)/1000).toFixed(2));
-    }
+      return updatedMetrics; // Return the updated metrics
+    });
+  }
 
-    //calculate call duration 
-    updatedMetrics.callDuration = updatedMetrics.callDuration + parseFloat(((segment.EndOffsetMillis - segment.BeginOffsetMillis) / 1000).toFixed(2));
-    
-    return updatedMetrics; // Return the updated metrics
-  });
-}
-
-useEffect(() => {
+  useEffect(() => {
     setChartData([
       { id: "Customer", label: "Customer Time", value: metrics.customerTalk, color: "#244F26" },
-      { id: "Agent", label: "Agent Time", value: metrics.agentTalk, color:"#177E89" },
-      { id: "Non-talk", label: "NonTalk Time", value: metrics.nonTalk,color:"#C4B1AE" },
+      { id: "Agent", label: "Agent Time", value: metrics.agentTalk, color: "#177E89" },
+      { id: "Non-talk", label: "NonTalk Time", value: metrics.nonTalk, color: "#C4B1AE" },
     ]);
 
     setsentimentData([
@@ -298,14 +283,14 @@ useEffect(() => {
     ]);
 
     setChartData2([
-      { id: "Positive", label: "Positive", value: metrics.sentimentPercentages.POSITIVE,color: "#439D49"},
-      { id: "Neutral", label: "Neutral", value: metrics.sentimentPercentages.NEUTRAL, color:"#7E7F83" },
-      { id: "Negative", label: "Negative", value: metrics.sentimentPercentages.NEGATIVE,color:"#B72015"},
+      { id: "Positive", label: "Positive", value: metrics.sentimentPercentages.POSITIVE, color: "#439D49" },
+      { id: "Neutral", label: "Neutral", value: metrics.sentimentPercentages.NEUTRAL, color: "#7E7F83" },
+      { id: "Negative", label: "Negative", value: metrics.sentimentPercentages.NEGATIVE, color: "#B72015" },
     ]);
 
     setCallDuration(formatDuration(metrics.callDuration)); // Ensure callDuration is formatted
 
-    console.log("Agent Talk:",metrics.agentTalk);
+    console.log("Agent Talk:", metrics.agentTalk);
     console.log("Customer Talk:", metrics.customerTalk);
     console.log("Non Talk:", metrics.nonTalk);
     console.log("Sentiment Trend:", metrics.sentimentTrend);
