@@ -58,15 +58,7 @@ const CallOverview: React.FunctionComponent = () => {
   const [ActualSentiment, setActualSentiment] = useState("No call in progress");
   const { showError } = useCustomToast();
   const navigate = useNavigate();
-  const [metrics, setMetrics] = useState<callOverviewAnalytics>(() => {
-    const savedMetrics = sessionStorage.getItem('unhandledInteractions');
-    if (savedMetrics) {
-      const parsedUnhandled = JSON.parse(savedMetrics);
-      const interaction = parsedUnhandled.find((i: any) => i.state.contactId === activeContactID);
-      if (interaction && interaction.state.callOverviewAnalytics) {
-        return interaction.state.callOverviewAnalytics;
-      } else {
-        return {
+  const [metrics, setMetrics] = useState<callOverviewAnalytics>(() => ({
           agentTalk: 0,
           customerTalk: 0,
           nonTalk: 0,
@@ -76,24 +68,11 @@ const CallOverview: React.FunctionComponent = () => {
             NEGATIVE: 0,
             NEUTRAL: 0
           },
-          callDuration: 0
-        };
-      }
-    } else {
-      return {
-        agentTalk: 0,
-        customerTalk: 0,
-        nonTalk: 0,
-        sentimentTrend: [],
-        sentimentPercentages: {
-          POSITIVE: 0,
-          NEGATIVE: 0,
-          NEUTRAL: 0
-        },
-        callDuration: 0
-      };
-    }
-  });
+          callDuration: 0,
+          key: '',
+          contactId: ''
+      }))
+
 
   const [chartData, setChartData] = useState<PieChartDataItem[]>([
     { id: "Customer", label: "Customer Time", value: 0 },
@@ -132,10 +111,36 @@ const CallOverview: React.FunctionComponent = () => {
     }
   }, []);
 
-  //save metrics to session storage
+  
+  //Load metrics from session storage
   useEffect(() => {
-    sessionStorage.setItem('callOverviewMetrics', JSON.stringify(metrics));
-  }, [metrics]);
+    if (activeContactID !== "No call in progress" && activeContactID !== undefined) {
+      console.log("Active Contact ID:", activeContactID);
+      const storedMetrics = sessionStorage.getItem('unhandledInteractions');
+      console.log("Stored metrics:", storedMetrics); // Mostrar los datos de las métricas almacenadas en la consola
+      if (storedMetrics) {
+        const parsedMetrics = JSON.parse(storedMetrics);
+        console.log("Parsed metrics:", parsedMetrics); // Mostrar los datos de las métricas analizadas en la consola
+        const interaction = parsedMetrics.find((i: any) => i.state.contactId === activeContactID);
+        if (interaction && interaction.sentiment.callOverviewAnalytics) {
+          setMetrics(interaction.sentiment.callOverviewAnalytics);
+        }
+      }
+    }
+    }, [activeContactID]);
+
+  // //save metrics to session storage
+  // useEffect(() => {
+  //   const storedMetrics = sessionStorage.getItem('unhandledInteractions');
+  //   const parsedMetrics = storedMetrics ? JSON.parse(storedMetrics) : [];
+  //   const interactionIndex = parsedMetrics.findIndex((i: any) => i.state.contactId === metrics.contactId);
+  //   if (interactionIndex !== -1) {
+  //     parsedMetrics[interactionIndex].sentiment.callOverviewAnalytics = metrics;
+  //   } else {
+  //     parsedMetrics.push({ state: { contactId: metrics.contactId, callOverviewAnalytics: metrics } });
+  //   }
+  //   sessionStorage.setItem('unhandledInteractions', JSON.stringify(parsedMetrics));   
+  // }, [metrics]);
 
   // Handle incoming WebSocket messages
   useEffect(() => {
@@ -240,7 +245,7 @@ const CallOverview: React.FunctionComponent = () => {
       return;
     }
     //format values for sentiment trend chart
-    const sentimentValue= segment.Sentiment==="POSITIVE" ? 3 : segment.Sentiment==="NEGATIVE" ? -3 : 0
+    const sentimentValue= segment.Sentiment==="POSITIVE" ? 1 : segment.Sentiment==="NEGATIVE" ? -1 : 0
     const timeStamp=parseFloat((segment.BeginOffsetMillis/1000).toFixed(2));
 
     setMetrics(prevMetrics => {

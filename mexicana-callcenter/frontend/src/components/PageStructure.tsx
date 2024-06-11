@@ -126,7 +126,7 @@ const PageStructure: FunctionComponent<PageStructureProps> = ({ title, children 
       console.log("matched inter when trying to adD sentiment: ", matchedInteraction)
 
       if(matchedInteraction) { // if it exists, update the sentiment property of the object
-        //initialize metrics for call if they don't exist or if the agent is recieving a n
+        //initialize metrics for call if they don't exist 
         if(!matchedInteraction.state.callOverviewAnalytics ) {
           matchedInteraction.state.callOverviewAnalytics = {
             agentTalk: 0,

@@ -322,15 +322,15 @@ const updateAllAgentStatus = (action: string) => {
       })
 
       //sessionStorage.removeItem('unhandledInteractions')
-      const remainingUnhandled = unhandledInteractions.filter(
-        unhandled => !unhandled.state.callOverviewAnalytics
-      )
+      // const remainingUnhandled = unhandledInteractions.filter(
+      //   unhandled => !unhandled.state.callOverviewAnalytics
+      // )
 
-      if (remainingUnhandled.length === 0) {
-        sessionStorage.removeItem('unhandledInteractions')
-      } else {
-        sessionStorage.setItem('unhandledInteractions', JSON.stringify(remainingUnhandled))
-      }
+      // if (remainingUnhandled.length === 0) {
+      //   sessionStorage.removeItem('unhandledInteractions')
+      // } else {
+      //   sessionStorage.setItem('unhandledInteractions', JSON.stringify(remainingUnhandled))
+      // }
     }
   }, [])
 
