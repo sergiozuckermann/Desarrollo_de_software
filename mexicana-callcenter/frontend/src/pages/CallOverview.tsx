@@ -4,11 +4,10 @@ import PageStructure from "../components/PageStructure";
 import MyPieChart from "../components/Charts/piechart";
 import MyLineChart from "../components/Charts/linechart";
 import CallCard from '../components/Callinfo';
-import Card from '../components/Card';
 import AHT from "../components/Charts/AHT";
-import userService from "../services/user"
+import userService from "../services/user";
 import useCustomToast from "../components/LoginNotification";
-import { useAuth } from '../hooks/useAuth'
+import { useAuth } from '../hooks/useAuth';
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useCallOverViewMetrics } from '../hooks/callOverviewMetrics';
@@ -24,11 +23,34 @@ export interface PieChartDataItem {
   color?: string;
 }
 
+const formatDuration = (seconds) => {
+  const h = Math.floor(seconds / 3600).toString().padStart(2, '0');
+  const m = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
+  const s = (seconds % 60).toString().padStart(2, '0');
+  return `${h}:${m}:${s}`;
+};
+
+const calculateTimeDifference = (classificationTime, currentTime) => {
+  const [classificationHours, classificationMinutes, classificationSeconds] = classificationTime.split(":").map(Number);
+  const [currentHours, currentMinutes, currentSeconds] = currentTime.split(":").map(Number);
+
+  const classificationTotalSeconds = (classificationHours * 3600) + (classificationMinutes * 60) + classificationSeconds;
+  const currentTotalSeconds = (currentHours * 3600) + (currentMinutes * 60) + currentSeconds;
+
+  const differenceInSeconds = classificationTotalSeconds - currentTotalSeconds;
+
+  const exceededHours = Math.floor(differenceInSeconds / 3600).toString().padStart(2, '0');
+  const exceededMinutes = Math.floor((differenceInSeconds % 3600) / 60).toString().padStart(2, '0');
+  const exceededSeconds = (differenceInSeconds % 60).toString().padStart(2, '0');
+
+  return `${exceededHours}:${exceededMinutes}:${exceededSeconds}`;
+};
+
 const CallOverview: React.FunctionComponent = () => {
   const { socket } = useWebSocket(); // get web socket connection
   const [agentInfo, setAgentInfo] = useState<Interaction | null>(null);
   const [userImage, setImageURL] = useState<string | null>(null);
-  const { role, username, logout } = useAuth()
+  const { role, username, logout } = useAuth();
   const [userInfo, setUserInfo] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
   const [activeState, setActiveState] = useState("No data available");
@@ -36,16 +58,14 @@ const CallOverview: React.FunctionComponent = () => {
   const [ActualSentiment, setActualSentiment] = useState("No call in progress");
   const { showError } = useCustomToast();
   const navigate = useNavigate();
-  const [metrics, setMetrics] = useState<callOverviewAnalytics>( () =>{
-    
+  const [metrics, setMetrics] = useState<callOverviewAnalytics>(() => {
     const savedMetrics = sessionStorage.getItem('unhandledInteractions');
     if (savedMetrics) {
       const parsedUnhandled = JSON.parse(savedMetrics);
       const interaction = parsedUnhandled.find((i: any) => i.state.contactId === activeContactID);
       if (interaction && interaction.state.callOverviewAnalytics) {
         return interaction.state.callOverviewAnalytics;
-      }
-      else {
+      } else {
         return {
           agentTalk: 0,
           customerTalk: 0,
@@ -57,10 +77,9 @@ const CallOverview: React.FunctionComponent = () => {
             NEUTRAL: 0
           },
           callDuration: 0
-        }
+        };
       }
-    }
-    else {
+    } else {
       return {
         agentTalk: 0,
         customerTalk: 0,
@@ -72,15 +91,14 @@ const CallOverview: React.FunctionComponent = () => {
           NEUTRAL: 0
         },
         callDuration: 0
-      }
+      };
     }
-  
   });
 
   const [chartData, setChartData] = useState<PieChartDataItem[]>([
     { id: "Customer", label: "Customer Time", value: 0 },
     { id: "Agent", label: "Agent Time", value: 0, color:"#177E89"},
-    { id: "Non-talk", label: "NonTalk Time", value: 0,color:"#C4B1AE" },
+    { id: "Non-talk", label: "NonTalk Time", value: 0, color:"#C4B1AE" },
   ]);
 
   const [chartData2, setChartData2] = useState<PieChartDataItem[]>([
@@ -97,6 +115,9 @@ const CallOverview: React.FunctionComponent = () => {
   ]);
 
   const [callDuration, setCallDuration] = useState<string>("00:00:00");
+
+  // Static classification time
+  const classificationTime = "00:03:10";
 
   // Load selected agent info from sessionStorage
   useEffect(() => {
@@ -136,13 +157,9 @@ const CallOverview: React.FunctionComponent = () => {
               if (activeState === "OFFLINE" || activeState === "AVAILABLE") {
                 setActiveContactID("No call in progress");
                 setActualSentiment("No call in progress");
-
               }
             }
             console.log("Segment type = AGENT EVENT", data.message.state); // Mostrar los datos de los segmentos en la consola
-            
-            
-            //updateMetrics(segment);
           } else if (segmentType === "SENTIMENT_ANALYSIS") {
             // Update sentiment analysis
             setActiveContactID(data.message.contactId);
@@ -261,7 +278,6 @@ const CallOverview: React.FunctionComponent = () => {
   });
 }
 
-
 useEffect(() => {
     setChartData([
       { id: "Customer", label: "Customer Time", value: metrics.customerTalk, color: "#244F26" },
@@ -282,7 +298,7 @@ useEffect(() => {
       { id: "Negative", label: "Negative", value: metrics.sentimentPercentages.NEGATIVE,color:"#B72015"},
     ]);
 
-    setCallDuration(metrics.callDuration.toString());
+    setCallDuration(formatDuration(metrics.callDuration)); // Ensure callDuration is formatted
 
     console.log("Agent Talk:",metrics.agentTalk);
     console.log("Customer Talk:", metrics.customerTalk);
@@ -290,7 +306,6 @@ useEffect(() => {
     console.log("Sentiment Trend:", metrics.sentimentTrend);
     console.log("Sentiment Percentages:", metrics.sentimentPercentages);
     console.log("Call Duration:", metrics.callDuration);
-
 
   }, [metrics]);
 
@@ -300,30 +315,35 @@ useEffect(() => {
     // Example logic to update sentiment data
     // setChartData2(...);
   };
+
+  const exceededTime = calculateTimeDifference(classificationTime, callDuration);
+
   return (
     <PageStructure title="Call Overview">
       <div className="grid items-center justify-center w-full h-full grid-cols-1 gap-4 p-2 lg:grid-cols-12">
         {/* AGENT CARD */}
-        <div className="flex items-center justify-center lg:col-span-4 sm:col-span-12">
+        <div className="flex items-center justify-center w-[100%] h-full lg:col-span-4 sm:col-span-12">
           {agentInfo ? (
-            <CallCard
-              agentname={agentInfo.agentFirstName} //{agentInfo.agentFirstName}
-              agentposition="Agent"
-              agentState={activeState || "No data available"}
-              agentQueue={agentInfo.queueName || "No data available"}
-              actualSentiment={ActualSentiment || "No agent in call"}
-              contactID={activeContactID || "No call in progress"}
-              talktime={metrics.callDuration || "00:00:00"}
-              username={agentInfo.username || "No data available"}
-              routingProfile={agentInfo.routingProfile || "No data available"}
-              imageURL={userImage || "/avatar.png"}
-            />
+            <div className="h-full">
+              <CallCard
+                agentname={agentInfo.agentFirstName} //{agentInfo.agentFirstName}
+                agentposition="Agent"
+                agentState={activeState || "No data available"}
+                agentQueue={agentInfo.queueName || "No data available"}
+                actualSentiment={ActualSentiment || "No agent in call"}
+                contactID={activeContactID || "No call in progress"}
+                talktime={callDuration || "00:00:00"} // Use formatted callDuration
+                username={agentInfo.username || "No data available"}
+                routingProfile={agentInfo.routingProfile || "No data available"}
+                imageURL={userImage || "/avatar.png"}
+              />
+            </div>
           ) : (
             <div>Loading...</div>
           )}
         </div>
         {/* Tables Grid */}
-        <div className="z-30 h-[100%] lg:col-span-8 sm:col-span-12">
+        <div className="z-30 h-full lg:col-span-8 sm:col-span-12">
           <div className="flex items-center justify-between pt-2 mb-4">
             <h2 className="text-xl text-gray-600 font-roboto">Call Metrics</h2>
             <button
@@ -332,48 +352,48 @@ useEffect(() => {
               disabled={!agentInfo?.contactId} // Disable the button if contactId is not available
             >
               Barge In
-            </button>          </div>
-          <div className="grid w-[100%] h-[80%] grid-cols-1 gap-2 lg:grid-cols-2 lg:col-span-8 z-30">
-          
-          <div className="bg-white rounded-md shadow-lg  card"
-            data-tooltip-id="tooltipTalkTime"
-            data-tooltip-content="This is the total talk time.">
-            <h3 className="text-lg font-bold text-center text-slategray">Talk time</h3>
-            <div className="h-[90%]">
-              <MyPieChart data={chartData} unit="seconds" />
-            </div>
-            <Tooltip id="tooltipTalkTime" className="custom-tooltip" />
+            </button>
           </div>
+          <div className="grid w-full h-[80%] grid-cols-1 gap-2 lg:grid-cols-2 lg:col-span-8 z-30">
+            <div className="bg-white rounded-md shadow-lg card"
+              data-tooltip-id="tooltipTalkTime"
+              data-tooltip-content="This is the total talk time.">
+              <h3 className="text-lg font-bold text-center text-slategray">Talk time</h3>
+              <div className="h-[90%]">
+                <MyPieChart data={chartData} unit="seconds" />
+              </div>
+              <Tooltip id="tooltipTalkTime" className="custom-tooltip" />
+            </div>
 
             <div className="bg-white rounded-md shadow-lg card"
-            data-tooltip-id="tooltipSentiment"
-            data-tooltip-content="This is the sentiment analysis.">
-            <h3 className="text-lg font-bold text-center text-slategray">Sentiment</h3>
-            <div className="h-[90%]">
-              <MyPieChart data={chartData2} unit="percent" />
+              data-tooltip-id="tooltipSentiment"
+              data-tooltip-content="This is the sentiment analysis.">
+              <h3 className="text-lg font-bold text-center text-slategray">Sentiment</h3>
+              <div className="h-[90%]">
+                <MyPieChart data={chartData2} unit="percent" />
+              </div>
+              <Tooltip id="tooltipSentiment" className="custom-tooltip" />
             </div>
-            <Tooltip id="tooltipSentiment" className="custom-tooltip" />
-          </div>
-    
-            <div className="bg-white rounded-md shadow-lg  card"
-            data-tooltip-id="tooltipSentimentTrend"
-            data-tooltip-content="This shows the sentiment trend over time.">
-            <h3 className="text-lg font-bold text-center text-slategray">Sentiment Trend</h3>
-            <div className="h-[50%]">
-              <MyLineChart data={sentimentData} />
+
+            <div className="bg-white rounded-md shadow-lg card"
+              data-tooltip-id="tooltipSentimentTrend"
+              data-tooltip-content="This shows the sentiment trend over time.">
+              <h3 className="text-lg font-bold text-center text-slategray">Sentiment Trend</h3>
+              <div className="h-[50%]">
+                <MyLineChart data={sentimentData} />
+              </div>
+              <Tooltip id="tooltipSentimentTrend" className="custom-tooltip" />
             </div>
-            <Tooltip id="tooltipSentimentTrend" className="custom-tooltip" />
-          </div>
-           
-            <div className="bg-white rounded-md shadow-lg  card"
-            data-tooltip-id="tooltipAHT"
-            data-tooltip-content="Average Handling Time">
-            <h3 className="pb-3 text-lg font-bold text-center text-slategray">Average Handling Time</h3>
-            <div className="h-[50%]">
-              <AHT classificationTime="00:03:10" currentTime={callDuration} exceededTime="00:01:02" />
+
+            <div className="bg-white rounded-md shadow-lg card"
+              data-tooltip-id="tooltipAHT"
+              data-tooltip-content="Average Handling Time">
+              <h3 className="pb-3 text-lg font-bold text-center text-slategray">Average Handling Time</h3>
+              <div className="h-[50%]">
+                <AHT classificationTime={classificationTime} currentTime={callDuration} exceededTime={exceededTime} />
+              </div>
+              <Tooltip id="tooltipAHT" className="custom-tooltip" />
             </div>
-            <Tooltip id="tooltipAHT" className="custom-tooltip" />
-          </div>
           </div>
         </div>
       </div>

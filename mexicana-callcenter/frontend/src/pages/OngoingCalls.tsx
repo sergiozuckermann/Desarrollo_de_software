@@ -23,20 +23,20 @@ const OngoingCalls: React.FunctionComponent = () => {
   const { socket } = useWebSocket(); // get web socket connection
   const [interactions, setInteractions] = useState<Array<Interaction>>([]); // interactions
   const [agentsState, setAgentsState] = useState<Array<PieChartDataItem>>([
-    { id: "AVAILABLE", label: "Available", value: 0, color: "#244F26" },
-    { id: "ON CALL", label: "On Call", value: 0, color: "#177E89" },
-    { id: "ACW", label: "After Call", value: 0, color: "#B0A084" },
-    { id: "OFFLINE", label: "Offline", value: 0, color: "red"},
+    { id: "AVAILABLE", label: "Available", value: 0, color: "#008000" },
+    { id: "ON CALL", label: "On Call", value: 0, color: "#0a8afb" },
+    { id: "ACW", label: "After Call", value: 0, color: "#e29301" },
+    { id: "OFFLINE", label: "Offline", value: 0, color: "#FF0000"},
   ])
+       
   const [agentsAvailability, setAgentsAvailability] = useState<Array<PieChartDataItem>>([
-    {id:"FlightManagement", label: "Flight Rsv", value: 0 },
-    {id:"CustomerCare", label: "Customer Care", value: 0 },
+    {id:"FlightManagement", label: "Flight Rsv", value: 0, color: "#20253F"},
+    {id:"CustomerCare", label: "Customer Care", value: 0, color:"#4B4B4B" },
     {id:"WebsiteAssistance", label: "Booking or Website Issues", value: 0 },
-    {id:"TravelInformation", label: "Status Inquiries", value: 0 },
-    {id:"SpecialAssitance", label: "Special Assistance or Docs", value: 0 },
-    {id:"OtherQuestions", label: "Other Questions", value: 0 }
+    {id:"TravelInformation", label: "Status Inquiries", value: 0, color: "#4A8B51" },
+    {id:"SpecialAssitance", label: "Special Assistance or Docs", value: 0, color:"#6BBF70" },
+    {id:"OtherQuestions", label: "Other Questions", value: 0, color:"#ADD8E6" },
   ])
-
   // useEffect to fetch information from session storage on every rerender
   useEffect(() => {
     const interactionsData = sessionStorage.getItem("interactions"); // check if interactions key exists
