@@ -8,7 +8,7 @@ import SettingsButton from "./SettingsButton";
 import TimestampDisplay from "./TimestampDisplay";
 import NotificationsDropDown from "./NotificationsDropDown";
 import { useWebSocket } from "../hooks/useWebSocket";
-import { Interaction, Notification, SentimentSegment, UnhandledInteractions } from "../utils/interfaces";
+import { Interaction, Notification, SentimentSegment, UnhandledInteractions, callOverviewAnalytics } from "../utils/interfaces";
 
 
 interface PageStructureProps {
@@ -126,17 +126,86 @@ const PageStructure: FunctionComponent<PageStructureProps> = ({ title, children 
       console.log("matched inter when trying to adD sentiment: ", matchedInteraction)
 
       if(matchedInteraction) { // if it exists, update the sentiment property of the object
+        //initialize metrics for call if they don't exist or if the agent is recieving a n
+        if(!matchedInteraction.state.callOverviewAnalytics ) {
+          matchedInteraction.state.callOverviewAnalytics = {
+            agentTalk: 0,
+            customerTalk: 0,
+            nonTalk: 0,
+            sentimentTrend: [],
+            sentimentPercentages: {POSITIVE:0, NEGATIVE:0, NEUTRAL:0},
+            callDuration:0,
+            key: matchedInteraction.state.key,
+            contactId: matchedInteraction.state.contactId || '' // ensure contactId is not null
+          }
+        }
+        segment.callOverviewAnalytics = updateMetrics(segment, matchedInteraction.state.callOverviewAnalytics) // update the metrics
+        
         const updatedInteraction = {
           ...matchedInteraction,
+          state: {
+            ...matchedInteraction.state,
+            callOverviewAnalytics: segment.callOverviewAnalytics // Ensure the metrics are updated in the state
+          },
           sentiment: segment
         }
+
+        console.log("sentiment updated interaction: ", updatedInteraction)
+        console.log("Call overview analytics: ", updatedInteraction.state.callOverviewAnalytics)
 
         // store the updated interactions to session storage
         const updatedInteractions = unhandledInteractions.map(i => i.state.contactId === segment.contactId ? updatedInteraction : i)
         sessionStorage.setItem('unhandledInteractions', JSON.stringify(updatedInteractions))
+        console.log("updated interactions: ", updatedInteractions)
+        console.log(unhandledInteractions)
       }
     }
   }
+
+  // function to update metrics of an ongoing call
+  const updateMetrics = (segment: SentimentSegment, currentMetrics:callOverviewAnalytics) => {
+    // Update your metrics based on the segment data
+    console.log('Updating metrics with segment: ', segment);
+
+    //format values for sentiment trend chart
+    const sentimentValue= segment.Sentiment==="POSITIVE" ? 1 : segment.Sentiment==="NEGATIVE" ? -1 : 0
+    const timeStamp=parseFloat((segment.BeginOffsetMillis/1000).toFixed(2));
+
+    //get stored metrics
+    const updatedMetrics: callOverviewAnalytics = {
+        agentTalk:currentMetrics.agentTalk,
+        customerTalk:currentMetrics.customerTalk,
+        nonTalk:currentMetrics.nonTalk,
+        sentimentTrend:[...currentMetrics.sentimentTrend,{x:timeStamp,y:sentimentValue}],
+        sentimentPercentages:{
+          POSITIVE:currentMetrics.sentimentPercentages.POSITIVE,
+          NEGATIVE:currentMetrics.sentimentPercentages.NEGATIVE,
+          NEUTRAL:currentMetrics.sentimentPercentages.NEUTRAL
+        },
+        callDuration:currentMetrics.callDuration
+      }
+
+
+    const sentimentKey = segment.Sentiment as 'POSITIVE' | 'NEGATIVE' | 'NEUTRAL';
+    updatedMetrics.sentimentPercentages[sentimentKey]+=1;
+
+    //increment intervention times by participant (for agent talk, customer talk, non talk)
+    if(segment.ParticipantRole==="AGENT") {
+        updatedMetrics.agentTalk+= parseFloat(((segment.EndOffsetMillis-segment.BeginOffsetMillis)/1000).toFixed(2));
+    }
+    else if(segment.ParticipantRole==="CUSTOMER") {
+        updatedMetrics.customerTalk+=parseFloat(((segment.EndOffsetMillis-segment.BeginOffsetMillis)/1000).toFixed(2));
+    }
+    else {
+        updatedMetrics.nonTalk+=parseFloat(((segment.EndOffsetMillis-segment.BeginOffsetMillis)/1000).toFixed(2));
+    }
+
+    //calculate call duration 
+    updatedMetrics.callDuration = updatedMetrics.callDuration + parseFloat(((segment.EndOffsetMillis - segment.BeginOffsetMillis) / 1000).toFixed(2));
+    
+    return updatedMetrics; // Return the updated metrics
+  };
+
 
   useEffect(() => {
     const ws = socket;

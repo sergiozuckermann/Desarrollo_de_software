@@ -37,7 +37,9 @@ export interface callOverviewAnalytics{
   nonTalk: number,
   sentimentTrend: Array<{x:number, y:number}>,
   sentimentPercentages: {POSITIVE:number, NEGATIVE:number, NEUTRAL:number},
-  callDuration:number
+  callDuration:number,
+  key?:string,
+  contactId?:string
 }
 
 // Define the type for an interaction
@@ -67,6 +69,7 @@ export interface SentimentSegment {
   contactId?:string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   IssuesDetected: Array<any>; // Use specific type instead of `any` if you know what will be in the array
+  callOverviewAnalytics?: callOverviewAnalytics;
 }
 
 export interface AgentsOnCall {

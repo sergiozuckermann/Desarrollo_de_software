@@ -25,8 +25,6 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import AgentMetrics from './pages/AgentMetrics';
 import MyBadges from './pages/MyBadges';
-import {MetricsCallOverview} from './hooks/callOverviewMetrics'
-
 
 function App() {
   const { isAuthenticated, role } = useAuth(); // get user authentication status and role
@@ -34,7 +32,7 @@ function App() {
   return (
       <>
       <DndProvider backend={HTML5Backend}>
-       {/* <MetricsCallOverview> */}
+
         <Routes>
           {/* General public routes */}
           <Route path="/" element={isAuthenticated ? <Navigate to={`/${role}/home`} /> : <Hello />} />
@@ -75,7 +73,6 @@ function App() {
         </Routes>
         <ToastContainer />
         {isAuthenticated ? <ChatWidget /> : null}
-        {/* </MetricsCallOverview> */}
       </DndProvider>
       </>
   );

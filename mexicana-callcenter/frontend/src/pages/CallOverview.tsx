@@ -37,19 +37,44 @@ const CallOverview: React.FunctionComponent = () => {
   const { showError } = useCustomToast();
   const navigate = useNavigate();
   const [metrics, setMetrics] = useState<callOverviewAnalytics>( () =>{
-    const savedMetrics = sessionStorage.getItem('callOverviewMetrics');
-    return savedMetrics ? JSON.parse(savedMetrics) : {
-    agentTalk: 0,
-    customerTalk: 0,
-    nonTalk: 0,
-    sentimentTrend: [],
-    sentimentPercentages: {
-      POSITIVE: 0,
-      NEGATIVE: 0,
-      NEUTRAL: 0,
-    },
-    callDuration: 0,
-  }
+    
+    const savedMetrics = sessionStorage.getItem('unhandledInteractions');
+    if (savedMetrics) {
+      const parsedUnhandled = JSON.parse(savedMetrics);
+      const interaction = parsedUnhandled.find((i: any) => i.state.contactId === activeContactID);
+      if (interaction && interaction.state.callOverviewAnalytics) {
+        return interaction.state.callOverviewAnalytics;
+      }
+      else {
+        return {
+          agentTalk: 0,
+          customerTalk: 0,
+          nonTalk: 0,
+          sentimentTrend: [],
+          sentimentPercentages: {
+            POSITIVE: 0,
+            NEGATIVE: 0,
+            NEUTRAL: 0
+          },
+          callDuration: 0
+        }
+      }
+    }
+    else {
+      return {
+        agentTalk: 0,
+        customerTalk: 0,
+        nonTalk: 0,
+        sentimentTrend: [],
+        sentimentPercentages: {
+          POSITIVE: 0,
+          NEGATIVE: 0,
+          NEUTRAL: 0
+        },
+        callDuration: 0
+      }
+    }
+  
   });
 
   const [chartData, setChartData] = useState<PieChartDataItem[]>([
@@ -193,6 +218,10 @@ const CallOverview: React.FunctionComponent = () => {
     console.log("Metrics:", segment); // Mostrar los datos de los segmentos en la consola
     console.log('Updating metrics with segment: ', segment);
 
+    if (segment.contactId !== activeContactID) {
+      console.log('Segment does not match active contact ID, $ {segment.contactId}');
+      return;
+    }
     //format values for sentiment trend chart
     const sentimentValue= segment.Sentiment==="POSITIVE" ? 3 : segment.Sentiment==="NEGATIVE" ? -3 : 0
     const timeStamp=parseFloat((segment.BeginOffsetMillis/1000).toFixed(2));

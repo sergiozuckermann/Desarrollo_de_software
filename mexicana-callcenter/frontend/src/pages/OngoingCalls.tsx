@@ -321,7 +321,16 @@ const updateAllAgentStatus = (action: string) => {
         }
       })
 
-      sessionStorage.removeItem('unhandledInteractions')
+      //sessionStorage.removeItem('unhandledInteractions')
+      const remainingUnhandled = unhandledInteractions.filter(
+        unhandled => !unhandled.state.callOverviewAnalytics
+      )
+
+      if (remainingUnhandled.length === 0) {
+        sessionStorage.removeItem('unhandledInteractions')
+      } else {
+        sessionStorage.setItem('unhandledInteractions', JSON.stringify(remainingUnhandled))
+      }
     }
   }, [])
 

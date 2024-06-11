@@ -8,8 +8,8 @@ const MyLineChart = ({data}) => (
         xScale={{ type: 'point' }}
         yScale={{
             type: 'linear',
-            min: 3,
-            max: -3,
+            min: -1,
+            max: 1,
             stacked: true,
             reverse: false
         }}
