@@ -111,9 +111,13 @@ const MyPieChart: React.FC<MyPieChartProps> = ({ data, unit }) => {
 
     // Define colors for each sentiment
     const colors = {
+        CustomerTime: '#66BB6A', // Green
+        AgentTime: '#FFA726',  // Orange
+        NonTalkTime: '#EF5350',  // Red
         Positive: '#66BB6A', // Green
         Neutral: '#FFA726',  // Orange
         Negative: '#EF5350'  // Red
+
     };
 
     // Assign colors to data items based on their labels (assuming labels represent sentiment)

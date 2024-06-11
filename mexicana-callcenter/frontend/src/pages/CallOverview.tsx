@@ -44,6 +44,10 @@ const CallOverview: React.FunctionComponent = () => {
   const [activeState, setActiveState] = useState("No data available");
   const [activeContactID, setActiveContactID] = useState("No call in progess");
   const [ActualSentiment, setActualSentiment] = useState("No call in progress");
+  const [customerTalkTime, setCustomerTalkTime] = useState(0);
+  const [agentTalkTime, setAgentTalkTime] = useState(0);
+  const [nonTalkTime, setNonTalkTime] = useState(0);
+  const [totalCallTime, setTotalCallTime] = useState(0);
   const { showError } = useCustomToast();
   const navigate = useNavigate();
 
@@ -111,15 +115,13 @@ const CallOverview: React.FunctionComponent = () => {
               }
             }
             console.log("Segment type = AGENT EVENT", data.message.state); // Mostrar los datos de los segmentos en la consola
-            
-            
-            //updateMetrics(segment);
           } else if (segmentType === "SENTIMENT_ANALYSIS") {
             // Update sentiment analysis
             setActiveContactID(data.message.contactId);
             setActualSentiment(data.message.Sentiment);
             updateSentiment(segment);
             handleSentimentSegment(segment);
+            updateTalkTimes(segment);
             console.log("Segment type = SENTIMENT ANALYSIS:"); // Mostrar los datos de los segmentos en la consola
           }
         }
@@ -202,11 +204,11 @@ const CallOverview: React.FunctionComponent = () => {
     console.log("Sentiment Percentages:", sentimentPercentages);
     console.log("Call Duration:", callDuration);
 
-    setChartData([
-      { id: "Customer", label: "Customer Time", value: customerTalk },
-      { id: "Agent", label: "Agent Time", value: agentTalk },
-      { id: "Non-talk", label: "NonTalk Time", value: nonTalk },
-    ]);
+    // setChartData([
+    //   { id: "Customer", label: "Customer Time", value: customerTalk },
+    //   { id: "Agent", label: "Agent Time", value: agentTalk },
+    //   { id: "Non-talk", label: "NonTalk Time", value: nonTalk },
+    // ]);
 
     setChartData2([
       { id: "Positive", label: "Positive", value: sentimentPercentages.positive },
@@ -224,6 +226,48 @@ const CallOverview: React.FunctionComponent = () => {
     setCallDuration(callDuration);
 
   };
+  const updateTalkTimes = (segment: any) => {
+    console.log('Updating talk times with segment: ', segment);
+
+    const beginTime = segment.BeginOffsetMillis;
+    const endTime = segment.EndOffsetMillis;
+    const talkTime = endTime - beginTime; // Calcular tiempo de conversación
+  
+    if (segment.ParticipantRole === 'CUSTOMER') {
+      setCustomerTalkTime((prevCustomerTalkTime) => prevCustomerTalkTime + talkTime);
+      console.log("This is a customer event", customerTalkTime);
+    } 
+    if (segment.ParticipantRole === 'AGENT') {
+      console.log("This is an agent event", agentTalkTime);
+      setAgentTalkTime((prevAgentTalkTime) => prevAgentTalkTime + talkTime);
+    }
+
+    setTotalCallTime(endTime);
+
+    const newNonTalkTime = endTime - customerTalkTime - agentTalkTime;
+    setNonTalkTime(newNonTalkTime);
+
+    const total = customerTalkTime + agentTalkTime + newNonTalkTime;
+
+    console.log("Customer Time:", customerTalkTime);
+    console.log("Agent Time:", agentTalkTime);
+    console.log("Non-talk Time:", newNonTalkTime, nonTalkTime);
+    console.log("Total Time:", total);
+
+    const customerPercentage = total !== 0 ? (customerTalkTime / total) * 100 : 0;
+    const agentPercentage = total !== 0 ? (agentTalkTime / total) * 100 : 0;
+    const nonTalkPercentage = total !== 0 ? (newNonTalkTime / total) * 100 : 0;
+
+    console.log("Customer Percentage:", customerPercentage);
+    console.log("Agent Percentage:", agentPercentage);
+    console.log("Non-talk Percentage:", nonTalkPercentage);
+
+    setChartData([
+        { id: "Customer", label: "CustomerTime", value: customerPercentage },
+        { id: "Agent", label: "AgentTime", value: agentPercentage },
+        { id: "Non-talk", label: "NonTalkTime", value: nonTalkPercentage },
+    ]);
+};
   
 
   const updateSentiment = (segment: any) => {
@@ -314,7 +358,7 @@ const CallOverview: React.FunctionComponent = () => {
           </div>
           <div className="grid w-[100%] h-[80%] grid-cols-1 gap-2 lg:grid-cols-2 lg:col-span-8 z-30">
             <Card title="Talk time">
-              <MyPieChart data={chartData} unit="seconds" />
+              <MyPieChart data={chartData} unit="percent" />
             </Card>
             <Card title="Sentiment">
               <MyPieChart data={chartData2} unit="percent" />
