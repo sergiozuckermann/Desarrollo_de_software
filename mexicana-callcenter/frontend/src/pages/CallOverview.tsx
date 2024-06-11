@@ -15,11 +15,13 @@ import { useCallOverViewMetrics } from '../hooks/callOverviewMetrics';
 const { showError } = useCustomToast();
 import { Interaction } from '../utils/interfaces';
 import { callOverviewAnalytics } from '../utils/interfaces';
+import { Tooltip } from 'react-tooltip';
 
 export interface PieChartDataItem {
   id: string | number;
   label: string;
   value: number;
+  color?: string;
 }
 
 const CallOverview: React.FunctionComponent = () => {
@@ -52,14 +54,14 @@ const CallOverview: React.FunctionComponent = () => {
 
   const [chartData, setChartData] = useState<PieChartDataItem[]>([
     { id: "Customer", label: "Customer Time", value: 0 },
-    { id: "Agent", label: "Agent Time", value: 0 },
-    { id: "Non-talk", label: "NonTalk Time", value: 0 },
+    { id: "Agent", label: "Agent Time", value: 0, color:"#177E89"},
+    { id: "Non-talk", label: "NonTalk Time", value: 0,color:"#C4B1AE" },
   ]);
 
   const [chartData2, setChartData2] = useState<PieChartDataItem[]>([
-    { id: "Positive", label: "Positive", value: 0 },
-    { id: "Neutral", label: "Neutral", value: 0 },
-    { id: "Negative", label: "Negative", value: 0 },
+    { id: "Positive", label: "Positive", value: 0, color: "#6BBF70" },
+    { id: "Neutral", label: "Neutral", value: 0, color:"#7E7F83" },
+    { id: "Negative", label: "Negative", value: 0, color:"#E63B2E" },
   ]);
 
   const [sentimentData, setsentimentData] = useState([
@@ -233,9 +235,9 @@ const CallOverview: React.FunctionComponent = () => {
 
 useEffect(() => {
     setChartData([
-      { id: "Customer", label: "Customer Time", value: metrics.customerTalk },
-      { id: "Agent", label: "Agent Time", value: metrics.agentTalk },
-      { id: "Non-talk", label: "NonTalk Time", value: metrics.nonTalk },
+      { id: "Customer", label: "Customer Time", value: metrics.customerTalk, color: "#244F26" },
+      { id: "Agent", label: "Agent Time", value: metrics.agentTalk, color:"#177E89" },
+      { id: "Non-talk", label: "NonTalk Time", value: metrics.nonTalk,color:"#C4B1AE" },
     ]);
 
     setsentimentData([
@@ -246,9 +248,9 @@ useEffect(() => {
     ]);
 
     setChartData2([
-      { id: "Positive", label: "Positive", value: metrics.sentimentPercentages.POSITIVE },
-      { id: "Neutral", label: "Neutral", value: metrics.sentimentPercentages.NEUTRAL },
-      { id: "Negative", label: "Negative", value: metrics.sentimentPercentages.NEGATIVE },
+      { id: "Positive", label: "Positive", value: metrics.sentimentPercentages.POSITIVE,color: "#439D49"},
+      { id: "Neutral", label: "Neutral", value: metrics.sentimentPercentages.NEUTRAL, color:"#7E7F83" },
+      { id: "Negative", label: "Negative", value: metrics.sentimentPercentages.NEGATIVE,color:"#B72015"},
     ]);
 
     setCallDuration(metrics.callDuration.toString());
@@ -271,7 +273,7 @@ useEffect(() => {
   };
   return (
     <PageStructure title="Call Overview">
-      <div className="grid items-center justify-center w-full h-full grid-cols-1 gap-4 p-2 overflow-y-auto lg:grid-cols-12">
+      <div className="grid items-center justify-center w-full h-full grid-cols-1 gap-4 p-2 lg:grid-cols-12">
         {/* AGENT CARD */}
         <div className="flex items-center justify-center lg:col-span-4 sm:col-span-12">
           {agentInfo ? (
@@ -292,8 +294,8 @@ useEffect(() => {
           )}
         </div>
         {/* Tables Grid */}
-        <div className="z-30 h-full lg:col-span-8 sm:col-span-12">
-          <div className="flex items-center justify-between pt-4 mb-4">
+        <div className="z-30 h-[100%] lg:col-span-8 sm:col-span-12">
+          <div className="flex items-center justify-between pt-2 mb-4">
             <h2 className="text-xl text-gray-600 font-roboto">Call Metrics</h2>
             <button
               className="w-5/12 px-4 py-3 text-white rounded-lg shadow bg-secondary hover:opacity-75 mr-7"
@@ -303,18 +305,46 @@ useEffect(() => {
               Barge In
             </button>          </div>
           <div className="grid w-[100%] h-[80%] grid-cols-1 gap-2 lg:grid-cols-2 lg:col-span-8 z-30">
-            <Card title="Talk time">
+          
+          <div className="bg-white rounded-md shadow-lg  card"
+            data-tooltip-id="tooltipTalkTime"
+            data-tooltip-content="This is the total talk time.">
+            <h3 className="text-lg font-bold text-center text-slategray">Talk time</h3>
+            <div className="h-[90%]">
               <MyPieChart data={chartData} unit="seconds" />
-            </Card>
-            <Card title="Sentiment">
+            </div>
+            <Tooltip id="tooltipTalkTime" className="custom-tooltip" />
+          </div>
+
+            <div className="bg-white rounded-md shadow-lg card"
+            data-tooltip-id="tooltipSentiment"
+            data-tooltip-content="This is the sentiment analysis.">
+            <h3 className="text-lg font-bold text-center text-slategray">Sentiment</h3>
+            <div className="h-[90%]">
               <MyPieChart data={chartData2} unit="percent" />
-            </Card>
-            <Card title="Sentiment Trend">
+            </div>
+            <Tooltip id="tooltipSentiment" className="custom-tooltip" />
+          </div>
+    
+            <div className="bg-white rounded-md shadow-lg  card"
+            data-tooltip-id="tooltipSentimentTrend"
+            data-tooltip-content="This shows the sentiment trend over time.">
+            <h3 className="text-lg font-bold text-center text-slategray">Sentiment Trend</h3>
+            <div className="h-[50%]">
               <MyLineChart data={sentimentData} />
-            </Card>
-            <Card title="Average Handling Time">
+            </div>
+            <Tooltip id="tooltipSentimentTrend" className="custom-tooltip" />
+          </div>
+           
+            <div className="bg-white rounded-md shadow-lg  card"
+            data-tooltip-id="tooltipAHT"
+            data-tooltip-content="Average Handling Time">
+            <h3 className="pb-3 text-lg font-bold text-center text-slategray">Average Handling Time</h3>
+            <div className="h-[50%]">
               <AHT classificationTime="00:03:10" currentTime={callDuration} exceededTime="00:01:02" />
-            </Card>
+            </div>
+            <Tooltip id="tooltipAHT" className="custom-tooltip" />
+          </div>
           </div>
         </div>
       </div>

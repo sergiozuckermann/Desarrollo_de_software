@@ -11,6 +11,7 @@ interface PieChartDataItem {
   id: string | number;
   label: string;
   value: number;
+  color?: string;
 }
 
 const Action = {
@@ -22,10 +23,10 @@ const OngoingCalls: React.FunctionComponent = () => {
   const { socket } = useWebSocket(); // get web socket connection
   const [interactions, setInteractions] = useState<Array<Interaction>>([]); // interactions
   const [agentsState, setAgentsState] = useState<Array<PieChartDataItem>>([
-    { id: "AVAILABLE", label: "Available", value: 0 },
-    { id: "ON CALL", label: "On Call", value: 0 },
-    { id: "ACW", label: "After Call", value: 0 },
-    { id: "OFFLINE", label: "Offline", value: 0 },
+    { id: "AVAILABLE", label: "Available", value: 0, color: "#244F26" },
+    { id: "ON CALL", label: "On Call", value: 0, color: "#177E89" },
+    { id: "ACW", label: "After Call", value: 0, color: "#B0A084" },
+    { id: "OFFLINE", label: "Offline", value: 0, color: "red"},
   ])
   const [agentsAvailability, setAgentsAvailability] = useState<Array<PieChartDataItem>>([
     {id:"FlightManagement", label: "Flight Rsv", value: 0 },
@@ -338,7 +339,7 @@ const updateAllAgentStatus = (action: string) => {
   return (
     <PageStructure title="Ongoing Calls">
       <div className="overflow-y-auto h-full pb-[3%] pt-[2%] pl-[2%]">
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
           <div className="col-span-1">
             <GraphAgentStructure 
               agentsState={agentsState}
