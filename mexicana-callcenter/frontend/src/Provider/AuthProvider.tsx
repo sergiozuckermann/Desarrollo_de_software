@@ -2,6 +2,7 @@ import axios from "axios";
 import { createContext, FunctionComponent, PropsWithChildren } from "react";
 import { AuthContextType, Credentials } from "../utils/interfaces";
 import useCustomToast from "../components/LoginNotification";
+import { useNavigate } from "react-router-dom";
 
 
 const baseUrl = 'http://localhost:3000'
@@ -12,6 +13,8 @@ const AuthProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
 
   const { showError } = useCustomToast();
   const { showSuccess } = useCustomToast();
+  const { showCustom } = useCustomToast();
+  const navigate = useNavigate()
  
     const getContext = () => {
       const userDataString = sessionStorage.getItem('userData');
@@ -66,8 +69,9 @@ const AuthProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
           sessionStorage.setItem('token', token);
 
           // navigate to the hme page based on the user's role
+          navigate(`/${role}/home`)
           showSuccess(`🎉 Welcome ${name}!\nYou are now signed in.`);
-          window.location.href = `/${role}/home`
+          showCustom("Wait for the Contact Control Panel popup to log in with your credentials", "gray");
         }
       })
       .catch(error =>  {

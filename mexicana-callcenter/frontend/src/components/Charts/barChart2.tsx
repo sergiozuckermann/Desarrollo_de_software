@@ -41,7 +41,7 @@ const MyBarChart2: React.FC<MyBarChart2Props> = ({ data, unit }) => {
           top: 20,
           right: 20,
           left: 20,
-          bottom: 60, // Increased the bottom margin
+          bottom: 60, 
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
@@ -49,7 +49,7 @@ const MyBarChart2: React.FC<MyBarChart2Props> = ({ data, unit }) => {
           dataKey="metric" 
           tick={{ angle: -30, textAnchor: 'end', fontSize: 10 }} // Adjusted angle and font size
           interval={0} 
-        />
+        />x
         <YAxis tickFormatter={(value) => `${value} ${unit}`} />
         <Tooltip formatter={(value) => `${value} ${unit}`} />
         <Bar dataKey="value" fill="#8884d8">

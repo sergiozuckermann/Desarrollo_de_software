@@ -2,12 +2,12 @@
 import { useState, useEffect } from 'react';
 import PageStructure from "../components/PageStructure";
 import HomeButton from "../components/HomeButtons"; 
-import SupervisorButton from "../components/SupervisorButton";
 import WorkerCard from '../components/WorkerCard';
 import userService from "../services/user"
 import { useAuth } from '../hooks/useAuth'
 import { WorkerCardProps } from '../utils/interfaces';
 import useCustomToast from "../components/LoginNotification";
+import ConnectHere from '../components/ConnectHere';
 
 
 
@@ -81,6 +81,9 @@ const MainContent = () => {
       <HomeButton icon="/SpotlightSymbol.svg" title="Agent Spotlight" subtitle="Weekly best agents" handleClick={() => window.location.href = '/supervisor/AgentSpotlight'}/>
       <HomeButton icon="/costumer.svg" title="Agent Performance" subtitle="See the weekly metrics of agent perfomance" handleClick={() => window.location.href = '/supervisor/AgentPerformance'}/>
       <HomeButton icon="/BreakSymbol.svg" title="Take a break" subtitle="Go to take a break to clear the mind" handleClick={() => window.location.href = '/supervisor/TakeABreak'}/>
+      <div style={{ visibility: 'hidden', pointerEvents: 'none' }}>
+        <ConnectHere />
+      </div>
       <div className="flex justify-center w-full md:col-span-2">
       </div>
 
