@@ -41,7 +41,7 @@ const PageStructure: FunctionComponent<PageStructureProps> = ({ title, children 
     let notificationsData:Notification[] = []
     if(allNotifications) {
       notificationsData = JSON.parse(allNotifications)
-      const repeatedNotification = notificationsData.find(n => n.id === notification.id)
+      const repeatedNotification = notificationsData.find(n => n.contactId === notification.contactId && n.segmentType === notification.segmentType) 
       if(!repeatedNotification) {
         notificationsData.push(notification)
         sessionStorage.setItem('notifications', JSON.stringify(notificationsData))

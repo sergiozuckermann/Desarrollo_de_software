@@ -63,6 +63,8 @@ export interface AgentsOnCall {
 
 export interface Notification {
   id: number;
+  contactId: string;
+  segmentType: string;
   title: string;
   message: string;
   date: string;
