@@ -65,18 +65,18 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
 
   return (
     <div
-      className="p-4 bg-[#F8F9FA] shadow-md rounded-md border cursor-pointer flex justify-between items-start"
+      className="p-4 bg-[#F8F9FA] shadow-md rounded-md border cursor-pointer flex justify-between items-start dark:bg-primary"
       onClick={toggleExpanded}
     >
       <div className={`flex-1 ${expanded ? "text-left" : "truncate"}`}>
-        <p className="text-lg font-bold mb-2">{title}</p>
+        <p className="text-lg font-bold mb-2 dark:text-white">{title}</p>
         {expanded && (
           <>
-            <p className="text-base">{message}</p>
+            <p className="text-base dark:text-white">{message}</p>
              {/* call */}
             {shouldShowCallOverviewButton && (
               <button
-                className="bg-[#4A8B51] hover:bg-[#4A8B51] text-white font-bold py-2 px-4 rounded mb-2 mt-4"
+                className="bg-[#4A8B51] hover:bg-[#517054] text-white font-bold py-2 px-4 rounded mb-2 mt-4"
                 onClick={handleCallOverview}
               >
                 Call Overview
@@ -102,7 +102,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
             )}
           </>
         )}
-        <p className="text-sm text-gray-500 mt-2">{formatDate(date)}</p>
+        <p className="text-sm text-gray-500 mt-2 dark:text-white">{formatDate(date)}</p>
       </div>
       <CircleNotification isSeen={isRead} isExpanded={expanded} />
     </div>

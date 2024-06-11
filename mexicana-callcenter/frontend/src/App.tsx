@@ -1,4 +1,3 @@
-import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Hello from './pages/Hello';
 import SignIn from './pages/SignIn';
@@ -17,6 +16,7 @@ import SupervisorNotifications from "./pages/SupervisorNotifications"
 import CallOverview from "./pages/CallOverview";
 import HistoricalMetrics from "./pages/Metrics";
 import ChatWidget from './components/ChatWidget';
+import AgentSpotlight from "./pages/AgentSpotlight";
 import TakeABreak from './pages/TakeABreak';
 import MoveYourBody from './pages/MoveYourBody';
 import BreathingExcer from './pages/BreathingExcer';
@@ -24,7 +24,7 @@ import AgentRoutingProfile from './pages/QueueTransfer';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import AgentMetrics from './pages/AgentMetrics';
-
+import MyBadges from './pages/MyBadges';
 
 function App() {
   const { isAuthenticated, role } = useAuth(); // get user authentication status and role
@@ -32,6 +32,7 @@ function App() {
   return (
       <>
       <DndProvider backend={HTML5Backend}>
+
         <Routes>
           {/* General public routes */}
           <Route path="/" element={isAuthenticated ? <Navigate to={`/${role}/home`} /> : <Hello />} />
@@ -43,16 +44,24 @@ function App() {
           <Route path="/agent/home" element={< HomePage />} />
           <Route path="agent/workspace" element={< AgentHome />} />
           <Route path="Agent/home/notifications" element={< NotficationCenter />} />
+          <Route path="/agent/TakeABreak" element={<TakeABreak />} />
+          <Route path="/agent/MoveYourBody" element={<MoveYourBody />} />
+          <Route path="/agent/BreathingExcer" element={<BreathingExcer />} />
+          <Route path="/agent/MyBadges" element={<MyBadges />} />
+
+
       </Route>
       <Route element={<ProtectedRoute isAllowed={isAuthenticated && role === 'Supervisor'} />}>
-          <Route path="/supervisor/ongoingcalls" element={<OngoingCalls />} />
           <Route path="/supervisor/bargein" element={<BargeIn />} />
           <Route path="/supervisor/home" element={<SupervisorMain />} />
           <Route path="/supervisor/ongoingcalls" element={<OngoingCalls />} />
-          <Route path="/supervisor/AgentSpotlight" element={<AgentMetrics />} />
+
+          <Route path="/supervisor/AgentPerformance" element={<AgentMetrics />} />
+          <Route path="/supervisor/AgentSpotlight" element={<AgentSpotlight />} />
           <Route path="/supervisor/TakeABreak" element={<TakeABreak />} />
           <Route path="/supervisor/MoveYourBody" element={<MoveYourBody />} />
           <Route path="/supervisor/BreathingExcer" element={<BreathingExcer />} />
+
           <Route path="/supervisor/notifications" element={< SupervisorNotifications />} />
           <Route path="/supervisor/metrics" element={< HistoricalMetrics />} />
           <Route path="/supervisor/calloverview" element={< CallOverview />} />

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 const CallTimeDisplay = () => {
   const [callTime, setCallTime] = useState('00:00:00'); 

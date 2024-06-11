@@ -20,7 +20,7 @@ const HorizontalTabs: React.FC<HorizontalTabsProps> = ({ data }) => {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex justify-center p space-x-4">
+      <div className="flex justify-center p space-x-4 ">
         {data.map((tab, index) => (
           <div
             key={index}

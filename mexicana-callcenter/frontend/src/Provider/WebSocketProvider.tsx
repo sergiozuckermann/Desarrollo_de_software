@@ -20,7 +20,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
 
   return (
     <WebSocketContext.Provider value={{ socket }}>
-      {children}
+      {children} 
     </WebSocketContext.Provider>
   );
 };

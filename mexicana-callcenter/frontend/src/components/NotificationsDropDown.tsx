@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import NotificationBadge from "./notificationComponent";
 import { useNavigate } from "react-router-dom";
+import { getUnreadNotificationsCount } from "../pages/SupervisorNotifications";
+import { DarkModeContext } from "../Provider/ThemeProvider"; // Asegúrate de importar el contexto
 
 interface NotificationsDropDownProps {
   notificationsData: {
@@ -15,6 +17,7 @@ interface NotificationsDropDownProps {
 const NotificationsDropDown: React.FC<NotificationsDropDownProps> = ({ notificationsData, count }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
+  const { darkMode } = useContext(DarkModeContext); // Obtén el estado del tema desde el contexto
 
   const handleToggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -40,7 +43,7 @@ const NotificationsDropDown: React.FC<NotificationsDropDownProps> = ({ notificat
         <NotificationBadge count={count} />
       </button>
       {isDropdownOpen && (
-        <div className="absolute right-0 mt-2 w-64 bg-white border rounded-lg shadow-lg max-h-60 overflow-y-auto">
+        <div className="absolute right-0 mt-2 w-64 bg-white border rounded-lg shadow-lg max-h-60 overflow-y-auto dark:bg-gray-900">
           <div className="p-2">
             <h3 className="text-lg font-semibold mb-4">Notifications</h3>
             {
@@ -48,11 +51,11 @@ const NotificationsDropDown: React.FC<NotificationsDropDownProps> = ({ notificat
             notificationsData.map((notification) => (
               <div
                 key={notification.id}
-                className="notification-item mb-4 cursor-pointer"
+                className="notification-item mb-4 cursor-pointer dark:text-white"
                 onClick={handleNotificationClick}
               >
                 <strong>{notification.title}</strong>
-                <p className="text-sm mt-1 overflow-hidden text-ellipsis line-clamp-2">{notification.message}</p>
+                <p className="text-sm mt-1 overflow-hidden text-ellipsis line-clamp-2 dark:text-white">{notification.message}</p>
               </div>
             ))}
           </div>

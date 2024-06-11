@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import "amazon-connect-streams";
 
 const CCPComponent = () => {
-  const [selectedQueueName, setSelectedQueueName] = useState('');
-  const [selectedQueueValue, setSelectedQueueValue] = useState('');
 
   useEffect(() => {
     const containerDiv = document.getElementById("ccp-container")!;
@@ -13,7 +11,7 @@ const CCPComponent = () => {
       connect.core.initCCP(containerDiv, {
         ccpUrl: instanceURL,
         loginPopup: true,
-        loginPopupAutoClose: true,
+        loginPopupAutoClose: false,
         loginOptions: {
           autoClose: true,
           height: 600,

@@ -119,7 +119,7 @@ const SupervisorNotifications: React.FunctionComponent = () => {
 
   return (
     <PageStructure title="Notifications">
-      <div className="flex flex-col w-full h-[90%] overflow-y-auto">
+      <div className="flex flex-col w-full h-[90%] overflow-y-auto ">
         <HorizontalTabs data={tabData} onTabChange={handleTabChange} />
       </div>
     </PageStructure>

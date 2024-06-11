@@ -14,7 +14,9 @@ export interface AuthContextType {
   }
 
 export interface WorkerCardProps {
+  imageURL: string;
   name: string;
+  username: string;
   position: string;
   experience: number;
   points: number;
@@ -24,6 +26,20 @@ export interface WorkerCardProps {
 // Define the type for the context value
 export interface WebSocketContextType {
   socket:  WebSocket | null;
+  onmessage?: ((this: WebSocket, ev: MessageEvent<any>) => any) | null;
+}
+
+
+//Define metrics for call overview
+export interface callOverviewAnalytics{
+  agentTalk: number,
+  customerTalk: number,
+  nonTalk: number,
+  sentimentTrend: Array<{x:number, y:number}>,
+  sentimentPercentages: {POSITIVE:number, NEGATIVE:number, NEUTRAL:number},
+  callDuration:number,
+  key?:string,
+  contactId?:string
 }
 
 // Define the type for an interaction
@@ -36,8 +52,9 @@ export interface Interaction {
   contactId?: string,
   Sentiment?: string,
   queueName?: string,
-  // notification?: Notification
-  
+  username: string;
+  routingProfile: string;
+  callOverviewAnalytics?: callOverviewAnalytics;
 }
 
 // Define the type for an interaction
@@ -52,7 +69,7 @@ export interface SentimentSegment {
   contactId?:string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   IssuesDetected: Array<any>; // Use specific type instead of `any` if you know what will be in the array
-  // notification?: Notification
+  callOverviewAnalytics?: callOverviewAnalytics;
 }
 
 export interface AgentsOnCall {

@@ -5,6 +5,7 @@ import { styles } from "./styles";
 // import ModalWindow
 import ModalWindow from "./ModalWindow";
 
+
 function ChatWidget() {
     // state variable to track if widget button was hovered on
     const [hovered, setHovered] = useState(false);
