@@ -1,10 +1,5 @@
 import { ResponsiveLine } from '@nivo/line'
 
-// make sure parent container have a defined height when using
-// responsive component, otherwise height will be 0 and
-// no chart will be rendered.
-// website examples showcase many properties,
-// you'll often use just a few of them.
 const MyLineChart = ({data}) => (
     <div className='w-full h-full z-70' style={{ position: 'relative', zIndex:100, paddingBottom:10, height:'300px'}}>
     <ResponsiveLine
@@ -13,8 +8,8 @@ const MyLineChart = ({data}) => (
         xScale={{ type: 'point' }}
         yScale={{
             type: 'linear',
-            min: 'auto',
-            max: 'auto',
+            min: 3,
+            max: -3,
             stacked: true,
             reverse: false
         }}
@@ -22,11 +17,11 @@ const MyLineChart = ({data}) => (
         axisTop={null}
         axisRight={null}
         axisBottom={{
-            tickSize: 5,
-            tickPadding: 5,
+            tickSize: 0,
+            tickPadding: 0,
             tickRotation: 0,
             legend: 'Seconds',
-            legendOffset: 36,
+            legendOffset: 25,
             legendPosition: 'middle',
             truncateTickAt: 0
         }}
