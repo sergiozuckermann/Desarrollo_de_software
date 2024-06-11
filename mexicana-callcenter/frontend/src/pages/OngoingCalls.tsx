@@ -4,7 +4,7 @@ import PageStructure from "../components/PageStructure";
 import CellGrid from "../components/CellGrid";
 import GraphAgentStructure from "../components/GraphAgentStructure";
 import { useWebSocket } from "../hooks/useWebSocket";
-import { Interaction, SentimentSegment, AgentsOnCall } from "../utils/interfaces";
+import { Interaction, SentimentSegment, AgentsOnCall, UnhandledInteractions } from "../utils/interfaces";
 import InfoCard from "../components/InfoCard";
 
 interface PieChartDataItem {
@@ -305,6 +305,25 @@ const updateAllAgentStatus = (action: string) => {
     setAgentsState(callStates)
   }
 }
+
+  // update agent map with unhandled real time information
+  useEffect(() => {
+    const unhandledInteractionsData = sessionStorage.getItem('unhandledInteractions')
+    if(unhandledInteractionsData) {
+      const unhandledInteractions:UnhandledInteractions[] = JSON.parse(unhandledInteractionsData)
+
+      if(!unhandledInteractions.length) return
+
+      unhandledInteractions.forEach(unhandled => {
+        processEvent(unhandled.state)
+        if(unhandled.sentiment) {
+          processSentimentAnalysis(unhandled.sentiment)
+        }
+      })
+
+      sessionStorage.removeItem('unhandledInteractions')
+    }
+  }, [])
 
 
   // web socket connection to get real time information from ongoing intereaction

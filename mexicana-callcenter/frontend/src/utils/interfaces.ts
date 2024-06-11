@@ -74,3 +74,16 @@ export interface AgentsOnCall {
   state: string
 }
 
+
+export interface Notification {
+  id: number;
+  title: string;
+  message: string;
+  date: string;
+  isRead: boolean;
+}
+
+export interface UnhandledInteractions {
+  state: Interaction
+  sentiment?: SentimentSegment
+}
