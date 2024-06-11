@@ -25,6 +25,7 @@ const CellGrid: React.FunctionComponent<CellGridProps> = ({ data }) => {
     };
     sessionStorage.setItem("selectedAgent", JSON.stringify(agentInfo));
     navigate('/Supervisor/calloverview');
+    // console.log("State", {state: {selectedCall: interaction}});
   };
   return (
     <div className="box-border border-[1px] rounded-lg p-4 border-solid border-marco lg:h-[700px] overflow-y-auto">

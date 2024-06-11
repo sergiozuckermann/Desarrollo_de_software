@@ -27,13 +27,13 @@ import MyBadges from './pages/MyBadges';
 import MetricsAgent from './pages/HistoricalAgent';
 import AgentMetrics from './pages/AgentMetrics';
 
-
 function App() {
   const { isAuthenticated, role } = useAuth(); // get user authentication status and role
 
   return (
       <>
       <DndProvider backend={HTML5Backend}>
+
         <Routes>
           {/* General public routes */}
           <Route path="/" element={isAuthenticated ? <Navigate to={`/${role}/home`} /> : <Hello />} />
