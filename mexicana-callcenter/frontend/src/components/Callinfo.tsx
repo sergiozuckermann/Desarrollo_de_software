@@ -29,7 +29,7 @@ const CallCard: React.FC<CallCardProps> = ({
   return (
     <div className="flex flex-col items-center justify-center h-[100%] w-full">
       {/* Large Device Layout */}
-      <div className="hidden w-full h-[98%] md:block pt-[16%]">
+      <div className="hidden w-full h-[96%] md:block pt-[12%]">
         <div className="flex flex-col items-center justify-center h-[100%] p-8 overflow-hidden shadow-xl rounded-xl card">
           <div className="flex justify-center p-4">
             <img className="rounded-full w-36 h-36" src={imageURL || "/avatar.png"} alt="User avatar" />

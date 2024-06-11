@@ -23,27 +23,27 @@ export interface PieChartDataItem {
   color?: string;
 }
 
-const formatDuration = (seconds) => {
+const formatDuration = (seconds: number) => {
   const h = Math.floor(seconds / 3600).toString().padStart(2, '0');
   const m = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
   const s = (seconds % 60).toString().padStart(2, '0');
   return `${h}:${m}:${s}`;
 };
 
-const calculateTimeDifference = (classificationTime, currentTime) => {
+const calculateTimeDifference = (classificationTime: string, currentTime: string) => {
   const [classificationHours, classificationMinutes, classificationSeconds] = classificationTime.split(":").map(Number);
   const [currentHours, currentMinutes, currentSeconds] = currentTime.split(":").map(Number);
 
   const classificationTotalSeconds = (classificationHours * 3600) + (classificationMinutes * 60) + classificationSeconds;
   const currentTotalSeconds = (currentHours * 3600) + (currentMinutes * 60) + currentSeconds;
 
-  const differenceInSeconds = classificationTotalSeconds - currentTotalSeconds;
+  const differenceInSeconds = currentTotalSeconds - classificationTotalSeconds;
 
-  const exceededHours = Math.floor(differenceInSeconds / 3600).toString().padStart(2, '0');
-  const exceededMinutes = Math.floor((differenceInSeconds % 3600) / 60).toString().padStart(2, '0');
-  const exceededSeconds = (differenceInSeconds % 60).toString().padStart(2, '0');
+  const exceededHours = Math.abs(Math.floor(differenceInSeconds / 3600)).toString().padStart(2, '0');
+  const exceededMinutes = Math.abs(Math.floor((differenceInSeconds % 3600) / 60)).toString().padStart(2, '0');
+  const exceededSeconds = Math.abs(differenceInSeconds % 60).toString().padStart(2, '0');
 
-  return `${exceededHours}:${exceededMinutes}:${exceededSeconds}`;
+  return `${differenceInSeconds < 0 ? '-' : ''}${exceededHours}:${exceededMinutes}:${exceededSeconds}`;
 };
 
 const CallOverview: React.FunctionComponent = () => {
@@ -54,7 +54,7 @@ const CallOverview: React.FunctionComponent = () => {
   const [userInfo, setUserInfo] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
   const [activeState, setActiveState] = useState("No data available");
-  const [activeContactID, setActiveContactID] = useState("No call in progess");
+  const [activeContactID, setActiveContactID] = useState("No call in progress");
   const [ActualSentiment, setActualSentiment] = useState("No call in progress");
   const { showError } = useCustomToast();
   const navigate = useNavigate();
