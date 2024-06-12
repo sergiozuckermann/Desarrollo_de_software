@@ -1,20 +1,15 @@
 import { ResponsiveLine } from '@nivo/line'
 
-// make sure parent container have a defined height when using
-// responsive component, otherwise height will be 0 and
-// no chart will be rendered.
-// website examples showcase many properties,
-// you'll often use just a few of them.
 const MyLineChart = ({data}) => (
-    <div className='w-full h-full z-70' style={{ position: 'relative', zIndex:100, paddingBottom:10}}>
+    <div className='w-full h-full z-70' style={{ position: 'relative', zIndex:100, paddingBottom:10, height:'300px'}}>
     <ResponsiveLine
         data={data}
-        margin={{ top: 0, right: 10, bottom: 0, left: 10 }}
+        margin={{ top: 20, right: 20, bottom:60, left: 50 }}
         xScale={{ type: 'point' }}
         yScale={{
             type: 'linear',
-            min: 'auto',
-            max: 'auto',
+            min: -1,
+            max: 1,
             stacked: true,
             reverse: false
         }}
@@ -22,11 +17,11 @@ const MyLineChart = ({data}) => (
         axisTop={null}
         axisRight={null}
         axisBottom={{
-            tickSize: 5,
-            tickPadding: 5,
+            tickSize: 0,
+            tickPadding: 0,
             tickRotation: 0,
-            legend: 'time',
-            legendOffset: 36,
+            legend: 'Seconds',
+            legendOffset: 25,
             legendPosition: 'middle',
             truncateTickAt: 0
         }}
@@ -34,18 +29,21 @@ const MyLineChart = ({data}) => (
             tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,
-            legend: 'count',
+            legend: 'Sentiment',
             legendOffset: -40,
             legendPosition: 'middle',
-            truncateTickAt: 0
+            truncateTickAt: 0,
+            tickValues:[3,0,-3]
         }}
         pointSize={10}
-        pointColor={{ theme: 'background' }}
+        pointColor={{"from": "color", "modifiers": [ [ "darker", 0.3 ] ]}}
         pointBorderWidth={2}
         pointBorderColor={{ from: 'serieColor' }}
         pointLabelYOffset={-12}
+        pointLabel="data.yFormatted"
         enableTouchCrosshair={true}
         useMesh={true}
+        colors={'#E13434'}
         legends={[
             {
                 anchor: 'bottom-right',

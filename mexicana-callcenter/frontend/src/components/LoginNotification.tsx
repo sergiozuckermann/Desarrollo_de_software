@@ -41,7 +41,29 @@ const useCustomToast = () => {
     });
   };
 
-  return { showError, showSuccess };
+
+  const showCustom = (message: string, color:string) => {
+    toast.success(message, {
+      position: "top-center",
+      icon: false,
+      autoClose: 9000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      style: { 
+        width: "620px", 
+        fontSize: "25px", 
+        color: "white", 
+        backgroundColor: color, // Green background for success
+        fontFamily: "Inter"
+      },
+    });
+  };
+
+
+  return { showError, showSuccess, showCustom };
 
 };
 

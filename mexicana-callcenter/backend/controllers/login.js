@@ -37,7 +37,7 @@ loginRouter.post('/', async (req, res) => {
             role: result.idToken.payload['custom:job_level'],
             token: result.idToken.jwtToken
         }
-        res.status(200).json(response)  
+        res.status(200).json(response)
       },
         // failed operation
         onFailure: (err) => res.status(401).json({message: err.message})
