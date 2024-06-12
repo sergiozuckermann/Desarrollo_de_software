@@ -8,18 +8,22 @@ interface TabData {
 
 interface HorizontalTabsProps {
   data: TabData[];
+  onTabChange?: (index: number) => void;  // Add onTabChange to the props interface
 }
 
-const HorizontalTabs: React.FC<HorizontalTabsProps> = ({ data }) => {
+const HorizontalTabs: React.FC<HorizontalTabsProps> = ({ data, onTabChange }) => {
   const [activeTab, setActiveTab] = useState(0);
 
   const handleTabClick = (index: number) => {
     setActiveTab(index);
+    if (onTabChange) {
+      onTabChange(index);  // Call the onTabChange callback
+    }
   };
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex justify-center p space-x-4 ">
+      <div className="flex justify-center space-x-4">
         {data.map((tab, index) => (
           <div
             key={index}
@@ -30,7 +34,7 @@ const HorizontalTabs: React.FC<HorizontalTabsProps> = ({ data }) => {
           >
             {tab.icon && <span className="mr-2">{tab.icon}</span>}
             <span>{tab.label}</span>
-            </div>
+          </div>
         ))}
       </div>
       <div className="flex-1 p-4">{data[activeTab].content}</div>

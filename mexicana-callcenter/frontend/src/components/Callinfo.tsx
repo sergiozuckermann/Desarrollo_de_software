@@ -16,7 +16,7 @@ interface CallCardProps {
 
 }
 
-const CallCard: React.FC<CallCardProps> = ({ agentname, agentposition, agentState, agentQueue, actualSentiment, contactID, talktime, username, routingProfile, imageURL }) => {
+const CallCard: React.FC<CallCardProps> = ({ agentname, agentposition, agentState, agentQueue, actualSentiment, contactID, talktime, routingProfile, imageURL }) => {
     return(
     <div>
       {/* Large Device Layout */}

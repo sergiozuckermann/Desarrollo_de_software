@@ -5,26 +5,45 @@ import { notifications } from "../components/notificationsData";
 import HorizontalTabs from "../components/NotificationTabs";
 import { FaExclamationCircle, FaBook } from 'react-icons/fa';
 
-// Placeholder functions for fetching data
-const fetchSentimentAnalysis = async () => {
-  // data fetching logic from kinesis
+interface Notification {
+  id: number;
+  title: string;
+  message: string;
+  date: string;
+  isRead: boolean;
+}
+
+interface SentimentData {
+  id: number;
+  isBad: boolean;
+}
+
+interface AgentPerformanceData {
+  id: number;
+  isPerformingBadly: boolean;
+}
+
+interface QueueData {
+  id: number;
+  isTooLong: boolean;
+}
+
+const fetchSentimentAnalysis = async (): Promise<SentimentData[]> => {
   return [];
 };
 
-const fetchAgentPerformance = async () => {
-  // data fetching logic from metrics
+const fetchAgentPerformance = async (): Promise<AgentPerformanceData[]> => {
   return [];
 };
 
-const fetchQueueData = async () => {
-  // data fetching logic from Amazon Connect
+const fetchQueueData = async (): Promise<QueueData[]> => {
   return [];
 };
 
 const SupervisorNotifications: React.FunctionComponent = () => {
   const [readNotifications, setReadNotifications] = useState<number[]>([]);
-  const [urgentNotifications, setUrgentNotifications] = useState<any[]>([]);
-  const [nonUrgentNotifications, setNonUrgentNotifications] = useState<any[]>([]);
+  const [urgentNotifications, setUrgentNotifications] = useState<Notification[]>([]);
+  const [nonUrgentNotifications, setNonUrgentNotifications] = useState<Notification[]>([]);
   const [hasNewUrgent, setHasNewUrgent] = useState<boolean>(false);
 
   useEffect(() => {
@@ -50,10 +69,9 @@ const SupervisorNotifications: React.FunctionComponent = () => {
         notification.title.toLowerCase().includes("queue")
       );
 
-      // Sort urgent notifications by priority: "call", "queue", "performance"
       const sortedUrgent = urgent.sort((a, b) => {
         const keywords = ["call", "queue", "performance"];
-        const getPriority = (title) => {
+        const getPriority = (title: string) => {
           for (let i = 0; i < keywords.length; i++) {
             if (title.toLowerCase().includes(keywords[i])) {
               return i;
@@ -91,7 +109,6 @@ const SupervisorNotifications: React.FunctionComponent = () => {
       setReadNotifications(updatedReadNotifications);
       localStorage.setItem("readNotifications", JSON.stringify(updatedReadNotifications));
       
-      // Check if all urgent notifications are read
       const allUrgentRead = urgentNotifications.every(notification => updatedReadNotifications.includes(notification.id));
       setHasNewUrgent(!allUrgentRead);
     }
@@ -102,7 +119,7 @@ const SupervisorNotifications: React.FunctionComponent = () => {
       label: "Urgent",
       icon: <FaExclamationCircle className={hasNewUrgent ? 'flash-red' : ''} />,
       content: (
-        <div className="w-full pr-8 pl-16 space-y-4 ">
+        <div className="w-full pr-8 pl-16 space-y-4">
           {urgentNotifications.map((notification) => (
             <NotificationItem
               key={notification.id}
@@ -138,7 +155,7 @@ const SupervisorNotifications: React.FunctionComponent = () => {
 
   return (
     <PageStructure title="Notifications">
-      <div className="flex flex-col w-full h-[90%] overflow-y-auto ">
+      <div className="flex flex-col w-full h-[90%] overflow-y-auto">
         <HorizontalTabs data={tabData} onTabChange={handleTabChange} />
       </div>
     </PageStructure>

@@ -1,8 +1,8 @@
-import React, { useState, useContext } from "react";
-import NotificationBadge from "./notificationComponent";
-import { useNavigate } from "react-router-dom";
-import { getUnreadNotificationsCount } from "../pages/SupervisorNotifications";
-import { DarkModeContext } from "../Provider/ThemeProvider"; // Asegúrate de importar el contexto
+import React, { useState } from 'react';
+import NotificationBadge from './notificationComponent';
+import { useNavigate } from 'react-router-dom';
+import { getUnreadNotificationsCount } from '../pages/SupervisorNotifications';
+import { useDarkMode } from '../hooks/useDarkMode';
 
 interface NotificationsDropDownProps {
   notificationsData: {
@@ -10,13 +10,14 @@ interface NotificationsDropDownProps {
     title: string;
     message: string;
     date: string;
+    isRead: boolean;
   }[];
 }
 
 const NotificationsDropDown: React.FC<NotificationsDropDownProps> = ({ notificationsData }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
-  const { darkMode } = useContext(DarkModeContext); // Obtén el estado del tema desde el contexto
+  const { darkMode } = useDarkMode();
 
   const unreadCount = getUnreadNotificationsCount();
 
@@ -25,12 +26,12 @@ const NotificationsDropDown: React.FC<NotificationsDropDownProps> = ({ notificat
   };
 
   const handleNotificationClick = () => {
-    navigate("/supervisor/notifications");
+    navigate('/supervisor/notifications');
   };
 
   const isUrgent = (message: string) => {
-    return message.toLowerCase().includes("call") ||
-           message.toLowerCase().includes("performance");
+    return message.toLowerCase().includes('call') ||
+           message.toLowerCase().includes('performance');
   };
 
   const unreadUrgentNotifications = notificationsData
@@ -40,8 +41,7 @@ const NotificationsDropDown: React.FC<NotificationsDropDownProps> = ({ notificat
   return (
     <div className="relative">
       <button className="p-2" onClick={handleToggleDropdown}>
-        {/* Utiliza la clase condicional para cambiar el color del trazo en modo oscuro */}
-        <img src={darkMode ? "/notifications_iconn.svg" : "/notifications_iconn_dark.svg"} alt="" className={`w-[45px] mr-2 ${darkMode ? 'stroke-white' : ''}`} />
+        <img src={darkMode ? '/notifications_iconn.svg' : '/notifications_iconn_dark.svg'} alt="" className={`w-[45px] mr-2 ${darkMode ? 'stroke-white' : ''}`} />
         <NotificationBadge count={unreadCount} />
       </button>
       {isDropdownOpen && (

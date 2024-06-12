@@ -1,8 +1,13 @@
-import { ResponsiveBar } from '@nivo/bar';
+import { ResponsiveBar, BarDatum } from '@nivo/bar';
 
-const MyResponsiveBar2 = ({ data }) => {
+interface DataItem extends BarDatum {
+    queue: string;
+    value: number;
+}
+
+const MyResponsiveBar2 = ({ data }: { data: DataItem[] }) => {
     // Define your `barColors` mapping
-    const barColors = {
+    const barColors: { [key: string]: string } = {
         "Flight Management": "#F47560",
         "Travel Information": "#E8C1A0",
         "Special Assistance": "#61CDBB",
@@ -18,7 +23,7 @@ const MyResponsiveBar2 = ({ data }) => {
             indexBy="queue"
             margin={{ top: 10, right: 30, bottom: 100, left: 60 }}
             padding={0.3}
-            colors={({ indexValue }) => barColors[indexValue]}
+            colors={({ indexValue }) => barColors[indexValue as string]}
             borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
             axisTop={null}
             axisRight={null}

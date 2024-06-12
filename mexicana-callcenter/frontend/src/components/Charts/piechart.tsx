@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 import { ResponsivePie } from '@nivo/pie';
 
 interface PieChartDataItem {
@@ -16,7 +16,7 @@ interface MyPieChartProps {
 const MyPieChart: React.FC<MyPieChartProps> = ({ data, unit }) => {
     const [hovered, setHovered] = useState<PieChartDataItem | null>(null);
 
-    const handleMouseEnter = (datum: any, event: React.MouseEvent) => {
+    const handleMouseEnter = (datum: { data: PieChartDataItem }) => {
         setHovered(datum.data);
     };
 
@@ -33,7 +33,7 @@ const MyPieChart: React.FC<MyPieChartProps> = ({ data, unit }) => {
                 padAngle={0.7}
                 cornerRadius={3}
                 activeOuterRadiusOffset={8}
-                colors={d => d.data.color}
+                colors={(d) => d.data.color || '#000'} // Ensure color is always a string
                 borderWidth={1}
                 borderColor={{ from: 'color', modifiers: [['darker', 0.2]] }}
                 arcLinkLabelsSkipAngle={10}

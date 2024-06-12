@@ -3,7 +3,7 @@ import "../bargeIn.css";
 import PageStructure from "../components/PageStructure";
 import ConnectHere from "../components/ConnectHere";
 import Suggestions from "../components/Suggestions";
-import Chatbot from "../components/chatbot";
+import Chatbot from "../components/Chatbot";
 
 
 const BargeIn: FunctionComponent = () => {

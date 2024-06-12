@@ -4,6 +4,9 @@ import MyBarChart2 from './Charts/barChart2';
 import userService from '../services/user';
 import InfoCard from './InfoCard';
 
+// Define a type for the metrics
+type Metric = "Flight Management" | "Travel Information" | "Special Assistance" | "Website Assistance" | "Other Questions" | "Customer Service";
+
 export interface PieChartDataItem {
   id: string | number;
   label: string;
@@ -16,7 +19,7 @@ interface QueueDataItem {
 }
 
 interface DataPoint {
-  metric: string;
+  metric: Metric;
   value: number;
 }
 
@@ -46,7 +49,7 @@ const GraphAgentStructure: React.FunctionComponent<GraphAgentStructureProps> = (
   const totalCustomersWaiting = queueData.reduce((sum, item) => sum + item.value, 0);
 
   const data: DataPoint[] = queueData.map(item => ({
-    metric: item.label,
+    metric: item.label as Metric, // Ensure metric is cast to Metric type
     value: item.value,
   }));
 

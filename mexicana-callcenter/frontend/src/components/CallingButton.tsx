@@ -1,12 +1,13 @@
 import React from 'react';
 
 interface GradientButtonProps {
+  mode: string;
   handleClick: () => void;
 }
 
-const GradientButton: React.FC<GradientButtonProps> = ({ handleClick }) => {
-  const buttonText = "Workplace";
-  const buttonSubtitle = "See the real time metrics for all the agents";
+const GradientButton: React.FC<GradientButtonProps> = ({ mode, handleClick }) => {
+  const buttonText = mode === 'workspace' ? 'Workspace' : 'Calling';
+  const buttonSubtitle = mode === 'workspace' ? 'See the real-time metrics for all the agents' : 'Call to discuss';
 
   const backgroundClass = "bg-gradient-to-r from-customGreen to-primary";
 

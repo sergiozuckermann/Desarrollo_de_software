@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
@@ -22,16 +22,23 @@ const queueMap = {
     'Website Assistance': 'd19f9426-d75f-48eb-a68c-0bbda4ced434'
 };
 
-const Filter = ({ onApplyFilters, agentsList, isAgentFilterEditable, defaultAgentId }) => {
-    const [agentId, setAgentId] = useState(defaultAgentId || '');
-    const [startDate, setStartDate] = useState(defaultStartDate);
-    const [endDate, setEndDate] = useState(defaultEndDate);
-    const [queue, setQueue] = useState('');
-    const [showFilters, setShowFilters] = useState(false);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [modalMessage, setModalMessage] = useState('');
-    const [isResetting, setIsResetting] = useState(false); // Track reset state
-    const filterRef = useRef(null);
+interface FilterProps {
+    onApplyFilters: (filters: any) => void;
+    agentsList: string[];
+    isAgentFilterEditable: boolean;
+    defaultAgentId?: string;
+}
+
+const Filter: React.FC<FilterProps> = ({ onApplyFilters, agentsList, isAgentFilterEditable, defaultAgentId }) => {
+    const [agentId, setAgentId] = useState<string>(defaultAgentId || '');
+    const [startDate, setStartDate] = useState<Date>(defaultStartDate);
+    const [endDate, setEndDate] = useState<Date>(defaultEndDate);
+    const [queue, setQueue] = useState<string>('');
+    const [showFilters, setShowFilters] = useState<boolean>(false);
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [modalMessage, setModalMessage] = useState<string>('');
+    const [isResetting, setIsResetting] = useState<boolean>(false); // Track reset state
+    const filterRef = useRef<HTMLFormElement>(null);
 
     const handleReset = () => {
         setAgentId(defaultAgentId || '');
@@ -48,7 +55,7 @@ const Filter = ({ onApplyFilters, agentsList, isAgentFilterEditable, defaultAgen
         }
     }, [isResetting]);
 
-    const showModal = (message) => {
+    const showModal = (message: string) => {
         setModalMessage(message);
         setIsModalOpen(true);
     };
@@ -60,7 +67,7 @@ const Filter = ({ onApplyFilters, agentsList, isAgentFilterEditable, defaultAgen
         const endDateValidPast = endDate <= today;
         const endDateValidAfter2024 = endDate > new Date('2024-03-18');
         const rangeValid = startDate < endDate;
-        const daysDifference = Number((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+        const daysDifference = (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24);
 
         if (!startDateValidBeforeToday) {
             showModal("Not valid filters: Start date must be before today.");
@@ -89,7 +96,7 @@ const Filter = ({ onApplyFilters, agentsList, isAgentFilterEditable, defaultAgen
         return true;
     };
 
-    const handleSearch = (e) => {
+    const handleSearch = (e?: React.FormEvent) => {
         if (e) e.preventDefault();
         if (!validateDates()) return;
 
@@ -107,8 +114,8 @@ const Filter = ({ onApplyFilters, agentsList, isAgentFilterEditable, defaultAgen
         setShowFilters(!showFilters);
     };
 
-    const handleClickOutside = (event) => {
-        if (filterRef.current && !filterRef.current.contains(event.target)) {
+    const handleClickOutside = (event: MouseEvent) => {
+        if (filterRef.current && !filterRef.current.contains(event.target as Node)) {
             setShowFilters(false);
         }
     };
@@ -201,7 +208,7 @@ const Filter = ({ onApplyFilters, agentsList, isAgentFilterEditable, defaultAgen
                                     <label htmlFor="startdate" className="text-sm font-medium text-stone-600">Start Date</label>
                                     <DatePicker
                                         selected={startDate}
-                                        onChange={(startDate) => setStartDate(startDate)}
+                                        onChange={(date: Date) => setStartDate(date)}
                                         className="block w-full px-2 py-1 mt-2 bg-gray-100 border border-gray-100 rounded-md shadow-sm outline-none cursor-pointer focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
                                     />
                                 </div>
@@ -209,7 +216,7 @@ const Filter = ({ onApplyFilters, agentsList, isAgentFilterEditable, defaultAgen
                                     <label htmlFor="enddate" className="text-sm font-medium text-stone-600">End Date</label>
                                     <DatePicker
                                         selected={endDate}
-                                        onChange={(endDate) => setEndDate(endDate)}
+                                        onChange={(date: Date) => setEndDate(date)}
                                         className="block w-full px-2 py-1 mt-2 bg-gray-100 border border-gray-100 rounded-md shadow-sm outline-none cursor-pointer focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
                                     />
                                 </div>

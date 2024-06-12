@@ -1,14 +1,13 @@
-import { FunctionComponent, ReactNode, useContext } from "react";
+import { FunctionComponent, ReactNode } from "react";
 import "../css/PageStructure.css";
 import Button from "./Buttons";
 import SettingsButton from "./SettingsButton";
-import NotificationBadge from "./notificationComponent";
 import { useNavigate, useLocation } from 'react-router-dom';
 import TimestampDisplay from "./TimestampDisplay";
 import NotificationsDropDown from "./NotificationsDropDown";
 import { notifications } from "./notificationsData";
 import { useAuth } from "../hooks/useAuth";
-import { DarkModeContext } from "../Provider/ThemeProvider"; 
+import { useDarkMode } from "../hooks/useDarkMode";
 
 interface PageStructureProps {
   title: string;
@@ -17,7 +16,7 @@ interface PageStructureProps {
 
 const PageStructure: FunctionComponent<PageStructureProps> = ({ title, children }) => {
   const { isAuthenticated, role } = useAuth();
-  const { darkMode } = useContext(DarkModeContext);
+  const { darkMode } = useDarkMode(); // Use custom hook
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -83,3 +82,4 @@ const PageStructure: FunctionComponent<PageStructureProps> = ({ title, children 
 };
 
 export default PageStructure;
+
