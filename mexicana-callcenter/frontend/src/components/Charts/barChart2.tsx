@@ -1,8 +1,9 @@
+// src/components/Charts/barChart2.tsx
 import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, LabelList } from 'recharts';
 
 // Define a type for the metrics
-type Metric = "Flight Management" | "Travel Information" | "Special Assistance" | "Website Assistance" | "Other Questions" | "Customer Service";
+type Metric = "Flight Management" | "Travel Information" | "Special Assistance" | "Website Assistance" | "Other Questions" | "Customer Service" | "Service Level" | "No Data";
 
 // Interface that defines the structure of the data used for the bar chart
 interface DataPoint {
@@ -23,7 +24,9 @@ const barColors: Record<Metric, string> = {
   "Special Assistance": "#6BBF70",
   "Website Assistance": "#FFA500",
   "Other Questions": "#ADD8E6",
-  "Customer Service": "#4B4B4B"
+  "Customer Service": "#4B4B4B",
+  "Service Level": "#FF6347", // Example color
+  "No Data": "#D3D3D3"
 };
 
 const MyBarChart2: React.FC<MyBarChart2Props> = ({ data, unit }) => {

@@ -12,8 +12,6 @@ import { useAuth } from '../hooks/useAuth'
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const { showError } = useCustomToast();
-
 export interface PieChartDataItem {
   id: string | number;
   label: string;
@@ -33,16 +31,13 @@ const CallOverview: React.FunctionComponent = () => {
     routingProfile: string;
   } | null>(null);
   const [userImage, setImageURL] = useState<string | null>(null);
-  const { role, username, logout } = useAuth()
-  const [userInfo, setUserInfo] = useState<string | null>(null);
+  const { role, username, logout } = useAuth();
   const [userId, setUserId] = useState<string | null>(null);
   const [activeState, setActiveState] = useState("No data available");
   const [activeContactID, setActiveContactID] = useState("No call in progess");
   const [ActualSentiment, setActualSentiment] = useState("No call in progress");
   const { showError } = useCustomToast();
   const navigate = useNavigate();
-
-
 
   const [chartData, setChartData] = useState<PieChartDataItem[]>([
     { id: "Customer", label: "Customer Time", value: 0 },
@@ -71,7 +66,7 @@ const CallOverview: React.FunctionComponent = () => {
     if (selectedAgent) {
       setAgentInfo(JSON.parse(selectedAgent));
       const agentState = JSON.parse(selectedAgent);
-      console.log("Selected agent:", agentState); // Mostrar los datos de los agentes seleccionados en la consola
+      console.log("Selected agent:", agentState); // Log the selected agent data
       setActiveState(agentState.state);
       setActiveContactID(agentState.contactId);
       setActualSentiment(agentState.sentiment);
@@ -85,13 +80,12 @@ const CallOverview: React.FunctionComponent = () => {
         const data = JSON.parse(event.data);
         const segment = data.message;
         const metrics = data.metrics;
-        console.log("Data:", data); // Mostrar los datos en la consola
+        console.log("Data:", data); // Log the received data
         const activeUsername = agentInfo?.username;
 
         if (segment) {
           const { segmentType } = segment;
           if (segmentType === "AGENT_EVENT") {
-            // Update metrics or handle AGENT_EVENT
             if (activeUsername === data.message.username) {
               const newState = data.message.state;
               setActiveState(newState);
@@ -101,20 +95,15 @@ const CallOverview: React.FunctionComponent = () => {
                 setActualSentiment("No call in progress");
               }
             }
-            console.log("Segment type = AGENT EVENT", data.message.state); // Mostrar los datos de los segmentos en la consola
-            
-            
-            //updateMetrics(segment);
+            console.log("Segment type = AGENT EVENT", data.message.state); // Log the segment state
           } else if (segmentType === "SENTIMENT_ANALYSIS") {
-            // Update sentiment analysis
             setActiveContactID(data.message.contactId);
             setActualSentiment(data.message.Sentiment);
             updateSentiment(segment);
-            console.log("Segment type = SENTIMENT ANALYSIS:"); // Mostrar los datos de los segmentos en la consola
+            console.log("Segment type = SENTIMENT ANALYSIS:"); // Log the segment type
           }
         }
         if (metrics) {
-          // Update metrics
           updateMetrics(metrics);
         }
       };
@@ -129,14 +118,14 @@ const CallOverview: React.FunctionComponent = () => {
       userService
         .GetImageUrl(agentInfo.username)
         .then((url) => {
-          console.log("URL obtenida:", url); // Mostrar el valor de url en la consola
-          setImageURL(url.imageUrl); // Establecer el estado de imageURL con el resultado de la solicitud si es exitosa
+          console.log("URL obtained:", url); // Log the obtained URL
+          setImageURL(url.imageUrl); // Set the imageURL state with the obtained URL
         })
         .catch(error => {
-          if (error.response && error.response.status === 401) { // Verificar si hay un error de autorización
-            showError(error.response.data.error); // Mostrar el error
+          if (error.response && error.response.status === 401) { // Check for authorization error
+            showError(error.response.data.error); // Show the error
           } else {
-            console.error("Error en la solicitud:", error); // Manejar otros posibles errores
+            console.error("Request error:", error); // Handle other errors
           }
         });
     }
@@ -144,16 +133,15 @@ const CallOverview: React.FunctionComponent = () => {
 
   useEffect(() => {
     userService
-      .GetInfo(role!, username!) // call function that makes axios request
+      .GetInfo(role!, username!) // Call the function that makes the axios request
       .then((user) => {
-        setUserInfo(user); // set userInfo state with the result from the request if it is successful
-        setUserId(user.connectUserId); // store the user's id in the userId state variable
-        console.log('User info:', user); // Print the user info
+        setUserId(user.connectUserId); // Store the user's ID in the userId state variable
+        console.log('User info:', user); // Log the user info
       })
       .catch(error => {
-        if (error.response.status === 401) { // check for an authorization error
-          showError(error.response.data.error); // display error
-          setTimeout(() => { logout() }, 4000); // log user out
+        if (error.response.status === 401) { // Check for an authorization error
+          showError(error.response.data.error); // Display the error
+          setTimeout(() => { logout() }, 4000); // Log the user out after 4 seconds
         }
       });
   }, []);
@@ -167,7 +155,7 @@ const CallOverview: React.FunctionComponent = () => {
       };
 
       const data = { participantId: userId, contactId: contactId };
-      console.log('Sending data:', data); // Print the data
+      console.log('Sending data:', data); // Log the data
 
       await axios.post('http://localhost:3000/Supervisor/barge-in', data, config);
       console.log('Barged in successfully');
@@ -180,7 +168,7 @@ const CallOverview: React.FunctionComponent = () => {
 
   const updateMetrics = (metrics: any) => {
     // Update your metrics based on the segment data
-    console.log("Metrics:", metrics); // Mostrar los datos de los segmentos en la consola
+    console.log("Metrics:", metrics); // Log the metrics data
     console.log('Updating metrics with segment: ', metrics);
 
     const { agentTalk, customerTalk, nonTalk, sentimentTrend, sentimentPercentages, callDuration } = metrics;
@@ -212,15 +200,14 @@ const CallOverview: React.FunctionComponent = () => {
     ]);
 
     setCallDuration(callDuration);
-
   };
 
   const updateSentiment = (segment: any) => {
     // Update your sentiment data based on the segment data
     console.log('Updating sentiment with segment: ', segment);
     // Example logic to update sentiment data
-    // setChartData2(...);
   };
+
   return (
     <PageStructure title="Call Overview">
       <div className="grid items-center justify-center w-full h-full grid-cols-1 gap-4 p-2 overflow-y-auto lg:grid-cols-12">
@@ -253,7 +240,8 @@ const CallOverview: React.FunctionComponent = () => {
               disabled={!agentInfo?.contactId} // Disable the button if contactId is not available
             >
               Barge In
-            </button>          </div>
+            </button>
+          </div>
           <div className="grid w-[100%] h-[80%] grid-cols-1 gap-2 lg:grid-cols-2 lg:col-span-8 z-30">
             <Card title="Talk time">
               <MyPieChart data={chartData} unit="seconds" />

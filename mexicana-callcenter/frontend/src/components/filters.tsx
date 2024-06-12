@@ -12,7 +12,7 @@ const defaultEndDate = new Date();
 defaultEndDate.setDate(defaultEndDate.getDate() - 1);
 defaultEndDate.setHours(23, 59, 59, 999);
 
-const queueMap = {
+const queueMap: { [key: string]: string } = {
     'Travel logistics': '292d0398-6089-42cc-9ec9-aee43d6202a6',
     'Flight Management': 'b65f8183-2d8b-42e4-9b37-f8dfa787c246',
     'Customer Service': 'f6d70469-1449-47c5-b93e-53b42de6dcc3',
@@ -23,7 +23,12 @@ const queueMap = {
 };
 
 interface FilterProps {
-    onApplyFilters: (filters: any) => void;
+    onApplyFilters: (filters: {
+        agentId: string;
+        queue: string;
+        startTime: string;
+        endTime: string;
+    }) => void;
     agentsList: string[];
     isAgentFilterEditable: boolean;
     defaultAgentId?: string;
@@ -60,7 +65,7 @@ const Filter: React.FC<FilterProps> = ({ onApplyFilters, agentsList, isAgentFilt
         setIsModalOpen(true);
     };
 
-    const validateDates = () => {
+    const validateDates = (): boolean => {
         const today = new Date();
         const startDateValidBeforeToday = startDate < today;
         const startDateValidAfter2024 = startDate > new Date('2024-03-17');
@@ -132,7 +137,7 @@ const Filter: React.FC<FilterProps> = ({ onApplyFilters, agentsList, isAgentFilt
             <div className="flex flex-col h-full p-2 bg-white border border-gray-200 shadow-lg rounded-xl">
                 <form ref={filterRef} onSubmit={handleSearch} className="flex flex-col justify-between h-full">
                     <div className="relative flex items-center justify-between w-full mb-2 rounded-md">
-                        <svg
+                    <svg
                             className="absolute block w-5 h-5 text-gray-400 left-2"
                             xmlns="http://www.w3.org/2000/svg"
                             width="24"
@@ -145,7 +150,7 @@ const Filter: React.FC<FilterProps> = ({ onApplyFilters, agentsList, isAgentFilt
                             strokeLinejoin="round"
                         >
                             <circle cx="11" cy="11" r="8"></circle>
-                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            <line x1="21" y="21" x2="16.65" y2="16.65"></line>
                         </svg>
                         <input
                             type="text"
