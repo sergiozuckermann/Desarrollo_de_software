@@ -2,7 +2,7 @@ import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, LabelList } from 'recharts';
 
 // Define a type for the metrics
-type Metric = "Flight Management" | "Travel Information" | "Special Assistance" | "Website Assistance" | "Other Questions" | "Customer Service";
+type Metric = "Flight Management" | "Travel Information" | "Special Assistance" | "Website Assistance" | "Other Questions" | "Customer Service" | "Unknown Queue";
 
 // Interface that defines the structure of the data used for the bar chart
 interface DataPoint {
@@ -23,7 +23,8 @@ const barColors: Record<Metric, string> = {
   "Special Assistance": "#6BBF70",
   "Website Assistance": "#FFA500",
   "Other Questions": "#ADD8E6",
-  "Customer Service": "#4B4B4B"
+  "Customer Service": "#4B4B4B",
+  "Unknown Queue": "#CCCCCC" 
 };
 
 const MyBarChart2: React.FC<MyBarChart2Props> = ({ data, unit }) => {
@@ -41,15 +42,15 @@ const MyBarChart2: React.FC<MyBarChart2Props> = ({ data, unit }) => {
           top: 20,
           right: 20,
           left: 20,
-          bottom: 60, 
+          bottom: 60,
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis 
-          dataKey="metric" 
+        <XAxis
+          dataKey="metric"
           tick={{ angle: -30, textAnchor: 'end', fontSize: 10 }} // Adjusted angle and font size
-          interval={0} 
-        />x
+          interval={0}
+        />
         <YAxis tickFormatter={(value) => `${value} ${unit}`} />
         <Tooltip formatter={(value) => `${value} ${unit}`} />
         <Bar dataKey="value" fill="#8884d8">
