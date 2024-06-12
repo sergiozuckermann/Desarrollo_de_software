@@ -32,7 +32,7 @@ const OngoingCalls: React.FunctionComponent = () => {
   const [agentsAvailability, setAgentsAvailability] = useState<Array<PieChartDataItem>>([
     {id:"FlightManagement", label: "Flight Rsv", value: 0, color: "#20253F"},
     {id:"CustomerCare", label: "Customer Care", value: 0, color:"#4B4B4B" },
-    {id:"WebsiteAssistance", label: "Booking or Website Issues", value: 0 },
+    {id:"WebsiteAssistance", label: "Booking or Website Issues", value: 0, color:'#FFA500' },
     {id:"TravelInformation", label: "Status Inquiries", value: 0, color: "#4A8B51" },
     {id:"SpecialAssitance", label: "Special Assistance or Docs", value: 0, color:"#6BBF70" },
     {id:"OtherQuestions", label: "Other Questions", value: 0, color:"#ADD8E6" },
