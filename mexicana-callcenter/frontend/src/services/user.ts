@@ -1,7 +1,8 @@
 import axios from 'axios'
+import conf from '../conf';
 
-const baseUrl = 'http://localhost:3000'
-
+const baseUrl = conf.apiUrl//'http://localhost:3000'
+console.log(baseUrl);
 const GetInfo = (userRole: string, username: string) => {
     const config = { // set headers
         headers: {
@@ -37,7 +38,6 @@ const GetQueueMetrics = () => {
 }
 
 const GetPerformanceMetrics = (type: string) => { //Average case resolution time (ACRT), Average customer hold time (ACHT), Average interaction time (AIT)
-    console.log(type);
     const config = { // set headers
         headers: {
             Authorization: `Bearer ${sessionStorage.getItem('token')}`,

@@ -13,6 +13,8 @@ import { useNavigate } from "react-router-dom";
 import { Interaction } from '../utils/interfaces';
 import { callOverviewAnalytics } from '../utils/interfaces';
 import { Tooltip } from 'react-tooltip';
+import conf from '../conf';
+const API_URL = conf.apiUrl//'http://localhost:3000';
 
 export interface PieChartDataItem {
   id: string | number;
@@ -212,7 +214,7 @@ const CallOverview: React.FunctionComponent = () => {
       const data = { participantId: userId, contactId: contactId };
       console.log('Sending data:', data); // Print the data
 
-      await axios.post('http://localhost:3000/Supervisor/barge-in', data, config);
+      await axios.post(`${API_URL}/Supervisor/barge-in`, data, config);
       console.log('Barged in successfully');
       navigate('/Supervisor/bargein');
     } catch (error) {

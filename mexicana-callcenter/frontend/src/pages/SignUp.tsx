@@ -4,7 +4,8 @@ import "../css/global.css";
 import axios from "axios";
 import { FaUpload } from 'react-icons/fa';
 import { useNavigate } from "react-router-dom";
-
+import conf from '../conf';
+const API_URL = conf.apiUrl//'http://localhost:3000';
 
 
 const SignUp: React.FC = () => {
@@ -61,7 +62,7 @@ const SignUp: React.FC = () => {
     console.log(data);
 
     try {
-      const response = await fetch('http://localhost:3000/auth/signup', {
+      const response = await fetch(`${API_URL}/auth/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -120,7 +121,7 @@ const SignUp: React.FC = () => {
     formData.append("preferred_username", preferred_username);
   
     try {
-      await axios.post('http://localhost:3000/upload', formData, {
+      await axios.post(`${API_URL}/upload`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
     } catch (error) {
