@@ -353,7 +353,6 @@ const updateAllAgentStatus = (action: string) => {
 
         console.log("data: ", segment);
 
-
         if (segment) {
           // check if segment exists
           const { segmentType } = segment;
