@@ -137,6 +137,14 @@ const CallOverview: React.FunctionComponent = () => {
         const activeUsername = agentInfo?.username;
 
         if (segment) {
+          const contactIdsToFilter = ["9272a5e8-ac7b-4402-bde9-04ddc3d85d1c", "ac482bb5-cbed-473b-b04c-82f68220515e"];
+
+          if (segment) {
+            if (contactIdsToFilter.includes(segment.contactId)) {
+              console.log("Filtered out message with contact ID:", segment.contactId);
+              return;
+            }
+    
           const { segmentType } = segment;
           if (segmentType === "AGENT_EVENT") {
             // Update metrics or handle AGENT_EVENT
