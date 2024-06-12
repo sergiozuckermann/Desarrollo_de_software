@@ -10,15 +10,26 @@ export interface PieChartDataItem {
   value: number;
 }
 
+type Metric = "Flight Management" | "Travel Information" | "Special Assistance" | "Website Assistance" | "Other Questions" | "Customer Service" | "Unknown Queue";
+
 interface QueueDataItem {
-  label: string;
+  queue: string; 
   value: number;
 }
 
 interface DataPoint {
-  metric: string;
+  metric: Metric;
   value: number;
 }
+
+const queueNames: Record<string, Metric> = {
+  'Flight Management': 'Flight Management',
+  'Customer Service': 'Customer Service',
+  'Other Questions': 'Other Questions',
+  'Special Assistance': 'Special Assistance',
+  'Travel Information': 'Travel Information',
+  'Website Support': 'Website Assistance'
+};
 
 interface GraphAgentStructureProps {
   agentsState: Array<PieChartDataItem>;
@@ -28,10 +39,11 @@ interface GraphAgentStructureProps {
 const GraphAgentStructure: React.FunctionComponent<GraphAgentStructureProps> = ({ agentsState, agentsAvailability }) => {
   const [queueData, setQueueData] = useState<QueueDataItem[]>([]);
 
-  //FETCH QUEUE METRICS EVERY 5 SECONDS
+  // FETCH QUEUE METRICS EVERY 5 SECONDS
   const loadMetricsEverySecond = async () => {
     try {
       const queueMetrics = await userService.GetQueueMetrics(); // FETCH QUEUE METRICS
+      console.log('Fetched Queue Metrics:', queueMetrics);
       setQueueData(queueMetrics); // SET QUEUE METRICS
     } catch (error) {
       console.log('Error loading metrics', error);
@@ -43,12 +55,23 @@ const GraphAgentStructure: React.FunctionComponent<GraphAgentStructureProps> = (
     return () => clearInterval(interval);
   }, []);
 
+  console.log('Queue Data before mapping:', queueData);
+
   const totalCustomersWaiting = queueData.reduce((sum, item) => sum + item.value, 0);
 
-  const data: DataPoint[] = queueData.map(item => ({
-    metric: item.label,
-    value: item.value,
-  }));
+  const data: DataPoint[] = queueData.map(item => {
+    const queueName = queueNames[item.queue] || "Unknown Queue"; // Updated to use 'queue' instead of 'label'
+    if (!queueNames[item.queue]) {
+      console.log(`Unknown queue ID: ${item.queue}`); // Log unknown queue ID
+    }
+    return {
+      metric: queueName,
+      value: item.value,
+    };
+  });
+
+  // Log the mapped data before passing to MyBarChart2
+  console.log('Mapped Data for Bar Chart in GraphAgentStructure:', data);
 
   return (
     <div className="box-border border-[1px] rounded-lg p-4 border-solid border-marco shadow-lg lg:h-[700px] overflow-y-auto">
