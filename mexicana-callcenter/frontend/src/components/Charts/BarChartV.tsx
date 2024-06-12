@@ -1,6 +1,15 @@
+import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-const MyBarChart = ({ data }) => {
+interface MyBarChartProps {
+    data: { metric: string, percentage: number }[];
+}
+
+const MyBarChart: React.FC<MyBarChartProps> = ({ data }) => {
+    if (!data || data.length === 0) {
+        return <p>No Available Data</p>;
+    }
+
     return (
         <ResponsiveContainer width="100%" height="100%">
             <BarChart
@@ -14,11 +23,11 @@ const MyBarChart = ({ data }) => {
                 }}
             >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis type="number" tickFormatter={(value) => `${value}%`} />
+                <XAxis type="number" domain={[0, 100]} tickFormatter={(value) => `${value}%`} />
                 <YAxis type="category" dataKey="metric" />
                 <Tooltip formatter={(value) => `${value}%`} />
                 <Legend />
-                <Bar dataKey="percentage" fill="#8884d8" background={{ fill: '#eee' }}/>
+                <Bar dataKey="percentage" fill="#8BC34A" background={{ fill: '#eee' }} />
             </BarChart>
         </ResponsiveContainer>
     );

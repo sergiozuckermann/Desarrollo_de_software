@@ -23,9 +23,9 @@ import BreathingExcer from './pages/BreathingExcer';
 import AgentRoutingProfile from './pages/QueueTransfer';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import AgentMetrics from './pages/AgentMetrics';
 import MyBadges from './pages/MyBadges';
-
+import MetricsAgent from './pages/HistoricalAgent';
+import AgentMetrics from './pages/AgentMetrics';
 
 function App() {
   const { isAuthenticated, role } = useAuth(); // get user authentication status and role
@@ -33,6 +33,7 @@ function App() {
   return (
       <>
       <DndProvider backend={HTML5Backend}>
+
         <Routes>
           {/* General public routes */}
           <Route path="/" element={isAuthenticated ? <Navigate to={`/${role}/home`} /> : <Hello />} />
@@ -48,6 +49,8 @@ function App() {
           <Route path="/agent/MoveYourBody" element={<MoveYourBody />} />
           <Route path="/agent/BreathingExcer" element={<BreathingExcer />} />
           <Route path="/agent/MyBadges" element={<MyBadges />} />
+          <Route path="/agent/Metrics" element={<MetricsAgent />} />
+
 
       </Route>
       <Route element={<ProtectedRoute isAllowed={isAuthenticated && role === 'Supervisor'} />}>
@@ -65,6 +68,7 @@ function App() {
           <Route path="/supervisor/metrics" element={< HistoricalMetrics />} />
           <Route path="/supervisor/calloverview" element={< CallOverview />} />
           <Route path="/supervisor/agent-transfer" element={<AgentRoutingProfile />} />
+          
       </Route>
 
           {/* Any other route which is not found */}

@@ -5,43 +5,12 @@ import { notifications } from "../components/notificationsData";
 import HorizontalTabs from "../components/NotificationTabs";
 import { FaExclamationCircle, FaBook } from 'react-icons/fa';
 
-interface Sentiment {
-  id: number;
-  isBad: boolean;
-}
-
-interface AgentPerformance {
-  id: number;
-  isPerformingBadly: boolean;
-}
-
-interface Queue {
-  id: number;
-  isTooLong: boolean;
-}
-
 interface Notification {
   id: number;
   title: string;
   message: string;
   date: string;
 }
-
-
-const fetchSentimentAnalysis = async (): Promise<Sentiment[]> => {
-  // data fetching logic from kinesis
-  return [];
-};
-
-const fetchAgentPerformance = async (): Promise<AgentPerformance[]> => {
-  // data fetching logic from metrics
-  return [];
-};
-
-const fetchQueueData = async (): Promise<Queue[]> => {
-  // data fetching logic from Amazon Connect
-  return [];
-};
 
 const SupervisorNotifications: React.FunctionComponent = () => {
   const [readNotifications, setReadNotifications] = useState<number[]>([]);
@@ -62,47 +31,46 @@ const SupervisorNotifications: React.FunctionComponent = () => {
   }, []);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const sentimentData = await fetchSentimentAnalysis();
-      const agentPerformanceData = await fetchAgentPerformance();
-      const queueData = await fetchQueueData();
+    const fetchData = () => {
+      const notificationsData = sessionStorage.getItem('notifications')
+      if(notificationsData) {
+        const notifications:Notification[] = JSON.parse(notificationsData)
+        const urgent = notifications.filter(notification => 
+          notification.title.toLowerCase().includes("call") ||
+          notification.title.toLowerCase().includes("performance") ||
+          notification.title.toLowerCase().includes("bad sentiment") ||
+          notification.title.toLowerCase().includes("queue")
+        );
 
-      const urgent = notifications.filter(notification => 
-        sentimentData.some((sentiment: Sentiment) => sentiment.id === notification.id && sentiment.isBad) ||
-        agentPerformanceData.some((agent: AgentPerformance) => agent.id === notification.id && agent.isPerformingBadly) ||
-        queueData.some((queue: Queue) => queue.id === notification.id && queue.isTooLong) ||
-        notification.title.toLowerCase().includes("call") ||
-        notification.title.toLowerCase().includes("performance") ||
-        notification.title.toLowerCase().includes("bad sentiment") ||
-        notification.title.toLowerCase().includes("queue")
-      );
+        // Sort urgent notifications by priority: "call", "queue", "performance"
+        const sortedUrgent = urgent.sort((a, b) => {
+          const keywords = ["call", "queue", "performance"];
+          const getPriority = (title:string) => {
+            for (let i = 0; i < keywords.length; i++) {
+              if (title.toLowerCase().includes(keywords[i])) {
+                return i;
+              }
+            } 
+            return keywords.length; // Default priority if no keywords match
+          };
+  
+          return getPriority(a.title) - getPriority(b.title);
+        });
 
-      const sortedUrgent = urgent.sort((a, b) => {
-        const keywords = ["call", "queue", "performance"];
-        const getPriority = (title: string) => {
-          for (let i = 0; i < keywords.length; i++) {
-            if (title.toLowerCase().includes(keywords[i])) {
-              return i;
-            }
-          }
-          return keywords.length;
-        };
+        const nonUrgent = notifications.filter(notification => 
+          !sortedUrgent.some(urgentNotification => urgentNotification.id === notification.id)
+        );
+  
+        const filteredUrgent = sortedUrgent.filter(notification => !deletedNotifications.includes(notification.id));
+        const filteredNonUrgent = nonUrgent.filter(notification => !deletedNotifications.includes(notification.id));
+  
+        setUrgentNotifications(filteredUrgent);
+        setNonUrgentNotifications(filteredNonUrgent);
 
-        return getPriority(a.title) - getPriority(b.title);
-      });
-
-      const nonUrgent = notifications.filter(notification => 
-        !sortedUrgent.some(urgentNotification => urgentNotification.id === notification.id)
-      );
-
-      const filteredUrgent = sortedUrgent.filter(notification => !deletedNotifications.includes(notification.id));
-      const filteredNonUrgent = nonUrgent.filter(notification => !deletedNotifications.includes(notification.id));
-
-      setUrgentNotifications(filteredUrgent);
-      setNonUrgentNotifications(filteredNonUrgent);
-
-      const hasUnreadUrgent = filteredUrgent.some(notification => !readNotifications.includes(notification.id));
-      setHasNewUrgent(hasUnreadUrgent);
+      }
+      
+      // const hasUnreadUrgent = sortedUrgent.some(notification => !readNotifications.includes(notification.id));
+      // setHasNewUrgent(hasUnreadUrgent);
     };
 
     fetchData();
@@ -145,7 +113,7 @@ const SupervisorNotifications: React.FunctionComponent = () => {
       icon: <FaExclamationCircle className={hasNewUrgent ? 'flash-red' : ''} />,
       content: (
         <div className="w-full pr-8 pl-16 space-y-4">
-          {urgentNotifications.map((notification) => (
+          {!urgentNotifications.length ? (<p>no urgent notifications</p>) : urgentNotifications.map((notification) => (
             <NotificationItem
               key={notification.id}
               title={notification.title}
@@ -164,7 +132,7 @@ const SupervisorNotifications: React.FunctionComponent = () => {
       icon: <FaBook />,
       content: (
         <div className="w-full pr-8 pl-16 space-y-4">
-          {nonUrgentNotifications.map((notification) => (
+          {!nonUrgentNotifications.length ? (<p>no notifications</p>) : nonUrgentNotifications.map((notification) => (
             <NotificationItem
               key={notification.id}
               title={notification.title}
@@ -182,7 +150,7 @@ const SupervisorNotifications: React.FunctionComponent = () => {
 
   return (
     <PageStructure title="Notifications">
-      <div className="flex flex-col w-full h-[90%] overflow-y-auto">
+      <div className="flex flex-col w-full h-[90%] overflow-y-auto ">
         <HorizontalTabs data={tabData} onTabChange={handleTabChange} />
       </div>
     </PageStructure>

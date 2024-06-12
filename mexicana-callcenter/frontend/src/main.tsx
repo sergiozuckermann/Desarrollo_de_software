@@ -4,18 +4,19 @@ import { BrowserRouter } from "react-router-dom";
 import "./css/global.css";
 import AuthProvider from "./Provider/AuthProvider";
 import WebSocketProvider from "./Provider/WebSocketProvider";
+import {DarkModeProvider} from "./Provider/ThemeProvider";
 
 const container = document.getElementById("root");
 const root = createRoot(container!);
 
 root.render(
-  <AuthProvider>
+  <BrowserRouter>
+    <AuthProvider>
       <WebSocketProvider>
-        <BrowserRouter>
+        <DarkModeProvider>
          <App />
-        </BrowserRouter>,
+         </DarkModeProvider>
       </WebSocketProvider>
     </AuthProvider>
+  </BrowserRouter>,
 );
-
-

@@ -53,8 +53,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
   };
 
   const shouldShowCallOverviewButton =
-    title.toLowerCase().includes("call") ||
-    title.toLowerCase().includes("bad sentiment");
+    title.toLowerCase().includes("negative sentiment")
 
   const handleOnGoingCalls = () => {
     navigate(`/supervisor/ongoingcalls`);
@@ -66,15 +65,15 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
   };
 
   const shouldShowOnGoingCallsButton =
-    title.toLowerCase().includes("queue is too long");
+    title.toLowerCase().includes("new call");
 
   return (
     <div
-      className="p-4 bg-[#F8F9FA] shadow-md rounded-md border cursor-pointer flex justify-between items-start"
+      className="p-4 bg-[#F8F9FA] shadow-md rounded-md border cursor-pointer flex justify-between items-start dark:bg-primary"
       onClick={toggleExpanded}
     >
       <div className={`flex-1 ${expanded ? "text-left" : "truncate"}`}>
-        <p className="text-lg font-bold mb-2">{title}</p>
+        <p className="text-lg font-bold mb-2 dark:text-white">{title}</p>
         {expanded && (
           <>
             <p className="text-base">{message}</p>
@@ -113,7 +112,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
             )}
           </>
         )}
-        <p className="text-sm text-gray-500 mt-2">{formatDate(date)}</p>
+        <p className="text-sm text-gray-500 mt-2 dark:text-white">{formatDate(date)}</p>
       </div>
       <div className="flex flex-col items-center justify-between space-y-2">
         <CircleNotification isSeen={isRead} isExpanded={expanded} />

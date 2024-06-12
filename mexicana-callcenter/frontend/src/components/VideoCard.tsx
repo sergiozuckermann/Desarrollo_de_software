@@ -24,8 +24,8 @@ const VideoCard: React.FC<VideoCardProps> = ({ videoId, title, description }) =>
       <div onClick={handleOpenModal} className="cursor-pointer">
         <img className="w-full" src={thumbnailUrl} alt={title} />
         <div className="px-6 py-4">
-          <div className="font-bold text-xl mb-2">{title}</div>
-          <p className="text-gray-700 text-base">{description}</p>
+          <div className="font-bold text-xl mb-2 dark:text-white">{title}</div>
+          <p className="text-gray-700 text-base dark:text-white">{description}</p>
         </div>
       </div>
       {isModalOpen && (

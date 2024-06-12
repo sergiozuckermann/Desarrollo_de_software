@@ -12,7 +12,7 @@ const TakeABreak = () => {
     <PageStructure title="Take a Break">
       <div className="w-full h-full items-center justify-center overflow-y-auto lg:mt-36" style={{ WebkitOverflowScrolling: "touch", msOverflowStyle: "none", scrollbarWidth: "none" }}>
         <div>
-          <h1 className="text-5xl md:text-6xl lg:text-6xl xl:text-6xl font-roboto mb-8">We’re here for you</h1>
+          <h1 className="text-5xl md:text-6xl lg:text-6xl xl:text-6xl font-roboto mb-8 dark:text-white">We’re here for you</h1>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 justify-items-center ml-4 mt-10">
           <div className="col-span-1">

@@ -10,12 +10,14 @@ import MyPieChart from '../components/Charts/piechart';
 import 'react-tooltip/dist/react-tooltip.css';
 import { Tooltip } from 'react-tooltip';
 import Modal from 'react-modal';
+import { useAuth } from '../hooks/useAuth';
 
-Modal.setAppElement('#root'); // Set the root element for accessibility
+Modal.setAppElement('#root');
 
 const MainContent: React.FC = () => {
+    const { username: loggedInAgentId } = useAuth();
     const [filters, setFilters] = useState({
-        agentId: '',
+        agentId: loggedInAgentId, // Default to the logged-in agent's username
         startTime: '',
         endTime: '',
         queue: '',
@@ -38,14 +40,13 @@ const MainContent: React.FC = () => {
 
     useEffect(() => {
         if (isApplyingFilters) {
-            // Assuming data fetching happens in the FetchMetrics hook
             setIsApplyingFilters(false);
         }
     }, [averageAbandonTime, averageQueueAnswerTime]);
 
     const handleApplyFilters = (newFilters) => {
         setIsApplyingFilters(true);
-        setFilters(newFilters);
+        setFilters({ ...newFilters, agentId: loggedInAgentId }); // Ensure agentId is the logged-in agent's username
     };
 
     if (averageAbandonTime === null || averageQueueAnswerTime === null) {
@@ -145,7 +146,7 @@ const MainContent: React.FC = () => {
 
             {/* FILTER */}
             <div className="relative w-full h-full col-span-3 row-span-1 p-2 border-gray-400">
-            <Filter onApplyFilters={handleApplyFilters} agentsList={agentsList} isAgentFilterEditable={true} />
+                <Filter onApplyFilters={handleApplyFilters} agentsList={agentsList} isAgentFilterEditable={false} />
             </div>
 
             {/* Average Answer Time per Queue */}
@@ -238,7 +239,7 @@ const MainContent: React.FC = () => {
 };
 
 // Metrics page component that displays the main content in a page structure
-const Metrics: React.FC = () => {
+const MetricsAgent: React.FC = () => {
     return (
         <PageStructure title="Metrics">
             <MainContent />
@@ -246,4 +247,4 @@ const Metrics: React.FC = () => {
     );
 };
 
-export default Metrics;
+export default MetricsAgent;
