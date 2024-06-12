@@ -6,6 +6,7 @@ import GraphAgentStructure from "../components/GraphAgentStructure";
 import { useWebSocket } from "../hooks/useWebSocket";
 import { Interaction, SentimentSegment, AgentsOnCall, UnhandledInteractions } from "../utils/interfaces";
 import InfoCard from "../components/InfoCard";
+import { updateMetrics } from "../services/COMetricsUtils";
 
 interface PieChartDataItem {
   id: string | number;
@@ -18,6 +19,16 @@ const Action = {
   START: "START",
   END: "END"
 }
+
+const formatDuration = (miliseconds: number) => {
+  const totalSeconds=Math.floor(miliseconds/1000);
+  const h = Math.floor(totalSeconds / 3600).toString().padStart(2, '0');
+  const m = Math.floor((totalSeconds % 3600) / 60).toString().padStart(2, '0');
+  const s = Math.floor(totalSeconds % 60).toString().padStart(2, '0');
+  return `${h}:${m}:${s}`;
+};
+
+
 
 const OngoingCalls: React.FunctionComponent = () => {
   const { socket } = useWebSocket(); // get web socket connection
@@ -108,7 +119,7 @@ const OngoingCalls: React.FunctionComponent = () => {
         // Map through the current interactions to replace the interaction
         // where the key matches with the new segment data
         const updatedInteractions = currentInteractions.map((interaction) =>
-          interaction.key === segment.key ? segment : interaction
+          interaction.key === segment.key ? {...interaction, ...segment, callStartTime: segment.state === "ON CALL" ? Date.now() : interaction.callStartTime} : interaction
         );
 
         // Save the updated interactions array back to local storage as a JSON string
@@ -181,6 +192,14 @@ const OngoingCalls: React.FunctionComponent = () => {
         const updatedInteraction = {
           ...establishedInteraction,
           Sentiment: segment.Sentiment,
+          callOverviewAnalytics: updateMetrics(segment, establishedInteraction.callOverviewAnalytics || {
+            sentimentTrend: [],
+            sentimentPercentages: { POSITIVE: 0, NEGATIVE: 0, NEUTRAL: 0 },
+            agentTalk: 0,
+            customerTalk: 0,
+            nonTalk: 0,
+            callDuration: 0
+          })
         };
 
         // Map through the current interactions to replace the updated interaction
@@ -198,8 +217,86 @@ const OngoingCalls: React.FunctionComponent = () => {
         // Update the state or context with the new interactions array
         setInteractions(updatedInteractions);
       }
+    else{
+      const newInteraction = {
+        key: segment.Id,
+        segmentType: 'SENTIMENT_ANALYSIS',
+        agentFirstName: '',
+        agentLastName: '',
+        state: 'ON CALL',
+        contactId: segment.contactId,
+        Sentiment: segment.Sentiment,
+        username: '',
+        routingProfile: '',
+        callOverviewAnalytics: updateMetrics(segment, {
+          sentimentTrend: [],
+          sentimentPercentages: { POSITIVE: 0, NEGATIVE: 0, NEUTRAL: 0 },
+          agentTalk: 0,
+          customerTalk: 0,
+          nonTalk: 0,
+          callDuration: 0,
+        })
+      };
+      currentInteractions.push(newInteraction);
+      sessionStorage.setItem('interactions', JSON.stringify(currentInteractions));
+      setInteractions(currentInteractions);
     }
+    }
+    updateSessionStorageCOMetrics(segment)
   };
+
+//Define function to keep calculating real time metrics of call overview
+const updateSessionStorageCOMetrics = (segment: SentimentSegment) => {
+  const unhandledInteractionsData = sessionStorage.getItem('unhandledInteractions');
+  let unhandledInteractions: UnhandledInteractions[] = unhandledInteractionsData ? JSON.parse(unhandledInteractionsData) : [];
+
+  const matchedInteraction = unhandledInteractions.find(i => i.state.contactId === segment.contactId);
+
+  if (matchedInteraction) {
+    matchedInteraction.state.callOverviewAnalytics = updateMetrics(segment, matchedInteraction.state.callOverviewAnalytics || {
+      sentimentTrend: [],
+      sentimentPercentages: { POSITIVE: 0, NEGATIVE: 0, NEUTRAL: 0 },
+      agentTalk: 0,
+      customerTalk: 0,
+      nonTalk: 0,
+      callDuration: 0,
+    });
+
+    //remove it from sessionStorage if call has ended
+    if (matchedInteraction.state.state === 'ACW') {
+      unhandledInteractions = unhandledInteractions.filter(i => i.state.contactId !== segment.contactId);
+    }
+  } else {
+    const newInteraction = {
+      state: {
+        key: segment.Id,
+        segmentType: 'SENTIMENT_ANALYSIS',
+        agentFirstName: '',
+        agentLastName: '',
+        state: 'ON CALL',
+        contactId: segment.contactId,
+        Sentiment: segment.Sentiment,
+        username: '',
+        routingProfile: '',
+        callOverviewAnalytics: updateMetrics(segment, {
+          sentimentTrend: [],
+          sentimentPercentages: { POSITIVE: 0, NEGATIVE: 0, NEUTRAL: 0 },
+          agentTalk: 0,
+          customerTalk: 0,
+          nonTalk: 0,
+          callDuration: 0,
+        })
+      },
+      sentiment: segment
+    };
+    unhandledInteractions.push(newInteraction);
+  }
+
+  sessionStorage.setItem('unhandledInteractions', JSON.stringify(unhandledInteractions));
+  console.log("UPDATED CO METRICS: ", unhandledInteractions)
+};
+
+
 
 
   const updateAgentsAvailability = (segment: Interaction, action: string) => {

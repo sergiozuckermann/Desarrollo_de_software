@@ -1,7 +1,7 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from "../hooks/useAuth";
 import { DarkModeContext } from "../Provider/ThemeProvider"; 
-import { FunctionComponent, ReactNode, useContext, useEffect, useState } from "react";
+import { FunctionComponent, ReactNode, useContext, useEffect, useState, useRef } from "react";
 import "../css/PageStructure.css";
 import Button from "./Buttons";
 import SettingsButton from "./SettingsButton";
@@ -35,7 +35,6 @@ const PageStructure: FunctionComponent<PageStructureProps> = ({ title, children 
 
   const { socket } = useWebSocket()
   const [notifications, setNotifications] = useState<Notification[]>([])
-
   useEffect(() => {
     const notificationsData = sessionStorage.getItem('notifications')
     if(notificationsData) {
@@ -52,7 +51,10 @@ const PageStructure: FunctionComponent<PageStructureProps> = ({ title, children 
       sessionStorage.setItem('unhandledInteractions', JSON.stringify([]))
     }
   }, [])
-  
+
+
+
+
   const processNotification = (notification:Notification) => {
     const allNotifications = sessionStorage.getItem('notifications')
     let notificationsData:Notification[] = []
@@ -84,11 +86,11 @@ const PageStructure: FunctionComponent<PageStructureProps> = ({ title, children 
               sessionStorage.setItem('unhandledInteractions', JSON.stringify(unhandledInteractions.filter(i => i.state.key !== segment.key)))
               return
             }
-
             const updatedInteraction = segment.state === 'ON CALL' ? 
             { // Updated interaction
+              
               ...matchedInteraction,
-              state: segment
+              state: {...segment, callStartTime: matchedInteraction.state.callStartTime || Date.now()},
             } : 
             {
               state: segment
@@ -107,11 +109,9 @@ const PageStructure: FunctionComponent<PageStructureProps> = ({ title, children 
             unhandledInteractions.push(newUnhandled) // add the new unhandled interaction
 
             sessionStorage.setItem('unhandledInteractions', JSON.stringify(unhandledInteractions)) // save it
-
-          }
         }
-      
   }
+}
 
   // functio to process unhandled sentiment segments
   const processUnhandledSentimentEvent = (segment: SentimentSegment) => {

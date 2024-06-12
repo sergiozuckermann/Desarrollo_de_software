@@ -55,6 +55,7 @@ export interface Interaction {
   username: string;
   routingProfile: string;
   callOverviewAnalytics?: callOverviewAnalytics;
+  callStartTime?: number;
 }
 
 // Define the type for an interaction

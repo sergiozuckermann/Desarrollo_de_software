@@ -47,7 +47,7 @@ const CellGrid: React.FunctionComponent<CellGridProps> = ({ data }) => {
                 <MoodIndicator moodValue={interaction.Sentiment || "NEUTRAL"} />
               </div>
               <div className="flex items-center justify-center">
-                <CallTimeDisplay />
+                <CallTimeDisplay callStartTime={interaction.callStartTime || Date.now()} />
               </div>
             </div>
           </div>
