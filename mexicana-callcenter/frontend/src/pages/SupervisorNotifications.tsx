@@ -54,20 +54,31 @@ const SupervisorNotifications: React.FunctionComponent = () => {
   }, []);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const sentimentData = await fetchSentimentAnalysis();
-      const agentPerformanceData = await fetchAgentPerformance();
-      const queueData = await fetchQueueData();
+    const fetchData = () => {
+      const notificationsData = sessionStorage.getItem('notifications')
+      if(notificationsData) {
+        const notifications:Notification[] = JSON.parse(notificationsData)
+        const urgent = notifications.filter(notification => 
+          notification.title.toLowerCase().includes("call") ||
+          notification.title.toLowerCase().includes("performance") ||
+          notification.title.toLowerCase().includes("bad sentiment") ||
+          notification.title.toLowerCase().includes("queue")
+        );
 
-      const urgent = notifications.filter(notification => 
-        sentimentData.some(sentiment => sentiment.id === notification.id && sentiment.isBad) ||
-        agentPerformanceData.some(agent => agent.id === notification.id && agent.isPerformingBadly) ||
-        queueData.some(queue => queue.id === notification.id && queue.isTooLong) ||
-        notification.title.toLowerCase().includes("call") ||
-        notification.title.toLowerCase().includes("performance") ||
-        notification.title.toLowerCase().includes("bad sentiment") ||
-        notification.title.toLowerCase().includes("queue")
-      );
+        // Sort urgent notifications by priority: "call", "queue", "performance"
+        const sortedUrgent = urgent.sort((a, b) => {
+          const keywords = ["call", "queue", "performance"];
+          const getPriority = (title:string) => {
+            for (let i = 0; i < keywords.length; i++) {
+              if (title.toLowerCase().includes(keywords[i])) {
+                return i;
+              }
+            } 
+            return keywords.length; // Default priority if no keywords match
+          };
+  
+          return getPriority(a.title) - getPriority(b.title);
+        });
 
       const sortedUrgent = urgent.sort((a, b) => {
         const keywords = ["call", "queue", "performance"];
@@ -90,8 +101,8 @@ const SupervisorNotifications: React.FunctionComponent = () => {
       setUrgentNotifications(sortedUrgent);
       setNonUrgentNotifications(nonUrgent);
       
-      const hasUnreadUrgent = sortedUrgent.some(notification => !readNotifications.includes(notification.id));
-      setHasNewUrgent(hasUnreadUrgent);
+      // const hasUnreadUrgent = sortedUrgent.some(notification => !readNotifications.includes(notification.id));
+      // setHasNewUrgent(hasUnreadUrgent);
     };
 
     fetchData();
@@ -138,7 +149,7 @@ const SupervisorNotifications: React.FunctionComponent = () => {
       icon: <FaBook />,
       content: (
         <div className="w-full pr-8 pl-16 space-y-4">
-          {nonUrgentNotifications.map((notification) => (
+          {!nonUrgentNotifications.length ? (<p>no notifications</p>) : nonUrgentNotifications.map((notification) => (
             <NotificationItem
               key={notification.id}
               title={notification.title}

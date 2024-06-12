@@ -14,12 +14,10 @@ interface NotificationsDropDownProps {
   }[];
 }
 
-const NotificationsDropDown: React.FC<NotificationsDropDownProps> = ({ notificationsData }) => {
+const NotificationsDropDown: React.FC<NotificationsDropDownProps> = ({ notificationsData, count }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
   const { darkMode } = useDarkMode();
-
-  const unreadCount = getUnreadNotificationsCount();
 
   const handleToggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -34,9 +32,9 @@ const NotificationsDropDown: React.FC<NotificationsDropDownProps> = ({ notificat
            message.toLowerCase().includes('performance');
   };
 
-  const unreadUrgentNotifications = notificationsData
-    .filter(notification => isUrgent(notification.message) && !notification.isRead)
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  // const unreadUrgentNotifications = notificationsData
+  //   .filter(notification => isUrgent(notification.message) && !notification.isRead)
+  //   .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return (
     <div className="relative">
@@ -47,8 +45,10 @@ const NotificationsDropDown: React.FC<NotificationsDropDownProps> = ({ notificat
       {isDropdownOpen && (
         <div className="absolute right-0 mt-2 w-64 bg-white border rounded-lg shadow-lg max-h-60 overflow-y-auto dark:bg-gray-900">
           <div className="p-2">
-            <h3 className="text-lg font-semibold mb-4 dark:text-white">Notifications</h3>
-            {unreadUrgentNotifications.slice(0, 5).map((notification) => (
+            <h3 className="text-lg font-semibold mb-4">Notifications</h3>
+            {
+              !notificationsData.length ? (<p>no notifications</p>) :
+            notificationsData.map((notification) => (
               <div
                 key={notification.id}
                 className="notification-item mb-4 cursor-pointer dark:text-white"

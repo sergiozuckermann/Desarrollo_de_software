@@ -4,13 +4,14 @@ import PageStructure from "../components/PageStructure";
 import CellGrid from "../components/CellGrid";
 import GraphAgentStructure from "../components/GraphAgentStructure";
 import { useWebSocket } from "../hooks/useWebSocket";
-import { Interaction, SentimentSegment, AgentsOnCall } from "../utils/interfaces";
+import { Interaction, SentimentSegment, AgentsOnCall, UnhandledInteractions } from "../utils/interfaces";
 import InfoCard from "../components/InfoCard";
 
 interface PieChartDataItem {
   id: string | number;
   label: string;
   value: number;
+  color?: string;
 }
 
 const Action = {
@@ -22,20 +23,20 @@ const OngoingCalls: React.FunctionComponent = () => {
   const { socket } = useWebSocket(); // get web socket connection
   const [interactions, setInteractions] = useState<Array<Interaction>>([]); // interactions
   const [agentsState, setAgentsState] = useState<Array<PieChartDataItem>>([
-    { id: "AVAILABLE", label: "Available", value: 0 },
-    { id: "ON CALL", label: "On Call", value: 0 },
-    { id: "ACW", label: "After Call", value: 0 },
-    { id: "OFFLINE", label: "Offline", value: 0 },
+    { id: "AVAILABLE", label: "Available", value: 0, color: "#008000" },
+    { id: "ON CALL", label: "On Call", value: 0, color: "#0a8afb" },
+    { id: "ACW", label: "After Call", value: 0, color: "#e29301" },
+    { id: "OFFLINE", label: "Offline", value: 0, color: "#FF0000"},
   ])
+       
   const [agentsAvailability, setAgentsAvailability] = useState<Array<PieChartDataItem>>([
-    {id:"FlightManagement", label: "Flight Rsv", value: 0 },
-    {id:"CustomerCare", label: "Customer Care", value: 0 },
+    {id:"FlightManagement", label: "Flight Rsv", value: 0, color: "#20253F"},
+    {id:"CustomerCare", label: "Customer Care", value: 0, color:"#4B4B4B" },
     {id:"WebsiteAssistance", label: "Booking or Website Issues", value: 0 },
-    {id:"TravelInformation", label: "Status Inquiries", value: 0 },
-    {id:"SpecialAssitance", label: "Special Assistance or Docs", value: 0 },
-    {id:"OtherQuestions", label: "Other Questions", value: 0 }
+    {id:"TravelInformation", label: "Status Inquiries", value: 0, color: "#4A8B51" },
+    {id:"SpecialAssitance", label: "Special Assistance or Docs", value: 0, color:"#6BBF70" },
+    {id:"OtherQuestions", label: "Other Questions", value: 0, color:"#ADD8E6" },
   ])
-
   // useEffect to fetch information from session storage on every rerender
   useEffect(() => {
     const interactionsData = sessionStorage.getItem("interactions"); // check if interactions key exists
@@ -305,6 +306,34 @@ const updateAllAgentStatus = (action: string) => {
   }
 }
 
+  // update agent map with unhandled real time information
+  useEffect(() => {
+    const unhandledInteractionsData = sessionStorage.getItem('unhandledInteractions')
+    if(unhandledInteractionsData) {
+      const unhandledInteractions:UnhandledInteractions[] = JSON.parse(unhandledInteractionsData)
+
+      if(!unhandledInteractions.length) return
+
+      unhandledInteractions.forEach(unhandled => {
+        processEvent(unhandled.state)
+        if(unhandled.sentiment) {
+          processSentimentAnalysis(unhandled.sentiment)
+        }
+      })
+
+      //sessionStorage.removeItem('unhandledInteractions')
+      // const remainingUnhandled = unhandledInteractions.filter(
+      //   unhandled => !unhandled.state.callOverviewAnalytics
+      // )
+
+      // if (remainingUnhandled.length === 0) {
+      //   sessionStorage.removeItem('unhandledInteractions')
+      // } else {
+      //   sessionStorage.setItem('unhandledInteractions', JSON.stringify(remainingUnhandled))
+      // }
+    }
+  }, [])
+
 
   // web socket connection to get real time information from ongoing intereaction
   useEffect(() => {
@@ -338,7 +367,7 @@ const updateAllAgentStatus = (action: string) => {
   return (
     <PageStructure title="Ongoing Calls">
       <div className="overflow-y-auto h-full pb-[3%] pt-[2%] pl-[2%]">
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
           <div className="col-span-1">
             <GraphAgentStructure 
               agentsState={agentsState}
