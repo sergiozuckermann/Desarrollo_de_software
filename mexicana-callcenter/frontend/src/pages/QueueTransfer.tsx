@@ -161,6 +161,7 @@ const AgentRoutingProfile = () => {
           placeholder="Name"
           value={searchName}
           onChange={(e) => setSearchName(e.target.value)}
+          data-cy="search-name"
         />
         {/* Render a search input for the agent's last name */}
         <SearchInput
@@ -168,6 +169,7 @@ const AgentRoutingProfile = () => {
           placeholder="Last Name"
           value={searchLastName}
           onChange={(e) => setSearchLastName(e.target.value)}
+          data-cy="search-lastname"
         />
         {/* Render a search input for the agent's username */}
         <SearchInput
@@ -175,9 +177,10 @@ const AgentRoutingProfile = () => {
           placeholder="Username"
           value={searchUsername}
           onChange={(e) => setSearchUsername(e.target.value)}
+          data-cy="search-username"
         />
         {/* Render a search button */}
-        <SearchButton clicked={buttonClicked} onClick={handleSearch}>
+        <SearchButton clicked={buttonClicked} onClick={handleSearch} data-cy="search-submit">
           Search
         </SearchButton>
       </SearchContainer>
