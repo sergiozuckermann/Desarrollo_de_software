@@ -23,7 +23,7 @@ const SignUp: React.FC = () => {
   const [passwordTextValue, setPasswordTextValue] = useState("");
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
   const { showError, showSuccess } = useCustomToast();
-  const [file, setFile] = useState<File | null>(null);
+  const [, setFile] = useState<File | null>(null);
   const [fileLabel, setFileLabel] = useState("Choose your profile picture");
   const [fileLabelColor, setFileLabelColor] = useState(""); 
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);

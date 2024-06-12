@@ -3,7 +3,7 @@ import { WorkerCardProps } from '../utils/interfaces';
 import { DarkModeContext } from '../Provider/ThemeProvider';
 
 const WorkerCard: React.FC<WorkerCardProps> = ({ imageURL, name, username, position, experience, points, status }) => {
-  const { darkMode } = useContext(DarkModeContext);
+  const darkMode = useContext(DarkModeContext)?.darkMode;
   const statusClass = status === 'Active' ? 'bg-green-500' : 'bg-red-500';
 
   return (

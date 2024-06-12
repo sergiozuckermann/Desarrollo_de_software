@@ -18,7 +18,7 @@ interface PageStructureProps {
 
 const PageStructure: FunctionComponent<PageStructureProps> = ({ title, children }) => {
   const { isAuthenticated, role } = useAuth();
-  const { darkMode } = useContext(DarkModeContext);
+  const { darkMode } = useContext(DarkModeContext) || {};
   const navigate = useNavigate();
   const location = useLocation();
 

@@ -35,7 +35,7 @@ const useChatProvider = () => {
     if (data.members) {
         setMembers(data.members);
     } else if (data.publicMessage && typeof data.publicMessage === 'string') {
-        setPublicMessages(oldArray => [...oldArray, data.publicMessage]);
+        setPublicMessages(oldArray => [...oldArray, data.publicMessage || ""]);
     } else if (data.privateMessage && typeof data.privateMessage === 'string') {
         const [from, message] = data.privateMessage.split(': ');
         setPrivateMessages(oldPrivateMessages => {

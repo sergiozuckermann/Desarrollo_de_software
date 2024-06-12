@@ -2,6 +2,7 @@ import React from 'react';
 
 interface GradientButtonProps {
   handleClick: () => void;
+  mode?: string
 }
 
 const GradientButton: React.FC<GradientButtonProps> = ({ handleClick }) => {

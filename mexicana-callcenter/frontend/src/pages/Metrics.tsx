@@ -145,7 +145,7 @@ const MainContent: React.FC = () => {
 
             {/* FILTER */}
             <div className="relative w-full h-full col-span-3 row-span-1 p-2 border-gray-400">
-            <Filter onApplyFilters={handleApplyFilters} agentsList={agentsList} isAgentFilterEditable={true} />
+            <Filter onApplyFilters={handleApplyFilters} agentsList={agentsList} isAgentFilterEditable={true} defaultAgentId={undefined} />
             </div>
 
             {/* Average Answer Time per Queue */}

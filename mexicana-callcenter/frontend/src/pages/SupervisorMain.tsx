@@ -12,7 +12,7 @@ import ConnectHere from '../components/ConnectHere';
 
 
 const MainContent = () => {
-  const [buttonMode, setButtonMode] = useState('workspace');
+  const [, setButtonMode] = useState('workspace');
   const [userInfo, setUserInfo] = useState<WorkerCardProps | null>(null);
   const [userImage, setImageURL] = useState<string | null>(null);
   const { showError } = useCustomToast();

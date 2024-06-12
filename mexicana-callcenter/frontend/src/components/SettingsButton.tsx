@@ -5,7 +5,7 @@ import { DarkModeContext } from '../Provider/ThemeProvider';
 function SettingsButton() {
     const [isActive, setIsActive] = useState(false);
     const { logout } = useAuth(); // Assuming logout is a method provided by useAuth
-    const { darkMode, setDarkMode } = useContext(DarkModeContext);
+    const { darkMode, setDarkMode } = useContext(DarkModeContext) || { darkMode: false, setDarkMode: () => {} };
 
     const toggleIsActive = () => {
         setIsActive(!isActive);

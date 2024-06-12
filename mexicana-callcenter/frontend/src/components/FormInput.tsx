@@ -1,5 +1,15 @@
 import React from 'react';
-import { FormInputProps } from "../types";
+
+interface FormInputProps {
+  type: string;
+  placeholder: string;
+  name: string;
+  required: boolean;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  icon?: string;
+  onIconClick?: () => void;
+}
 
 const FormInput: React.FC<FormInputProps> = ({
   type,

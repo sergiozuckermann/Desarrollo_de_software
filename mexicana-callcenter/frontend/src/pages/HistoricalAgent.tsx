@@ -17,7 +17,7 @@ Modal.setAppElement('#root');
 const MainContent: React.FC = () => {
     const { username: loggedInAgentId } = useAuth();
     const [filters, setFilters] = useState({
-        agentId: loggedInAgentId, // Default to the logged-in agent's username
+        agentId: loggedInAgentId ?? '', // Default to the logged-in agent's username or an empty string
         startTime: '',
         endTime: '',
         queue: '',
@@ -146,7 +146,7 @@ const MainContent: React.FC = () => {
 
             {/* FILTER */}
             <div className="relative w-full h-full col-span-3 row-span-1 p-2 border-gray-400">
-                <Filter onApplyFilters={handleApplyFilters} agentsList={agentsList} isAgentFilterEditable={false} />
+                <Filter onApplyFilters={handleApplyFilters} agentsList={agentsList} isAgentFilterEditable={false} defaultAgentId={undefined} />
             </div>
 
             {/* Average Answer Time per Queue */}

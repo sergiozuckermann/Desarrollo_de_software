@@ -10,8 +10,6 @@ import useCustomToast from "../components/LoginNotification";
 import { useAuth } from '../hooks/useAuth';
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useCallOverViewMetrics } from '../hooks/callOverviewMetrics';
-const { showError } = useCustomToast();
 import { Interaction } from '../utils/interfaces';
 import { callOverviewAnalytics } from '../utils/interfaces';
 import { Tooltip } from 'react-tooltip';
@@ -51,7 +49,7 @@ const CallOverview: React.FunctionComponent = () => {
   const [agentInfo, setAgentInfo] = useState<Interaction | null>(null);
   const [userImage, setImageURL] = useState<string | null>(null);
   const { role, username, logout } = useAuth();
-  const [userInfo, setUserInfo] = useState<string | null>(null);
+  const [, setUserInfo] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
   const [activeState, setActiveState] = useState("No data available");
   const [activeContactID, setActiveContactID] = useState("No call in progress");

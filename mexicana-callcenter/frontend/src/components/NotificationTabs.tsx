@@ -9,6 +9,8 @@ interface TabData {
 
 interface HorizontalTabsProps {
   data: TabData[];
+  onTabChange?: (index: number) => void; // Add this line
+
 }
 
 const HorizontalTabs: React.FC<HorizontalTabsProps> = ({ data }) => {
@@ -24,14 +26,13 @@ const HorizontalTabs: React.FC<HorizontalTabsProps> = ({ data }) => {
         {data.map((tab, index) => (
           <div
             key={index}
-            className={`flex items-center p-2 cursor-pointer transition-colors rounded-full ${
-              index === activeTab ? 'bg-[#20253F] text-white' : 'bg-transparent'
-            }`}
+            className={`flex items-center p-2 cursor-pointer transition-colors rounded-full ${index === activeTab ? 'bg-[#20253F] text-white' : 'bg-transparent'
+              }`}
             onClick={() => handleTabClick(index)}
           >
             {tab.icon && <span className="mr-2">{tab.icon}</span>}
             <span>{tab.label}</span>
-            </div>
+          </div>
         ))}
       </div>
       <div className="flex-1 p-4">{data[activeTab].content}</div>

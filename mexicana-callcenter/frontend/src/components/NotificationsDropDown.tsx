@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react";
 import NotificationBadge from "./notificationComponent";
 import { useNavigate } from "react-router-dom";
-import { getUnreadNotificationsCount } from "../pages/SupervisorNotifications";
 import { DarkModeContext } from "../Provider/ThemeProvider"; // Asegúrate de importar el contexto
 
 interface NotificationsDropDownProps {
@@ -17,7 +16,7 @@ interface NotificationsDropDownProps {
 const NotificationsDropDown: React.FC<NotificationsDropDownProps> = ({ notificationsData, count }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
-  const { darkMode } = useContext(DarkModeContext); // Obtén el estado del tema desde el contexto
+  useContext(DarkModeContext); // Obtén el estado del tema desde el contexto
 
   const handleToggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);

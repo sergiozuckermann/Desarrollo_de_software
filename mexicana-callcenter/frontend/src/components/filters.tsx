@@ -31,7 +31,7 @@ const Filter = ({ onApplyFilters, agentsList, isAgentFilterEditable, defaultAgen
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
     const [isResetting, setIsResetting] = useState(false); // Track reset state
-    const filterRef = useRef(null);
+    const filterRef = useRef<HTMLFormElement>(null);
 
     const handleReset = () => {
         setAgentId(defaultAgentId || '');
@@ -89,8 +89,7 @@ const Filter = ({ onApplyFilters, agentsList, isAgentFilterEditable, defaultAgen
         return true;
     };
 
-    const handleSearch = (e) => {
-        if (e) e.preventDefault();
+    const handleSearch = () => {
         if (!validateDates()) return;
 
         const filters = {
@@ -107,8 +106,8 @@ const Filter = ({ onApplyFilters, agentsList, isAgentFilterEditable, defaultAgen
         setShowFilters(!showFilters);
     };
 
-    const handleClickOutside = (event) => {
-        if (filterRef.current && !filterRef.current.contains(event.target)) {
+    const handleClickOutside = (event: MouseEvent) => {
+        if (filterRef.current && !filterRef.current.contains(event.target as Node)) {
             setShowFilters(false);
         }
     };

@@ -22,7 +22,6 @@ const CallCard: React.FC<CallCardProps> = ({
   actualSentiment,
   contactID,
   talktime,
-  username,
   routingProfile,
   imageURL
 }) => {

@@ -71,7 +71,11 @@ const AuthProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
           // navigate to the hme page based on the user's role
           navigate(`/${role}/home`)
           showSuccess(`🎉 Welcome ${name}!\nYou are now signed in.`);
-          showCustom("Wait for the Contact Control Panel popup to log in with your credentials", "gray");
+
+          // if the user is a supervisor, show a custom message to wait for the Amazon Connect Login Pop Up to appear
+          if(role === 'Supervisor'){
+            showCustom("Wait for Amazon Connect login pop-up and sign in.", "gray");
+          }
         }
       })
       .catch(error =>  {

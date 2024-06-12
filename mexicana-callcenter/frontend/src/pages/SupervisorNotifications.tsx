@@ -5,6 +5,15 @@ import { notifications } from "../components/notificationsData";
 import HorizontalTabs from "../components/NotificationTabs";
 import { FaExclamationCircle, FaBook } from 'react-icons/fa';
 
+
+interface Notification {
+  id: number;
+  title: string;
+  message: string;
+  date: string;
+}
+
+
 const SupervisorNotifications: React.FunctionComponent = () => {
   const [readNotifications, setReadNotifications] = useState<number[]>([]);
   const [urgentNotifications, setUrgentNotifications] = useState<any[]>([]);

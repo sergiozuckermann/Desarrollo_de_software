@@ -6,7 +6,7 @@ type Metric = "Flight Management" | "Travel Information" | "Special Assistance" 
 
 // Interface that defines the structure of the data used for the bar chart
 interface DataPoint {
-  metric: Metric;
+  metric: string;
   value: number;
 }
 
@@ -41,14 +41,23 @@ const MyBarChart2: React.FC<MyBarChart2Props> = ({ data, unit }) => {
           top: 20,
           right: 20,
           left: 20,
-          bottom: 60, 
+          bottom: 60,
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis 
-          dataKey="metric" 
-          tick={{ angle: -30, textAnchor: 'end', fontSize: 10 }} // Adjusted angle and font size
-          interval={0} 
+        <XAxis
+          dataKey="metric"
+          tick={(props) => (
+            <text
+              {...props}
+              angle={-30}
+              textAnchor="end"
+              fontSize={10}
+            >
+              {props.payload.value}
+            </text>
+          )}
+          interval={0}
         />x
         <YAxis tickFormatter={(value) => `${value} ${unit}`} />
         <Tooltip formatter={(value) => `${value} ${unit}`} />
