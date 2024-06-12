@@ -50,9 +50,9 @@ const CellGrid: React.FunctionComponent<CellGridProps> = ({ data }) => {
                   <CallStatusIndicator callStatus={interaction.state} />
                   <MoodIndicator moodValue={interaction.Sentiment || "NEUTRAL"} />
                 </div>
-                <div className="flex items-center justify-center">
+                {/* <div className="flex items-center justify-center">
                   <CallTimeDisplay />
-                </div>
+                </div> */}
               </div>
             </div>
           )
