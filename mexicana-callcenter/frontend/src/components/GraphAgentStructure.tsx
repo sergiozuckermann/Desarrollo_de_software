@@ -55,23 +55,16 @@ const GraphAgentStructure: React.FunctionComponent<GraphAgentStructureProps> = (
     return () => clearInterval(interval);
   }, []);
 
-  console.log('Queue Data before mapping:', queueData);
 
   const totalCustomersWaiting = queueData.reduce((sum, item) => sum + item.value, 0);
 
   const data: DataPoint[] = queueData.map(item => {
-    const queueName = queueNames[item.queue] || "Unknown Queue"; // Updated to use 'queue' instead of 'label'
-    if (!queueNames[item.queue]) {
-      console.log(`Unknown queue ID: ${item.queue}`); // Log unknown queue ID
-    }
+    const queueName = queueNames[item.queue] || "Unknown Queue"; 
     return {
       metric: queueName,
       value: item.value,
     };
   });
-
-  // Log the mapped data before passing to MyBarChart2
-  console.log('Mapped Data for Bar Chart in GraphAgentStructure:', data);
 
   return (
     <div className="box-border border-[1px] rounded-lg p-4 border-solid border-marco shadow-lg lg:h-[700px] overflow-y-auto">

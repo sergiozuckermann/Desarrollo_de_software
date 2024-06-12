@@ -28,9 +28,6 @@ const barColors: Record<Metric, string> = {
 };
 
 const MyBarChart2: React.FC<MyBarChart2Props> = ({ data, unit }) => {
-  // Log the data received as props
-  console.log('Data received in MyBarChart2:', data);
-
   // If there is no data, a message will be shown
   if (!data || data.length === 0) {
     return <p>No Available Data</p>;
