@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import NotificationBadge from './notificationComponent';
 import { useNavigate } from 'react-router-dom';
-import { getUnreadNotificationsCount } from '../pages/SupervisorNotifications';
-import { useDarkMode } from '../hooks/useDarkMode';
 
 interface NotificationsDropDownProps {
   notificationsData: {
@@ -18,7 +16,6 @@ interface NotificationsDropDownProps {
 const NotificationsDropDown: React.FC<NotificationsDropDownProps> = ({ notificationsData, count }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
-  const { darkMode } = useDarkMode();
 
   const handleToggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);

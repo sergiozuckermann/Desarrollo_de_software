@@ -13,33 +13,6 @@ interface Notification {
   isRead: boolean;
 }
 
-interface SentimentData {
-  id: number;
-  isBad: boolean;
-}
-
-interface AgentPerformanceData {
-  id: number;
-  isPerformingBadly: boolean;
-}
-
-interface QueueData {
-  id: number;
-  isTooLong: boolean;
-}
-
-const fetchSentimentAnalysis = async (): Promise<SentimentData[]> => {
-  return [];
-};
-
-const fetchAgentPerformance = async (): Promise<AgentPerformanceData[]> => {
-  return [];
-};
-
-const fetchQueueData = async (): Promise<QueueData[]> => {
-  return [];
-};
-
 const SupervisorNotifications: React.FunctionComponent = () => {
   const [readNotifications, setReadNotifications] = useState<number[]>([]);
   const [urgentNotifications, setUrgentNotifications] = useState<Notification[]>([]);

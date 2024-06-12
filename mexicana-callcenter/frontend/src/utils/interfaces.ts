@@ -29,18 +29,26 @@ export interface WebSocketContextType {
   onmessage?: ((this: WebSocket, ev: MessageEvent<any>) => any) | null;
 }
 
-
-//Define metrics for call overview
-export interface callOverviewAnalytics{
-  agentTalk: number,
-  customerTalk: number,
-  nonTalk: number,
-  sentimentTrend: Array<{x:number, y:number}>,
-  sentimentPercentages: {POSITIVE:number, NEGATIVE:number, NEUTRAL:number},
-  callDuration:number,
-  key?:string,
-  contactId?:string
+export interface SentimentTrend {
+  time: number;
+  sentiment: number;
 }
+
+export interface callOverviewAnalytics {
+  agentTalk: number;
+  customerTalk: number;
+  nonTalk: number;
+  sentimentTrend: SentimentTrend[];
+  sentimentPercentages: {
+    POSITIVE: number;
+    NEGATIVE: number;
+    NEUTRAL: number;
+  };
+  callDuration: number;
+  key: string;
+  contactId: string;
+}
+
 
 // Define the type for an interaction
 export interface Interaction {

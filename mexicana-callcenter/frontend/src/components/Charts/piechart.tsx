@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 import { ResponsivePie } from '@nivo/pie';
 
-interface PieChartDataItem {
+export interface PieChartDataItem {
     id: string | number;
     label: string;
     value: number;
     color?: string;
 }
 
-interface MyPieChartProps {
+interface PieChartProps {
     data: PieChartDataItem[];
     unit: string;
 }
 
-const MyPieChart: React.FC<MyPieChartProps> = ({ data, unit }) => {
+const PieChart: React.FC<PieChartProps> = ({ data, unit }) => {
     const [hovered, setHovered] = useState<PieChartDataItem | null>(null);
 
     const handleMouseEnter = (datum: { data: PieChartDataItem }) => {
@@ -71,4 +71,4 @@ const MyPieChart: React.FC<MyPieChartProps> = ({ data, unit }) => {
     );
 };
 
-export default MyPieChart;
+export default PieChart;
