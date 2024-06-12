@@ -24,7 +24,8 @@ const CellGrid: React.FunctionComponent<CellGridProps> = ({ data }) => {
       username: interaction.username,
       callStartTime: interaction.callStartTime || 0,
     };
-    sessionStorage.setItem("selectedAgent", JSON.stringify(agentInfo));
+    sessionStorage.setItem("selectedAgent", JSON.stringify(agentInfo))
+    console.log("AGENT INFO", agentInfo)
     navigate('/Supervisor/calloverview');
     // console.log("State", {state: {selectedCall: interaction}});
   };

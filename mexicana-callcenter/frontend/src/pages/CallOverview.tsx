@@ -12,7 +12,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useCallOverViewMetrics } from '../hooks/callOverviewMetrics';
 const { showError } = useCustomToast();
-import { Interaction } from '../utils/interfaces';
+import { Interaction, UnhandledInteractions } from '../utils/interfaces';
 import { callOverviewAnalytics } from '../utils/interfaces';
 import { Tooltip } from 'react-tooltip';
 
@@ -23,12 +23,14 @@ export interface PieChartDataItem {
   color?: string;
 }
 
-const formatDuration = (seconds: number) => {
-  const h = Math.floor(seconds / 3600).toString().padStart(2, '0');
-  const m = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
-  const s = Math.floor(seconds % 60).toString().padStart(2, '0');
+const formatDuration = (miliseconds: number) => {
+  const totalSeconds=Math.floor(miliseconds/1000);
+  const h = Math.floor(totalSeconds / 3600).toString().padStart(2, '0');
+  const m = Math.floor((totalSeconds % 3600) / 60).toString().padStart(2, '0');
+  const s = Math.floor(totalSeconds % 60).toString().padStart(2, '0');
   return `${h}:${m}:${s}`;
 };
+
 
 const calculateTimeDifference = (classificationTime: string, currentTime: string) => {
   const [classificationHours, classificationMinutes, classificationSeconds] = classificationTime.split(":").map(Number);
@@ -93,6 +95,8 @@ const CallOverview: React.FunctionComponent = () => {
   ]);
 
   const [callDuration, setCallDuration] = useState<string>("00:00:00");
+  const [callStartTime, setCallStartTime] = useState<number | null>(null); // Store call start time
+
 
   // Static classification time
   const classificationTime = "00:00:50";
@@ -107,8 +111,30 @@ const CallOverview: React.FunctionComponent = () => {
       setActiveState(agentState.state);
       setActiveContactID(agentState.contactId);
       setActualSentiment(agentState.sentiment);
+      setCallDuration("00:00:00")
+
+      if(agentState.callStartTime){
+        setCallStartTime(agentState.callStartTime);
+        console.log("Call Start Time:", agentState.callStartTime); // Mostrar la hora de inicio de la llamada en la consola
+        const timer=Date.now()-agentState.callStartTime;
+        console.log("Timer:", timer, "start time", callStartTime); // Mostrar el temporizador en la consola
+        setCallDuration(formatDuration(timer/1000));
+      }
     }
   }, []);
+
+// Update call duration every second
+useEffect(() => {
+  const interval = setInterval(() => {
+    if (activeContactID !== "No call in progress" && activeContactID !== undefined && agentInfo?.callStartTime) {
+      const duration = Date.now() - callStartTime;
+      setCallDuration(formatDuration(Math.floor(duration / 1000)));
+    }
+  }, 1000);
+
+  return () => clearInterval(interval);
+}, [activeContactID, agentInfo]);
+
 
   // Load metrics from session storage
   useEffect(() => {
@@ -120,12 +146,14 @@ const CallOverview: React.FunctionComponent = () => {
         const parsedMetrics = JSON.parse(storedMetrics);
         console.log("Parsed metrics:", parsedMetrics); // Mostrar los datos de las métricas analizadas en la consola
         const interaction = parsedMetrics.find((i: any) => i.state.contactId === activeContactID);
-        if (interaction && interaction.sentiment.callOverviewAnalytics) {
-          setMetrics(interaction.sentiment.callOverviewAnalytics);
+        if (interaction && interaction.state.callOverviewAnalytics) {
+          setMetrics(interaction.state.callOverviewAnalytics);
         }
       }
     }
   }, [activeContactID]);
+
+
 
   // Handle incoming WebSocket messages
   useEffect(() => {
@@ -135,23 +163,43 @@ const CallOverview: React.FunctionComponent = () => {
         const segment = data.message;
         console.log("Data:", data); // Mostrar los datos en la consola
         const activeUsername = agentInfo?.username;
+        const contactIdsToFilter = ["9272a5e8-ac7b-4402-bde9-04ddc3d85d1c","ac482bb5-cbed-473b-b04c-82f68220515e"];
 
+        if (contactIdsToFilter.includes(segment.contactId)) {
+          console.log("Filtered out message with contact ID:", contactIdsToFilter);
+          return;
+        }
+
+        
         if (segment) {
           const { segmentType } = segment;
           if (segmentType === "AGENT_EVENT") {
             // Update metrics or handle AGENT_EVENT
             if (activeUsername === data.message.username) {
               const newState = data.message.state;
-              setActiveState(newState);
-              console.log("Active State:", newState);
-              if (activeState === "OFFLINE" || activeState === "AVAILABLE") {
-                setActiveContactID("No call in progress");
-                setActualSentiment("No call in progress");
+              //update state and save it in session storage
+              if (newState){
+                setActiveState(newState);
+                console.log("Active State:", newState);
+                const unhandledInteractionsData = sessionStorage.getItem('unhandledInteractions');
+                let unhandledInteractions: UnhandledInteractions[] = unhandledInteractionsData ? JSON.parse(unhandledInteractionsData) : [];
+          
+                const matchedInteraction = unhandledInteractions.find((i: any) => i.state.contactId === activeContactID);
+                if (matchedInteraction) {
+                  //delete metrics if call has ended
+                  if (newState === "ACW" || newState !== "ON CALL") {
+                    console.log("REMOVING UNHANDLED INTERACTIONS");
+                    unhandledInteractions = unhandledInteractions.filter((i: any) => i.state.contactId !== activeContactID);
+                    sessionStorage.setItem('unhandledInteractions', JSON.stringify(unhandledInteractions));
+                  }
+                }
+               
+                if (activeState === "OFFLINE" || activeState === "AVAILABLE") {
+                  setActiveContactID("No call in progress");
+                  setActualSentiment("No call in progress");
+                }
               }
-            }
-            if (activeState === "ACW"){
-              sessionStorage.removeItem('unhandledInteractions');
-            }
+          }
             console.log("Segment type = AGENT EVENT", data.message.state); // Mostrar los datos de los segmentos en la consola
           } else if (segmentType === "SENTIMENT_ANALYSIS") {
             // Update sentiment analysis
@@ -165,6 +213,8 @@ const CallOverview: React.FunctionComponent = () => {
       };
     }
   }, [socket, agentInfo, setActiveState]);
+
+  
 
   const usernamePic = agentInfo?.username;
   console.log("UsernamePic:", usernamePic);
@@ -264,8 +314,41 @@ const CallOverview: React.FunctionComponent = () => {
         updatedMetrics.nonTalk += Math.floor((segment.EndOffsetMillis - segment.BeginOffsetMillis) / 1000);
       }
 
-      //calculate call duration 
-      updatedMetrics.callDuration = updatedMetrics.callDuration + Math.floor((segment.EndOffsetMillis - segment.BeginOffsetMillis) / 1000);
+      //handle metrics in session storage
+      const unhandledInteractionsData = sessionStorage.getItem('unhandledInteractions');
+      let unhandledInteractions: UnhandledInteractions[] = unhandledInteractionsData ? JSON.parse(unhandledInteractionsData) : [];
+
+      const matchedInteraction = unhandledInteractions.find((i: any) => i.state.contactId === activeContactID);
+      if (matchedInteraction) {
+        // Update the metrics for the matched interaction
+        matchedInteraction.state.callOverviewAnalytics = updatedMetrics;
+        matchedInteraction.state.state = segment.state;
+
+        //delete metrics if call has ended
+        if (matchedInteraction.state.state === "ACW" || matchedInteraction.state.state !== "ON CALL") {
+          unhandledInteractions = unhandledInteractions.filter((i: any) => i.state.contactId !== activeContactID);
+        }
+      } else {
+        const newInteraction = {
+          state: {
+            key: segment.Id,
+            segmentType: 'SENTIMENT_ANALYSIS',
+            agentFirstName: '',
+            agentLastName: '',
+            state: 'ON CALL',
+            contactId: segment.contactId,
+            Sentiment: segment.Sentiment,
+            username: '',
+            routingProfile: '',
+            callOverviewAnalytics: updatedMetrics
+          },
+          sentiment: segment
+        };
+        unhandledInteractions.push(newInteraction);
+      }
+
+      sessionStorage.setItem('unhandledInteractions', JSON.stringify(unhandledInteractions));
+      console.log("UPDATED CO METRICS: ", unhandledInteractions);
 
       return updatedMetrics; // Return the updated metrics
     });
@@ -290,8 +373,6 @@ const CallOverview: React.FunctionComponent = () => {
       { id: "Neutral", label: "Neutral", value: metrics.sentimentPercentages.NEUTRAL, color: "#7E7F83" },
       { id: "Negative", label: "Negative", value: metrics.sentimentPercentages.NEGATIVE, color: "#B72015" },
     ]);
-
-    setCallDuration(formatDuration(metrics.callDuration)); // Ensure callDuration is formatted
 
     console.log("Agent Talk:", metrics.agentTalk);
     console.log("Customer Talk:", metrics.customerTalk);

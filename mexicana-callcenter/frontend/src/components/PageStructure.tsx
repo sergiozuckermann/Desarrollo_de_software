@@ -199,10 +199,6 @@ const PageStructure: FunctionComponent<PageStructureProps> = ({ title, children 
     else {
         updatedMetrics.nonTalk+=parseFloat(((segment.EndOffsetMillis-segment.BeginOffsetMillis)/1000).toFixed(2));
     }
-
-    //calculate call duration 
-    updatedMetrics.callDuration = updatedMetrics.callDuration + parseFloat(((segment.EndOffsetMillis - segment.BeginOffsetMillis) / 1000).toFixed(2));
-    
     return updatedMetrics; // Return the updated metrics
   };
 
@@ -216,7 +212,13 @@ const PageStructure: FunctionComponent<PageStructureProps> = ({ title, children 
       ws.onmessage = (event) => {
         // onmessage event to receive data
         const data = JSON.parse(event.data);
+        const segment = data.message;
+        const contactIdsToFilter = ["9272a5e8-ac7b-4402-bde9-04ddc3d85d1c","ac482bb5-cbed-473b-b04c-82f68220515e"];
 
+        if (contactIdsToFilter.includes(segment.contactId)) {
+          console.log("Filtered out message with contact ID:", contactIdsToFilter);
+          return;
+        }
         console.log("data ws: ", data)
 
         if (data) {

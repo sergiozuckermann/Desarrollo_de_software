@@ -4,9 +4,8 @@ import PageStructure from "../components/PageStructure";
 import CellGrid from "../components/CellGrid";
 import GraphAgentStructure from "../components/GraphAgentStructure";
 import { useWebSocket } from "../hooks/useWebSocket";
-import { Interaction, SentimentSegment, AgentsOnCall, UnhandledInteractions } from "../utils/interfaces";
+import { Interaction, SentimentSegment, AgentsOnCall, UnhandledInteractions, callOverviewAnalytics } from "../utils/interfaces";
 import InfoCard from "../components/InfoCard";
-import { updateMetrics } from "../services/COMetricsUtils";
 
 interface PieChartDataItem {
   id: string | number;
@@ -125,7 +124,7 @@ const OngoingCalls: React.FunctionComponent = () => {
             callStartTime: segment.state === "ON CALL" ? interaction.callStartTime || Date.now() : 0
           } : interaction
         );
-        console.log("startTime", segment.callStartTime)
+        console.log("startTime", segment.agentFirstName, segment.callStartTime)
 
         // Save the updated interactions array back to local storage as a JSON string
         sessionStorage.setItem(
@@ -249,6 +248,49 @@ const OngoingCalls: React.FunctionComponent = () => {
     }
     updateSessionStorageCOMetrics(segment)
   };
+
+//calculate metrics for call overview
+const updateMetrics = (segment: SentimentSegment, currentMetrics:callOverviewAnalytics) => {
+  // Update your metrics based on the segment data
+  console.log('Updating metrics in ONGOINGCALLS: ', segment);
+
+  //format values for sentiment trend chart
+  const sentimentValue= segment.Sentiment==="POSITIVE" ? 1 : segment.Sentiment==="NEGATIVE" ? -1 : 0
+  const timeStamp=parseFloat((segment.BeginOffsetMillis/1000).toFixed(2));
+
+  //get stored metrics
+  const updatedMetrics: callOverviewAnalytics = {
+      agentTalk:currentMetrics.agentTalk,
+      customerTalk:currentMetrics.customerTalk,
+      nonTalk:currentMetrics.nonTalk,
+      sentimentTrend:[...currentMetrics.sentimentTrend,{x:timeStamp,y:sentimentValue}],
+      sentimentPercentages:{
+        POSITIVE:currentMetrics.sentimentPercentages.POSITIVE,
+        NEGATIVE:currentMetrics.sentimentPercentages.NEGATIVE,
+        NEUTRAL:currentMetrics.sentimentPercentages.NEUTRAL
+      },
+      callDuration:currentMetrics.callDuration
+    }
+
+  const sentimentKey = segment.Sentiment as 'POSITIVE' | 'NEGATIVE' | 'NEUTRAL';
+  updatedMetrics.sentimentPercentages[sentimentKey]+=1;
+
+  //increment intervention times by participant (for agent talk, customer talk, non talk)
+  if(segment.ParticipantRole==="AGENT") {
+      updatedMetrics.agentTalk+= parseFloat(((segment.EndOffsetMillis-segment.BeginOffsetMillis)/1000).toFixed(2));
+  }
+  else if(segment.ParticipantRole==="CUSTOMER") {
+      updatedMetrics.customerTalk+=parseFloat(((segment.EndOffsetMillis-segment.BeginOffsetMillis)/1000).toFixed(2));
+  }
+  else {
+      updatedMetrics.nonTalk+=parseFloat(((segment.EndOffsetMillis-segment.BeginOffsetMillis)/1000).toFixed(2));
+  }
+
+  //calculate call duration 
+  updatedMetrics.callDuration = updatedMetrics.callDuration + parseFloat(((segment.EndOffsetMillis - segment.BeginOffsetMillis) / 1000).toFixed(2));
+  
+  return updatedMetrics; // Return the updated metrics
+};
 
 //Define function to keep calculating real time metrics of call overview
 const updateSessionStorageCOMetrics = (segment: SentimentSegment) => {
@@ -422,17 +464,6 @@ const updateAllAgentStatus = (action: string) => {
           processSentimentAnalysis(unhandled.sentiment)
         }
       })
-
-      //sessionStorage.removeItem('unhandledInteractions')
-      // const remainingUnhandled = unhandledInteractions.filter(
-      //   unhandled => !unhandled.state.callOverviewAnalytics
-      // )
-
-      // if (remainingUnhandled.length === 0) {
-      //   sessionStorage.removeItem('unhandledInteractions')
-      // } else {
-      //   sessionStorage.setItem('unhandledInteractions', JSON.stringify(remainingUnhandled))
-      // }
     }
   }, [])
 
@@ -447,16 +478,23 @@ const updateAllAgentStatus = (action: string) => {
         // onmessage event to receive data
         const data = JSON.parse(event.data);
         const segment = data.message;
-        console.log("data: ", segment);
+        const contactIdsToFilter = ["9272a5e8-ac7b-4402-bde9-04ddc3d85d1c","ac482bb5-cbed-473b-b04c-82f68220515e"];
+
+        if (contactIdsToFilter.includes(segment.contactId)) {
+          console.log("Filtered out message with contact ID:", contactIdsToFilter);
+          return;
+        }
 
         if (segment) {
           // check if segment exists
           const { segmentType } = segment;
           if (segmentType == "AGENT_EVENT") {
             // segment of type agent event
+            console.log("Agent received", segment);
             processEvent(segment);
           } else if (segmentType == "SENTIMENT_ANALYSIS") {
             // segment of type sentiment analysis
+            console.log("Sentiment received", segment);
             processSentimentAnalysis(segment);
           }
 
