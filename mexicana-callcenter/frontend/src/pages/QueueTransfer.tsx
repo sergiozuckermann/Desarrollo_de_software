@@ -7,8 +7,8 @@ import axios from 'axios';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 import { CardsContainer, SearchContainer, SearchInput, SearchButton, InstructionText, AgentContainer } from '../components/AgentTransferComponents';
-
-
+import conf from '../conf';
+const API_URL = conf.apiUrl//'http://localhost:3000';
 const AgentRoutingProfile = () => {
   type Agent = {
     id: string;
@@ -61,7 +61,7 @@ const AgentRoutingProfile = () => {
         },
       };
 
-      await axios.post('http://localhost:3000/Supervisor/update-routing-profile',
+      await axios.post(`${API_URL}/Supervisor/update-routing-profile`,
         { userId: agentId, routingProfileId: newRoutingProfileId }, config
       );
 
