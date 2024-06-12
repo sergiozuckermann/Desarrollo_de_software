@@ -82,7 +82,7 @@ const GraphAgentStructure: React.FunctionComponent<GraphAgentStructureProps> = (
           </div>
         </div>
         <div className="w-full">
-          <h1 className="mb-4 text-3xl text-center font-roboto sm:text-left dark:text-white">Agent Availability</h1>
+          <h1 className="mb-4 text-3xl text-center font-roboto sm:text-left dark:text-white">Call Distribution</h1>
           <div className="flex justify-center">
             <div style={{ width: '100%', height: '300px' }}>
               {agentsAvailability.every(a => a.value === 0) ? (
