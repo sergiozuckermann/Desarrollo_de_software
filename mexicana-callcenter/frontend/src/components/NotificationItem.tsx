@@ -53,8 +53,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
   };
 
   const shouldShowCallOverviewButton =
-    title.toLowerCase().includes("call") ||
-    title.toLowerCase().includes("bad sentiment");
+    title.toLowerCase().includes("negative sentiment")
 
   // agent overview, queue graphs
   const handleOnGoingCalls= () => {
@@ -62,7 +61,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
   };
   
   const shouldShowOnGoingCallsButton =
-    title.toLowerCase().includes("queue is too long");
+    title.toLowerCase().includes("new call");
 
   return (
     <div
