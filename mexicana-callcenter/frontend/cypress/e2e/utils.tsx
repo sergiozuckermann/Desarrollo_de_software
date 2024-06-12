@@ -32,5 +32,14 @@ export const testSupervisorPassword = "PassWord1!";
 export const testSupervisorHomeUrl = "/Supervisor/home";
 // Agent
 export const testAgentUsername = "gil"; // TODO: Create an agent with username "testAgentUsername"
+export const testAgentName = "Gil";
+export const testAgentLastName = "Echeverria";
 export const testAgentPassword = "PassWord1!";
 export const testAgentHomeUrl = "/Agent/home";
+export const testAgentProfileFlightManagement = "Flight Management";
+
+
+// Invalid data for testing
+export const testUsernameInvalid = "invalidAgentUsername";
+export const testNameInvalid = "invalidAgentName";
+export const testLastNameInvalid = "invalidAgentLastName";

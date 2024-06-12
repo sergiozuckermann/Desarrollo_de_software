@@ -131,20 +131,23 @@ const AgentRoutingProfile = () => {
           placeholder="Name"
           value={searchName}
           onChange={(e) => setSearchName(e.target.value)}
+          data-cy="search-name"
         />
         <SearchInput
           type="text"
           placeholder="Last Name"
           value={searchLastName}
           onChange={(e) => setSearchLastName(e.target.value)}
+          data-cy="search-lastname"
         />
         <SearchInput
           type="text"
           placeholder="Username"
           value={searchUsername}
           onChange={(e) => setSearchUsername(e.target.value)}
+          data-cy="search-username"
         />
-        <SearchButton clicked={buttonClicked} onClick={handleSearch}>
+        <SearchButton clicked={buttonClicked} onClick={handleSearch} data-cy="search-submit">
           Search
         </SearchButton>
       </SearchContainer>
