@@ -22,6 +22,7 @@ const CellGrid: React.FunctionComponent<CellGridProps> = ({ data }) => {
       sentiment: interaction.Sentiment,
       routingProfile: interaction.routingProfile,
       username: interaction.username,
+      callStartTime: interaction.callStartTime || 0,
     };
     sessionStorage.setItem("selectedAgent", JSON.stringify(agentInfo));
     navigate('/Supervisor/calloverview');
@@ -47,7 +48,7 @@ const CellGrid: React.FunctionComponent<CellGridProps> = ({ data }) => {
                 <MoodIndicator moodValue={interaction.Sentiment || "NEUTRAL"} />
               </div>
               <div className="flex items-center justify-center">
-                <CallTimeDisplay callStartTime={interaction.callStartTime || Date.now()} />
+                <CallTimeDisplay callStartTime={interaction.callStartTime || 0} />
               </div>
             </div>
           </div>

@@ -119,8 +119,13 @@ const OngoingCalls: React.FunctionComponent = () => {
         // Map through the current interactions to replace the interaction
         // where the key matches with the new segment data
         const updatedInteractions = currentInteractions.map((interaction) =>
-          interaction.key === segment.key ? {...interaction, ...segment, callStartTime: segment.state === "ON CALL" ? Date.now() : interaction.callStartTime} : interaction
+          interaction.key === segment.key ? {
+            ...interaction, 
+            ...segment, 
+            callStartTime: segment.state === "ON CALL" ? interaction.callStartTime || Date.now() : 0
+          } : interaction
         );
+        console.log("startTime", segment.callStartTime)
 
         // Save the updated interactions array back to local storage as a JSON string
         sessionStorage.setItem(
@@ -132,7 +137,7 @@ const OngoingCalls: React.FunctionComponent = () => {
         setInteractions(updatedInteractions);
       } else {
         // If no established interaction was found
-        const newData = [...currentInteractions];
+        const newData = [...currentInteractions]
         // Add the new segment to the array
         newData.push(segment);
 

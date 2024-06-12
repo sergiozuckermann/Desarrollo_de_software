@@ -15,11 +15,16 @@ const CallTimeDisplay: React.FunctionComponent<CallTimeDisplayProps> = ({callSta
   };
 
   useEffect(() => {
+    if(callStartTime !== 0) {
     const interval = setInterval(() => {
       const duration = Math.floor((Date.now() - callStartTime) / 1000);
       setCallTime(formatDuration(duration));
+      return () => clearInterval(interval);
     }, 1000);
-    return () => clearInterval(interval);
+  } else {
+    setCallTime('00:00:00');
+  }
+
 }, [callStartTime]); 
 
   return (
