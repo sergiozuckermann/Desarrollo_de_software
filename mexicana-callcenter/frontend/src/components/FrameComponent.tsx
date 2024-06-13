@@ -1,9 +1,15 @@
+// Frame Component for each page
+// Imports necessaryl libraries and hooks
 import { FunctionComponent } from "react";
 import { useAuth } from "../hooks/useAuth";
 
+//Defines the FrameComponent
 const FrameComponent: FunctionComponent = () => {
+  // Uses the useAuth hook to get the logout function
   const { logout } = useAuth()
+  // Returns the JSX of the FrameComponent
   return (
+    // Header component with the logo, page title, notifications and logout button
     <header className="self-stretch bg-tertiary flex flex-row items-start justify-between pt-[15px] pb-2.5 pr-[41px] pl-2.5 box-border top-[0] z-[99] sticky max-w-full gap-[20px] text-center text-lg text-black font-paragraph">
       <div className="h-[100px] w-[1280px] relative bg-tertiary hidden max-w-full" />
       <div className="w-[269px] flex flex-row items-start justify-start py-2 pr-0 pl-[34px] box-border relative gap-[81px] z-[1] mq450:gap-[81px_40px]">
