@@ -176,9 +176,16 @@ const PageStructure: FunctionComponent<PageStructureProps> = ({ title, children 
       ws.onmessage = (event) => {
         const data = JSON.parse(event.data);
         if (data) {
-          const segment = data.message;
-          if (segment.notification) {
-            processNotification(segment.notification);
+          const segment = data.message
+          const contactIdsToFilter = ["9272a5e8-ac7b-4402-bde9-04ddc3d85d1c","ac482bb5-cbed-473b-b04c-82f68220515e"];
+          if (contactIdsToFilter.includes(segment.contactId)) {
+            console.log("Filtered out message with contact ID:", contactIdsToFilter);
+            return;
+          }
+  
+          if(segment.notification) {
+            console.log("received notification: ", segment)
+            processNotification(segment.notification)
           }
 
           if (window.location.pathname !== '/supervisor/ongoingcalls') {
