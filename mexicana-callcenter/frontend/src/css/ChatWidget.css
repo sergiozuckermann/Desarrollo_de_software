@@ -1,48 +1,56 @@
+/* Styles for the chat widget container */
 .chat-widget-container {
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 300px;
-    margin: 20px;
-  }
-  
-  .chat-history {
-    padding: 10px;
-    height: 200px;
-    overflow-y: scroll;
-  }
-  
-  .chat-message {
-    margin-bottom: 10px;
-  }
-  
-  .sent {
-    text-align: right;
-  }
-  
-  .received {
-    text-align: left;
-  }
-  
-  .chat-sender {
-    font-weight: bold;
-  }
-  
-  .chat-input {
-    display: flex;
-    padding: 10px;
-  }
-  
-  .chat-input input {
-    flex: 1;
-    margin-right: 10px;
-  }
-  
-  .chat-input button {
-    padding: 5px 10px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-  }
-  
+  border: 1px solid #ccc; /* Adds a border around the container */
+  border-radius: 5px; /* Rounds the corners of the border */
+  width: 300px; /* Sets the width of the container */
+  margin: 20px; /* Adds some spacing around the container */
+}
+
+/* Styles for the chat history area */
+.chat-history {
+  padding: 10px; /* Adds some padding within the chat history area */
+  height: 200px; /* Sets the height of the chat history area */
+  overflow-y: scroll; /* Adds a vertical scrollbar if the content exceeds the height */
+}
+
+/* Styles for individual chat messages */
+.chat-message {
+  margin-bottom: 10px; /* Adds some spacing between chat messages */
+}
+
+/* Styles for sent messages */
+.sent {
+  text-align: right; /* Aligns the message to the right */
+}
+
+/* Styles for received messages */
+.received {
+  text-align: left; /* Aligns the message to the left */
+}
+
+/* Styles for the chat sender name */
+.chat-sender {
+  font-weight: bold; /* Makes the sender name bold */
+}
+
+/* Styles for the chat input area */
+.chat-input {
+  display: flex; /* Displays the input and button side by side */
+  padding: 10px; /* Adds some padding within the input area */
+}
+
+/* Styles for the chat input field */
+.chat-input input {
+  flex: 1; /* Makes the input field take up remaining space */
+  margin-right: 10px; /* Adds some spacing between the input and button */
+}
+
+/* Styles for the chat send button */
+.chat-input button {
+  padding: 5px 10px; /* Adds some padding to the button */
+  background-color: #007bff; /* Sets the background color of the button */
+  color: #fff; /* Sets the text color of the button */
+  border: none; /* Removes the button border */
+  border-radius: 3px; /* Rounds the corners of the button */
+  cursor: pointer; /* Changes the cursor to a pointer on hover */
+}
