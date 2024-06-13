@@ -1,11 +1,11 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import { useAuth } from "../hooks/useAuth"; 
-import { DarkModeContext } from '../Provider/ThemeProvider';
+import { useDarkMode } from '../hooks/useDarkMode';
 
 function SettingsButton() {
     const [isActive, setIsActive] = useState(false);
     const { logout } = useAuth(); // Assuming logout is a method provided by useAuth
-    const { darkMode, setDarkMode } = useContext(DarkModeContext);
+    const { darkMode, setDarkMode } = useDarkMode();
 
     const toggleIsActive = () => {
         setIsActive(!isActive);

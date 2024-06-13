@@ -1,12 +1,5 @@
 import React, { useRef } from 'react';
-import { Button } from '@material-ui/core';
-import ListItemText from '@material-ui/core/ListItemText';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import Paper from '@material-ui/core/Paper';
+import { Button, CssBaseline, Container, Grid, List, ListItem, ListItemText, Paper } from '@mui/material';
 
 interface Props {
   isConnected: boolean;

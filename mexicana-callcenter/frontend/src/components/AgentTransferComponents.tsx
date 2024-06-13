@@ -1,6 +1,4 @@
 import styled from 'styled-components';
-import { useContext } from 'react';
-import { DarkModeContext } from '../Provider/ThemeProvider';
 
 // Styled components
 const CardsContainer = styled.div`
