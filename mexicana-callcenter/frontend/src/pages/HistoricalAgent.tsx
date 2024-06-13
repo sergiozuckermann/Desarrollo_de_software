@@ -14,10 +14,17 @@ import { useAuth } from '../hooks/useAuth';
 
 Modal.setAppElement('#root');
 
+type Metric = "Flight Management" | "Travel Information" | "Special Assistance" | "Website Assistance" | "Other Questions" | "Customer Service";
+
+interface DataPoint {
+  metric: Metric;
+  value: number;
+}
+
 const MainContent: React.FC = () => {
     const { username: loggedInAgentId } = useAuth();
-    const [filters, setFilters] = useState({
-        agentId: loggedInAgentId, // Default to the logged-in agent's username
+    const [filters, setFilters] = useState<Record<string, string>>({
+        agentId: loggedInAgentId || '', // Default to the logged-in agent's username
         startTime: '',
         endTime: '',
         queue: '',
@@ -44,24 +51,24 @@ const MainContent: React.FC = () => {
         }
     }, [averageAbandonTime, averageQueueAnswerTime]);
 
-    const handleApplyFilters = (newFilters) => {
+    const handleApplyFilters = (newFilters: Record<string, string>) => {
         setIsApplyingFilters(true);
-        setFilters({ ...newFilters, agentId: loggedInAgentId }); // Ensure agentId is the logged-in agent's username
+        setFilters({ ...newFilters, agentId: loggedInAgentId || '' }); // Ensure agentId is the logged-in agent's username
     };
 
     if (averageAbandonTime === null || averageQueueAnswerTime === null) {
         return <div>Loading...</div>;
     }
 
-    const ServiceData = [{ metric: "Service Level", percentage: ServiceLevel !== null ? ServiceLevel : 0 }];
+    const ServiceData = [{ metric: "Customer Service", percentage: ServiceLevel !== null ? ServiceLevel : 0 }];
 
-    const AbandonData = averageAbandonTime !== null && averageAbandonTime.length > 0
-        ? averageAbandonTime.map(item => ({ metric: item.label, value: item.value }))
-        : [{ metric: "No Data", value: 0 }];
+    const AbandonData: DataPoint[] = averageAbandonTime !== null && averageAbandonTime.length > 0
+        ? averageAbandonTime.map(item => ({ metric: item.label as Metric, value: item.value }))
+        : [{ metric: "Other Questions", value: 0 }];
 
-    const AnswerData = averageQueueAnswerTime !== null && averageQueueAnswerTime.length > 0
-        ? averageQueueAnswerTime.map(item => ({ metric: item.label, value: item.value }))
-        : [{ metric: "No Data", value: 0 }];
+    const AnswerData: DataPoint[] = averageQueueAnswerTime !== null && averageQueueAnswerTime.length > 0
+        ? averageQueueAnswerTime.map(item => ({ metric: item.label as Metric, value: item.value }))
+        : [{ metric: "Other Questions", value: 0 }];
 
     const totalOccupancy = agentOccupancy && agentOccupancy.length > 0
         ? agentOccupancy.reduce((acc, curr) => acc + curr.value, 0)

@@ -7,7 +7,9 @@ import axios from 'axios';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 import { CardsContainer, SearchContainer, SearchInput, SearchButton, InstructionText, AgentContainer } from '../components/AgentTransferComponents';
+import conf from '../conf';
 
+const API_URL = conf.apiUrl;//'http://localhost:3000';
 
 const AgentRoutingProfile = () => {
   type Agent = {
@@ -18,14 +20,12 @@ const AgentRoutingProfile = () => {
     routingProfileId: string;
   };
 
-
-  const [agents, setAgents] = useState<Agent[]>([]); // State to store the agents
-  const [loading, setLoading] = useState(true); // State to store the loading status
-  const [searchName, setSearchName] = useState(''); // State to store the name
-  const [searchLastName, setSearchLastName] = useState(''); // State to store the last name
-  const [searchUsername, setSearchUsername] = useState(''); // State to store the username
-  const [buttonClicked, setButtonClicked] = useState(false); // State to store the button clicked status
-
+  const [agents, setAgents] = useState<Agent[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [searchName, setSearchName] = useState('');
+  const [searchLastName, setSearchLastName] = useState('');
+  const [searchUsername, setSearchUsername] = useState('');
+  const [buttonClicked, setButtonClicked] = useState(false);
 
   const routingProfilesMap = {
     'cef57a3d-e69c-410f-a52a-511cdd89664b': 'Flight Management',
@@ -61,7 +61,7 @@ const AgentRoutingProfile = () => {
         },
       };
 
-      await axios.post('http://localhost:3000/Supervisor/update-routing-profile',
+      await axios.post(`${API_URL}/Supervisor/update-routing-profile`,
         { userId: agentId, routingProfileId: newRoutingProfileId }, config
       );
 
@@ -80,6 +80,9 @@ const AgentRoutingProfile = () => {
   };
 
   const handleSearch = () => {
+    setButtonClicked(true); // Mark the button as clicked
+    setTimeout(() => setButtonClicked(false), 2000); // Reset after 2 seconds for visual feedback
+
     const agent = agents.find(agent =>
       agent.name.toLowerCase().includes(searchName.toLowerCase()) &&
       agent.lastname.toLowerCase().includes(searchLastName.toLowerCase()) &&
@@ -105,8 +108,6 @@ const AgentRoutingProfile = () => {
     }
   };
 
-
-
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -118,7 +119,7 @@ const AgentRoutingProfile = () => {
     }
     acc[routingProfileId].push(agent);
     return acc;
-  }, {} as { [key: string]: any[] }); // Add index signature to allow indexing with a string parameter
+  }, {} as { [key: string]: any[] });
 
   return (
     <div style={{ height: '100%', overflowY: 'auto' }}>

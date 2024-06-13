@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
@@ -12,7 +12,7 @@ const defaultEndDate = new Date();
 defaultEndDate.setDate(defaultEndDate.getDate() - 1);
 defaultEndDate.setHours(23, 59, 59, 999);
 
-const queueMap = {
+const queueMap: { [key: string]: string } = {
     'Travel logistics': '292d0398-6089-42cc-9ec9-aee43d6202a6',
     'Flight Management': 'b65f8183-2d8b-42e4-9b37-f8dfa787c246',
     'Customer Service': 'f6d70469-1449-47c5-b93e-53b42de6dcc3',
@@ -22,16 +22,28 @@ const queueMap = {
     'Website Assistance': 'd19f9426-d75f-48eb-a68c-0bbda4ced434'
 };
 
-const Filter = ({ onApplyFilters, agentsList, isAgentFilterEditable, defaultAgentId }) => {
-    const [agentId, setAgentId] = useState(defaultAgentId || '');
-    const [startDate, setStartDate] = useState(defaultStartDate);
-    const [endDate, setEndDate] = useState(defaultEndDate);
-    const [queue, setQueue] = useState('');
-    const [showFilters, setShowFilters] = useState(false);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [modalMessage, setModalMessage] = useState('');
-    const [isResetting, setIsResetting] = useState(false); // Track reset state
-    const filterRef = useRef(null);
+interface FilterProps {
+    onApplyFilters: (filters: {
+        agentId: string;
+        queue: string;
+        startTime: string;
+        endTime: string;
+    }) => void;
+    agentsList: string[];
+    isAgentFilterEditable: boolean;
+    defaultAgentId?: string;
+}
+
+const Filter: React.FC<FilterProps> = ({ onApplyFilters, agentsList, isAgentFilterEditable, defaultAgentId }) => {
+    const [agentId, setAgentId] = useState<string>(defaultAgentId || '');
+    const [startDate, setStartDate] = useState<Date>(defaultStartDate);
+    const [endDate, setEndDate] = useState<Date>(defaultEndDate);
+    const [queue, setQueue] = useState<string>('');
+    const [showFilters, setShowFilters] = useState<boolean>(false);
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [modalMessage, setModalMessage] = useState<string>('');
+    const [isResetting, setIsResetting] = useState<boolean>(false); // Track reset state
+    const filterRef = useRef<HTMLFormElement>(null);
 
     const handleReset = () => {
         setAgentId(defaultAgentId || '');
@@ -48,19 +60,19 @@ const Filter = ({ onApplyFilters, agentsList, isAgentFilterEditable, defaultAgen
         }
     }, [isResetting]);
 
-    const showModal = (message) => {
+    const showModal = (message: string) => {
         setModalMessage(message);
         setIsModalOpen(true);
     };
 
-    const validateDates = () => {
+    const validateDates = (): boolean => {
         const today = new Date();
         const startDateValidBeforeToday = startDate < today;
         const startDateValidAfter2024 = startDate > new Date('2024-03-17');
         const endDateValidPast = endDate <= today;
         const endDateValidAfter2024 = endDate > new Date('2024-03-18');
         const rangeValid = startDate < endDate;
-        const daysDifference = Number((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+        const daysDifference = (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24);
 
         if (!startDateValidBeforeToday) {
             showModal("Not valid filters: Start date must be before today.");
@@ -89,7 +101,7 @@ const Filter = ({ onApplyFilters, agentsList, isAgentFilterEditable, defaultAgen
         return true;
     };
 
-    const handleSearch = (e) => {
+    const handleSearch = (e?: React.FormEvent) => {
         if (e) e.preventDefault();
         if (!validateDates()) return;
 
@@ -107,8 +119,8 @@ const Filter = ({ onApplyFilters, agentsList, isAgentFilterEditable, defaultAgen
         setShowFilters(!showFilters);
     };
 
-    const handleClickOutside = (event) => {
-        if (filterRef.current && !filterRef.current.contains(event.target)) {
+    const handleClickOutside = (event: MouseEvent) => {
+        if (filterRef.current && !filterRef.current.contains(event.target as Node)) {
             setShowFilters(false);
         }
     };
@@ -125,7 +137,7 @@ const Filter = ({ onApplyFilters, agentsList, isAgentFilterEditable, defaultAgen
             <div className="flex flex-col h-full p-2 bg-white border border-gray-200 shadow-lg rounded-xl">
                 <form ref={filterRef} onSubmit={handleSearch} className="flex flex-col justify-between h-full">
                     <div className="relative flex items-center justify-between w-full mb-2 rounded-md">
-                        <svg
+                    <svg
                             className="absolute block w-5 h-5 text-gray-400 left-2"
                             xmlns="http://www.w3.org/2000/svg"
                             width="24"
@@ -138,7 +150,7 @@ const Filter = ({ onApplyFilters, agentsList, isAgentFilterEditable, defaultAgen
                             strokeLinejoin="round"
                         >
                             <circle cx="11" cy="11" r="8"></circle>
-                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            <line x1="21" y="21" x2="16.65" y2="16.65"></line>
                         </svg>
                         <input
                             type="text"
@@ -201,7 +213,7 @@ const Filter = ({ onApplyFilters, agentsList, isAgentFilterEditable, defaultAgen
                                     <label htmlFor="startdate" className="text-sm font-medium text-stone-600">Start Date</label>
                                     <DatePicker
                                         selected={startDate}
-                                        onChange={(startDate) => setStartDate(startDate)}
+                                        onChange={(date: Date) => setStartDate(date)}
                                         className="block w-full px-2 py-1 mt-2 bg-gray-100 border border-gray-100 rounded-md shadow-sm outline-none cursor-pointer focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
                                     />
                                 </div>
@@ -209,7 +221,7 @@ const Filter = ({ onApplyFilters, agentsList, isAgentFilterEditable, defaultAgen
                                     <label htmlFor="enddate" className="text-sm font-medium text-stone-600">End Date</label>
                                     <DatePicker
                                         selected={endDate}
-                                        onChange={(endDate) => setEndDate(endDate)}
+                                        onChange={(date: Date) => setEndDate(date)}
                                         className="block w-full px-2 py-1 mt-2 bg-gray-100 border border-gray-100 rounded-md shadow-sm outline-none cursor-pointer focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
                                     />
                                 </div>

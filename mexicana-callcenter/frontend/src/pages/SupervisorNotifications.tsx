@@ -10,6 +10,7 @@ interface Notification {
   title: string;
   message: string;
   date: string;
+  isRead: boolean;
 }
 
 const SupervisorNotifications: React.FunctionComponent = () => {
@@ -31,7 +32,7 @@ const SupervisorNotifications: React.FunctionComponent = () => {
   }, []);
 
   useEffect(() => {
-    const fetchData = () => {
+    const fetchData = async () => {
       const notificationsData = sessionStorage.getItem('notifications')
       if(notificationsData) {
         const notifications:Notification[] = JSON.parse(notificationsData)
@@ -150,14 +151,12 @@ const SupervisorNotifications: React.FunctionComponent = () => {
 
   return (
     <PageStructure title="Notifications">
-      <div className="flex flex-col w-full h-[90%] overflow-y-auto ">
+      <div className="flex flex-col w-full h-[90%] overflow-y-auto">
         <HorizontalTabs data={tabData} onTabChange={handleTabChange} />
       </div>
     </PageStructure>
   );
 };
-
-export default SupervisorNotifications;
 
 export const getUnreadNotificationsCount = () => {
   const storedReadNotifications = localStorage.getItem("readNotifications");
@@ -166,3 +165,5 @@ export const getUnreadNotificationsCount = () => {
   const deletedNotifications = storedDeletedNotifications ? JSON.parse(storedDeletedNotifications) : [];
   return notifications.filter((notification) => !readNotifications.includes(notification.id) && !deletedNotifications.includes(notification.id)).length;
 };
+
+export default SupervisorNotifications;

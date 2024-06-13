@@ -1,5 +1,13 @@
-// Button component
-const Button = ({ onClick, children, className = '', style = {} }) => {
+import { CSSProperties, FC, ReactNode } from 'react';
+
+interface ButtonProps {
+  onClick: () => void;
+  children: ReactNode;
+  className?: string;
+  style?: CSSProperties;
+}
+
+const Button: FC<ButtonProps> = ({ onClick, children, className = '', style = {} }) => {
   return (
     <button
       onClick={onClick}

@@ -1,6 +1,6 @@
 import axios from 'axios'
-
-const baseUrl = 'http://localhost:3000'
+import conf from '../conf';
+const baseUrl = conf.apiUrl;//'http://localhost:3000';
 
 const GetInfo = (userRole: string, username: string) => {
     const config = { // set headers

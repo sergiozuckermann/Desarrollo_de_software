@@ -1,5 +1,15 @@
 import React from 'react';
-import { FormInputProps } from "../types";
+
+interface FormInputProps {
+  type: string;
+  placeholder: string;
+  name: string;
+  required?: boolean;
+  value: string;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  icon?: string;
+  onIconClick?: () => void;
+}
 
 const FormInput: React.FC<FormInputProps> = ({
   type,
@@ -20,7 +30,7 @@ const FormInput: React.FC<FormInputProps> = ({
       <label htmlFor={name} className="sr-only">
         {placeholder}
       </label>
-      <div className="flex items-center  rounded-lg text-base sm:text-lg md:text-xl w-full">
+      <div className="flex items-center rounded-lg text-base sm:text-lg md:text-xl w-full">
         <input
           type={type}
           id={name}
@@ -29,7 +39,7 @@ const FormInput: React.FC<FormInputProps> = ({
           required={required}
           value={value}
           onChange={onChange}
-          className={`py-2 px-3 w-full text-base sm:text-lg md:text-xl rounded-lg border-2 border-gray-300 pr-12 pl-4`}
+          className="py-2 px-3 w-full text-base sm:text-lg md:text-xl rounded-lg border-2 border-gray-300 pr-12 pl-4"
           style={inputStyle}
         />
         {icon && (
