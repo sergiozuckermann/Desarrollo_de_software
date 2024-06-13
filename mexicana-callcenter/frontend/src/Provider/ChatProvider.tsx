@@ -1,15 +1,19 @@
+// Code that provides chat functionality using WebSockets
+
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useAuth } from '../hooks/useAuth';
 
+// Websocket URL
 const URL = 'wss://8qombs74rl.execute-api.us-east-1.amazonaws.com/production/';
 
+// Define the MessageData interface
 interface MessageData {
   members?: string[];
   publicMessage?: string;
   privateMessage?: string;
   systemMessage?: string;
 }
-
+// Custom hook that provides chat functionality using WebSockets
 const useChatProvider = () => {
   const socket = useRef<WebSocket | null>(null);
   const [isConnected, setIsConnected] = useState(false);
@@ -18,11 +22,13 @@ const useChatProvider = () => {
   const [privateMessages, setPrivateMessages] = useState<{ [key: string]: string[] }>({});
   const { username } = useAuth();
 
+  // Handler for WebSocket open event
   const onSocketOpen = useCallback(() => {
     setIsConnected(true);
     socket.current?.send(JSON.stringify({ action: 'setName', name: username }));
   }, [username]);
 
+  // Handler for WebSocket close event
   const onSocketClose = useCallback(() => {
     setMembers([]);
     setIsConnected(false);
@@ -30,11 +36,13 @@ const useChatProvider = () => {
     setPrivateMessages({});
   }, []);
 
+  // Handler for WebSocket message event
   const onSocketMessage = useCallback((dataStr: string) => {
     const data: MessageData = JSON.parse(dataStr);
 
+    // Check the type of message and update the state accordingly
     if (data.members) {
-        setMembers(data.members);
+        setMembers(data.members); // Update members list
     } else if (data.publicMessage && typeof data.publicMessage === 'string') {
         setPublicMessages(oldArray => [...oldArray, data.publicMessage].filter((msg): msg is string => !!msg));
     } else if (data.privateMessage && typeof data.privateMessage === 'string') {
@@ -55,6 +63,7 @@ const useChatProvider = () => {
     }
   }, []);
 
+  // Handler for connecting to the WebSocket
   const onConnect = useCallback(() => {
     if (socket.current?.readyState !== WebSocket.OPEN) {
       socket.current = new WebSocket(URL);
@@ -66,12 +75,14 @@ const useChatProvider = () => {
     }
   }, [onSocketOpen, onSocketClose, onSocketMessage]);
 
+  // Cleanup function to close the WebSocket connection
   useEffect(() => {
     return () => {
       socket.current?.close();
     };
   }, []);
 
+  // Handler for sending a private message
   const onSendPrivateMessage = useCallback((message: string, to: string) => {
     if (message.trim()) {
         socket.current?.send(JSON.stringify({
@@ -90,6 +101,7 @@ const useChatProvider = () => {
     }
   }, []);
 
+  // Handler for sending a public message
   const onSendPublicMessage = useCallback((message: string) => {
     if (message.trim()) {
         socket.current?.send(JSON.stringify({
@@ -100,8 +112,11 @@ const useChatProvider = () => {
     }
   }, []);
 
+  // Destructure the 'logout' function from the 'useAuth' hook
   const { logout } = useAuth();
 
+
+  // Disconnect from WebSocket server and logout
   const onDisconnect = useCallback(() => {
     if (isConnected) {
       socket.current?.close();
@@ -109,6 +124,7 @@ const useChatProvider = () => {
     }
   }, [isConnected, logout]);
 
+  // Return chat-related states and functions
   return {
     isConnected,
     members,
