@@ -49,7 +49,6 @@ const CallOverview: React.FunctionComponent = () => {
   const [agentInfo, setAgentInfo] = useState<Interaction | null>(null);
   const [userImage, setImageURL] = useState<string | null>(null);
   const { role, username, logout } = useAuth();
-  const [userInfo, setUserInfo] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
   const [activeState, setActiveState] = useState("No data available");
   const [activeContactID, setActiveContactID] = useState("No call in progress");
@@ -195,7 +194,6 @@ const CallOverview: React.FunctionComponent = () => {
     userService
       .GetInfo(role!, username!) // call function that makes axios request
       .then((user) => {
-        setUserInfo(user); // set userInfo state with the result from the request if it is successful
         setUserId(user.connectUserId); // store the user's id in the userId state variable
         console.log('User info:', user); // Print the user info
       })

@@ -12,18 +12,10 @@ import ConnectHere from '../components/ConnectHere';
 
 
 const MainContent = () => {
-  const [buttonMode, setButtonMode] = useState('workspace');
   const [userInfo, setUserInfo] = useState<WorkerCardProps | null>(null);
   const [userImage, setImageURL] = useState<string | null>(null);
   const { showError } = useCustomToast();
   const { role, username, logout } = useAuth()
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setButtonMode(prevMode => prevMode === 'workspace' ? 'calling' : 'workspace');
-    }, 10000);
-    return () => clearInterval(timer);
-  }, []);
 
   // execute call to backend url to fetch info of the user
   useEffect(() => {

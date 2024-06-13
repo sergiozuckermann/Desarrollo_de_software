@@ -2,7 +2,6 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import CallStatusIndicator from '../components/callStatusIndicator';
 import MoodIndicator from '../components/moodIndicator';
-import CallTimeDisplay from './callTimeDisplay';
 import { Interaction } from '../utils/interfaces';
 
 type CellGridProps = {
