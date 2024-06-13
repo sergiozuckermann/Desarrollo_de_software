@@ -68,7 +68,6 @@ export function FetchMetrics(filters: Record<string, string>): FetchMetricsResul
     const [contactFlowTime, setContactFlowTime] = useState<number | null>(null);
     const [agentOccupancy, setAgentOccupancy] = useState<{ label: string; value: number }[] | null>(null);
     const [agentsList, setAgentsList] = useState<string[]>([]);
-
     useEffect(() => {
         const fetchData = async () => {
             // Reset state before fetching new data

@@ -37,7 +37,6 @@ const GetQueueMetrics = () => {
 }
 
 const GetPerformanceMetrics = (type: string) => { //Average case resolution time (ACRT), Average customer hold time (ACHT), Average interaction time (AIT)
-    console.log(type);
     const config = { // set headers
         headers: {
             Authorization: `Bearer ${sessionStorage.getItem('token')}`,
