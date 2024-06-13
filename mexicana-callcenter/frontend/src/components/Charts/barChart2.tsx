@@ -6,7 +6,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 type Metric = "Flight Management" | "Travel Information" | "Special Assistance" | "Website Assistance" | "Other Questions" | "Customer Service" | "Unknown Queue";
 
 // Interface that defines the structure of the data used for the bar chart
-interface DataPoint {
+export interface DataPoint {
   metric: Metric;
   value: number;
 }
@@ -27,7 +27,17 @@ const barColors: Record<Metric, string> = {
   "Customer Service": "#4B4B4B",
   "Unknown Queue": "#CCCCCC" 
 };
-
+// Custom tick component
+const CustomTick = (props: any) => {
+  const { x, y, payload } = props;
+  return (
+    <g transform={`translate(${x},${y})`}>
+      <text x={0} y={0} dy={16} textAnchor="end" fill="#666" transform="rotate(-30)">
+        {payload.value}
+      </text>
+    </g>
+  );
+};
 const MyBarChart2: React.FC<MyBarChart2Props> = ({ data, unit }) => {
   // If there is no data, a message will be shown
   if (!data || data.length === 0) {
@@ -49,7 +59,7 @@ const MyBarChart2: React.FC<MyBarChart2Props> = ({ data, unit }) => {
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis
           dataKey="metric"
-          tick={{ angle: -30, textAnchor: 'end', fontSize: 10 }} // Adjusted angle and font size
+          tick={<CustomTick />} // Use the custom tick component
           interval={0}
         />
         <YAxis tickFormatter={(value) => `${value} ${unit}`} />

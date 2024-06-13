@@ -11,13 +11,15 @@ import 'react-tooltip/dist/react-tooltip.css';
 import { Tooltip } from 'react-tooltip';
 import Modal from 'react-modal';
 import { useAuth } from '../hooks/useAuth';
-
+import { DataPoint } from '../components/Charts/barChart2';
 Modal.setAppElement('#root');
+type Metric = "Flight Management" | "Travel Information" | "Special Assistance" | "Website Assistance" | "Other Questions" | "Customer Service" | "Unknown Queue";
 
 const MainContent: React.FC = () => {
     const { username: loggedInAgentId } = useAuth();
+    const [agentId] = useState<string | null>(loggedInAgentId);
     const [filters, setFilters] = useState({
-        agentId: loggedInAgentId, // Default to the logged-in agent's username
+        agentId: agentId ?? '',
         startTime: '',
         endTime: '',
         queue: '',
@@ -55,13 +57,22 @@ const MainContent: React.FC = () => {
 
     const ServiceData = [{ metric: "Service Level", percentage: ServiceLevel !== null ? ServiceLevel : 0 }];
 
-    const AbandonData = averageAbandonTime !== null && averageAbandonTime.length > 0
-        ? averageAbandonTime.map(item => ({ metric: item.label, value: item.value }))
-        : [{ metric: "No Data", value: 0 }];
+//    const AbandonData = averageAbandonTime !== null && averageAbandonTime.length > 0
+//        ? averageAbandonTime.map(item => ({ metric: item.label, value: item.value }))
+//        : [{ metric: "No Data", value: 0 }];
 
-    const AnswerData = averageQueueAnswerTime !== null && averageQueueAnswerTime.length > 0
-        ? averageQueueAnswerTime.map(item => ({ metric: item.label, value: item.value }))
-        : [{ metric: "No Data", value: 0 }];
+//    const AnswerData = averageQueueAnswerTime !== null && averageQueueAnswerTime.length > 0
+//        ? averageQueueAnswerTime.map(item => ({ metric: item.label, value: item.value }))
+//        : [{ metric: "No Data", value: 0 }];
+
+const AnswerData: DataPoint[] = averageQueueAnswerTime !== null && averageQueueAnswerTime.length > 0
+    ? averageQueueAnswerTime.map(item => ({ metric: item.label as Metric, value: item.value }))
+    : [{ metric: "Unknown Queue", value: 0 }];
+
+const AbandonData: DataPoint[] = averageAbandonTime !== null && averageAbandonTime.length > 0
+    ? averageAbandonTime.map(item => ({ metric: item.label as Metric, value: item.value }))
+    : [{ metric: "Unknown Queue", value: 0 }];
+        
 
     const totalOccupancy = agentOccupancy && agentOccupancy.length > 0
         ? agentOccupancy.reduce((acc, curr) => acc + curr.value, 0)
@@ -86,6 +97,7 @@ const MainContent: React.FC = () => {
             return `${seconds} seconds`;
         }
     };
+    
 
     return (
         <div className="grid w-full h-full grid-cols-12 grid-rows-6 gap-4 p-2 pt-5 overflow-y-auto">

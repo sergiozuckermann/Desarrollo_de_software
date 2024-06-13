@@ -2,6 +2,9 @@ import React from 'react';
 
 interface AHTProps {
   callDuration: string;
+  classificationTime: string;
+  currentTime: string;
+  exceededTime: string;
 }
 
 const AHT: React.FC<AHTProps> = ({ callDuration }) => {

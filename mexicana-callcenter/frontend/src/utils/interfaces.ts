@@ -3,7 +3,6 @@ export interface Credentials {
     password: string;
   }
   
-  
 export interface AuthContextType {
     isAuthenticated: boolean,
     name: string | null,

@@ -10,6 +10,8 @@ import MyPieChart from '../components/Charts/piechart';
 import 'react-tooltip/dist/react-tooltip.css';
 import { Tooltip } from 'react-tooltip';
 import Modal from 'react-modal';
+import { DataPoint } from '../components/Charts/barChart2';
+type Metric = "Flight Management" | "Travel Information" | "Special Assistance" | "Website Assistance" | "Other Questions" | "Customer Service" | "Unknown Queue";
 
 Modal.setAppElement('#root'); // Set the root element for accessibility
 
@@ -54,13 +56,22 @@ const MainContent: React.FC = () => {
 
     const ServiceData = [{ metric: "Service Level", percentage: ServiceLevel !== null ? ServiceLevel : 0 }];
 
-    const AbandonData = averageAbandonTime !== null && averageAbandonTime.length > 0
-        ? averageAbandonTime.map(item => ({ metric: item.label, value: item.value }))
-        : [{ metric: "No Data", value: 0 }];
+//    const AbandonData = averageAbandonTime !== null && averageAbandonTime.length > 0
+//        ? averageAbandonTime.map(item => ({ metric: item.label, value: item.value }))
+ //       : [{ metric: "No Data", value: 0 }];
 
-    const AnswerData = averageQueueAnswerTime !== null && averageQueueAnswerTime.length > 0
-        ? averageQueueAnswerTime.map(item => ({ metric: item.label, value: item.value }))
-        : [{ metric: "No Data", value: 0 }];
+//    const AnswerData = averageQueueAnswerTime !== null && averageQueueAnswerTime.length > 0
+//        ? averageQueueAnswerTime.map(item => ({ metric: item.label, value: item.value }))
+//        : [{ metric: "No Data", value: 0 }];
+
+        
+const AnswerData: DataPoint[] = averageQueueAnswerTime !== null && averageQueueAnswerTime.length > 0
+    ? averageQueueAnswerTime.map(item => ({ metric: item.label as Metric, value: item.value }))
+    : [{ metric: "Unknown Queue", value: 0 }];
+
+const AbandonData: DataPoint[] = averageAbandonTime !== null && averageAbandonTime.length > 0
+    ? averageAbandonTime.map(item => ({ metric: item.label as Metric, value: item.value }))
+    : [{ metric: "Unknown Queue", value: 0 }];
 
     const totalOccupancy = agentOccupancy && agentOccupancy.length > 0
         ? agentOccupancy.reduce((acc, curr) => acc + curr.value, 0)
