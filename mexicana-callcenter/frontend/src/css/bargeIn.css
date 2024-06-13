@@ -1,0 +1,18 @@
+/* Css to style barge in page*/
+
+/* Main container */
+.container {
+    @apply flex items-center justify-between px-4 py-10;  /* Apply Tailwind classes for flexbox layout, spacing, and alignment */
+}
+
+/* Rectangle component */
+.rectangle {
+    @apply flex-none p-2 m-2 overflow-auto text-black border-2;  /* Apply Tailwind classes for layout, overflow handling, border, padding, margin, and text color */
+    /* Set width and height */
+    width: 50vh;
+    height: 70vh; 
+    /* Set border and backgorund colors */
+    border-color: var(--border-color, #4F46E5);
+    background-color: var(--bg-color, #BFDBFE);
+    min-width: 0;  /* Prevent the element from shrinking below its content size */
+}
