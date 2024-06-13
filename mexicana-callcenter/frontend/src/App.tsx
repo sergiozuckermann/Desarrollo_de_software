@@ -1,3 +1,6 @@
+// Code that sets up the main application routes and renders components based on authentication and role
+
+// Import necessar modules, pages, and components
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Hello from './pages/Hello';
 import SignIn from './pages/SignIn';
@@ -27,11 +30,14 @@ import MyBadges from './pages/MyBadges';
 import MetricsAgent from './pages/HistoricalAgent';
 import AgentMetrics from './pages/AgentMetrics';
 
+// Define the main application component
 function App() {
   const { isAuthenticated, role } = useAuth(); // get user authentication status and role
 
+  // Render the application routes based on user authentication and role
   return (
       <>
+      {/* Enable drag-and-drop functionality using HTML5 backend */}
       <DndProvider backend={HTML5Backend}>
 
         <Routes>
@@ -41,6 +47,8 @@ function App() {
           <Route path="/signup" element={isAuthenticated ? <Navigate to={`/${role}/home`} /> : <SignUp />} />
 
       {/* Protected routes. Authentication and Authorization needed */}
+
+      {/* Agent Routes */}
       <Route element={<ProtectedRoute isAllowed={isAuthenticated && role === 'Agent'} />}>
           <Route path="/agent/home" element={< HomePage />} />
           <Route path="agent/workspace" element={< AgentHome />} />
@@ -53,6 +61,7 @@ function App() {
 
 
       </Route>
+      {/* Supervisor routes */}
       <Route element={<ProtectedRoute isAllowed={isAuthenticated && role === 'Supervisor'} />}>
           <Route path="/supervisor/bargein" element={<BargeIn />} />
           <Route path="/supervisor/home" element={<SupervisorMain />} />
