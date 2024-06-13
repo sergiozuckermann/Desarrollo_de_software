@@ -32,24 +32,28 @@ const useChatProvider = () => {
 
   const onSocketMessage = useCallback((dataStr: string) => {
     const data: MessageData = JSON.parse(dataStr);
+
     if (data.members) {
         setMembers(data.members);
     } else if (data.publicMessage && typeof data.publicMessage === 'string') {
-        setPublicMessages(oldArray => [...oldArray, data.publicMessage]);
+        setPublicMessages(oldArray => [...oldArray, data.publicMessage].filter((msg): msg is string => !!msg));
     } else if (data.privateMessage && typeof data.privateMessage === 'string') {
-        const [from, message] = data.privateMessage.split(': ');
-        setPrivateMessages(oldPrivateMessages => {
-            const newPrivateMessages = { ...oldPrivateMessages };
-            if (!newPrivateMessages[from]) {
-                newPrivateMessages[from] = [];
-            }
-            newPrivateMessages[from].push(`${from}: ${message}`);
-            return newPrivateMessages;
-        });
+        const [from, ...messageParts] = data.privateMessage.split(': ');
+        const message = messageParts.join(': '); // Ensure message is fully reconstructed
+        if (from && message) {
+            setPrivateMessages(oldPrivateMessages => {
+                const newPrivateMessages = { ...oldPrivateMessages };
+                if (!newPrivateMessages[from]) {
+                    newPrivateMessages[from] = [];
+                }
+                newPrivateMessages[from].push(`${from}: ${message}`);
+                return newPrivateMessages;
+            });
+        }
     } else if (data.systemMessage && typeof data.systemMessage === 'string') {
-        setPublicMessages(oldArray => [...oldArray, `system: ${data.systemMessage}`]);
+        setPublicMessages(oldArray => [...oldArray, `system: ${data.systemMessage}`].filter((msg): msg is string => !!msg));
     }
-}, []);
+  }, []);
 
   const onConnect = useCallback(() => {
     if (socket.current?.readyState !== WebSocket.OPEN) {
@@ -69,26 +73,31 @@ const useChatProvider = () => {
   }, []);
 
   const onSendPrivateMessage = useCallback((message: string, to: string) => {
-    socket.current?.send(JSON.stringify({
-      action: 'sendPrivate',
-      message,
-      to,
-    }));
-    setPrivateMessages(oldPrivateMessages => {
-      const newPrivateMessages = { ...oldPrivateMessages };
-      if (!newPrivateMessages[to]) {
-        newPrivateMessages[to] = [];
-      }
-      newPrivateMessages[to].push(`You: ${message}`);
-      return newPrivateMessages;
-    });
+    if (message.trim()) {
+        socket.current?.send(JSON.stringify({
+            action: 'sendPrivate',
+            message,
+            to,
+        }));
+        setPrivateMessages(oldPrivateMessages => {
+            const newPrivateMessages = { ...oldPrivateMessages };
+            if (!newPrivateMessages[to]) {
+                newPrivateMessages[to] = [];
+            }
+            newPrivateMessages[to].push(`You: ${message}`);
+            return newPrivateMessages;
+        });
+    }
   }, []);
 
   const onSendPublicMessage = useCallback((message: string) => {
-    socket.current?.send(JSON.stringify({
-      action: 'sendPublic',
-      message,
-    }));
+    if (message.trim()) {
+        socket.current?.send(JSON.stringify({
+            action: 'sendPublic',
+            message,
+        }));
+        setPublicMessages(oldArray => [...oldArray, message].filter((msg): msg is string => !!msg));
+    }
   }, []);
 
   const { logout } = useAuth();

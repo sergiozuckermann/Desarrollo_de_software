@@ -7,7 +7,10 @@ import { useAuth } from '../hooks/useAuth'
 import { WorkerCardProps } from '../utils/interfaces';
 import useCustomToast from "../components/LoginNotification";
 import userService from "../services/user"
+<<<<<<< quickfixCo
 
+=======
+>>>>>>> main
 
 const MainContent = () => {
   const [buttonMode, setButtonMode] = useState('workspace');

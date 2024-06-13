@@ -1,3 +1,4 @@
+// src/pages/Metrics.tsx
 import React, { useState, useEffect } from 'react';
 import PageStructure from '../components/PageStructure';
 import { FetchMetrics } from '../services/metrics';
@@ -10,12 +11,21 @@ import MyPieChart from '../components/Charts/piechart';
 import 'react-tooltip/dist/react-tooltip.css';
 import { Tooltip } from 'react-tooltip';
 import Modal from 'react-modal';
+import { useAuth } from '../hooks/useAuth';
 
-Modal.setAppElement('#root'); // Set the root element for accessibility
+Modal.setAppElement('#root');
+
+type Metric = "Flight Management" | "Travel Information" | "Special Assistance" | "Website Assistance" | "Other Questions" | "Customer Service" | "Service Level" | "No Data";
+
+interface DataPoint {
+    metric: Metric;
+    value: number;
+}
 
 const MainContent: React.FC = () => {
-    const [filters, setFilters] = useState({
-        agentId: '',
+    const { username: loggedInAgentId } = useAuth();
+    const [filters, setFilters] = useState<Record<string, string>>({
+        agentId: loggedInAgentId || '', // Default to the logged-in agent's username
         startTime: '',
         endTime: '',
         queue: '',
@@ -38,14 +48,13 @@ const MainContent: React.FC = () => {
 
     useEffect(() => {
         if (isApplyingFilters) {
-            // Assuming data fetching happens in the FetchMetrics hook
             setIsApplyingFilters(false);
         }
     }, [averageAbandonTime, averageQueueAnswerTime]);
 
-    const handleApplyFilters = (newFilters) => {
+    const handleApplyFilters = (newFilters: Record<string, string>) => {
         setIsApplyingFilters(true);
-        setFilters(newFilters);
+        setFilters({ ...newFilters, agentId: loggedInAgentId || '' }); // Ensure agentId is the logged-in agent's username
     };
 
     if (averageAbandonTime === null || averageQueueAnswerTime === null) {
@@ -54,13 +63,13 @@ const MainContent: React.FC = () => {
 
     const ServiceData = [{ metric: "Service Level", percentage: ServiceLevel !== null ? ServiceLevel : 0 }];
 
-    const AbandonData = averageAbandonTime !== null && averageAbandonTime.length > 0
-        ? averageAbandonTime.map(item => ({ metric: item.label, value: item.value }))
-        : [{ metric: "No Data", value: 0 }];
+    const AbandonData: DataPoint[] = averageAbandonTime !== null && averageAbandonTime.length > 0
+        ? averageAbandonTime.map(item => ({ metric: item.label as Metric, value: item.value }))
+        : [{ metric: "Other Questions", value: 0 }];
 
-    const AnswerData = averageQueueAnswerTime !== null && averageQueueAnswerTime.length > 0
-        ? averageQueueAnswerTime.map(item => ({ metric: item.label, value: item.value }))
-        : [{ metric: "No Data", value: 0 }];
+    const AnswerData: DataPoint[] = averageQueueAnswerTime !== null && averageQueueAnswerTime.length > 0
+        ? averageQueueAnswerTime.map(item => ({ metric: item.label as Metric, value: item.value }))
+        : [{ metric: "Other Questions", value: 0 }];
 
     const totalOccupancy = agentOccupancy && agentOccupancy.length > 0
         ? agentOccupancy.reduce((acc, curr) => acc + curr.value, 0)
@@ -145,7 +154,7 @@ const MainContent: React.FC = () => {
 
             {/* FILTER */}
             <div className="relative w-full h-full col-span-3 row-span-1 p-2 border-gray-400">
-            <Filter onApplyFilters={handleApplyFilters} agentsList={agentsList} isAgentFilterEditable={true} />
+                <Filter onApplyFilters={handleApplyFilters} agentsList={agentsList} isAgentFilterEditable={false} />
             </div>
 
             {/* Average Answer Time per Queue */}

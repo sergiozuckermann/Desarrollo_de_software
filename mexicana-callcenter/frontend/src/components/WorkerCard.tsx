@@ -1,11 +1,15 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { WorkerCardProps } from '../utils/interfaces';
-import { DarkModeContext } from '../Provider/ThemeProvider';
+import { useDarkMode } from '../hooks/useDarkMode';
 
 const WorkerCard: React.FC<WorkerCardProps> = ({ imageURL, name, username, position, experience, points, status }) => {
+<<<<<<< quickfixCo
   const context = useContext(DarkModeContext);
   const { darkMode } =context!;
 
+=======
+  const { darkMode } = useDarkMode();
+>>>>>>> main
   const statusClass = status === 'Active' ? 'bg-green-500' : 'bg-red-500';
 
   return (

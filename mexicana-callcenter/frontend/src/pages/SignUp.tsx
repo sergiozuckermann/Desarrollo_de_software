@@ -4,9 +4,9 @@ import "../css/global.css";
 import axios from "axios";
 import { FaUpload } from 'react-icons/fa';
 import { useNavigate } from "react-router-dom";
+import conf from '../conf';
 
-
-
+const API_URL = conf.apiUrl;//'http://localhost:3000';
 const SignUp: React.FC = () => {
   const navigate = useNavigate();
   const [firstName, setFirstName] = useState("");
@@ -28,7 +28,6 @@ const SignUp: React.FC = () => {
   const [fileLabelColor, setFileLabelColor] = useState(""); 
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
-
   const checkPasswordRequirements = (password: string) => {
     return /[a-z]/.test(password) && /[A-Z]/.test(password) && /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{8,}$/.test(password);
   };
@@ -40,13 +39,6 @@ const SignUp: React.FC = () => {
       showError(`🚨 Passwords do not match!`);
       return;
     }
-    // const formData = new FormData();
-    // if (file) {
-    //   const blob = new Blob([file], { type: file.type });
-    //   formData.append("profilePicture", blob);
-    // }
-    // formData.append("preferred_username", preferred_username.trim());
-    // await axios.post('http://localhost:3000/upload', formData, { headers: {'Content-Type': 'multipart/form-data'}})
 
     const data = {
       name: firstName,
@@ -61,7 +53,7 @@ const SignUp: React.FC = () => {
     console.log(data);
 
     try {
-      const response = await fetch('http://localhost:3000/auth/signup', {
+      const response = await fetch(`${API_URL}/auth/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -83,6 +75,15 @@ const SignUp: React.FC = () => {
         err instanceof Error ? err.message : "An unexpected error occurred.";
       showError(`🚨 ${errorMessage}`);
     }
+
+    if (file) {
+      try {
+        await uploadFile(file);
+        showSuccess("Profile picture uploaded successfully.");
+      } catch (error) {
+        showError("Error uploading profile picture.");
+      }
+    }
   };
 
   const togglePasswordVisibility = (field: string) => {
@@ -91,8 +92,6 @@ const SignUp: React.FC = () => {
     } else if (field === "confirmPassword") {
       setShowPasswordConfirm(!showPasswordConfirm);
     }
-  
-  
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -120,7 +119,7 @@ const SignUp: React.FC = () => {
     formData.append("preferred_username", preferred_username);
   
     try {
-      await axios.post('http://localhost:3000/upload', formData, {
+      await axios.post(`${API_URL}/upload`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
     } catch (error) {
@@ -134,7 +133,6 @@ const SignUp: React.FC = () => {
       fileInput.click();
     }
   };
-  
 
   return (
     <div className="w-full relative bg-white flex flex-col items-center justify-start gap-[64px] tracking-[normal] mq450:gap-[16px] mq700:gap-[32px] mt-[5%] overflow-hidden mb-[5%]">
@@ -169,9 +167,6 @@ const SignUp: React.FC = () => {
               <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
               <input
                 className="[border:none] [outline:none] 
-                
-                
-                
                 text-lg bg-[transparent] h-[25px] w-[100%] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
                 placeholder="Surname"
                 type="text"
@@ -254,7 +249,6 @@ const SignUp: React.FC = () => {
             </div>
             <p style={{ color: 'gray', fontSize: '12px', margin: '0' }}>The password must match</p>
 
-
             {/* DROPDOWN JOB LEVEL */}
             <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.600000000000364px] px-[21px] pb-2.5 relative max-w-full border-[1px] border-solid border-marco">
               <div className=" h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
@@ -271,7 +265,7 @@ const SignUp: React.FC = () => {
             
             {/* DROPDOWN QUEUE */}
             <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.600000000000364px] px-[21px] pb-2.5 relative max-w-full border-[1px] border-solid border-marco">
-              <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] [border-none] border-marco" />
+              <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] [border:none] border-marco" />
               <div className="relative flex-1">
                 <div className="custom-select-wrapper">
                   <select className="custom-select drop-down" value={agentType} onChange={(event) => setAgentType(event.currentTarget.value)} required data-cy='agent-type-input' >
@@ -340,7 +334,6 @@ const SignUp: React.FC = () => {
         </div>
 
       </main>
-
     </div>
   );
 };
