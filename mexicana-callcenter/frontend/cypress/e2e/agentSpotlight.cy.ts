@@ -34,10 +34,11 @@ import {
         // .should('have.text', testAgentUsername);
 
         cy.visit('supervisor/AgentSpotlight'); 
+        cy.wait(8000)
         cy.get('.scale-120 > .w-full > .max-w-xl > .flex-col > .text-2xl')
-        cy.get('.justify-center > :nth-child(2) > img').click
+        cy.get('.justify-center > :nth-child(2) > img').click()
         cy.get('.scale-120 > .w-full > .max-w-xl > .flex-col > .text-2xl')
-        cy.get('.justify-center > :nth-child(2) > img').click
+        cy.get('.justify-center > :nth-child(2) > img').click()
         cy.get('.scale-120 > .w-full > .max-w-xl > .flex-col > .text-2xl')
 
 
