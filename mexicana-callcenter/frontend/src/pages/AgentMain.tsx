@@ -9,19 +9,11 @@ import useCustomToast from "../components/LoginNotification";
 import userService from "../services/user"
 
 const MainContent = () => {
-  const [buttonMode, setButtonMode] = useState('workspace');
   const [userInfo, setUserInfo] = useState<WorkerCardProps | null>(null);
   const [userImage, setImageURL] = useState<string | null>(null);
   const { role, username, logout } = useAuth()
   const { showError } = useCustomToast();
 
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setButtonMode(prevMode => prevMode === 'workspace' ? 'calling' : 'workspace');
-    }, 10000);
-    return () => clearInterval(timer);
-  }, []);
 
   // execute call to backend url to fetch info of the user
   useEffect(() => {
@@ -74,7 +66,7 @@ const MainContent = () => {
       </div>
       <div className="flex flex-col space-y-4 md:col-span-8">
         <div className="flex flex-col pb-2">
-      <GradientButton mode={buttonMode} handleClick={() => window.location.href = '/agent/workspace'} />
+      <GradientButton mode={'workspace'} handleClick={() => window.location.href = '/agent/workspace'} />
        </div>
         <div className="flex flex-col gap-10">
           <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
