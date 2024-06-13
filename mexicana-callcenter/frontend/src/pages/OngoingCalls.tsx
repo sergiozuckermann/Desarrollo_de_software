@@ -338,10 +338,12 @@ const updateAllAgentStatus = (action: string) => {
   // web socket connection to get real time information from ongoing intereaction
   useEffect(() => {
     const ws = socket;
+
     if (ws !== null) {
       // check that the websocket connection exists
-
+      console.log(ws);
       ws.onmessage = (event) => {
+        console.log(event);
         // onmessage event to receive data
         const data = JSON.parse(event.data);
         const segment = data.message;
