@@ -1,3 +1,4 @@
+// Importing necessary libraries, hooks, services, and components
 import React, { useEffect, useState } from 'react';
 import { useWebSocket } from "../hooks/useWebSocket";
 import userService from "../services/user";
@@ -11,40 +12,50 @@ import MyPieChart, { PieChartDataItem } from '../components/Charts/piechart';
 import MyLineChart from '../components/Charts/linechart';
 import AHT from '../components/Charts/AHT';
 
+// Function to format duration in seconds to a string in the format HH:MM:SS
 const formatDuration = (seconds: number) => {
   const h = Math.floor(seconds / 3600).toString().padStart(2, '0');
   const m = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
   const s = Math.floor(seconds % 60).toString().padStart(2, '0');
   return `${h}:${m}:${s}`;
 };
-
+// Function to calculate the time difference between classification time and current time
 const calculateTimeDifference = (classificationTime: string, currentTime: string) => {
+  // Splitting the times into hours, minutes, and seconds and converting them to numbers
   const [classificationHours, classificationMinutes, classificationSeconds] = classificationTime.split(":").map(Number);
   const [currentHours, currentMinutes, currentSeconds] = currentTime.split(":").map(Number);
-
+  
+  // Calculating the total seconds for each time
   const classificationTotalSeconds = (classificationHours * 3600) + (classificationMinutes * 60) + classificationSeconds;
   const currentTotalSeconds = (currentHours * 3600) + (currentMinutes * 60) + currentSeconds;
-
+  
+  // If the current time is less than or equal to the classification time, return "00:00:00"
   if (currentTotalSeconds <= classificationTotalSeconds) {
     return "00:00:00";
   }
-
+  // Calculate the difference in seconds between the current time and the classification time
   const differenceInSeconds = currentTotalSeconds - classificationTotalSeconds;
-
+  
+  // Return the difference formatted as HH:MM:SS
   return formatDuration(differenceInSeconds);
 };
-
+// Defining the CallOverview component
 const CallOverview: React.FunctionComponent = () => {
+  // Using the useWebSocket hook to get the socket
   const { socket } = useWebSocket();
-  const [agentInfo, setAgentInfo] = useState<Interaction | null>(null);
-  const [userImage, setImageURL] = useState<string | null>(null);
-  const { role, username, logout } = useAuth();
-  const [userInfo] = useState<string | null>(null);
-  const [activeState, setActiveState] = useState("No data available");
-  const [activeContactID, setActiveContactID] = useState("No call in progress");
-  const [ActualSentiment, setActualSentiment] = useState("No call in progress");
-  const { showError } = useCustomToast();
-  const navigate = useNavigate();
+
+  // Using the useState hook to manage the state for agentInfo, userImage, userInfo, activeState, activeContactID, and ActualSentiment
+  const [agentInfo, setAgentInfo] = useState<Interaction | null>(null); // State for the agent's information
+  const [userImage, setImageURL] = useState<string | null>(null); // State for the user's image
+  const { role, username, logout } = useAuth(); // Using the useAuth hook to get the user's role, username, and the logout function
+  const [userInfo] = useState<string | null>(null); // State for the user's information
+  const [activeState, setActiveState] = useState("No data available"); // State for the active state
+  const [activeContactID, setActiveContactID] = useState("No call in progress"); // State for the active contact ID
+  const [ActualSentiment, setActualSentiment] = useState("No call in progress"); // State for the actual sentiment
+  const { showError } = useCustomToast(); // Using the useCustomToast hook to get the showError function
+  const navigate = useNavigate(); // Using the useNavigate hook to navigate to different pages
+
+  // Using the useState hook to manage the state for metrics, chartData, chartData2, sentimentData, and callDuration
   const [metrics, setMetrics] = useState<callOverviewAnalytics>(() => ({
     agentTalk: 0,
     customerTalk: 0,
@@ -59,26 +70,26 @@ const CallOverview: React.FunctionComponent = () => {
     key: '',
     contactId: ''
   }));
-
+  // State for the chart data
   const [chartData, setChartData] = useState<PieChartDataItem[]>([
     { id: "Customer", label: "Customer Time", value: 0 },
     { id: "Agent", label: "Agent Time", value: 0, color: "#177E89" },
     { id: "Non-talk", label: "NonTalk Time", value: 0, color: "#C4B1AE" },
   ]);
-
+  // State for the second chart data
   const [chartData2, setChartData2] = useState<PieChartDataItem[]>([
     { id: "Positive", label: "Positive", value: 0, color: "#6BBF70" },
     { id: "Neutral", label: "Neutral", value: 0, color: "#7E7F83" },
     { id: "Negative", label: "Negative", value: 0, color: "#E63B2E" },
   ]);
-
+  // State for the sentiment data
   const [sentimentData, setsentimentData] = useState([
     {
       id: "sentiment",
       data: [{ x: 0, y: 0 }],
     },
   ]);
-
+  // State for the call duration
   const [callDuration, setCallDuration] = useState<string>("00:00:00");
 
   // Static classification time
@@ -155,7 +166,7 @@ const CallOverview: React.FunctionComponent = () => {
 
   const usernamePic = agentInfo?.username;
   console.log("UsernamePic:", usernamePic);
-
+  // Get the user's image URL
   useEffect(() => {
     if (agentInfo && agentInfo.username) {
       userService
@@ -173,7 +184,7 @@ const CallOverview: React.FunctionComponent = () => {
         });
     }
   }, [agentInfo]);
-
+  // Function to update the metrics
   const updateMetrics = (metrics: callOverviewAnalytics) => {
     console.log("Metrics:", metrics);
     if (metrics) {
@@ -181,7 +192,7 @@ const CallOverview: React.FunctionComponent = () => {
       updateCharts(metrics);
     }
   };
-
+  // Function to update the charts
   const updateCharts = (metrics: callOverviewAnalytics) => {
     const { agentTalk, customerTalk, nonTalk, sentimentPercentages } = metrics;
 
@@ -197,7 +208,7 @@ const CallOverview: React.FunctionComponent = () => {
         { id: "Non-talk", label: "NonTalk Time", value: nonTalkPercentage, color: "#C4B1AE" },
       ]);
     }
-
+    // Update the second chart data
     setChartData2([
       { id: "Positive", label: "Positive", value: sentimentPercentages.POSITIVE, color: "#6BBF70" },
       { id: "Neutral", label: "Neutral", value: sentimentPercentages.NEUTRAL, color: "#7E7F83" },
@@ -207,12 +218,12 @@ const CallOverview: React.FunctionComponent = () => {
     const sentimentData = metrics.sentimentTrend.map((point: SentimentTrend) => ({ x: point.time, y: point.sentiment }));
     setsentimentData([{ id: "sentiment", data: sentimentData }]);
   };
-
+  // Function to update the sentiment
   const updateSentiment = (segment: any) => {
     setActualSentiment(segment.Sentiment);
     setActiveContactID(segment.contactId);
   };
-
+  // Update the call duration every second
   useEffect(() => {
     if (metrics && metrics.callDuration) {
       const interval = setInterval(() => {
@@ -224,18 +235,20 @@ const CallOverview: React.FunctionComponent = () => {
       return () => clearInterval(interval);
     }
   }, [metrics]);
-
+  // Redirect to the login page if the user is not logged in
   useEffect(() => {
     if (!role) {
       navigate('/login');
       logout();
     }
   }, [role, navigate, logout]);
-
+  // Return the JSX of the CallOverview component
   return (
     <div>
+      {/* Page Structure Component */}
       <PageStructure title="Call Overview" userId={username} userImage={userImage} userInfo={userInfo} />
       <div className="grid grid-cols-3 gap-4">
+        {/* Card for Call Overview information */}
         <CallCard title="Active State" content={activeState} />
         <CallCard title="Contact ID" content={activeContactID} />
         <CallCard title="Actual Sentiment" content={ActualSentiment} />
