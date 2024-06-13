@@ -158,8 +158,6 @@ const SupervisorNotifications: React.FunctionComponent = () => {
   );
 };
 
-export default SupervisorNotifications;
-
 export const getUnreadNotificationsCount = () => {
   const storedReadNotifications = localStorage.getItem("readNotifications");
   const readNotifications = storedReadNotifications ? JSON.parse(storedReadNotifications) : [];
