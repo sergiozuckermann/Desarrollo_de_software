@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import conf from '../conf';
+const API_URL = conf.apiUrl; //'http://localhost:3000';
 
 const queueNames: Record<string, string> = {
     'b65f8183-2d8b-42e4-9b37-f8dfa787c246': 'Flight Management',

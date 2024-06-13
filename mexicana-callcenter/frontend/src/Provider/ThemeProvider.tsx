@@ -1,4 +1,4 @@
-// src/context/DarkModeContext.tsx
+// src/Provider/ThemeProvider.tsx
 import React, { createContext, useState, useEffect, ReactNode } from 'react';
 
 interface DarkModeContextProps {

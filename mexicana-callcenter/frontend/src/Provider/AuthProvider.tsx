@@ -5,7 +5,8 @@ import useCustomToast from "../components/LoginNotification";
 import { useNavigate } from "react-router-dom";
 import conf from '../conf';
 
-const baseUrl = conf.apiUrl//'http://localhost:3000';
+const baseUrl = conf.apiUrl;//'http://localhost:3000';
+
 
 export const AuthContext = createContext<AuthContextType | null>(null);
 

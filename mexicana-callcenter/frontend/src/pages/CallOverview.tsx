@@ -10,13 +10,9 @@ import useCustomToast from "../components/LoginNotification";
 import { useAuth } from '../hooks/useAuth';
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useCallOverViewMetrics } from '../hooks/callOverviewMetrics';
-const { showError } = useCustomToast();
 import { Interaction } from '../utils/interfaces';
 import { callOverviewAnalytics } from '../utils/interfaces';
 import { Tooltip } from 'react-tooltip';
-import conf from '../conf';
-const API_URL = conf.apiUrl//'http://localhost:3000';
 
 export interface PieChartDataItem {
   id: string | number;
@@ -121,7 +117,7 @@ const CallOverview: React.FunctionComponent = () => {
       if (storedMetrics) {
         const parsedMetrics = JSON.parse(storedMetrics);
         console.log("Parsed metrics:", parsedMetrics); // Mostrar los datos de las métricas analizadas en la consola
-        const interaction = parsedMetrics.find((i: any) => i.state.contactId === activeContactID);
+        const interaction = parsedMetrics.find((i) => i.state.contactId === activeContactID);
         if (interaction && interaction.sentiment.callOverviewAnalytics) {
           setMetrics(interaction.sentiment.callOverviewAnalytics);
         }
@@ -138,7 +134,13 @@ const CallOverview: React.FunctionComponent = () => {
         console.log("Data:", data); // Mostrar los datos en la consola
         const activeUsername = agentInfo?.username;
 
-        if (segment) {
+        const contactIdsToFilter = ["9272a5e8-ac7b-4402-bde9-04ddc3d85d1c", "ac482bb5-cbed-473b-b04c-82f68220515e"];
+          if (segment) {
+            if (contactIdsToFilter.includes(segment.contactId)) {
+              console.log("Filtered out message with contact ID:", segment.contactId);
+              return;
+            }
+
           const { segmentType } = segment;
           if (segmentType === "AGENT_EVENT") {
             // Update metrics or handle AGENT_EVENT
@@ -216,7 +218,7 @@ const CallOverview: React.FunctionComponent = () => {
       const data = { participantId: userId, contactId: contactId };
       console.log('Sending data:', data); // Print the data
 
-      await axios.post(`${API_URL}/Supervisor/barge-in`, data, config);
+      await axios.post('http://localhost:3000/Supervisor/barge-in', data, config);
       console.log('Barged in successfully');
       navigate('/Supervisor/bargein');
     } catch (error) {

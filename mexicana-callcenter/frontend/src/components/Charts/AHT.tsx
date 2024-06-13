@@ -1,44 +1,17 @@
 import React from 'react';
 
 interface AHTProps {
-//Format for all of them is "HH:MM:SS"
-  classificationTime: string; 
-  currentTime: string; 
-  exceededTime: string;
+  callDuration: string;
 }
 
-const AHT: React.FC<AHTProps> = ({ classificationTime, currentTime, exceededTime }) => {
-  
-    return (
-      <div className='w-full h-full z-70 pl-8' style={{ position: 'relative', zIndex:100, paddingBottom:10}}>
-    <p className="mb-12 text-sm dark:text-white">
-      <strong>For this classification:</strong> {classificationTime}
-    </p>
-    <p className="mb-12 text-sm dark:text-white">
-      <strong>Talk time of current Call:</strong> {currentTime}
-    </p>
-    <p className="mb-12 text-sm dark:text-white">
-      <strong>Exceeded AHT by:</strong> {exceededTime}
-    </p>
-  </div>
-);
+const AHT: React.FC<AHTProps> = ({ callDuration }) => {
+  return (
+    <div className='w-full h-full z-70 pl-8' style={{ position: 'relative', zIndex:100, paddingBottom:10}}>
+      <p className="mb-12 text-sm dark:text-white">
+        <strong>Talk time of current Call:</strong> {callDuration}
+      </p>
+    </div>
+  );
 };
-
-// /* For this classification */
-
-// position: absolute;
-// width: 321px;
-// height: 32px;
-
-// font-family: 'Inter';
-// font-style: normal;
-// font-weight: 700;
-// font-size: 18px;
-// line-height: 22px;
-// display: flex;
-// align-items: center;
-
-// color: #000000;
-
 
 export default AHT;
