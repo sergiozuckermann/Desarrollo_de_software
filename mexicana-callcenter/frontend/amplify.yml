@@ -1,24 +1,11 @@
 version: 1
 applications:
   - frontend:
-      frontend:
-        phases:
-          build:
-            commands:
-              - cd frontend
-              - npm install  # Instala las dependencias necesarias
-              - npm run build  # Compila la aplicación frontend para producción
-        artifacts:
-          baseDirectory: frontend/build  # Directorio donde se genera la compilación
-          files:
-            - '**/*'
-        cache:
-          paths:
-            - 'frontend/node_modules/**/*'
-
-# Puedes añadir secciones adicionales para otras partes del monorepo si es necesario
-# - backend:
-#     ...
-
-# - lambdas:
-#     ...
+      sourceDir: mexicana-callcenter/frontend
+      build:
+        commands:
+          - npm install react-tooltip-lite --legacy-peer-deps
+          - npm run dev  # O cambia a npm run build si es para producción
+      cache:
+        paths:
+          - 'node_modules/**/*'
