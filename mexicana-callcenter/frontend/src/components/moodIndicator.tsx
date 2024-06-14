@@ -1,5 +1,6 @@
 import React from "react";
 
+//function to change color of indicator in cellgrid
 const MoodIndicator: React.FunctionComponent<{ moodValue: string }> = ({ moodValue }) => {
   const getMoodColor = (value: string) => {
     switch (value) {
@@ -12,8 +13,10 @@ const MoodIndicator: React.FunctionComponent<{ moodValue: string }> = ({ moodVal
     }
   };
 
+  // Get the color based on the mood value
   const color = getMoodColor(moodValue);
   
+  // Return the color circle with the appropriate col
   return (
     <div 
       className="color-circle"

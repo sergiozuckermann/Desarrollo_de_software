@@ -15,14 +15,18 @@ import { useAuth } from '../hooks/useAuth';
 
 Modal.setAppElement('#root');
 
+// Define the metrics that can be displayed
 type Metric = "Flight Management" | "Travel Information" | "Special Assistance" | "Website Assistance" | "Other Questions" | "Customer Service" | "Service Level" | "No Data";
 
+// Define the data point structure
 interface DataPoint {
     metric: Metric;
     value: number;
 }
 
+// Main content component that displays the metrics
 const MainContent: React.FC = () => {
+    //initialize the state variables
     const { username: loggedInAgentId } = useAuth();
     const [filters, setFilters] = useState<Record<string, string>>({
         agentId: loggedInAgentId || '', // Default to the logged-in agent's username
@@ -46,21 +50,25 @@ const MainContent: React.FC = () => {
         agentsList
     } = FetchMetrics(filters);
 
+    // useEffect hook to handle the application of filters
     useEffect(() => {
         if (isApplyingFilters) {
             setIsApplyingFilters(false);
         }
     }, [averageAbandonTime, averageQueueAnswerTime]);
 
+    // Function to handle the application of filters
     const handleApplyFilters = (newFilters: Record<string, string>) => {
         setIsApplyingFilters(true);
         setFilters({ ...newFilters, agentId: loggedInAgentId || '' }); // Ensure agentId is the logged-in agent's username
     };
 
+    // Check if the metrics are still loading
     if (averageAbandonTime === null || averageQueueAnswerTime === null) {
         return <div>Loading...</div>;
     }
 
+    // Format the data for the metrics
     const ServiceData = [{ metric: "Service Level", percentage: ServiceLevel !== null ? ServiceLevel : 0 }];
 
     const AbandonData: DataPoint[] = averageAbandonTime !== null && averageAbandonTime.length > 0
@@ -80,6 +88,7 @@ const MainContent: React.FC = () => {
         { id: 'Unoccupied', label: 'Unoccupied', value: 100 - totalOccupancy, color: 'red' }
     ];
 
+    // Function to format the time in seconds to a human-readable format
     const formatTime = (seconds: number): string => {
         if (seconds >= 3600) {
             const hours = Math.floor(seconds / 3600);
@@ -96,7 +105,9 @@ const MainContent: React.FC = () => {
     };
 
     return (
+        // Return the main content
         <div className="grid w-full h-full grid-cols-12 grid-rows-6 gap-4 p-2 pt-5 overflow-y-auto">
+            {/* filters */}
             <Modal
                 isOpen={isApplyingFilters}
                 onRequestClose={() => setIsApplyingFilters(false)}

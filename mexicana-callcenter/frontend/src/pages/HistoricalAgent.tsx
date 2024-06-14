@@ -14,14 +14,18 @@ import { useAuth } from '../hooks/useAuth';
 
 Modal.setAppElement('#root');
 
+// Define the metrics that can be displayed
 type Metric = "Flight Management" | "Travel Information" | "Special Assistance" | "Website Assistance" | "Other Questions" | "Customer Service";
 
+// Define the data point interface
 interface DataPoint {
   metric: Metric;
   value: number;
 }
 
+// Main content component that displays the metrics
 const MainContent: React.FC = () => {
+    //define the state variables
     const { username: loggedInAgentId } = useAuth();
     const [filters, setFilters] = useState<Record<string, string>>({
         agentId: loggedInAgentId || '', // Default to the logged-in agent's username
@@ -45,21 +49,25 @@ const MainContent: React.FC = () => {
         agentsList
     } = FetchMetrics(filters);
 
+    //useEffect to check if the filters are being applied
     useEffect(() => {
         if (isApplyingFilters) {
             setIsApplyingFilters(false);
         }
     }, [averageAbandonTime, averageQueueAnswerTime]);
 
+    //function to apply filters
     const handleApplyFilters = (newFilters: Record<string, string>) => {
         setIsApplyingFilters(true);
         setFilters({ ...newFilters, agentId: loggedInAgentId || '' }); // Ensure agentId is the logged-in agent's username
     };
 
+    //check if the data is still loading
     if (averageAbandonTime === null || averageQueueAnswerTime === null) {
         return <div>Loading...</div>;
     }
 
+    //define the data points for the metrics
     const ServiceData = [{ metric: "Customer Service", percentage: ServiceLevel !== null ? ServiceLevel : 0 }];
 
     const AbandonData: DataPoint[] = averageAbandonTime !== null && averageAbandonTime.length > 0
@@ -79,6 +87,7 @@ const MainContent: React.FC = () => {
         { id: 'Unoccupied', label: 'Unoccupied', value: 100 - totalOccupancy, color: 'red' }
     ];
 
+    // Function to format time in seconds to a human-readable format
     const formatTime = (seconds: number): string => {
         if (seconds >= 3600) {
             const hours = Math.floor(seconds / 3600);
@@ -96,6 +105,7 @@ const MainContent: React.FC = () => {
 
     return (
         <div className="grid w-full h-full grid-cols-12 grid-rows-6 gap-4 p-2 pt-5 overflow-y-auto">
+            {/* filters */}
             <Modal
                 isOpen={isApplyingFilters}
                 onRequestClose={() => setIsApplyingFilters(false)}
@@ -248,6 +258,7 @@ const MainContent: React.FC = () => {
 // Metrics page component that displays the main content in a page structure
 const MetricsAgent: React.FC = () => {
     return (
+        //return the page structure with the main content and name
         <PageStructure title="Metrics">
             <MainContent />
         </PageStructure>
