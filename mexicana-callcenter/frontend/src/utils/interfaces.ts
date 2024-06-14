@@ -29,8 +29,8 @@ export interface WebSocketContextType {
 }
 
 export interface SentimentTrend {
-  time: number;
-  sentiment: number;
+  x: number;
+  y: number;
 }
 
 export interface callOverviewAnalytics {

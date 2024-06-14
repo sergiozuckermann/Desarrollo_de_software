@@ -87,7 +87,7 @@ const CallOverview: React.FunctionComponent = () => {
   const [sentimentData, setsentimentData] = useState([
     {
       id: "sentiment",
-      data: [{ time: 0, sentiment: 0 }], // x y o t & s?
+      data: [{ x: 0, y: 0 }], // x y o t & s?
     },
   ]);
 
@@ -236,16 +236,25 @@ const CallOverview: React.FunctionComponent = () => {
       console.log('Segment does not match active contact ID, $ {segment.contactId}');
       return;
     }
+
     //format values for sentiment trend chart
     const sentimentValue = segment.Sentiment === "POSITIVE" ? 1 : segment.Sentiment === "NEGATIVE" ? -1 : 0;
     const timeStamp = Math.floor(segment.BeginOffsetMillis / 1000);
 
     setMetrics(prevMetrics => {
+      const existingTrend = prevMetrics.sentimentTrend.find(trend => trend.x === timeStamp);
+      let updatedSentimentTrend = prevMetrics.sentimentTrend;
+  
+      if (!existingTrend) {
+        updatedSentimentTrend = [...prevMetrics.sentimentTrend, { x: timeStamp, y: sentimentValue }];
+      }
+
+
       const updatedMetrics: callOverviewAnalytics = {
         agentTalk: prevMetrics.agentTalk,
         customerTalk: prevMetrics.customerTalk,
         nonTalk: prevMetrics.nonTalk,
-        sentimentTrend: [...prevMetrics.sentimentTrend, { time: timeStamp, sentiment: sentimentValue }],
+        sentimentTrend: updatedSentimentTrend,
         sentimentPercentages: {
           POSITIVE: prevMetrics.sentimentPercentages.POSITIVE,
           NEGATIVE: prevMetrics.sentimentPercentages.NEGATIVE,
@@ -389,7 +398,7 @@ const CallOverview: React.FunctionComponent = () => {
               data-tooltip-content="Average Handling Time">
               <h3 className="pb-3 text-lg font-bold text-center text-slategray">Average Handling Time</h3>
               <div className="h-[50%]">
-                <AHT callDuration={callDuration} classificationTime={classificationTime} currentTime={callDuration} exceededTime={exceededTime} />
+              <AHT classificationTime={classificationTime} currentTime={callDuration} exceededTime={exceededTime} />
               </div>
               <Tooltip id="tooltipAHT" className="custom-tooltip" />
             </div>
