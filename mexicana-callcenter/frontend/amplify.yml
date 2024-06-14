@@ -1,0 +1,16 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - npm install -f # O usar npm install react-tooltip-lite --legacy-peer-deps
+    build:
+      commands:
+        - npm run build
+  artifacts:
+    baseDirectory: dist # O la carpeta de salida correcta
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*
