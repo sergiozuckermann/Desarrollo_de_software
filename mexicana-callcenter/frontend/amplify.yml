@@ -1,16 +1,46 @@
 version: 1
 frontend:
   phases:
-    preBuild:
-      commands:
-        - npm install -f # O usar npm install react-tooltip-lite --legacy-peer-deps
     build:
       commands:
-        - npm run build
+        - cd frontend
+        - npm install  # Instala las dependencias necesarias
+        - npm run build  # Compila la aplicación frontend para producción
   artifacts:
-    baseDirectory: dist # O la carpeta de salida correcta
+    baseDirectory: frontend/build  # Directorio donde se genera la compilación
     files:
       - '**/*'
   cache:
     paths:
-      - node_modules/**/*
+      - 'frontend/node_modules/**/*'
+
+# Opcional: Sección para backend, lambdas u otras partes del monorepo
+# backend:
+#   phases:
+#     build:
+#       commands:
+#         - cd backend
+#         - npm install
+#         - npm run build
+#   artifacts:
+#     baseDirectory: backend/build
+#     files:
+#       - '**/*'
+#   cache:
+#     paths:
+#       - 'backend/node_modules/**/*'
+# 
+# lambdas:
+#   phases:
+#     build:
+#       commands:
+#         - cd lambdas
+#         - npm install
+#         - npm run build
+#   artifacts:
+#     baseDirectory: lambdas/build
+#     files:
+#       - '**/*'
+#   cache:
+#     paths:
+#       - 'lambdas/node_modules/**/*'
