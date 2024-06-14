@@ -25,7 +25,7 @@ const PieChart: React.FC<PieChartProps> = ({ data, unit }) => {
     };
 
     return (
-        <div className='relative w-full h-full pb-2'>
+        <div className='relative w-full h-full pb-2' data-testid="pie-chart">
             <ResponsivePie
                 data={data}
                 margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
