@@ -1,46 +1,24 @@
 version: 1
-frontend:
-  phases:
-    build:
-      commands:
-        - cd frontend
-        - npm install  # Instala las dependencias necesarias
-        - npm run build  # Compila la aplicación frontend para producción
-  artifacts:
-    baseDirectory: frontend/build  # Directorio donde se genera la compilación
-    files:
-      - '**/*'
-  cache:
-    paths:
-      - 'frontend/node_modules/**/*'
+applications:
+  - frontend:
+      frontend:
+        phases:
+          build:
+            commands:
+              - cd frontend
+              - npm install  # Instala las dependencias necesarias
+              - npm run build  # Compila la aplicación frontend para producción
+        artifacts:
+          baseDirectory: frontend/build  # Directorio donde se genera la compilación
+          files:
+            - '**/*'
+        cache:
+          paths:
+            - 'frontend/node_modules/**/*'
 
-# Opcional: Sección para backend, lambdas u otras partes del monorepo
-# backend:
-#   phases:
-#     build:
-#       commands:
-#         - cd backend
-#         - npm install
-#         - npm run build
-#   artifacts:
-#     baseDirectory: backend/build
-#     files:
-#       - '**/*'
-#   cache:
-#     paths:
-#       - 'backend/node_modules/**/*'
-# 
-# lambdas:
-#   phases:
-#     build:
-#       commands:
-#         - cd lambdas
-#         - npm install
-#         - npm run build
-#   artifacts:
-#     baseDirectory: lambdas/build
-#     files:
-#       - '**/*'
-#   cache:
-#     paths:
-#       - 'lambdas/node_modules/**/*'
+# Puedes añadir secciones adicionales para otras partes del monorepo si es necesario
+# - backend:
+#     ...
+
+# - lambdas:
+#     ...
