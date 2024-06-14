@@ -7,3 +7,7 @@ applications:
           commands:
           - npm install react-tooltip-lite --legacy-peer-deps
           - npm run dev  # o npm run build según corresponda
+        artifacts:
+          baseDirectory: dist  # Directorio donde están los archivos compilados
+          files:
+            - '**/*'  # Incluir todos los archivos y subdirectorios en 'dist'
