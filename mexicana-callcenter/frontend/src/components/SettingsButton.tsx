@@ -12,8 +12,7 @@ function SettingsButton() {
     };
 
     const handleLogout = () => {
-        logout();  
-        window.location.href = '/'; 
+        logout();
     };
     
     const toggleDarkMode = () => {
@@ -21,7 +20,7 @@ function SettingsButton() {
     };
 
     return (
-        <div className="relative">
+        <div className="relative" data-cy='settings'>
             <button onClick={toggleIsActive} className="p-2">
                 <img
                     src='/settings.svg'

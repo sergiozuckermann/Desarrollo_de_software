@@ -2,9 +2,7 @@
 import '@4tw/cypress-drag-drop'
 
 describe('Transfer Agent Tests', () => {
-  beforeEach(() => {
-    const link = '[data-cy="link"]';
-
+  beforeEach(() => {;
     cy.viewport(1920, 1080);
 
     cy.visit('/signin');
@@ -13,10 +11,8 @@ describe('Transfer Agent Tests', () => {
     cy.get('button[type="submit"]').click(); // Adjust the selector to be more specific
 
     cy.url().should('include', '/Supervisor/home');
-    cy.get('button').contains('Agent Overview').click();
-    cy.url().should('include', '/supervisor/onGoingCalls');
-    cy.get(link).scrollIntoView().should('be.visible').click();
-
+    cy.get('button').contains('Agent Queue Transfer').click();
+    cy.url().should('include', '/supervisor/agent-transfer');
   });
 
   it('should drag an agent to a new routing profile', () => {
@@ -66,6 +62,8 @@ describe('Transfer Agent Tests', () => {
     cy.get(dropTarget).within(() => {
       cy.get(draggableAgent).should('exist');
     });
+
+    cy.contains('Update Success', { timeout: 10000 }).should('be.visible');
   });
 
   afterEach(() => {

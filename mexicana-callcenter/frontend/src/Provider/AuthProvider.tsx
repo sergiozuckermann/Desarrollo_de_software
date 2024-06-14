@@ -89,7 +89,7 @@ const AuthProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
   const logout = () => {
     sessionStorage.clear()
     showSuccess(`🎉 Logged Out`);
-    window.location.href = '/'
+    navigate('/')
   } 
 
   //  value of the authentication context

@@ -225,7 +225,7 @@ const PageStructure: FunctionComponent<PageStructureProps> = ({ title, children 
           <div className="h-10 mx-2 border-l-2 border-primary dark:border-white"></div>
           {isAuthenticated && role === 'Supervisor' && <NotificationsDropDown notificationsData={notifications} count={notifications.length} />}
           <div className="flex items-center">
-            <SettingsButton />
+            <SettingsButton/>
             {!noArrowsRoutes.includes(location.pathname) && (
               <div className="flex items-center space-x-0.1">
                 <button onClick={handleBack} className="p-0 m-0">
