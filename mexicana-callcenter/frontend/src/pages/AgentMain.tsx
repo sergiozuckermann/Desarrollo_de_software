@@ -49,7 +49,7 @@ const MainContent = () => {
   }, []);
 
   return (
-    // Estructura de la página
+    // Page structure
     <div className="grid w-full h-full grid-cols-1 gap-4 p-4 md:grid-cols-12">
       <div className="md:col-span-4" data-cy="user-info">
     {/* render agent */}
