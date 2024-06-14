@@ -1,17 +1,22 @@
+// This component is for applying filters based on agent, queue, start date, and end date.
+
 import React, { useState, useRef, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
 import Modal from 'react-modal';
 
+// Set default start date to 30 days before today, at the start of the day
 const defaultStartDate = new Date();
 defaultStartDate.setDate(defaultStartDate.getDate() - 30);
 defaultStartDate.setHours(0, 0, 0, 0);
 
+// Set default end date to yesterday, at the end of the day
 const defaultEndDate = new Date();
 defaultEndDate.setDate(defaultEndDate.getDate() - 1);
 defaultEndDate.setHours(23, 59, 59, 999);
 
+// Mapping of queue names to queue IDs
 const queueMap: { [key: string]: string } = {
     'Travel logistics': '292d0398-6089-42cc-9ec9-aee43d6202a6',
     'Flight Management': 'b65f8183-2d8b-42e4-9b37-f8dfa787c246',
@@ -22,6 +27,7 @@ const queueMap: { [key: string]: string } = {
     'Website Assistance': 'd19f9426-d75f-48eb-a68c-0bbda4ced434'
 };
 
+// Define the FilterProps interface
 interface FilterProps {
     onApplyFilters: (filters: {
         agentId: string;
@@ -34,7 +40,9 @@ interface FilterProps {
     defaultAgentId?: string;
 }
 
+// Create the Filter component
 const Filter: React.FC<FilterProps> = ({ onApplyFilters, agentsList, isAgentFilterEditable, defaultAgentId }) => {
+    // State variables for managing filter values
     const [agentId, setAgentId] = useState<string>(defaultAgentId || '');
     const [startDate, setStartDate] = useState<Date>(defaultStartDate);
     const [endDate, setEndDate] = useState<Date>(defaultEndDate);
@@ -45,6 +53,7 @@ const Filter: React.FC<FilterProps> = ({ onApplyFilters, agentsList, isAgentFilt
     const [isResetting, setIsResetting] = useState<boolean>(false); // Track reset state
     const filterRef = useRef<HTMLFormElement>(null);
 
+    // Function to handle resetting the filters
     const handleReset = () => {
         setAgentId(defaultAgentId || '');
         setQueue('');
@@ -53,27 +62,31 @@ const Filter: React.FC<FilterProps> = ({ onApplyFilters, agentsList, isAgentFilt
         setIsResetting(true); // Indicate reset in progress
     };
 
+    // Effect to handle resetting the filters
     useEffect(() => {
         if (isResetting) {
             handleSearch();
             setIsResetting(false); // Reset the reset state
         }
-    }, [isResetting]);
+    }, [isResetting]); 
 
+    // Function to show modal with message 
     const showModal = (message: string) => {
         setModalMessage(message);
         setIsModalOpen(true);
     };
 
+    // Function to validate the dates and show modal if invalid
     const validateDates = (): boolean => {
         const today = new Date();
-        const startDateValidBeforeToday = startDate < today;
-        const startDateValidAfter2024 = startDate > new Date('2024-03-17');
-        const endDateValidPast = endDate <= today;
-        const endDateValidAfter2024 = endDate > new Date('2024-03-18');
-        const rangeValid = startDate < endDate;
-        const daysDifference = (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24);
+        const startDateValidBeforeToday = startDate < today; // Check if start date is before today
+        const startDateValidAfter2024 = startDate > new Date('2024-03-17'); // Check if start date is after March 17, 2024
+        const endDateValidPast = endDate <= today;  // Check if end date is not in the future
+        const endDateValidAfter2024 = endDate > new Date('2024-03-18'); // Check if end date is after March 18, 2024
+        const rangeValid = startDate < endDate; // Check if start date is before end date
+        const daysDifference = (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24);  // Calculate difference in days
 
+        // Show modal with appropriate message if any validation fails
         if (!startDateValidBeforeToday) {
             showModal("Not valid filters: Start date must be before today.");
             return false;
@@ -101,10 +114,12 @@ const Filter: React.FC<FilterProps> = ({ onApplyFilters, agentsList, isAgentFilt
         return true;
     };
 
+    // Function to handle search and apply filters
     const handleSearch = (e?: React.FormEvent) => {
         if (e) e.preventDefault();
         if (!validateDates()) return;
 
+        // Apply filters
         const filters = {
             agentId,
             queue: queueMap[queue] || '',
@@ -115,16 +130,19 @@ const Filter: React.FC<FilterProps> = ({ onApplyFilters, agentsList, isAgentFilt
         onApplyFilters(filters);
     };
 
+    // Function to toggle the visibility of the filters
     const toggleFilters = () => {
         setShowFilters(!showFilters);
     };
 
+    // Function to handle clicks outside the filter form
     const handleClickOutside = (event: MouseEvent) => {
         if (filterRef.current && !filterRef.current.contains(event.target as Node)) {
             setShowFilters(false);
         }
     };
 
+    // Effect to handle clicks outside the filter form
     useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside);
         return () => {
@@ -132,12 +150,14 @@ const Filter: React.FC<FilterProps> = ({ onApplyFilters, agentsList, isAgentFilt
         };
     }, []);
 
+    // Render the Filter component
     return (
         <div className="relative w-full h-full">
             <div className="flex flex-col h-full p-2 bg-white border border-gray-200 shadow-lg rounded-xl">
                 <form ref={filterRef} onSubmit={handleSearch} className="flex flex-col justify-between h-full">
                     <div className="relative flex items-center justify-between w-full mb-2 rounded-md">
-                    <svg
+                        {/* Search input field */}
+                        <svg
                             className="absolute block w-5 h-5 text-gray-400 left-2"
                             xmlns="http://www.w3.org/2000/svg"
                             width="24"
@@ -160,10 +180,10 @@ const Filter: React.FC<FilterProps> = ({ onApplyFilters, agentsList, isAgentFilt
                             onFocus={toggleFilters}
                         />
                     </div>
-
                     {showFilters && (
                         <div className="absolute left-0 z-20 w-full p-4 bg-white border border-gray-200 shadow-lg top-10 rounded-xl">
                             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                                {/* Agent filter - editable for supervisors */}
                                 {isAgentFilterEditable ? (
                                     <div className="flex flex-col">
                                         <label htmlFor="agent" className="text-sm font-medium text-stone-600">Agent</label>
@@ -180,6 +200,7 @@ const Filter: React.FC<FilterProps> = ({ onApplyFilters, agentsList, isAgentFilt
                                         </select>
                                     </div>
                                 ) : (
+                                    // Agent filter - read-only for non-supervisors
                                     <div className="flex flex-col">
                                         <label htmlFor="agent" className="text-sm font-medium text-stone-600">Agent</label>
                                         <input
@@ -192,6 +213,7 @@ const Filter: React.FC<FilterProps> = ({ onApplyFilters, agentsList, isAgentFilt
                                     </div>
                                 )}
 
+                                {/* Queue filter */}
                                 <div className="flex flex-col">
                                     <label htmlFor="queue" className="text-sm font-medium text-stone-600">Queue</label>
                                     <select
@@ -209,6 +231,8 @@ const Filter: React.FC<FilterProps> = ({ onApplyFilters, agentsList, isAgentFilt
                                         <option>Customer Service</option>
                                     </select>
                                 </div>
+
+                                {/* Start date filter */}
                                 <div className="flex flex-col">
                                     <label htmlFor="startdate" className="text-sm font-medium text-stone-600">Start Date</label>
                                     <DatePicker
@@ -217,6 +241,8 @@ const Filter: React.FC<FilterProps> = ({ onApplyFilters, agentsList, isAgentFilt
                                         className="block w-full px-2 py-1 mt-2 bg-gray-100 border border-gray-100 rounded-md shadow-sm outline-none cursor-pointer focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
                                     />
                                 </div>
+
+                                {/* End date filter */}
                                 <div className="flex flex-col">
                                     <label htmlFor="enddate" className="text-sm font-medium text-stone-600">End Date</label>
                                     <DatePicker
@@ -227,6 +253,7 @@ const Filter: React.FC<FilterProps> = ({ onApplyFilters, agentsList, isAgentFilt
                                 </div>
                             </div>
 
+                            {/* Buttons for resetting filters and searching */}
                             <div className="flex justify-end mt-2 space-x-4">
                                 <button
                                     type="button"
@@ -247,6 +274,7 @@ const Filter: React.FC<FilterProps> = ({ onApplyFilters, agentsList, isAgentFilt
                 </form>
             </div>
 
+            {/* Modal for validation error messages */}
             <Modal
                 isOpen={isModalOpen}
                 onRequestClose={() => setIsModalOpen(false)}
