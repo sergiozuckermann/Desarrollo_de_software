@@ -95,7 +95,7 @@ cd ..\Desarrollo_de_software\mexicana-callcenter\frontend
 In that same location, execute the next command to install the dependencies:
 
 ```js
-npm install
+npm install react-tooltip-lite  --legacy-peer-deps
 ```
 
 Once the installation has finished, run the server with the command:
