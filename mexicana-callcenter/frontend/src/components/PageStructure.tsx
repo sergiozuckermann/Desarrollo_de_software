@@ -144,7 +144,7 @@ const PageStructure: FunctionComponent<PageStructureProps> = ({ title, children 
       agentTalk: currentMetrics.agentTalk,
       customerTalk: currentMetrics.customerTalk,
       nonTalk: currentMetrics.nonTalk,
-      sentimentTrend: [...currentMetrics.sentimentTrend, { time: timeStamp, sentiment: sentimentValue }],
+      sentimentTrend: [...currentMetrics.sentimentTrend, { x: timeStamp, y: sentimentValue }],
       sentimentPercentages: {
         POSITIVE: currentMetrics.sentimentPercentages.POSITIVE,
         NEGATIVE: currentMetrics.sentimentPercentages.NEGATIVE,
