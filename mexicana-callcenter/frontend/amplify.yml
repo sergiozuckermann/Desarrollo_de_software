@@ -1,11 +1,7 @@
 version: 1
 applications:
   - frontend:
-      sourceDir: mexicana-callcenter/frontend
-      build:
-        commands:
-          - npm install react-tooltip-lite --legacy-peer-deps
-          - npm run dev  # O cambia a npm run build si es para producción
-      cache:
-        paths:
-          - 'node_modules/**/*'
+      phases:
+        preBuild:
+          commands:
+            - npm install react-tooltip-lite --legacy-peer-deps
