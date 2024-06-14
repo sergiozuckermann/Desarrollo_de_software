@@ -32,7 +32,7 @@ const OngoingCalls: React.FunctionComponent = () => {
   const [agentsAvailability, setAgentsAvailability] = useState<Array<PieChartDataItem>>([
     {id:"FlightManagement", label: "Flight Rsv", value: 0, color: "#20253F"},
     {id:"CustomerCare", label: "Customer Care", value: 0, color:"#4B4B4B" },
-    {id:"WebsiteAssistance", label: "Booking or Website Issues", value: 0 },
+    {id:"WebsiteAssistance", label: "Booking or Website Issues", value: 0, color:'#FFA500' },
     {id:"TravelInformation", label: "Status Inquiries", value: 0, color: "#4A8B51" },
     {id:"SpecialAssitance", label: "Special Assistance or Docs", value: 0, color:"#6BBF70" },
     {id:"OtherQuestions", label: "Other Questions", value: 0, color:"#ADD8E6" },
@@ -347,6 +347,12 @@ const updateAllAgentStatus = (action: string) => {
         // onmessage event to receive data
         const data = JSON.parse(event.data);
         const segment = data.message;
+        const contactIdsToFilter = ["9272a5e8-ac7b-4402-bde9-04ddc3d85d1c","ac482bb5-cbed-473b-b04c-82f68220515e"];
+        if (contactIdsToFilter.includes(segment.contactId)) {
+          console.log("Filtered out message with contact ID:", contactIdsToFilter);
+          return;
+        }
+
         console.log("data: ", segment);
 
         if (segment) {

@@ -9,19 +9,19 @@ const WorkerCard: React.FC<WorkerCardProps> = ({ imageURL, name, username, posit
   return (
     <div>
       {/* Large Device Layout */}
-      <div className="hidden h-[100%] max-w-sm p-4 overflow-hidden border-2 border-gray-400 shadow-lg rounded-xl md:block bg-tertiary dark:bg-gray-900">
+      <div className="hidden h-[100%] max-w-sm p-4 overflow-hidden  shadow-lg rounded-xl md:block bg-tertiary dark:bg-gray-900 card">
         <div className="flex justify-center">
-          <img className="w-[65%] h-[65%] rounded-full" src={imageURL} alt="User avatar" />
+          <img className="w-[58%] h-[58%] rounded-full" src={imageURL} alt="User avatar" />
         </div>
         <div className="items-center px-6 py-4 text-center">
-          <p className="pb-5 text-sm text-gray-600 dark:text-white italic" data-cy="user-login">{username}</p>
+          <p className="pb-5 text-sm italic text-gray-600 dark:text-white" data-cy="user-login">{username}</p>
           <h2 className="pb-5 mb-2 dark:text-white">{name}</h2>
           <p className="pb-1 text-base text-gray-700 dark:text-white">{position}</p>
-          <p className="pb-10 text-sm text-gray-600 dark:text-white">{experience} years</p>
+          <p className="pb-8 text-sm text-gray-600 dark:text-white">{experience} years</p>
           <div className="flex flex-col"> 
-            <h3 className="text-gray-800 text-[30px] font-roboto mr-4 dark:text-white">Experience Points: </h3>
+            <h3 className="text-gray-800 text-[25px] font-roboto mr-4 dark:text-white">Experience Points: </h3>
             <div className="flex items-center justify-center w-full pb-9">
-              <div className="text-gray-800 text-[60px]  text-center font-roboto mr-4 dark:text-gray-400">{points}</div>
+              <div className="text-gray-800 text-[50px]  text-center font-roboto mr-4 dark:text-gray-400">{points}</div>
               <svg
                 width="46"
                 height="47"
