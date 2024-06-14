@@ -1,3 +1,9 @@
+/*
+ * GraphAgentStructure Component: This component displays various metrics related to agent states and availability, 
+ * as well as queue metrics in a call center environment. It fetches queue metrics periodically and renders charts 
+ * for agent status, agent availability, and contacts queued. Additionally, it includes a button for managing agent queues.
+ */
+
 import React, { useEffect, useState } from 'react';
 import MyPieChart from './Charts/piechart';
 import MyBarChart2 from './Charts/barChart2';
@@ -7,27 +13,32 @@ import InfoCard from './InfoCard';
 // Define a type for the metrics
 type Metric = "Flight Management" | "Travel Information" | "Special Assistance" | "Website Assistance" | "Other Questions" | "Customer Service";
 
+// Interface that defines the structure of the data used for the pie chart
 export interface PieChartDataItem {
   id: string | number;
   label: string;
   value: number;
 }
 
+// Interface that defines the structure of the data used for the queue metrics
 interface QueueDataItem {
   label: string;
   value: number;
 }
 
+// Interface that defines the structure of the data points used for the bar chart
 interface DataPoint {
   metric: Metric;
   value: number;
 }
 
+// Interface that defines the props received by the component
 interface GraphAgentStructureProps {
   agentsState: Array<PieChartDataItem>;
   agentsAvailability: Array<PieChartDataItem>;
 }
 
+// Component that displays agent status, agent availability, and contacts queued
 const GraphAgentStructure: React.FunctionComponent<GraphAgentStructureProps> = ({ agentsState, agentsAvailability }) => {
   const [queueData, setQueueData] = useState<QueueDataItem[]>([]);
 
@@ -41,24 +52,29 @@ const GraphAgentStructure: React.FunctionComponent<GraphAgentStructureProps> = (
     }
   };
 
+  // Load queue metrics every 5 seconds
   useEffect(() => {
     const interval = setInterval(loadMetricsEverySecond, 5000);
     return () => clearInterval(interval);
   }, []);
 
+  // Calculate total customers waiting in queue
   const totalCustomersWaiting = queueData.reduce((sum, item) => sum + item.value, 0);
 
+  // Map queue data to data points for bar chart
   const data: DataPoint[] = queueData.map(item => ({
-    metric: item.label as Metric, // Ensure metric is cast to Metric type
+    metric: item.label as Metric, 
     value: item.value,
   }));
 
+  // Render the GraphAgentStructure component
   return (
     <div className="box-border border-[1px] rounded-lg p-4 border-solid border-marco shadow-lg lg:h-[700px] overflow-y-auto">
       <div className="flex flex-col items-center w-full space-y-8">
         <div className="w-full">
           <h1 className="mb-4 text-3xl text-center font-roboto sm:text-left dark:text-white">Agent Status</h1>
           <div className="flex justify-center">
+            
             <div style={{ width: '100%', height: '300px' }}>
               {agentsState.every(state => state.value === 0) ? (
                 <InfoCard description="Information about agent status will display here" />
