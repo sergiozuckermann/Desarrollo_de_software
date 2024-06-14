@@ -1,12 +1,21 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+// Importing necessary hooks from React
 import React, { useEffect, useState } from "react";
+
+// Importing local components
 import PageStructure from "../components/PageStructure";
 import CellGrid from "../components/CellGrid";
 import GraphAgentStructure from "../components/GraphAgentStructure";
+
+// Importing custom hooks
 import { useWebSocket } from "../hooks/useWebSocket";
+
+// Importing types from local interfaces file
 import { Interaction, SentimentSegment, AgentsOnCall, UnhandledInteractions } from "../utils/interfaces";
+
+// Importing InfoCard component
 import InfoCard from "../components/InfoCard";
 
+// Defining the PieChartDataItem interface
 interface PieChartDataItem {
   id: string | number;
   label: string;
@@ -14,11 +23,13 @@ interface PieChartDataItem {
   color?: string;
 }
 
+// Defining the Action object with a START property
 const Action = {
   START: "START",
   END: "END"
 }
 
+// Defining the OngoingCalls functional component
 const OngoingCalls: React.FunctionComponent = () => {
   const { socket } = useWebSocket(); // get web socket connection
   const [interactions, setInteractions] = useState<Array<Interaction>>([]); // interactions
@@ -28,7 +39,8 @@ const OngoingCalls: React.FunctionComponent = () => {
     { id: "ACW", label: "After Call", value: 0, color: "#e29301" },
     { id: "OFFLINE", label: "Offline", value: 0, color: "#FF0000"},
   ])
-       
+
+  // Define a state to store the agents' availability data
   const [agentsAvailability, setAgentsAvailability] = useState<Array<PieChartDataItem>>([
     {id:"FlightManagement", label: "Flight Rsv", value: 0, color: "#20253F"},
     {id:"CustomerCare", label: "Customer Care", value: 0, color:"#4B4B4B" },
@@ -321,16 +333,6 @@ const updateAllAgentStatus = (action: string) => {
         }
       })
 
-      //sessionStorage.removeItem('unhandledInteractions')
-      // const remainingUnhandled = unhandledInteractions.filter(
-      //   unhandled => !unhandled.state.callOverviewAnalytics
-      // )
-
-      // if (remainingUnhandled.length === 0) {
-      //   sessionStorage.removeItem('unhandledInteractions')
-      // } else {
-      //   sessionStorage.setItem('unhandledInteractions', JSON.stringify(remainingUnhandled))
-      // }
     }
   }, [])
 
@@ -365,7 +367,7 @@ const updateAllAgentStatus = (action: string) => {
       };
     }
   }, [socket]);
-
+// return the ongoing calls page structure
   return (
     <PageStructure title="Ongoing Calls">
       <div className="overflow-y-auto h-full pb-[3%] pt-[2%] pl-[2%]">
