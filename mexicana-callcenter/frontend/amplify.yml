@@ -1,7 +1,7 @@
 version: 1
 applications:
   - frontend:
-      appRoot: mexicana-callcenter/frontend
+      appRoot: "mexicana-callcenter/frontend"
       build:
         commands:
           - npm install react-tooltip-lite --legacy-peer-deps
