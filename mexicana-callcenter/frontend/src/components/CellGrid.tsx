@@ -6,8 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import CallStatusIndicator from '../components/callStatusIndicator';
 // Import the MoodIndicator component
 import MoodIndicator from '../components/moodIndicator';
-// Import the CallTimeDisplay component
-import CallTimeDisplay from './callTimeDisplay';
+
 // Import the Interaction interface from '../utils/interfaces'
 import { Interaction } from '../utils/interfaces';
 
@@ -44,38 +43,28 @@ const CellGrid: React.FunctionComponent<CellGridProps> = ({ data }) => {
     <div className="box-border border-[1px] rounded-lg p-4 border-solid border-marco lg:h-[700px] overflow-y-auto">
       {/* Container div with various styles, including rounded corners, border, padding, and height/scrolling behavior */}
       <div className="grid sm:grid-cols-2 gap-4">
-        {/* Grid container with responsive columns and spacing */}
-        {/* Map over the data array and render a card for each interaction */}
         {data.map((interaction) => (
-          <div
-            key={interaction.key}
-            className="bg-white rounded-lg shadow p-6 border border-gray-300"
-            onClick={() => handleCardClick(interaction)}
-            style={{ cursor: 'pointer' }}
-          >
-            {/* Card div with background, rounded corners, shadow, padding, border, and cursor pointer styles */}
-            {/* onClick event handler calls the handleCardClick function with the current interaction */}
-            <div className="flex flex-col items-center justify-center text-center h-full">
-              {/* Container div with flexbox styles for centering content vertically and horizontally */}
-              <div className="flex justify-center items-center mb-4">
-                {/* Flex container for centering the agent's name */}
-                <p className="text-lg font-semibold">{interaction.agentFirstName}</p>
-                {/* Display the agent's first name with larger font size and semibold font weight */}
-              </div>
-              <div className="flex items-center justify-center space-x-4 mb-4">
-                {/* Flex container for the CallStatusIndicator and MoodIndicator components */}
-                {/* Render the CallStatusIndicator component */}
-                <CallStatusIndicator callStatus={interaction.state} />
-                {/* Render the MoodIndicator component */}
-                <MoodIndicator moodValue={interaction.Sentiment || "NEUTRAL"} />
-              </div>
-              <div className="flex items-center justify-center">
-                {/* Flex container for the CallTimeDisplay component */}
-                {/* Render the CallTimeDisplay component */}
-                <CallTimeDisplay />
+          interaction.agentFirstName && (
+            <div
+              key={interaction.key}
+              className="bg-white rounded-lg shadow p-6 border border-gray-300"
+              onClick={() => handleCardClick(interaction)}
+              style={{ cursor: 'pointer' }}
+            >
+              <div className="flex flex-col items-center justify-center text-center h-full">
+                <div className="flex justify-center items-center mb-4">
+                  <p className="text-lg font-semibold">{interaction.agentFirstName}</p>
+                </div>
+                <div className="flex items-center justify-center space-x-4 mb-4">
+                  <CallStatusIndicator callStatus={interaction.state} />
+                  <MoodIndicator moodValue={interaction.Sentiment || "NEUTRAL"} />
+                </div>
+                {/* <div className="flex items-center justify-center">
+                  <CallTimeDisplay />
+                </div> */}
               </div>
             </div>
-          </div>
+          )
         ))}
       </div>
     </div>

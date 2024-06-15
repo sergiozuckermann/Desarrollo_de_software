@@ -33,8 +33,8 @@ export interface WebSocketContextType {
 
 // Define an interface for a sentiment trend data point
 export interface SentimentTrend {
-  time: number; // The timestamp of the sentiment data point
-  sentiment: number; // The sentiment value of the data point
+  x: number;
+  y: number;
 }
 
 // Define an interface for call overview analytics data

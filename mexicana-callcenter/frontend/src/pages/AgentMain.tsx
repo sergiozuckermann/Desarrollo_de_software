@@ -10,7 +10,6 @@ import userService from "../services/user";
 
 //Agent Home Page
 const MainContent = () => {
-  const [buttonMode, setButtonMode] = useState('workspace');
   const [userInfo, setUserInfo] = useState<WorkerCardProps | null>(null);
   const [userImage, setImageURL] = useState<string | null>(null);
   const { role, username, logout } = useAuth()
@@ -49,10 +48,9 @@ const MainContent = () => {
   }, []);
 
   return (
-    // Page structure
-    <div className="grid w-full h-full grid-cols-1 gap-4 p-4 md:grid-cols-12">
-      <div className="md:col-span-4" data-cy="user-info">
-    {/* render agent */}
+    <div className="grid w-full h-full grid-cols-1 gap-4 p-4 pt-12 md:grid-cols-12">
+      <div className="md:col-span-4 h-[100%] pl-10" data-cy="user-info">
+       
         { userInfo !== null ? 
           <WorkerCard 
           imageURL={userImage || ''}
@@ -67,15 +65,16 @@ const MainContent = () => {
       {/*render options menu for agents */}
       </div>
       <div className="flex flex-col space-y-4 md:col-span-8">
+        <div className="flex flex-col pb-2">
+      <GradientButton mode={'workspace'} handleClick={() => window.location.href = '/agent/workspace'} />
+       </div>
         <div className="flex flex-col gap-10">
-          <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
+          <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
             <HomeButton icon="/MetricsSymbol.svg" title="My Metrics" subtitle="See the real time metrics for all the agents" handleClick={() => window.location.href = '/agent/Metrics'}/>
             <HomeButton icon="/SpotlightSymbol.svg" title="Agent Spotlight" subtitle="Weekly best agents" handleClick={() => window.location.href = '/AgentSpotlight'}/>
             <HomeButton icon="/BadgesSymbol.svg" title="My Badges" subtitle="See all the awards and badges earned" handleClick={() => window.location.href = '/agent/MyBadges'}/>
             <HomeButton icon="/BreakSymbol.svg" title="Take a break" subtitle="Go to take a break to clear the mind" handleClick={() => window.location.href = '/agent/TakeABreak'}/>
           </div>
-          {/* button that goes to workspace where cpp is */}
-            <GradientButton mode={buttonMode} handleClick={() => window.location.href = '/agent/workspace'} />
         </div>
       </div>
     </div>

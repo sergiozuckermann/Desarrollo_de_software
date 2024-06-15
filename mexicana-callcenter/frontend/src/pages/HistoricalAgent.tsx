@@ -11,24 +11,17 @@ import 'react-tooltip/dist/react-tooltip.css';
 import { Tooltip } from 'react-tooltip';
 import Modal from 'react-modal';
 import { useAuth } from '../hooks/useAuth';
-
+import { DataPoint } from '../components/Charts/barChart2';
 Modal.setAppElement('#root');
-
-// Define the metrics that can be displayed
-type Metric = "Flight Management" | "Travel Information" | "Special Assistance" | "Website Assistance" | "Other Questions" | "Customer Service";
-
-// Define the data point interface
-interface DataPoint {
-  metric: Metric;
-  value: number;
-}
+type Metric = "Flight Management" | "Travel Information" | "Special Assistance" | "Website Assistance" | "Other Questions" | "Customer Service" | "Unknown Queue";
 
 // Main content component that displays the metrics
 const MainContent: React.FC = () => {
     //define the state variables
     const { username: loggedInAgentId } = useAuth();
-    const [filters, setFilters] = useState<Record<string, string>>({
-        agentId: loggedInAgentId || '', // Default to the logged-in agent's username
+    const [agentId] = useState<string | null>(loggedInAgentId);
+    const [filters, setFilters] = useState({
+        agentId: agentId ?? '',
         startTime: '',
         endTime: '',
         queue: '',
@@ -56,10 +49,9 @@ const MainContent: React.FC = () => {
         }
     }, [averageAbandonTime, averageQueueAnswerTime]);
 
-    //function to apply filters
-    const handleApplyFilters = (newFilters: Record<string, string>) => {
+    const handleApplyFilters = (newFilters) => {
         setIsApplyingFilters(true);
-        setFilters({ ...newFilters, agentId: loggedInAgentId || '' }); // Ensure agentId is the logged-in agent's username
+        setFilters({ ...newFilters, agentId: loggedInAgentId }); // Ensure agentId is the logged-in agent's username
     };
 
     //check if the data is still loading
@@ -67,16 +59,24 @@ const MainContent: React.FC = () => {
         return <div>Loading...</div>;
     }
 
-    //define the data points for the metrics
-    const ServiceData = [{ metric: "Customer Service", percentage: ServiceLevel !== null ? ServiceLevel : 0 }];
+    const ServiceData = [{ metric: "Service Level", percentage: ServiceLevel !== null ? ServiceLevel : 0 }];
 
-    const AbandonData: DataPoint[] = averageAbandonTime !== null && averageAbandonTime.length > 0
-        ? averageAbandonTime.map(item => ({ metric: item.label as Metric, value: item.value }))
-        : [{ metric: "Other Questions", value: 0 }];
+//    const AbandonData = averageAbandonTime !== null && averageAbandonTime.length > 0
+//        ? averageAbandonTime.map(item => ({ metric: item.label, value: item.value }))
+//        : [{ metric: "No Data", value: 0 }];
 
-    const AnswerData: DataPoint[] = averageQueueAnswerTime !== null && averageQueueAnswerTime.length > 0
-        ? averageQueueAnswerTime.map(item => ({ metric: item.label as Metric, value: item.value }))
-        : [{ metric: "Other Questions", value: 0 }];
+//    const AnswerData = averageQueueAnswerTime !== null && averageQueueAnswerTime.length > 0
+//        ? averageQueueAnswerTime.map(item => ({ metric: item.label, value: item.value }))
+//        : [{ metric: "No Data", value: 0 }];
+
+const AnswerData: DataPoint[] = averageQueueAnswerTime !== null && averageQueueAnswerTime.length > 0
+    ? averageQueueAnswerTime.map(item => ({ metric: item.label as Metric, value: item.value }))
+    : [{ metric: "Unknown Queue", value: 0 }];
+
+const AbandonData: DataPoint[] = averageAbandonTime !== null && averageAbandonTime.length > 0
+    ? averageAbandonTime.map(item => ({ metric: item.label as Metric, value: item.value }))
+    : [{ metric: "Unknown Queue", value: 0 }];
+        
 
     const totalOccupancy = agentOccupancy && agentOccupancy.length > 0
         ? agentOccupancy.reduce((acc, curr) => acc + curr.value, 0)
@@ -102,6 +102,7 @@ const MainContent: React.FC = () => {
             return `${seconds} seconds`;
         }
     };
+    
 
     return (
         <div className="grid w-full h-full grid-cols-12 grid-rows-6 gap-4 p-2 pt-5 overflow-y-auto">

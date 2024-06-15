@@ -84,6 +84,6 @@ const MyLineChart: React.FC<MyLineChartProps> = ({ data }) => (
             ]}
         />
     </div>
-);
+)
 
 export default MyLineChart;

@@ -22,7 +22,7 @@ export interface PieChartDataItem {
 
 // Interface that defines the structure of the data used for the queue metrics
 interface QueueDataItem {
-  label: string;
+  queue: string; 
   value: number;
 }
 
@@ -32,7 +32,15 @@ interface DataPoint {
   value: number;
 }
 
-// Interface that defines the props received by the component
+const queueNames: Record<string, Metric> = {
+  'Flight Management': 'Flight Management',
+  'Customer Service': 'Customer Service',
+  'Other Questions': 'Other Questions',
+  'Special Assistance': 'Special Assistance',
+  'Travel Information': 'Travel Information',
+  'Website Support': 'Website Assistance'
+};
+
 interface GraphAgentStructureProps {
   agentsState: Array<PieChartDataItem>;
   agentsAvailability: Array<PieChartDataItem>;
@@ -42,10 +50,11 @@ interface GraphAgentStructureProps {
 const GraphAgentStructure: React.FunctionComponent<GraphAgentStructureProps> = ({ agentsState, agentsAvailability }) => {
   const [queueData, setQueueData] = useState<QueueDataItem[]>([]);
 
-  //FETCH QUEUE METRICS EVERY 5 SECONDS
+  // FETCH QUEUE METRICS EVERY 5 SECONDS
   const loadMetricsEverySecond = async () => {
     try {
       const queueMetrics = await userService.GetQueueMetrics(); // FETCH QUEUE METRICS
+      console.log('Fetched Queue Metrics:', queueMetrics);
       setQueueData(queueMetrics); // SET QUEUE METRICS
     } catch (error) {
       console.log('Error loading metrics', error);
@@ -58,14 +67,16 @@ const GraphAgentStructure: React.FunctionComponent<GraphAgentStructureProps> = (
     return () => clearInterval(interval);
   }, []);
 
-  // Calculate total customers waiting in queue
+
   const totalCustomersWaiting = queueData.reduce((sum, item) => sum + item.value, 0);
 
-  // Map queue data to data points for bar chart
-  const data: DataPoint[] = queueData.map(item => ({
-    metric: item.label as Metric, 
-    value: item.value,
-  }));
+  const data: DataPoint[] = queueData.map(item => {
+    const queueName = queueNames[item.queue] || "Unknown Queue"; 
+    return {
+      metric: queueName,
+      value: item.value,
+    };
+  });
 
   // Render the GraphAgentStructure component
   return (
@@ -85,7 +96,7 @@ const GraphAgentStructure: React.FunctionComponent<GraphAgentStructureProps> = (
           </div>
         </div>
         <div className="w-full">
-          <h1 className="mb-4 text-3xl text-center font-roboto sm:text-left dark:text-white">Agent Availability</h1>
+          <h1 className="mb-4 text-3xl text-center font-roboto sm:text-left dark:text-white">Call Distribution</h1>
           <div className="flex justify-center">
             <div style={{ width: '100%', height: '300px' }}>
               {agentsAvailability.every(a => a.value === 0) ? (
@@ -132,3 +143,4 @@ const GraphAgentStructure: React.FunctionComponent<GraphAgentStructureProps> = (
 };
 
 export default GraphAgentStructure;
+

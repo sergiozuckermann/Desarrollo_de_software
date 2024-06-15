@@ -1,0 +1,13 @@
+version: 1
+applications:
+  - appRoot: mexicana-callcenter/frontend
+    frontend:
+      phases:
+        build:
+          commands:
+          - npm install react-tooltip-lite --legacy-peer-deps
+          - npm run build  # o npm run build según corresponda
+      artifacts:
+        baseDirectory: dist  # Directorio donde están los archivos compilados
+        files:
+          - '**/*'  # Incluir todos los archivos y subdirectorios en 'dist'

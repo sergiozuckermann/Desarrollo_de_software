@@ -176,7 +176,7 @@ const Filter: React.FC<FilterProps> = ({ onApplyFilters, agentsList, isAgentFilt
                             type="text"
                             name="search"
                             className="w-full h-10 py-2 pl-10 pr-4 bg-gray-100 border border-gray-100 rounded-md shadow-sm outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-                            placeholder="Search by date, agent, queue, etc"
+                            placeholder="Search by date, queue, etc"
                             onFocus={toggleFilters}
                         />
                     </div>

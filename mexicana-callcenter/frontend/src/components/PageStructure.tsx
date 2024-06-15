@@ -158,7 +158,7 @@ const PageStructure: FunctionComponent<PageStructureProps> = ({ title, children 
       agentTalk: currentMetrics.agentTalk,
       customerTalk: currentMetrics.customerTalk,
       nonTalk: currentMetrics.nonTalk,
-      sentimentTrend: [...currentMetrics.sentimentTrend, { time: timeStamp, sentiment: sentimentValue }],
+      sentimentTrend: [...currentMetrics.sentimentTrend, { x: timeStamp, y: sentimentValue }],
       sentimentPercentages: {
         POSITIVE: currentMetrics.sentimentPercentages.POSITIVE,
         NEGATIVE: currentMetrics.sentimentPercentages.NEGATIVE,
@@ -192,9 +192,16 @@ const PageStructure: FunctionComponent<PageStructureProps> = ({ title, children 
       ws.onmessage = (event) => {
         const data = JSON.parse(event.data);
         if (data) {
-          const segment = data.message;
-          if (segment.notification) {
-            processNotification(segment.notification);
+          const segment = data.message
+          const contactIdsToFilter = ["9272a5e8-ac7b-4402-bde9-04ddc3d85d1c","ac482bb5-cbed-473b-b04c-82f68220515e"];
+          if (contactIdsToFilter.includes(segment.contactId)) {
+            console.log("Filtered out message with contact ID:", contactIdsToFilter);
+            return;
+          }
+  
+          if(segment.notification) {
+            console.log("received notification: ", segment)
+            processNotification(segment.notification)
           }
           // if the current page is not '/supervisor/ongoingcalls' then process unhandled agent events
           if (window.location.pathname !== '/supervisor/ongoingcalls') {
@@ -205,13 +212,7 @@ const PageStructure: FunctionComponent<PageStructureProps> = ({ title, children 
               processUnhandledSentimentEvent(segment);
             }
           }
-          // if the current page is '/supervisor/ongoingcalls' then process unhandled sentiment events
-          if (window.location.pathname === '/supervisor/ongoingcalls') {
-            const { segmentType } = segment;
-            if (segmentType === 'SENTIMENT_ANALYSIS') {
-              processUnhandledSentimentEvent(segment);
-            }
-          }
+         
         }
       };
     }
@@ -234,7 +235,7 @@ const PageStructure: FunctionComponent<PageStructureProps> = ({ title, children 
           {/* Notifications */}
           <h1 className="hidden md:block font dark:text-white">{title}</h1>
           <div className="h-10 mx-2 border-l-2 border-primary dark:border-white"></div>
-          {isAuthenticated && role === 'Supervisor' && <NotificationsDropDown notificationsData={notifications} count={notifications.length} />}
+          {isAuthenticated && role === 'Supervisor' && <NotificationsDropDown notificationsData={notifications} />}
           <div className="flex items-center">
             {/* Settings Button */}
             <SettingsButton />

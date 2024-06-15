@@ -10,12 +10,11 @@ interface NotificationsDropDownProps {
     message: string;
     date: string;
     isRead: boolean;
-  }[],
-  count: number;
+  }[]
 }
 
 // Define the NotificationsDropDown component as a Functional Component (FC) that accepts the properties defined in NotificationsDropDownProps
-const NotificationsDropDown: React.FC<NotificationsDropDownProps> = ({ notificationsData, count }) => {
+const NotificationsDropDown: React.FC<NotificationsDropDownProps> = ({ notificationsData }) => {
   // State to control the visibility of the dropdown
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate(); // Hook from react-router-dom to navigate 
@@ -36,7 +35,7 @@ const NotificationsDropDown: React.FC<NotificationsDropDownProps> = ({ notificat
       <button className="p-2" onClick={handleToggleDropdown}>
         {/* Notification icon and badge */}
         <img src="/notifications_iconn.png" alt="" className="w-[45px] mr-2" />
-        <NotificationBadge count={count} />
+        <NotificationBadge count={notificationsData.length} />
       </button>
       {/* Dropdown content */}
       {isDropdownOpen && (

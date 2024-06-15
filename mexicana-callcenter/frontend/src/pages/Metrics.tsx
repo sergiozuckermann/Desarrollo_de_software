@@ -1,4 +1,3 @@
-// src/pages/Metrics.tsx
 import React, { useState, useEffect } from 'react';
 import PageStructure from '../components/PageStructure';
 import { FetchMetrics } from '../services/metrics';
@@ -11,25 +10,15 @@ import MyPieChart from '../components/Charts/piechart';
 import 'react-tooltip/dist/react-tooltip.css';
 import { Tooltip } from 'react-tooltip';
 import Modal from 'react-modal';
-import { useAuth } from '../hooks/useAuth';
+import { DataPoint } from '../components/Charts/barChart2';
+type Metric = "Flight Management" | "Travel Information" | "Special Assistance" | "Website Assistance" | "Other Questions" | "Customer Service" | "Unknown Queue";
 
 Modal.setAppElement('#root');
 
-// Define the metrics that can be displayed
-type Metric = "Flight Management" | "Travel Information" | "Special Assistance" | "Website Assistance" | "Other Questions" | "Customer Service" | "Service Level" | "No Data";
-
-// Define the data point structure
-interface DataPoint {
-    metric: Metric;
-    value: number;
-}
-
 // Main content component that displays the metrics
 const MainContent: React.FC = () => {
-    //initialize the state variables
-    const { username: loggedInAgentId } = useAuth();
-    const [filters, setFilters] = useState<Record<string, string>>({
-        agentId: loggedInAgentId || '', // Default to the logged-in agent's username
+    const [filters, setFilters] = useState({
+        agentId: '',
         startTime: '',
         endTime: '',
         queue: '',
@@ -53,14 +42,15 @@ const MainContent: React.FC = () => {
     // useEffect hook to handle the application of filters
     useEffect(() => {
         if (isApplyingFilters) {
+            // Assuming data fetching happens in the FetchMetrics hook
             setIsApplyingFilters(false);
         }
     }, [averageAbandonTime, averageQueueAnswerTime]);
 
     // Function to handle the application of filters
-    const handleApplyFilters = (newFilters: Record<string, string>) => {
+    const handleApplyFilters = (newFilters) => {
         setIsApplyingFilters(true);
-        setFilters({ ...newFilters, agentId: loggedInAgentId || '' }); // Ensure agentId is the logged-in agent's username
+        setFilters(newFilters);
     };
 
     // Check if the metrics are still loading
@@ -71,13 +61,22 @@ const MainContent: React.FC = () => {
     // Format the data for the metrics
     const ServiceData = [{ metric: "Service Level", percentage: ServiceLevel !== null ? ServiceLevel : 0 }];
 
-    const AbandonData: DataPoint[] = averageAbandonTime !== null && averageAbandonTime.length > 0
-        ? averageAbandonTime.map(item => ({ metric: item.label as Metric, value: item.value }))
-        : [{ metric: "Other Questions", value: 0 }];
+//    const AbandonData = averageAbandonTime !== null && averageAbandonTime.length > 0
+//        ? averageAbandonTime.map(item => ({ metric: item.label, value: item.value }))
+ //       : [{ metric: "No Data", value: 0 }];
 
-    const AnswerData: DataPoint[] = averageQueueAnswerTime !== null && averageQueueAnswerTime.length > 0
-        ? averageQueueAnswerTime.map(item => ({ metric: item.label as Metric, value: item.value }))
-        : [{ metric: "Other Questions", value: 0 }];
+//    const AnswerData = averageQueueAnswerTime !== null && averageQueueAnswerTime.length > 0
+//        ? averageQueueAnswerTime.map(item => ({ metric: item.label, value: item.value }))
+//        : [{ metric: "No Data", value: 0 }];
+
+        
+const AnswerData: DataPoint[] = averageQueueAnswerTime !== null && averageQueueAnswerTime.length > 0
+    ? averageQueueAnswerTime.map(item => ({ metric: item.label as Metric, value: item.value }))
+    : [{ metric: "Unknown Queue", value: 0 }];
+
+const AbandonData: DataPoint[] = averageAbandonTime !== null && averageAbandonTime.length > 0
+    ? averageAbandonTime.map(item => ({ metric: item.label as Metric, value: item.value }))
+    : [{ metric: "Unknown Queue", value: 0 }];
 
     const totalOccupancy = agentOccupancy && agentOccupancy.length > 0
         ? agentOccupancy.reduce((acc, curr) => acc + curr.value, 0)
@@ -165,7 +164,7 @@ const MainContent: React.FC = () => {
 
             {/* FILTER */}
             <div className="relative w-full h-full col-span-3 row-span-1 p-2 border-gray-400">
-                <Filter onApplyFilters={handleApplyFilters} agentsList={agentsList} isAgentFilterEditable={false} />
+            <Filter onApplyFilters={handleApplyFilters} agentsList={agentsList} isAgentFilterEditable={true} />
             </div>
 
             {/* Average Answer Time per Queue */}

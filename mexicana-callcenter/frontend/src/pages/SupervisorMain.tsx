@@ -25,16 +25,9 @@ import useCustomToast from "../components/LoginNotification";
 // Import the ConnectHere component from the "../components/ConnectHere" module
 import ConnectHere from '../components/ConnectHere';
 
-// Import the GradientButton component from the "../components/CallingButton" module
-import GradientButton from '../components/CallingButton';
 
 // Define the MainContent functional component
 const MainContent = () => {
-  // Declare a state variable 'buttonMode' with initial value 'workspace' and its setter function 'setButtonMode'
-  const [buttonMode, setButtonMode] = useState('workspace');
-
-  // Declare a state variable 'userInfo' with initial value null and its setter function 'setUserInfo'
-  // The type of 'userInfo' is either WorkerCardProps or null
   const [userInfo, setUserInfo] = useState<WorkerCardProps | null>(null);
 
   // Declare a state variable 'userImage' with initial value null and its setter function 'setImageURL'
@@ -43,42 +36,28 @@ const MainContent = () => {
 
   // Destructure the 'showError' function from the 'useCustomToast' hook
   const { showError } = useCustomToast();
+  const { role, username, logout } = useAuth()
 
-  // Destructure the 'role', 'username', and 'logout' variables from the 'useAuth' hook
-  const { role, username, logout } = useAuth();
-
-  // Use the useEffect hook to set up an interval that toggles the 'buttonMode' every 10 seconds
+  // execute call to backend url to fetch info of the user
   useEffect(() => {
-    // Set up an interval that runs every 10000 milliseconds (10 seconds)
-    const timer = setInterval(() => {
-      // Toggle the 'buttonMode' between 'workspace' and 'calling'
-      setButtonMode(prevMode => prevMode === 'workspace' ? 'calling' : 'workspace');
-    }, 10000);
-
-    // Clean up the interval when the component unmounts
-    return () => clearInterval(timer);
-  }, []); // Empty dependency array means this effect runs only once on component mount
-
-  // Use the useEffect hook to fetch user information from the server
-  useEffect(() => {
-    // Call the 'GetInfo' method of the 'userService' with the 'role' and 'username'
+ 
     userService
-      .GetInfo(role!, username!)
-      .then((user) => setUserInfo(user)) // Update the 'userInfo' state with the fetched user data
+      .GetInfo(role!, username!) // call function that makes axios request
+      .then((user) => setUserInfo(user)) // set userInfo state with the result from the request if it is successful
       .catch(error => {
-        // If the error response status is 401 (Unauthorized)
-        if (error.response.status === 401) {
-          showError(error.response.data.error); // Show an error message using the 'showError' function
-          setTimeout(() => { logout(); }, 4000); // Log out the user after 4 seconds
+        if(error.response.status === 401) { // check for an authorization error
+            showError(error.response.data.error) // display error
+            setTimeout(() => {logout()}, 4000) // log user out
         }
-      });
-  }, [role, username, logout, showError]); // Re-run this effect whenever 'role', 'username', 'logout', or 'showError' changes
+      })
+
+  }, [])
 
   // Use the useEffect hook to fetch the user's image URL from the server
   useEffect(() => {
     // Call the 'GetImageUrl' method of the 'userService' with the 'username'
     userService
-      .GetImageUrl(username!)
+      .GetImageUrl(username!) // Llamada a la función que realiza la solicitud axios
       .then((url) => {
         console.log("URL obtenida:", url); // Log the obtained URL
         setImageURL(url.imageUrl); // Update the 'userImage' state with the fetched image URL
@@ -113,29 +92,26 @@ const MainContent = () => {
       </div>
       {/* Render a div for the home buttons */}
       <div className="flex flex-col space-y-4 md:col-span-8">
-        <div className="flex flex-col gap-10">
-          {/* Render a grid of home buttons */}
-          <div className="grid justify-center grid-cols-1 gap-6 md:grid-cols-2 md:col-span-2">
-            {/* Render individual HomeButton components */}
-            <HomeButton icon="/phone.svg" title="Call Overview" subtitle="See the status of the ongoing calls" handleClick={() => window.location.href = '/supervisor/onGoingCalls'}/>
-            <HomeButton icon="/Switch.svg" title="Agent Queue Transfer" subtitle="Transfer agents from one queue to another" handleClick={() => window.location.href = '/supervisor/agent-transfer'}/>
-            <HomeButton icon="/MetricsSymbol.svg" title="Historical Metrics" subtitle="See the historical metrics of the call center" handleClick={() => window.location.href = '/supervisor/metrics'}/>
-            <HomeButton icon="/SpotlightSymbol.svg" title="Agent Spotlight" subtitle="Weekly best agents" handleClick={() => window.location.href = '/supervisor/AgentSpotlight'}/>
-            <HomeButton icon="/costumer.svg" title="Agent Performance" subtitle="See the weekly metrics of agent performance" handleClick={() => window.location.href = '/supervisor/AgentPerformance'}/>
-            <HomeButton icon="/BreakSymbol.svg" title="Take a break" subtitle="Go to take a break to clear the mind" handleClick={() => window.location.href = '/supervisor/TakeABreak'}/>
-            {/* Render a hidden ConnectHere component */}
-            <div style={{ visibility: 'hidden', pointerEvents: 'none' }}>
-              <ConnectHere />
-            </div>
-            {/* Render a div for the GradientButton */}
-            <div className="flex justify-center w-full md:col-span-2">
-              {/* Render the GradientButton component */}
-              <GradientButton mode={buttonMode} handleClick={() => window.location.href = '/supervisor/workspace'} />
-            </div>
-          </div>
-        </div>
+  <div className="flex flex-col gap-10">
+
+  <div className="grid justify-center grid-cols-1 gap-6 md:grid-cols-2 md:col-span-2">
+      <HomeButton icon="/phone.svg" title="Call Overview" subtitle="See the status of the ongoing calls" handleClick={() => window.location.href = '/supervisor/onGoingCalls'}/>
+      <HomeButton icon="/Switch.svg" title="Agent Queue Transfer" subtitle="Transfer agents from one queue to another" handleClick={() => window.location.href = '/supervisor/agent-transfer'}/>
+      <HomeButton icon="/MetricsSymbol.svg" title="Historical Metrics" subtitle="See the historical metrics of the call center" handleClick={() => window.location.href = '/supervisor/metrics'}/>
+      <HomeButton icon="/SpotlightSymbol.svg" title="Agent Spotlight" subtitle="Weekly best agents" handleClick={() => window.location.href = '/supervisor/AgentSpotlight'}/>
+      <HomeButton icon="/costumer.svg" title="Agent Performance" subtitle="See the weekly metrics of agent perfomance" handleClick={() => window.location.href = '/supervisor/AgentPerformance'}/>
+      <HomeButton icon="/BreakSymbol.svg" title="Take a break" subtitle="Go to take a break to clear the mind" handleClick={() => window.location.href = '/supervisor/TakeABreak'}/>
+      <div style={{ visibility: 'hidden', pointerEvents: 'none' }}>
+        <ConnectHere />
       </div>
+      <div className="flex justify-center w-full md:col-span-2">
+      </div>
+
     </div>
+   
+  </div> 
+</div>
+</div>
   );
 };
 

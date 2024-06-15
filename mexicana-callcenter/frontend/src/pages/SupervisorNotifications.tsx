@@ -10,7 +10,6 @@ import React, { useState, useEffect } from "react";
 // - HorizontalTabs: A component for rendering horizontal tabs
 import PageStructure from "../components/PageStructure";
 import NotificationItem from "../components/NotificationItem";
-import { notifications } from "../components/notificationsData"; 
 import HorizontalTabs from "../components/NotificationTabs";
 
 // Import icons from react-icons library
