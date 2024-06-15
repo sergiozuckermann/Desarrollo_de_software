@@ -29,7 +29,7 @@ const PieChart: React.FC<PieChartProps> = ({ data, unit }) => {
     };
 
     return (
-        <div className='relative w-full h-full pb-2'>
+        <div className='relative w-full h-full pb-2' data-testid="pie-chart">
             {/* A responsive pie chart that adjusts its size to the parent container */}
             <ResponsivePie
                 data={data}

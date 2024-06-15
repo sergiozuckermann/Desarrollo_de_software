@@ -17,8 +17,7 @@ function SettingsButton() {
 
     // Function to handle logout
     const handleLogout = () => {
-        logout();  // Logout user
-        window.location.href = '/'; // Redirect to the home page
+        logout();
     };
     
     // Function to toggle dark mode
@@ -27,7 +26,7 @@ function SettingsButton() {
     };
 
     return (
-        <div className="relative">
+        <div className="relative" data-cy='settings'>
             {/* Button to toggle the settings dropdown */}
             <button onClick={toggleIsActive} className="p-2">
                 {/* Settings icon */}

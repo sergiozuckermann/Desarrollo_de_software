@@ -21,54 +21,53 @@ const AuthProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
   const { showSuccess } = useCustomToast();
   const { showCustom } = useCustomToast();
   const navigate = useNavigate()
- 
-    // Function to get the user context from the session storage
-    const getContext = () => {
-      const userDataString = sessionStorage.getItem('userData');
-  
-      // Parse the JSON string back into an object
-      const userData = userDataString ? JSON.parse(userDataString) : null;
-  
-      // if information of the user is present, return that information as the context object
-      if(userData) {
-        const { name, username, role, authenticated } = userData;
-        return {
-            isAuthenticated: authenticated,
-            name,
-            username,
-            role, 
-            login,
-            logout
-          } 
-      } 
 
-      // return default values of the context object if no user information is present
+  const getContext = () => {
+    const userDataString = sessionStorage.getItem('userData');
+
+    // Parse the JSON string back into an object
+    const userData = userDataString ? JSON.parse(userDataString) : null;
+
+    // if information of the user is present, return that information as the context object
+    if (userData) {
+      const { name, username, role, authenticated } = userData;
       return {
-        isAuthenticated: false,
-        name: null,
-        username: null,
-        role: null,
+        isAuthenticated: authenticated,
+        name,
+        username,
+        role,
         login,
         logout
       }
-        
-      }
-    
+    }
+
+    // return default values of the context object if no user information is present
+    return {
+      isAuthenticated: false,
+      name: null,
+      username: null,
+      role: null,
+      login,
+      logout
+    }
+
+  }
+
 
   // login function
   const login = async (credentials: Credentials) => {
     return axios
       .post(`${baseUrl}/auth/login`, credentials)
       .then(res => {
-        if(res.status === 200) {
+        if (res.status === 200) {
           const { token, name, username, role } = res.data;
 
           // Create an object to hold the user information
           const userData = {
-              role,
-              name, 
-              username,
-              authenticated: true
+            role,
+            name,
+            username,
+            authenticated: true
           };
 
           // Store the combined user data object in sessionStorage
@@ -78,10 +77,13 @@ const AuthProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
           // navigate to the hme page based on the user's role
           navigate(`/${role}/home`)
           showSuccess(`🎉 Welcome ${name}!\nYou are now signed in.`);
-          showCustom("Wait for the Contact Control Panel popup to log in with your credentials", "gray");
+          // show a custom notification to the user if is a supervisor
+          if (role === 'supervisor') {
+            showCustom("Wait for the Contact Control Panel popup to log in with your credentials", "gray");
+          }
         }
       })
-      .catch(error =>  {
+      .catch(error => {
         //check if there was an error logging in and notify the user
         console.log(error)
         const err = error.response.data.message // extract error message from axios response
@@ -95,8 +97,8 @@ const AuthProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
   const logout = () => {
     sessionStorage.clear()
     showSuccess(`🎉 Logged Out`);
-    window.location.href = '/'
-  } 
+    navigate('/')
+  }
 
   //  value of the authentication context
   const contextValue = {

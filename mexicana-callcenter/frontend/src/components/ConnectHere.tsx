@@ -12,7 +12,6 @@ const ConnectHere: React.FC = () => {
             <div className='h-[93%]'>
                 {/* Inner div with a height of 93% */}
                 <CCPComponent />
-                {/* Render the CCPComponent */}
             </div>
         </div>
     );

@@ -61,14 +61,6 @@ const MainContent: React.FC = () => {
 
     const ServiceData = [{ metric: "Service Level", percentage: ServiceLevel !== null ? ServiceLevel : 0 }];
 
-//    const AbandonData = averageAbandonTime !== null && averageAbandonTime.length > 0
-//        ? averageAbandonTime.map(item => ({ metric: item.label, value: item.value }))
-//        : [{ metric: "No Data", value: 0 }];
-
-//    const AnswerData = averageQueueAnswerTime !== null && averageQueueAnswerTime.length > 0
-//        ? averageQueueAnswerTime.map(item => ({ metric: item.label, value: item.value }))
-//        : [{ metric: "No Data", value: 0 }];
-
 const AnswerData: DataPoint[] = averageQueueAnswerTime !== null && averageQueueAnswerTime.length > 0
     ? averageQueueAnswerTime.map(item => ({ metric: item.label as Metric, value: item.value }))
     : [{ metric: "Unknown Queue", value: 0 }];
@@ -149,6 +141,9 @@ const AbandonData: DataPoint[] = averageAbandonTime !== null && averageAbandonTi
                 data-tooltip-id="tooltipAverageQueueAnswerTime"
                 data-tooltip-content="ASA is a more generalized metric that measures the average time it takes for all calls to be answered across the entire call center, regardless of the queue they are in. It provides an overall picture of the call center's efficiency in handling incoming calls. A low ASA indicates that calls are being answered quickly, while a high ASA indicates that callers are waiting a long time to speak with an agent."
                 data-tooltip-place="right">
+                <div className="flex flex-row justify-between mt-2">
+                    <p className='dark:text-white'>Average Queue Answer Time (ASA)</p>
+                </div>
                 <div className="flex flex-row items-center justify-between">
                     <div className="px-4 py-4 bg-gray-300 rounded-xl bg-opacity-30">
                     </div>
@@ -156,9 +151,6 @@ const AbandonData: DataPoint[] = averageAbandonTime !== null && averageAbandonTi
                     </div>
                 </div>
                 <h1 className="mt-1 text-3xl font-bold text-gray-700 sm:text-m xl:text-4xl dark:text-white">{formatTime(averageAnswerTime || 0)}</h1>
-                <div className="flex flex-row justify-between mt-2">
-                    <p className='dark:text-white'>Average Queue Answer Time (ASA)</p>
-                </div>
             </div>
             <Tooltip id="tooltipAverageQueueAnswerTime" className="custom-tooltip" />
 
