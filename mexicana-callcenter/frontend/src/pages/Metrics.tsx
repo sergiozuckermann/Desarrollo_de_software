@@ -13,8 +13,9 @@ import Modal from 'react-modal';
 import { DataPoint } from '../components/Charts/barChart2';
 type Metric = "Flight Management" | "Travel Information" | "Special Assistance" | "Website Assistance" | "Other Questions" | "Customer Service" | "Unknown Queue";
 
-Modal.setAppElement('#root'); // Set the root element for accessibility
+Modal.setAppElement('#root');
 
+// Main content component that displays the metrics
 const MainContent: React.FC = () => {
     const [filters, setFilters] = useState({
         agentId: '',
@@ -38,6 +39,7 @@ const MainContent: React.FC = () => {
         agentsList
     } = FetchMetrics(filters);
 
+    // useEffect hook to handle the application of filters
     useEffect(() => {
         if (isApplyingFilters) {
             // Assuming data fetching happens in the FetchMetrics hook
@@ -45,15 +47,18 @@ const MainContent: React.FC = () => {
         }
     }, [averageAbandonTime, averageQueueAnswerTime]);
 
+    // Function to handle the application of filters
     const handleApplyFilters = (newFilters) => {
         setIsApplyingFilters(true);
         setFilters(newFilters);
     };
 
+    // Check if the metrics are still loading
     if (averageAbandonTime === null || averageQueueAnswerTime === null) {
         return <div>Loading...</div>;
     }
 
+    // Format the data for the metrics
     const ServiceData = [{ metric: "Service Level", percentage: ServiceLevel !== null ? ServiceLevel : 0 }];
 
 //    const AbandonData = averageAbandonTime !== null && averageAbandonTime.length > 0
@@ -82,6 +87,7 @@ const AbandonData: DataPoint[] = averageAbandonTime !== null && averageAbandonTi
         { id: 'Unoccupied', label: 'Unoccupied', value: 100 - totalOccupancy, color: 'red' }
     ];
 
+    // Function to format the time in seconds to a human-readable format
     const formatTime = (seconds: number): string => {
         if (seconds >= 3600) {
             const hours = Math.floor(seconds / 3600);
@@ -98,7 +104,9 @@ const AbandonData: DataPoint[] = averageAbandonTime !== null && averageAbandonTi
     };
 
     return (
+        // Return the main content
         <div className="grid w-full h-full grid-cols-12 grid-rows-6 gap-4 p-2 pt-5 overflow-y-auto">
+            {/* filters */}
             <Modal
                 isOpen={isApplyingFilters}
                 onRequestClose={() => setIsApplyingFilters(false)}

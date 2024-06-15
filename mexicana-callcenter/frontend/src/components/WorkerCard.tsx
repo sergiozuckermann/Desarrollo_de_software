@@ -1,21 +1,26 @@
 import React from 'react';
-import { WorkerCardProps } from '../utils/interfaces';
-import { useDarkMode } from '../hooks/useDarkMode';
+import { WorkerCardProps } from '../utils/interfaces'; // Importing WorkerCardProps from interfaces
+import { useDarkMode } from '../hooks/useDarkMode'; // Importing useDarkMode hook
 
+// Define the WorkerCard component as a Functional Component (FC) that accepts the properties defined in WorkerCardProps
 const WorkerCard: React.FC<WorkerCardProps> = ({ imageURL, name, username, position, experience, points, status }) => {
-  const { darkMode } = useDarkMode();
-  const statusClass = status === 'Active' ? 'bg-green-500' : 'bg-red-500';
+  const { darkMode } = useDarkMode(); // Using the useDarkMode hook to access dark mode state
+  const statusClass = status === 'Active' ? 'bg-green-500' : 'bg-red-500'; // Determine status class based on 'Active' or 'Inactive' status
 
   return (
     <div>
       {/* Large Device Layout */}
       <div className="hidden h-[100%] max-w-sm p-4 overflow-hidden  shadow-lg rounded-xl md:block bg-tertiary dark:bg-gray-900 card">
         <div className="flex justify-center">
-          <img className="w-[58%] h-[58%] rounded-full" src={imageURL} alt="User avatar" />
+          {/* User avatar/profilepicture */}
+          <img className="w-[65%] h-[65%] rounded-full" src={imageURL} alt="User avatar" />
         </div>
         <div className="items-center px-6 py-4 text-center">
-          <p className="pb-5 text-sm italic text-gray-600 dark:text-white" data-cy="user-login">{username}</p>
+          {/* User username */}
+          <p className="pb-5 text-sm text-gray-600 dark:text-white italic" data-cy="user-login">{username}</p>
+          {/* User name */}
           <h2 className="pb-5 mb-2 dark:text-white">{name}</h2>
+          {/* User position */}
           <p className="pb-1 text-base text-gray-700 dark:text-white">{position}</p>
           <p className="pb-8 text-sm text-gray-600 dark:text-white">{experience} years</p>
           <div className="flex flex-col"> 
@@ -43,7 +48,9 @@ const WorkerCard: React.FC<WorkerCardProps> = ({ imageURL, name, username, posit
       {/* Small Device Layout */}
       <div className="pt-40 overflow-hidden bg-white border border-gray-300 rounded-lg 2sm:p-2 md:hidden">
         <div className="text-center">
+          {/* User name */}
           <p>{name}</p>
+          {/* Status button */}
           <button className={`${statusClass} text-white font-bold py-1 px-2 rounded-lg w-full`}>
             {status}
           </button>
@@ -53,4 +60,4 @@ const WorkerCard: React.FC<WorkerCardProps> = ({ imageURL, name, username, posit
   );
 };
 
-export default WorkerCard;
+export default WorkerCard; 

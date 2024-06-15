@@ -1,19 +1,23 @@
 import React, { useRef } from 'react';
+// Import Mui Material components to build the chat in an easier way
 import { Button, CssBaseline, Container, Grid, List, ListItem, ListItemText, Paper } from '@mui/material';
 
 interface Props {
-  isConnected: boolean;
-  members: string[] | undefined;
-  chatRows: React.ReactNode[] | undefined;
-  onPublicMessage: () => void;
-  onPrivateMessage: (to: string) => void;
-  onConnect: () => void;
-  onDisconnect: () => void;
+  isConnected: boolean; // Specify if the user is connected to the websocket or not
+  members: string[] | undefined; // The websocket returns a list of connected members
+  chatRows: React.ReactNode[] | undefined; // The chat rows are generated with each new upcoming message
+  onPublicMessage: () => void; // Function to send a message to all the members 
+  onPrivateMessage: (to: string) => void; // Function to send a message depending on the selected agent
+  onConnect: () => void; // Function that states if a new user is connected to the WS
+  onDisconnect: () => void; // Function that alerts if the connection to the WS of a certain agent no longer exists
 }
 
-export const ChatClient = (props: Props) => {
-  const buttonRef = useRef(null); // Ref para el botón
+// Construction of the chat
 
+export const ChatClient = (props: Props) => {
+  const buttonRef = useRef(null); 
+
+  // Chat Formatting
   return (
     <div style={{
       position: 'absolute',
@@ -52,7 +56,7 @@ export const ChatClient = (props: Props) => {
                 <Grid item style={{ margin: 10 }}>
                   {props.isConnected && (
                     <Button
-                      ref={buttonRef} // Agregar la referencia al botón
+                      ref={buttonRef}
                       style={{ marginRight: 7 }}
                       variant="outlined"
                       size="small"

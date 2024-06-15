@@ -6,14 +6,14 @@ import WorkerCard from '../components/WorkerCard';
 import { useAuth } from '../hooks/useAuth'
 import { WorkerCardProps } from '../utils/interfaces';
 import useCustomToast from "../components/LoginNotification";
-import userService from "../services/user"
+import userService from "../services/user";
 
+//Agent Home Page
 const MainContent = () => {
   const [userInfo, setUserInfo] = useState<WorkerCardProps | null>(null);
   const [userImage, setImageURL] = useState<string | null>(null);
   const { role, username, logout } = useAuth()
   const { showError } = useCustomToast();
-
 
   // execute call to backend url to fetch info of the user
   useEffect(() => {
@@ -32,17 +32,17 @@ const MainContent = () => {
 
   useEffect(() => {
     userService
-      .GetImageUrl(username!) // Llamada a la función que realiza la solicitud axios
+      .GetImageUrl(username!) //call function that makes axios request
       .then((url) => {
-        console.log("URL obtenida:", url); // Mostrar el valor de url en la consola
-        setImageURL(url.imageUrl); // Establecer el estado de imageURL con el resultado de la solicitud si es exitosa
+        console.log("URL obtenida:", url); // show the URL obtained
+        setImageURL(url.imageUrl); // set the imageURL state with the result from the request if it is successful
       })
       .catch(error => {
-        if (error.response && error.response.status === 401) { // Verificar si hay un error de autorización
-          showError(error.response.data.error); // Mostrar el error
-          setTimeout(() => { logout() }, 4000); // Cerrar la sesión del usuario
+        if (error.response && error.response.status === 401) { // check if the error is an authorization error
+          showError(error.response.data.error); // showError
+          setTimeout(() => { logout() }, 4000); // close agent session
         } else {
-          console.error("Error en la solicitud:", error); // Manejar otros posibles errores
+          console.error("Error en la solicitud:", error); // manage other errors
         }
       });
   }, []);
@@ -62,7 +62,7 @@ const MainContent = () => {
            status="Active" /> 
           : null
         }
-
+      {/*render options menu for agents */}
       </div>
       <div className="flex flex-col space-y-4 md:col-span-8">
         <div className="flex flex-col pb-2">

@@ -1,3 +1,4 @@
+// Importing necessary libraries, hooks, services, and components
 import React, { useEffect, useState } from 'react';
 import { useWebSocket } from "../hooks/useWebSocket";
 import PageStructure from "../components/PageStructure";
@@ -23,29 +24,34 @@ export interface PieChartDataItem {
   color?: string;
 }
 
+// Function to format duration in seconds to a string in the format HH:MM:SS
 const formatDuration = (seconds: number) => {
   const h = Math.floor(seconds / 3600).toString().padStart(2, '0');
   const m = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
   const s = Math.floor(seconds % 60).toString().padStart(2, '0');
   return `${h}:${m}:${s}`;
 };
-
+// Function to calculate the time difference between classification time and current time
 const calculateTimeDifference = (classificationTime: string, currentTime: string) => {
+  // Splitting the times into hours, minutes, and seconds and converting them to numbers
   const [classificationHours, classificationMinutes, classificationSeconds] = classificationTime.split(":").map(Number);
   const [currentHours, currentMinutes, currentSeconds] = currentTime.split(":").map(Number);
-
+  
+  // Calculating the total seconds for each time
   const classificationTotalSeconds = (classificationHours * 3600) + (classificationMinutes * 60) + classificationSeconds;
   const currentTotalSeconds = (currentHours * 3600) + (currentMinutes * 60) + currentSeconds;
-
+  
+  // If the current time is less than or equal to the classification time, return "00:00:00"
   if (currentTotalSeconds <= classificationTotalSeconds) {
     return "00:00:00";
   }
-
+  // Calculate the difference in seconds between the current time and the classification time
   const differenceInSeconds = currentTotalSeconds - classificationTotalSeconds;
-
+  
+  // Return the difference formatted as HH:MM:SS
   return formatDuration(differenceInSeconds);
 };
-
+// Defining the CallOverview component
 const CallOverview: React.FunctionComponent = () => {
   const { socket } = useWebSocket(); // get web socket connection
   const [agentInfo, setAgentInfo] = useState<Interaction | null>(null);
@@ -71,26 +77,26 @@ const CallOverview: React.FunctionComponent = () => {
     key: '',
     contactId: ''
   }));
-
+  // State for the chart data
   const [chartData, setChartData] = useState<PieChartDataItem[]>([
     { id: "Customer", label: "Customer Time", value: 0 },
     { id: "Agent", label: "Agent Time", value: 0, color: "#177E89" },
     { id: "Non-talk", label: "NonTalk Time", value: 0, color: "#C4B1AE" },
   ]);
-
+  // State for the second chart data
   const [chartData2, setChartData2] = useState<PieChartDataItem[]>([
     { id: "Positive", label: "Positive", value: 0, color: "#6BBF70" },
     { id: "Neutral", label: "Neutral", value: 0, color: "#7E7F83" },
     { id: "Negative", label: "Negative", value: 0, color: "#E63B2E" },
   ]);
-
+  // State for the sentiment data
   const [sentimentData, setsentimentData] = useState([
     {
       id: "sentiment",
       data: [{ x: 0, y: 0 }], // x y o t & s?
     },
   ]);
-
+  // State for the call duration
   const [callDuration, setCallDuration] = useState<string>("00:00:00");
 
   // Static classification time
@@ -173,7 +179,7 @@ const CallOverview: React.FunctionComponent = () => {
 
   const usernamePic = agentInfo?.username;
   console.log("UsernamePic:", usernamePic);
-
+  // Get the user's image URL
   useEffect(() => {
     if (agentInfo && agentInfo.username) {
       userService

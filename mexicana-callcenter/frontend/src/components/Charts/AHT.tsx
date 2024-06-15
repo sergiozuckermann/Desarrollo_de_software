@@ -1,5 +1,9 @@
+// Average Handle Time component
+
+// Importes React Library
 import React from 'react';
 
+// Defines the properties of the AHT component
 interface AHTProps {
 //Format for all of them is "HH:MM:SS"
   classificationTime: string; 

@@ -1,8 +1,14 @@
+// Import the useState and useEffect hooks from the React library
 import { useState, useEffect } from 'react';
+// Import the axios library for making HTTP requests
 import axios from 'axios';
+// Import the conf module from the relative path '../conf'
 import conf from '../conf';
+
+// Assign the value of conf.apiUrl to the API_URL constant (or use 'http://localhost:3000' as a fallback)
 const API_URL = conf.apiUrl; //'http://localhost:3000';
 
+// Define a mapping of queue IDs to queue names
 const queueNames: Record<string, string> = {
     'b65f8183-2d8b-42e4-9b37-f8dfa787c246': 'Flight Management',
     'f6d70469-1449-47c5-b93e-53b42de6dcc3': 'Customer Service',
@@ -12,38 +18,45 @@ const queueNames: Record<string, string> = {
     'd19f9426-d75f-48eb-a68c-0bbda4ced434': 'Website Assistance'
 };
 
+// Define an interface for a single metric
 interface Metric {
     Name: string;
     Value?: number;
 }
 
+// Define an interface for a metric collection
 interface MetricCollection {
     Metric: Metric;
     Value: number;
 }
 
+// Define an interface for the dimensions of a metric
 interface Dimensions {
     AGENT: string;
     AGENT_ARN: string;
     QUEUE?: string;
 }
 
+// Define an interface for a queue metric
 interface QueueMetric {
     Dimensions: Dimensions;
     Collections: MetricCollection[];
 }
 
+// Define an interface for an agent metric
 interface AgentMetric {
     Dimensions: Dimensions;
     Collections: MetricCollection[];
 }
 
+// Define an interface for the response data shape
 interface ResponseData {
     QueueMetrics: { MetricResults: QueueMetric[] };
     AgentMetrics: { MetricResults: AgentMetric[] };
     AgentsList: string[];
 }
 
+// Define an interface for the result of the FetchMetrics function
 interface FetchMetricsResult {
     averageAbandonmentRate: number | null;
     averageAbandonTime: { label: string; value: number }[] | null;
@@ -57,7 +70,9 @@ interface FetchMetricsResult {
     agentsList: string[];
 }
 
+// Define the FetchMetrics function and its parameters
 export function FetchMetrics(filters: Record<string, string>): FetchMetricsResult {
+    // Define state variables for various metrics using the useState hook
     const [averageAbandonmentRate, setAverageAbandonmentRate] = useState<number | null>(null);
     const [averageAbandonTime, setAverageAbandonTime] = useState<{ label: string; value: number }[] | null>(null);
     const [averageQueueAnswerTime, setAverageQueueAnswerTime] = useState<{ label: string; value: number }[] | null>(null);
@@ -68,7 +83,10 @@ export function FetchMetrics(filters: Record<string, string>): FetchMetricsResul
     const [contactFlowTime, setContactFlowTime] = useState<number | null>(null);
     const [agentOccupancy, setAgentOccupancy] = useState<{ label: string; value: number }[] | null>(null);
     const [agentsList, setAgentsList] = useState<string[]>([]);
+
+    // Use the useEffect hook to fetch data when the component mounts or the filters change
     useEffect(() => {
+        // Define an asynchronous function to fetch data
         const fetchData = async () => {
             // Reset state before fetching new data
             setAverageAbandonmentRate(null);
@@ -83,18 +101,23 @@ export function FetchMetrics(filters: Record<string, string>): FetchMetricsResul
             setAgentsList([]);
 
             try {
+                // Get the filters from the function parameter (or use an empty object if not provided)
                 const requestFilters = filters || {};
                 console.log("Filters before sending request:", requestFilters);
+
+                // Make a POST request to the API using axios
                 const response = await axios.post<ResponseData>(`${API_URL}/historicmetrics`, requestFilters, {
                     headers: {
                         'Content-Type': 'application/json',
                     }
                 });
 
+                // Destructure the response data
                 const queueMetrics = response.data.QueueMetrics.MetricResults;
                 const agentMetrics = response.data.AgentMetrics.MetricResults;
                 const agents = response.data.AgentsList;
 
+                // Initialize variables for aggregating metrics
                 let totalAbandonmentRate = 0;
                 let abandonmentRateCount = 0;
                 let abandonTimes: { label: string; value: number }[] = [];
@@ -109,6 +132,7 @@ export function FetchMetrics(filters: Record<string, string>): FetchMetricsResul
                 let contactFlowTimeCount = 0;
                 let agentOccupancyArray: { label: string; value: number }[] = [];
 
+                // Process queue metrics
                 queueMetrics.forEach((queue) => {
                     if (queue.Dimensions && queue.Dimensions.QUEUE) {
                         const queueName = queueNames[queue.Dimensions.QUEUE];
@@ -159,25 +183,34 @@ export function FetchMetrics(filters: Record<string, string>): FetchMetricsResul
                     }
                 });
 
+                // Calculate and set average abandonment rate
                 if (abandonmentRateCount > 0) {
                     setAverageAbandonmentRate(Math.round(totalAbandonmentRate / abandonmentRateCount));
                 }
+                // Set average abandon time with rounded values
                 setAverageAbandonTime(abandonTimes.map(item => ({ ...item, value: Math.round(item.value) })));
+                // Set average queue answer time with rounded values
                 setAverageQueueAnswerTime(queueAnswerTimes.map(item => ({ ...item, value: Math.round(item.value) })));
 
+                // Calculate and set average answer time
                 if (AnswerTimeCount > 0) {
                     setAverageAnswerTime(Math.round(totalAnswerTime / AnswerTimeCount));
                 }
+                // Set service level
                 setServiceLevel(serviceLevelValue);
 
+                // Calculate and set average contact duration
                 if (contactDurationCount > 0) {
                     setAverageContactDuration(Math.round(totalContactDuration / contactDurationCount));
                 }
+                // Set contacts handled
                 setContactsHandeled(contactsHandeled);
+                // Calculate and set contact flow time
                 if (contactFlowTimeCount > 0) {
                     setContactFlowTime(Math.round(contactFlowTime / contactFlowTimeCount));
                 }
 
+                // Process agent metrics
                 agentMetrics.forEach((agent) => {
                     agent.Collections.forEach((metric) => {
                         if (metric.Metric.Name === "AGENT_OCCUPANCY" && metric.Value !== undefined) {
@@ -187,7 +220,9 @@ export function FetchMetrics(filters: Record<string, string>): FetchMetricsResul
                 });
 
                 console.log("Agent Occupancy Array:", agentOccupancyArray);
+                // Set agent occupancy
                 setAgentOccupancy(agentOccupancyArray);
+                // Set agents list
                 setAgentsList(agents);
 
             } catch (error) {
@@ -195,9 +230,11 @@ export function FetchMetrics(filters: Record<string, string>): FetchMetricsResul
             }
         };
 
+        // Call the fetchData function
         fetchData();
     }, [filters]);
 
+    // Return an object with all the metrics
     return {
         averageAbandonmentRate,
         averageAbandonTime,

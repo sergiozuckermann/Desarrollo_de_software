@@ -1,6 +1,12 @@
+/*
+ * Chatbot Component: This component renders a chatbot interface where users can send messages to a bot 
+ * and receive responses. It integrates with a backend API for processing user messages and handling responses.
+ * It also supports displaying a welcome message and pre-filling the input field with a selected suggestion.
+ */
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
+// Interface for the Chatbot component props
 interface ChatbotProps {
   selectedSuggestion: string | null;
 }

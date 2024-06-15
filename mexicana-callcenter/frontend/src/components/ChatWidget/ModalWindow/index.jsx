@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
-import useChatProvider from '../../../Provider/ChatProvider';
-import { useAuth } from '../../../hooks/useAuth';
-import { styles } from './../styles';
+import React, { useState, useEffect, useRef } from 'react'; // Conventional react imports to update the component
+import useChatProvider from '../../../Provider/ChatProvider'; // Imports the ChatProvider with the websocket connection
+import { useAuth } from '../../../hooks/useAuth'; // Imports the useAuth hook in order to obtain the username
+import { styles } from './../styles'; // Import the JS CSS Styles for the chat
 
 function ModalWindow(props) {
+    // Properties explained in ChatClient.tsx 
     const {
         isConnected,
         members,
@@ -14,30 +15,36 @@ function ModalWindow(props) {
         onConnect,
     } = useChatProvider();
 
-    const { username } = useAuth();
+    const { username } = useAuth(); //Get username to send it to the onConnect funtion
 
-    const [message, setMessage] = useState('');
-    const [selectedMember, setSelectedMember] = useState('');
-    const [activeTab, setActiveTab] = useState('public');
-    const chatEndRef = useRef(null);
+    const [message, setMessage] = useState(''); // Message to be sent
+    const [selectedMember, setSelectedMember] = useState(''); // Update the selected agent to send a private message
+    const [activeTab, setActiveTab] = useState('public'); // Set the tab where a private conversation takes place
+    const chatEndRef = useRef(null); // Enable the auto-scrolling by settingthe end of the chat
 
+    // Message handling function
     const handleSendMessage = () => {
         if (message.trim() !== '') {
             if (selectedMember) {
+                // If a selected member is selected, the message is of type private and sent to that member
                 onPrivateMessage(message, selectedMember);
             } else if (activeTab === 'public') {
+                // If the active tab is "public", send a public message
                 onPublicMessage(message);
             } else {
+                // Send private message to the agent linked to the activeTab
                 onPrivateMessage(message, activeTab);
             }
             setMessage('');
         }
     };
 
+    // Scroll to the bottom
     const scrollToBottom = () => {
         chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
 
+    // Use the username using the onConnect funtion to connect to the WS
     useEffect(() => {
         if (username) {
             onConnect(username);
@@ -48,6 +55,7 @@ function ModalWindow(props) {
         scrollToBottom();
     }, [publicMessages, privateMessages]);
 
+    // Render messages
     const renderMessages = () => {
         const messages = activeTab === 'public' ? publicMessages : privateMessages[activeTab] || [];
         return messages.map((msg, index) => {
@@ -69,7 +77,7 @@ function ModalWindow(props) {
             );
         });
     };
-
+    // Filter the members
     const availableMembers = members.filter(
         member => member !== username && !privateMessages[member]
     );
