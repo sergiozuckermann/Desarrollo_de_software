@@ -3,10 +3,12 @@
   <img src="assets/logo.jpg" alt="logo" style="width: 80; height: 110;">
 </div>
 
-# Customer Service Web Application for Amazon Connect
+# Mexicana Contact Center
 ## By Data Whisperers
+### Amazon Capstone Project 2024
 
-This web application provides real-time metrics and interaction monitoring for customer service representatives using Amazon Connect. It enables agents to monitor client interactions, track metrics, and provide support via private messages.
+Responsive web application for Contact Center Supervisors, providing near real-time metrics with actionable insights into agent interactions. 
+The app will help supervisors identify training needs, manage agent workloads, and optimize agent reallocations to enhance call center performance and customer satisfaction.
 
 ## Vision
 
