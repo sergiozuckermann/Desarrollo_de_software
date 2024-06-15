@@ -222,18 +222,6 @@ const SupervisorNotifications: React.FunctionComponent = () => {
   );
 };
 
-// Helper function to get the count of unread notifications
-// - Retrieves the stored read and deleted notifications from localStorage
-// - Parses the stored data from JSON string to an array (if available, otherwise uses an empty array)
-// - Filters the notifications array to include only notifications that are not in the readNotifications and deletedNotifications arrays
-// - Returns the length of the filtered array, representing the count of unread notifications
-export const getUnreadNotificationsCount = () => {
-  const storedReadNotifications = localStorage.getItem("readNotifications");
-  const readNotifications = storedReadNotifications ? JSON.parse(storedReadNotifications) : [];
-  const storedDeletedNotifications = localStorage.getItem("deletedNotifications");
-  const deletedNotifications = storedDeletedNotifications ? JSON.parse(storedDeletedNotifications) : [];
-  return notifications.filter((notification) => !readNotifications.includes(notification.id) && !deletedNotifications.includes(notification.id)).length;
-};
 
 // Export the SupervisorNotifications component as the default export
 export default SupervisorNotifications;
