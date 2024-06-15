@@ -1,126 +1,132 @@
+/* Styles for the header image */
 .header-img {
-    height: auto;
-    max-height: 50px; 
-    width: auto;
-    max-width: 100%; 
-  }
-
-/* FrameComponent.css */
-.frameComponent-container {
-    padding-right: 5px;
-    padding-left: 21px;
-  }
-  
-
-  /* Start with the largest size for desktops */
-.frameComponent-header {
-
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 200px;
-    line-height: 242px;
-    text-align: center;
-    color: primary;
-
+  height: auto; /* Maintain aspect ratio */
+  max-height: 50px; /* Limit maximum height */
+  width: auto; /* Maintain aspect ratio */
+  max-width: 100%; /* Ensure the image doesn't exceed its container width */
 }
 
-
-  .main-container {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-    overflow: hidden;
-  }
-  
-  .blur-left, .blur-right {
-    position: absolute;
-    background-size: contain; 
-    background-repeat: no-repeat; 
-    background-position: center; 
-    z-index: 0;
-  }
-
-  .blur-left {
-    top: 0;
-    left: 0;
-    width: 40%; 
-    height: 100%; 
-    background-image: url('/left.blurb.png');
-    background-position: left bottom; 
-    }
-    
-  .blur-right {
-    bottom: 0;
-    right: 0;
-    width: 70%; 
-    height: 80%; 
-    background-image: url('/right-blurb.png');
-    background-position: right bottom; 
-  }
-  
-  
-  .content {
-    position: relative;
-    z-index: 1; 
-  }
-
-  .frameComponent-buttons {
-    display: flex;
-    flex-direction: row;
-    gap: 25px; 
-  }
-  
-  .frameComponent-button {
-    padding: 2.5px 5px;
-    background-color: #20253F; 
-    border: none;
-    border-radius: 5px;
-    font-size: 1rem;
-    color: white; 
-    transition: background-color 0.3s ease; 
-    width: 100%; 
-    box-sizing: border-box;
-  }
-  
-  .frameComponent-button:hover {
-    background-color: #4A8B51; 
-  }
-  /* laptop screens */
-  @media (max-width: 1200px) {
-    .blur-left, .blur-right {
-      width: 40%; 
-      height: 100%; 
-      top: 0; 
-      bottom: 0; 
-      transform: scale(1); 
-    }
-  }
-
-    /* tablet screens */
-  @media (max-width: 768px) {
-    .frameComponent-header {
-      font-size: 8rem; /* Smaller size for tablets */
-    }
-  }
-
-  /* mobile screens */
-  @media (max-width: 480px) {
-    .frameComponent-header {
-      font-size: 4rem; 
-    }
-  }
-
+/* Styles for the FrameComponent container */
 .frameComponent-container {
-    background: none; 
+  padding-right: 5px;
+  padding-left: 21px; /* Add some padding to the left and right */
+}
+
+/* Styles for the header inside the FrameComponent */
+.frameComponent-header {
+  font-family: 'Inter'; /* Set the font family */
+  font-style: normal; /* Set the font style */
+  font-weight: 700; /* Set the font weight to bold */
+  font-size: 200px; /* Set a large font size */
+  line-height: 242px; /* Set the line height */
+  text-align: center; /* Center the text horizontally */
+  color: primary; /* Set the text color to a CSS variable named 'primary' */
+}
+
+/* Styles for the main container */
+.main-container {
+  position: relative; /* Set position to relative for absolute positioning of children */
+  width: 100%; /* Set the width to 100% */
+  height: 100vh; /* Set the height to 100% of the viewport height */
+  overflow: hidden; /* Hide any content that extends beyond the container */
+}
+
+/* Styles for the left and right blur elements */
+.blur-left, .blur-right {
+  position: absolute; /* Position the elements absolutely */
+  background-size: contain; /* Set the background size to contain */
+  background-repeat: no-repeat; /* Prevent background repetition */
+  background-position: center; /* Center the background image */
+  z-index: 0; /* Set a lower z-index to place the blurs behind other content */
+}
+
+/* Styles for the left blur element */
+.blur-left {
+  top: 0; /* Align to the top */
+  left: 0; /* Align to the left */
+  width: 40%; /* Set the width to 40% of the container */
+  height: 100%; /* Set the height to 100% of the container */
+  background-image: url('/left.blurb.png'); /* Set the background image */
+  background-position: left bottom; /* Align the background image to the bottom left */
+}
+
+/* Styles for the right blur element */
+.blur-right {
+  bottom: 0; /* Align to the bottom */
+  right: 0; /* Align to the right */
+  width: 70%; /* Set the width to 70% of the container */
+  height: 80%; /* Set the height to 80% of the container */
+  background-image: url('/right-blurb.png'); /* Set the background image */
+  background-position: right bottom; /* Align the background image to the bottom right */
+}
+
+/* Styles for the content container */
+.content {
+  position: relative; /* Set position to relative */
+  z-index: 1; /* Set a higher z-index to place the content above the blurs */
+}
+
+/* Styles for the buttons container inside the FrameComponent */
+.frameComponent-buttons {
+  display: flex; /* Use flexbox layout */
+  flex-direction: row; /* Arrange items horizontally */
+  gap: 25px; /* Add some space between buttons */
+}
+
+/* Styles for the individual buttons inside the FrameComponent */
+.frameComponent-button {
+  padding: 2.5px 5px; /* Add some padding */
+  background-color: #20253F; /* Set the background color */
+  border: none; /* Remove border */
+  border-radius: 5px; /* Add a border radius */
+  font-size: 1rem; /* Set the font size */
+  color: white; /* Set the text color to white */
+  transition: background-color 0.3s ease; /* Add a smooth transition effect for background color */
+  width: 100%; /* Set the width to 100% */
+  box-sizing: border-box; /* Include padding and border in the width calculation */
+}
+
+/* Styles for the button hover state */
+.frameComponent-button:hover {
+  background-color: #4A8B51; /* Change the background color on hover */
+}
+
+/* Media queries for responsive design */
+
+/* Styles for laptop screens (max-width: 1200px) */
+@media (max-width: 1200px) {
+  .blur-left, .blur-right {
+    width: 40%; /* Adjust the width of the blurs */
+    height: 100%; /* Set the height to 100% */
+    top: 0; /* Align the blurs to the top */
+    bottom: 0; /* Align the blurs to the bottom */
+    transform: scale(1); /* Reset any scaling */
+  }
+}
+
+/* Styles for tablet screens (max-width: 768px) */
+@media (max-width: 768px) {
+  .frameComponent-header {
+    font-size: 8rem; /* Smaller font size for tablets */
+  }
+}
+
+/* Styles for mobile screens (max-width: 480px) */
+@media (max-width: 480px) {
+  .frameComponent-header {
+    font-size: 4rem; /* Smaller font size for mobiles */
+  }
+}
+
+/* Additional styles */
+.frameComponent-container {
+  background: none; /* Remove any background */
 }
 
 .frameComponent-container, .frameComponent-header, .frameComponent-button {
-    z-index: auto;
+  z-index: auto; /* Reset z-index */
 }
 
 .frameComponent-container {
-    overflow: visible; 
+  overflow: visible; /* Allow content to overflow */
 }
-
-

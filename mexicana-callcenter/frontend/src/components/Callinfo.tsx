@@ -1,6 +1,8 @@
+// Import the React library
 import React from 'react';
 import CallStatusIndicator from '../components/callStatusIndicator';
 
+// Define the interface for the CallCardProps
 interface CallCardProps {
   agentname: string;
   agentposition: string;
@@ -63,4 +65,5 @@ const CallCard: React.FC<CallCardProps> = ({
   );
 };
 
+// Export the CallCard component as the default export
 export default CallCard;

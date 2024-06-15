@@ -7,11 +7,12 @@ import ConnectHere from "../components/ConnectHere";
 import Suggestions from "../components/Suggestions";
 import Chatbot from "../components/Chatbot";
 
+// AgentMain component
 const AgentMain: FunctionComponent = () => {
   const [selectedSuggestion, setSelectedSuggestion] = useState<string | null>(
     null
   );
-
+  // Function to handle suggestion selection for the chatbot
   const handleSuggestionSelect = (suggestionText: string) => {
     setSelectedSuggestion(suggestionText);
   };

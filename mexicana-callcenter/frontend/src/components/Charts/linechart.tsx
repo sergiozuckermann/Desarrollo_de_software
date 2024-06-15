@@ -1,3 +1,6 @@
+// Line Chart component for the ongoing call sentiment
+
+// Libraries and hooks essential for the component
 import React from 'react';
 import { ResponsiveLine, Serie } from '@nivo/line';
 
@@ -6,9 +9,12 @@ interface MyLineChartProps {
     data: Serie[];
 }
 
+// Line Chart component
 const MyLineChart: React.FC<MyLineChartProps> = ({ data }) => (
     <div className='w-full h-full z-70' style={{ position: 'relative', zIndex: 100, paddingBottom: 10, height: '300px' }}>
-        <ResponsiveLine
+        {/* A responsive line chart that adjusts its size to the parent container */}
+        <ResponsiveLine 
+        // Defines the data for the line chart and its properties
             data={data}
             margin={{ top: 20, right: 20, bottom: 60, left: 50 }}
             xScale={{ type: 'point' }}
@@ -78,6 +84,6 @@ const MyLineChart: React.FC<MyLineChartProps> = ({ data }) => (
             ]}
         />
     </div>
-);
+)
 
 export default MyLineChart;

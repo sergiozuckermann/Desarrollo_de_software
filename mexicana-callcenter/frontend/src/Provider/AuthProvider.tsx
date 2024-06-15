@@ -1,3 +1,4 @@
+// Code to manage the authentication context of the application
 import axios from "axios";
 import { createContext, FunctionComponent, PropsWithChildren } from "react";
 import { AuthContextType, Credentials } from "../utils/interfaces";
@@ -5,13 +6,17 @@ import useCustomToast from "../components/LoginNotification";
 import { useNavigate } from "react-router-dom";
 import conf from '../conf';
 
+// Base URL of the API
 const baseUrl = conf.apiUrl;//'http://localhost:3000';
 
 
+// Create the authentication context
 export const AuthContext = createContext<AuthContextType | null>(null);
 
+// Create the authentication provider
 const AuthProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
 
+  // Function to get the user context from the session storage
   const { showError } = useCustomToast();
   const { showSuccess } = useCustomToast();
   const { showCustom } = useCustomToast();

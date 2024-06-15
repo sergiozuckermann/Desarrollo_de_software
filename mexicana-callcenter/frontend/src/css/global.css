@@ -1,26 +1,39 @@
+/* Import Inter font from Google Fonts */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap");
+/* Import Roboto font from a local file */
 @import "../../public/fonts/roboto.css";
+/* Import Roboto font from Google Fonts with different weights */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+/* Import Tailwind CSS base styles */
 @tailwind base;
+/* Import Tailwind CSS component styles */
 @tailwind components;
+/* Import Tailwind CSS utility styles */
 @tailwind utilities;
+
+/* Apply styles to the body element */
 body {
-  @apply leading-[normal] m-0;
+  @apply leading-[normal] m-0; /* Set normal leading and remove margins */
 }
+
+/* Remove border width for all elements and pseudo-elements */
 *,
 ::before,
 ::after {
   border-width: 0;
 }
 
+/* Apply transition for color changes on all elements */
 * {
   @apply transition-colors duration-200
 }
 
+/* Styles for the home button */
 .home-button {
   position: relative; /* This is needed for absolute positioning of children */
 }
 
+/* Add a line after the home button */
 .home-button::after {
   content: '';
   display: block;
@@ -32,6 +45,7 @@ body {
   width: 100%; /* This will span the entire width of the container */
 }
 
+/* Styles for h1 headings */
 h1 {
   font-family: 'Inter';
   font-style: normal;
@@ -42,6 +56,7 @@ h1 {
   color: #20253F;
 }
 
+/* Styles for h2 headings */
 h2  {
   font-family: 'Inter';
   font-style: normal;
@@ -50,21 +65,23 @@ h2  {
   line-height: 48px;
   text-align: center;
   color: #000000;
-
 }
 
+/* Styles for paragraphs with class "p2" */
 .p2 {
   @apply text-p2 font-paragraph2 leading-p2
 }
 
+/* Styles for all paragraphs */
 p {
   font-family: 'Inter';
   font-style: normal;
   font-weight: 400;
   font-size: 18px;
   color: #20253F;
-
 }
+
+/* Styles for cards */
 .card {
   position: relative;
   width: 100%;
@@ -76,25 +93,13 @@ p {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* Hover styles for cards */
 .card:hover {
   transform: translateY(-5px);
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.1);
 }
-.modal {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  right: auto;
-  bottom: auto;
-  margin-right: -50%;
-  transform: translate(-50%, -50%);
-  max-width: 400px;
-  width: 90%;
-  background: white;
-  border-radius: 10px;
-  padding: 20px;
-}
 
+/* Styles for modals */
 .modal {
   position: absolute;
   top: 50%;
@@ -113,6 +118,7 @@ p {
   overflow: auto; /* Add scroll if content overflows */
 }
 
+/* Styles for modal overlay */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -123,17 +129,19 @@ p {
   z-index: 1000;
 }
 
-
+/* Animation for flashing red color */
 @keyframes flash {
   0% { color: red; }
   50% { color: #20253F; }
   100% { color: red; }
 }
 
+/* Apply flashing red animation */
 .flash-red {
   animation: flash 1s infinite;
 }
 
+/* Styles for custom tooltips */
 .custom-tooltip {
   z-index: 1000; 
   max-width: 300px; 
@@ -142,10 +150,12 @@ p {
   background-color: #4A8B51 !important;
 }
 
+/* Styles for file input */
 .file-input {
   display: none;
 }
 
+/* Styles for file input label */
 .file-input + label {
   display: inline-block;
   padding: 10px 20px;
@@ -155,18 +165,23 @@ p {
   cursor: pointer;
 }
 
+/* Hover styles for file input label */
 .file-input + label:hover {
   background-color: #0056b3;
 }
 
+/* Styles for drop-down */
 .drop-down {
   background-color: transparent;
 }
+
+/* Styles for custom select wrapper */
 .custom-select-wrapper {
   width: 100%;
   position: relative;
 }
 
+/* Styles for custom select */
 .custom-select {
   width: 100%;
   appearance: none;
@@ -177,10 +192,12 @@ p {
   color: #9CA3AF;
 }
 
+/* Remove outline when custom select is focused */
 .custom-select.drop-down:focus {
   outline: none;
 }
 
+/* Styles for custom select arrow */
 .custom-select-wrapper::after {
   content: '';
   position: absolute;
@@ -195,11 +212,12 @@ p {
   pointer-events: none;
 }
 
+/* Hide file input */
 .file-input {
   display: none;
-  
 }
 
+/* Styles for upload icon */
 .upload-icon {
   font-size: 20px; 
   color: #20253F;
@@ -207,6 +225,7 @@ p {
   pointer-events: none; 
 }
 
+/* Add cursor pointer to self-stretch elements */
 .self-stretch {
   cursor: pointer;
 }

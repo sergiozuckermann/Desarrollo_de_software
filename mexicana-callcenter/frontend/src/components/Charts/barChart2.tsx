@@ -1,4 +1,6 @@
-// src/components/Charts/barChart2.tsx
+// Bar chart component that displays the number of customers in each queue
+
+// Import necessary libraries
 import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, LabelList } from 'recharts';
 
@@ -38,6 +40,8 @@ const CustomTick = (props: any) => {
     </g>
   );
 };
+
+// Bar chart component
 const MyBarChart2: React.FC<MyBarChart2Props> = ({ data, unit }) => {
   // If there is no data, a message will be shown
   if (!data || data.length === 0) {
