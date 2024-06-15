@@ -11,13 +11,17 @@ import 'react-tooltip/dist/react-tooltip.css';
 import { Tooltip } from 'react-tooltip';
 import Modal from 'react-modal';
 import { useAuth } from '../hooks/useAuth';
-
+import { DataPoint } from '../components/Charts/barChart2';
 Modal.setAppElement('#root');
+type Metric = "Flight Management" | "Travel Information" | "Special Assistance" | "Website Assistance" | "Other Questions" | "Customer Service" | "Unknown Queue";
 
+// Main content component that displays the metrics
 const MainContent: React.FC = () => {
+    //define the state variables
     const { username: loggedInAgentId } = useAuth();
+    const [agentId] = useState<string | null>(loggedInAgentId);
     const [filters, setFilters] = useState({
-        agentId: loggedInAgentId, // Default to the logged-in agent's username
+        agentId: agentId ?? '',
         startTime: '',
         endTime: '',
         queue: '',
@@ -38,6 +42,7 @@ const MainContent: React.FC = () => {
         agentsList
     } = FetchMetrics(filters);
 
+    //useEffect to check if the filters are being applied
     useEffect(() => {
         if (isApplyingFilters) {
             setIsApplyingFilters(false);
@@ -49,19 +54,29 @@ const MainContent: React.FC = () => {
         setFilters({ ...newFilters, agentId: loggedInAgentId }); // Ensure agentId is the logged-in agent's username
     };
 
+    //check if the data is still loading
     if (averageAbandonTime === null || averageQueueAnswerTime === null) {
         return <div>Loading...</div>;
     }
 
     const ServiceData = [{ metric: "Service Level", percentage: ServiceLevel !== null ? ServiceLevel : 0 }];
 
-    const AbandonData = averageAbandonTime !== null && averageAbandonTime.length > 0
-        ? averageAbandonTime.map(item => ({ metric: item.label, value: item.value }))
-        : [{ metric: "No Data", value: 0 }];
+//    const AbandonData = averageAbandonTime !== null && averageAbandonTime.length > 0
+//        ? averageAbandonTime.map(item => ({ metric: item.label, value: item.value }))
+//        : [{ metric: "No Data", value: 0 }];
 
-    const AnswerData = averageQueueAnswerTime !== null && averageQueueAnswerTime.length > 0
-        ? averageQueueAnswerTime.map(item => ({ metric: item.label, value: item.value }))
-        : [{ metric: "No Data", value: 0 }];
+//    const AnswerData = averageQueueAnswerTime !== null && averageQueueAnswerTime.length > 0
+//        ? averageQueueAnswerTime.map(item => ({ metric: item.label, value: item.value }))
+//        : [{ metric: "No Data", value: 0 }];
+
+const AnswerData: DataPoint[] = averageQueueAnswerTime !== null && averageQueueAnswerTime.length > 0
+    ? averageQueueAnswerTime.map(item => ({ metric: item.label as Metric, value: item.value }))
+    : [{ metric: "Unknown Queue", value: 0 }];
+
+const AbandonData: DataPoint[] = averageAbandonTime !== null && averageAbandonTime.length > 0
+    ? averageAbandonTime.map(item => ({ metric: item.label as Metric, value: item.value }))
+    : [{ metric: "Unknown Queue", value: 0 }];
+        
 
     const totalOccupancy = agentOccupancy && agentOccupancy.length > 0
         ? agentOccupancy.reduce((acc, curr) => acc + curr.value, 0)
@@ -72,6 +87,7 @@ const MainContent: React.FC = () => {
         { id: 'Unoccupied', label: 'Unoccupied', value: 100 - totalOccupancy, color: 'red' }
     ];
 
+    // Function to format time in seconds to a human-readable format
     const formatTime = (seconds: number): string => {
         if (seconds >= 3600) {
             const hours = Math.floor(seconds / 3600);
@@ -86,9 +102,11 @@ const MainContent: React.FC = () => {
             return `${seconds} seconds`;
         }
     };
+    
 
     return (
         <div className="grid w-full h-full grid-cols-12 grid-rows-6 gap-4 p-2 pt-5 overflow-y-auto">
+            {/* filters */}
             <Modal
                 isOpen={isApplyingFilters}
                 onRequestClose={() => setIsApplyingFilters(false)}
@@ -241,6 +259,7 @@ const MainContent: React.FC = () => {
 // Metrics page component that displays the main content in a page structure
 const MetricsAgent: React.FC = () => {
     return (
+        //return the page structure with the main content and name
         <PageStructure title="Metrics">
             <MainContent />
         </PageStructure>

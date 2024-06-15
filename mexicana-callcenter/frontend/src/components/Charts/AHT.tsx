@@ -1,5 +1,9 @@
+// Average Handle Time component
+
+// Importes React Library
 import React from 'react';
 
+// Defines the properties of the AHT component
 interface AHTProps {
 //Format for all of them is "HH:MM:SS"
   classificationTime: string; 
@@ -23,22 +27,5 @@ const AHT: React.FC<AHTProps> = ({ classificationTime, currentTime, exceededTime
   </div>
 );
 };
-
-// /* For this classification */
-
-// position: absolute;
-// width: 321px;
-// height: 32px;
-
-// font-family: 'Inter';
-// font-style: normal;
-// font-weight: 700;
-// font-size: 18px;
-// line-height: 22px;
-// display: flex;
-// align-items: center;
-
-// color: #000000;
-
 
 export default AHT;

@@ -1,80 +1,87 @@
+/* Reset default margin and padding for the entire page */
 html, body {
   margin: 0;
   padding: 0;
 }
 
+/* Set box-sizing to border-box for all elements */
 * {
   box-sizing: border-box;
 }
 
-
-
+/* Styles for a media container */
 .media-container {
-  width: 100vw;
-  height: 100vh; 
-  position: relative; 
-  overflow: hidden;
-  font-size: 1.25rem; 
-  font-family: 'Your Font', sans-serif; 
+  width: 100vw; /* Set the width to 100% of the viewport width */
+  height: 100vh; /* Set the height to 100% of the viewport height */
+  position: relative; /* Position the container relatively */
+  overflow: hidden; /* Hide any content that extends beyond the container */
+  font-size: 1.25rem; /* Set the font size */
+  font-family: 'Your Font', sans-serif; /* Set the font family */
 }
 
+/* Styles for a footer bar */
 .footer-bar {
-  position: absolute;
-  bottom: 0; 
-  width: 100%; 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.625rem;
-  box-shadow: 0 -4px 4px rgba(0, 0, 0, 0.25);
+  position: absolute; /* Position the footer bar absolutely */
+  bottom: 0; /* Align the footer bar to the bottom */
+  width: 100%; /* Set the width to 100% */
+  display: flex; /* Use flexbox layout */
+  align-items: center; /* Center items vertically */
+  justify-content: center; /* Center items horizontally */
+  padding: 0.625rem; /* Add some padding */
+  box-shadow: 0 -4px 4px rgba(0, 0, 0, 0.25); /* Add a box shadow */
 }
 
-.font{
-  font-family: 'Roboto', sans-serif;
-  padding: 20px;
-  font-size: 40px; 
+/* Styles for a font class */
+.font {
+  font-family: 'Roboto', sans-serif; /* Set the font family */
+  padding: 20px; /* Add some padding */
+  font-size: 40px; /* Set the font size */
 }
 
-.font1{
-  font-family: 'Inter', sans-serif, light;
-  padding: 30px;
-  font-weight: 300;
-  font-size: 40px;
-
+/* Styles for another font class */
+.font1 {
+  font-family: 'Inter', sans-serif, light; /* Set the font family and weight */
+  padding: 30px; /* Add some padding */
+  font-weight: 300; /* Set the font weight */
+  font-size: 40px; /* Set the font size */
 }
 
-.font2{
-  font-family: 'Inter', sans-serif, light;
-  padding: 20px;
-  font-weight: 100;
-  font-size: 20px;
-
+/* Styles for another font class */
+.font2 {
+  font-family: 'Inter', sans-serif, light; /* Set the font family and weight */
+  padding: 20px; /* Add some padding */
+  font-weight: 100; /* Set the font weight */
+  font-size: 20px; /* Set the font size */
 }
 
+/* Styles for a margin class */
 .ml-auto {
-  margin-left: auto;
+  margin-left: auto; /* Push the element to the right side of its container */
 }
 
+/* Styles for a button hover effect */
 .hover-shrink-button:hover {
-    transform: scale(0.95); 
-    transition: transform 0.2s ease-in-out; 
+  transform: scale(0.95); /* Shrink the button to 95% of its size on hover */
+  transition: transform 0.2s ease-in-out; /* Add a smooth transition effect */
 }
 
+/* Styles for a status container */
 .status-container {
-  display: flex;
-  align-items: center;
+  display: flex; /* Use flexbox layout */
+  align-items: center; /* Center items vertically */
 }
 
+/* Styles for a status text */
 .status-text {
-  height: 40px;
-  width: 120px;
-  font-size: 20px;
+  height: 40px; /* Set the height */
+  width: 120px; /* Set the width */
+  font-size: 20px; /* Set the font size */
 }
 
+/* Styles for a color circle */
 .color-circle {
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 50%;
-  margin-left: 2.5rem;
+  width: 2.5rem; /* Set the width */
+  height: 2.5rem; /* Set the height */
+  border-radius: 50%; /* Make the element circular */
+  margin-left: 2.5rem; /* Add some margin on the left */
 }
-

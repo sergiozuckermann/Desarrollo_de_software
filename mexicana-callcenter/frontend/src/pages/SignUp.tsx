@@ -4,10 +4,12 @@ import "../css/global.css";
 import axios from "axios";
 import { FaUpload } from 'react-icons/fa';
 import { useNavigate } from "react-router-dom";
+import conf from '../conf';
 
 
-
+const API_URL = conf.apiUrl;//'http://localhost:3000'; // URL of the backend API
 const SignUp: React.FC = () => {
+  //initialize variables
   const navigate = useNavigate();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -28,11 +30,12 @@ const SignUp: React.FC = () => {
   const [fileLabelColor, setFileLabelColor] = useState(""); 
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
-
+  // Function to check if the password meets the requirements
   const checkPasswordRequirements = (password: string) => {
     return /[a-z]/.test(password) && /[A-Z]/.test(password) && /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{8,}$/.test(password);
   };
 
+  // Function to handle the sign-up form submission
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -40,13 +43,6 @@ const SignUp: React.FC = () => {
       showError(`🚨 Passwords do not match!`);
       return;
     }
-    // const formData = new FormData();
-    // if (file) {
-    //   const blob = new Blob([file], { type: file.type });
-    //   formData.append("profilePicture", blob);
-    // }
-    // formData.append("preferred_username", preferred_username.trim());
-    // await axios.post('http://localhost:3000/upload', formData, { headers: {'Content-Type': 'multipart/form-data'}})
 
     const data = {
       name: firstName,
@@ -61,7 +57,8 @@ const SignUp: React.FC = () => {
     console.log(data);
 
     try {
-      const response = await fetch('http://localhost:3000/auth/signup', {
+      // Send a POST request to the backend API to sign up the user
+      const response = await fetch(`${API_URL}/auth/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -69,32 +66,47 @@ const SignUp: React.FC = () => {
         body: JSON.stringify(data)
       });
 
+      // If the response is OK, show a success message and navigate to the sign-in page
       if (response.ok) {
         showSuccess(
           "🎉 User is registered but confirmation is needed by Admin.\n You will be notified via email when confirmation is done."
         );
         navigate('/signin');
-      } else {
+      } 
+      // If the response is not OK, show an error message
+      else {
         const errorData = await response.json();
         showError(`🚨 ${errorData.message}`);
       }
-    } catch (err) {
+    } 
+    // If an error occurs, show an error message
+    catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : "An unexpected error occurred.";
       showError(`🚨 ${errorMessage}`);
     }
+
+    // Upload the profile picture if a file is selected
+    if (file) {
+      try {
+        await uploadFile(file);
+        showSuccess("Profile picture uploaded successfully.");
+      } catch (error) {
+        showError("Error uploading profile picture.");
+      }
+    }
   };
 
+  // Function to toggle the visibility of the password input
   const togglePasswordVisibility = (field: string) => {
     if (field === "password") {
       setShowPassword(!showPassword);
     } else if (field === "confirmPassword") {
       setShowPasswordConfirm(!showPasswordConfirm);
     }
-  
-  
   };
 
+  // Function to handle the profile picture upload file
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0] || null;
     if (selectedFile) {
@@ -114,13 +126,14 @@ const SignUp: React.FC = () => {
     }
   };
 
+  // Function to upload the profile picture
   const uploadFile = async (file: File) => {
     const formData = new FormData();
     formData.append("profilePicture", file);
     formData.append("preferred_username", preferred_username);
   
     try {
-      await axios.post('http://localhost:3000/upload', formData, {
+      await axios.post(`${API_URL}/upload`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
     } catch (error) {
@@ -128,22 +141,23 @@ const SignUp: React.FC = () => {
     }
   };
 
+  // Function to handle the click event of the profile picture container
   const handleContainerClick = () => {
     const fileInput = document.getElementById('profilePictureInput') as HTMLInputElement;
     if (fileInput) {
       fileInput.click();
     }
   };
-  
 
   return (
+
     <div className="w-full relative bg-white flex flex-col items-center justify-start gap-[64px] tracking-[normal] mq450:gap-[16px] mq700:gap-[32px] mt-[5%] overflow-hidden mb-[5%]">
       <main className="w-[1210px] flex flex-row items-start justify-start py-0 pr-0 box-border gap-[67px] max-w-full cellphone:items-center cellphone:grid cellphone:justify-center">
+        {/* Render the form for the users data and handle it */}
         <form
           onSubmit={handleSignUp}
           className="flex-1 flex flex-col items-end justify-start gap-[50px] min-w-[383px] max-w-full mq450:min-w-full mq700:gap-[25px] cellphone:text-gray-700 cellphone:py-0 cellphone:px-0"
         >
-          {/* signup form */}
           <div className="self-stretch flex flex-col items-start justify-start gap-[15.57px] max-w-full text-left text-lg text-marco font-paragraph cellphone:items-center cellphone:grid cellphone:justify-center pl-[20px] pr-[20px]">
             <div className="w-full md:w-[573px] flex-1 flex flex-row items-start justify-start py-0 px-4 box-border max-w-full md:pl-4 md:pr-4">
               <img
@@ -155,6 +169,7 @@ const SignUp: React.FC = () => {
             </div>
             <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15px] px-5 pb-[9.600000000000364px] max-w-full border-[1px] border-solid border-marco">
               <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
+             {/* first name */}
               <input
                 className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[25px] w-[100%] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
                 placeholder="First Name(s)"
@@ -167,11 +182,9 @@ const SignUp: React.FC = () => {
             </div>
             <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.899999999999636px] px-[21px] pb-[9.700000000000728px] max-w-full border-[1px] border-solid border-marco">
               <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
+              {/* Surname */}
               <input
                 className="[border:none] [outline:none] 
-                
-                
-                
                 text-lg bg-[transparent] h-[25px] w-[100%] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
                 placeholder="Surname"
                 type="text"
@@ -183,6 +196,7 @@ const SignUp: React.FC = () => {
             </div>
             <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.5px] px-[19.699999999999815px] pb-[10.100000000000364px] max-w-full border-[1px] border-solid border-marco">
               <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
+              {/* email */}
               <input
                 className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[25px] w-[100%] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
                 placeholder="Email"
@@ -195,6 +209,7 @@ const SignUp: React.FC = () => {
             </div>
             <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.5px] px-[19.699999999999815px] pb-[10.100000000000364px] max-w-full border-[1px] border-solid border-marco">
               <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
+              {/* username */}
               <input
                 className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[25px] w-[100%] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
                 placeholder="Username"
@@ -207,6 +222,7 @@ const SignUp: React.FC = () => {
             </div>
             <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.800000000000182px] px-[19px] pb-[11px] max-w-full border-[1px] border-solid border-marco relative">
               <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
+             {/* password */}
               <input
                 className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[25px] w-[(100%-10%)] relative text-marco text-left flex items-end shrink-0 p-0 z-[1]"
                 placeholder="Password"
@@ -221,6 +237,8 @@ const SignUp: React.FC = () => {
                 data-cy="password-input"
                 required
               />
+               {/* show password */}
+               
               <img
                 className="cursor-pointer absolute top-1/2 right-2 transform -translate-y-1/2 h-[30px] w-[30px]"
                 src="/eye_password.png"
@@ -232,6 +250,7 @@ const SignUp: React.FC = () => {
 
             <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.800000000000182px] px-[19px] pb-[11px] max-w-full border-[1px] border-solid border-marco relative">
               <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] border-solid border-marco" />
+             {/* confirm password */}
               <input
                 className="[border:none] [outline:none] font-paragraph text-lg bg-[transparent] h-[25px] w-[(100%-10%)] relative text-marco text-left flex items-end shrink-0 max-w-full p-0 z-[1]"
                 placeholder="Confirm Password"
@@ -245,6 +264,7 @@ const SignUp: React.FC = () => {
                 data-cy="password-confirm-input"
                 required
               />
+              {/* show password */}
               <img
                 className="cursor-pointer absolute top-1/2 right-2 transform -translate-y-1/2 h-[30px] w-[30px]"
                 src="/eye_password.png"
@@ -253,7 +273,6 @@ const SignUp: React.FC = () => {
               />
             </div>
             <p style={{ color: 'gray', fontSize: '12px', margin: '0' }}>The password must match</p>
-
 
             {/* DROPDOWN JOB LEVEL */}
             <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.600000000000364px] px-[21px] pb-2.5 relative max-w-full border-[1px] border-solid border-marco">
@@ -271,7 +290,7 @@ const SignUp: React.FC = () => {
             
             {/* DROPDOWN QUEUE */}
             <div className="self-stretch rounded-3xs bg-tertiary box-border flex flex-row items-start justify-start pt-[15.600000000000364px] px-[21px] pb-2.5 relative max-w-full border-[1px] border-solid border-marco">
-              <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] [border-none] border-marco" />
+              <div className="h-[42.6px] w-[590px] relative rounded-3xs bg-tertiary box-border hidden max-w-full border-[1px] [border:none] border-marco" />
               <div className="relative flex-1">
                 <div className="custom-select-wrapper">
                   <select className="custom-select drop-down" value={agentType} onChange={(event) => setAgentType(event.currentTarget.value)} required data-cy='agent-type-input' >
@@ -340,7 +359,6 @@ const SignUp: React.FC = () => {
         </div>
 
       </main>
-
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import { BsFillChatFill } from "react-icons/bs";
-// importing external style
+import { BsFillChatFill } from "react-icons/bs"; // Import the chat icon from react icons
+// importing the JS CSS style
 import { styles } from "./styles";
 // import ModalWindow
 import ModalWindow from "./ModalWindow";

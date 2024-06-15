@@ -1,32 +1,36 @@
+// Pie Chart component for metrics visualization
 
-import React, { useState} from 'react';
+// Importing necessary libraries and modules
+import React, { useState } from 'react';
 import { ResponsivePie } from '@nivo/pie';
-
-interface PieChartDataItem {
+// Defines the structure of the data used for the Pie Chart
+export interface PieChartDataItem {
     id: string | number;
     label: string;
     value: number;
     color?: string;
 }
-
-interface MyPieChartProps {
+// Defines the properties of the Pie Chart component
+interface PieChartProps {
     data: PieChartDataItem[];
     unit: string;
 }
-
-const MyPieChart: React.FC<MyPieChartProps> = ({ data, unit }) => {
+// Pie Chart component
+const PieChart: React.FC<PieChartProps> = ({ data, unit }) => {
+    // State to store the hovered data item
     const [hovered, setHovered] = useState<PieChartDataItem | null>(null);
-
-    const handleMouseEnter = (datum: any, event: React.MouseEvent) => {
+    // Function to handle mouse enter event
+    const handleMouseEnter = (datum: { data: PieChartDataItem }) => {
         setHovered(datum.data);
     };
-
+    // Function to handle mouse leave event
     const handleMouseLeave = () => {
         setHovered(null);
     };
 
     return (
         <div className='relative w-full h-full pb-2'>
+            {/* A responsive pie chart that adjusts its size to the parent container */}
             <ResponsivePie
                 data={data}
                 margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
@@ -34,7 +38,7 @@ const MyPieChart: React.FC<MyPieChartProps> = ({ data, unit }) => {
                 padAngle={0.7}
                 cornerRadius={3}
                 activeOuterRadiusOffset={8}
-                colors={d => d.data.color}
+                colors={(d) => d.data.color || '#000'} // Ensure color is always a string
                 borderWidth={1}
                 borderColor={{ from: 'color', modifiers: [['darker', 0.2]] }}
                 arcLinkLabelsSkipAngle={10}
@@ -49,6 +53,7 @@ const MyPieChart: React.FC<MyPieChartProps> = ({ data, unit }) => {
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
             />
+            {/* Display the hovered value */}
             {hovered && (
                 <div style={{
                     position: 'absolute',
@@ -72,4 +77,4 @@ const MyPieChart: React.FC<MyPieChartProps> = ({ data, unit }) => {
     );
 };
 
-export default MyPieChart;
+export default PieChart;

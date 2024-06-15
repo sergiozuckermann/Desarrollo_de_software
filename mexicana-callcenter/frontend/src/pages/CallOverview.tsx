@@ -1,3 +1,4 @@
+// Importing necessary libraries, hooks, services, and components
 import React, { useEffect, useState } from 'react';
 import { useWebSocket } from "../hooks/useWebSocket";
 import PageStructure from "../components/PageStructure";
@@ -10,11 +11,11 @@ import useCustomToast from "../components/LoginNotification";
 import { useAuth } from '../hooks/useAuth';
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useCallOverViewMetrics } from '../hooks/callOverviewMetrics';
-const { showError } = useCustomToast();
 import { Interaction } from '../utils/interfaces';
 import { callOverviewAnalytics } from '../utils/interfaces';
 import { Tooltip } from 'react-tooltip';
+import conf from '../conf';
+const API_URL = conf.apiUrl;//'http://localhost:3000';
 
 export interface PieChartDataItem {
   id: string | number;
@@ -23,35 +24,39 @@ export interface PieChartDataItem {
   color?: string;
 }
 
+// Function to format duration in seconds to a string in the format HH:MM:SS
 const formatDuration = (seconds: number) => {
   const h = Math.floor(seconds / 3600).toString().padStart(2, '0');
   const m = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
   const s = Math.floor(seconds % 60).toString().padStart(2, '0');
   return `${h}:${m}:${s}`;
 };
-
+// Function to calculate the time difference between classification time and current time
 const calculateTimeDifference = (classificationTime: string, currentTime: string) => {
+  // Splitting the times into hours, minutes, and seconds and converting them to numbers
   const [classificationHours, classificationMinutes, classificationSeconds] = classificationTime.split(":").map(Number);
   const [currentHours, currentMinutes, currentSeconds] = currentTime.split(":").map(Number);
-
+  
+  // Calculating the total seconds for each time
   const classificationTotalSeconds = (classificationHours * 3600) + (classificationMinutes * 60) + classificationSeconds;
   const currentTotalSeconds = (currentHours * 3600) + (currentMinutes * 60) + currentSeconds;
-
+  
+  // If the current time is less than or equal to the classification time, return "00:00:00"
   if (currentTotalSeconds <= classificationTotalSeconds) {
     return "00:00:00";
   }
-
+  // Calculate the difference in seconds between the current time and the classification time
   const differenceInSeconds = currentTotalSeconds - classificationTotalSeconds;
-
+  
+  // Return the difference formatted as HH:MM:SS
   return formatDuration(differenceInSeconds);
 };
-
+// Defining the CallOverview component
 const CallOverview: React.FunctionComponent = () => {
   const { socket } = useWebSocket(); // get web socket connection
   const [agentInfo, setAgentInfo] = useState<Interaction | null>(null);
   const [userImage, setImageURL] = useState<string | null>(null);
   const { role, username, logout } = useAuth();
-  const [userInfo, setUserInfo] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
   const [activeState, setActiveState] = useState("No data available");
   const [activeContactID, setActiveContactID] = useState("No call in progress");
@@ -72,26 +77,26 @@ const CallOverview: React.FunctionComponent = () => {
     key: '',
     contactId: ''
   }));
-
+  // State for the chart data
   const [chartData, setChartData] = useState<PieChartDataItem[]>([
     { id: "Customer", label: "Customer Time", value: 0 },
     { id: "Agent", label: "Agent Time", value: 0, color: "#177E89" },
     { id: "Non-talk", label: "NonTalk Time", value: 0, color: "#C4B1AE" },
   ]);
-
+  // State for the second chart data
   const [chartData2, setChartData2] = useState<PieChartDataItem[]>([
     { id: "Positive", label: "Positive", value: 0, color: "#6BBF70" },
     { id: "Neutral", label: "Neutral", value: 0, color: "#7E7F83" },
     { id: "Negative", label: "Negative", value: 0, color: "#E63B2E" },
   ]);
-
+  // State for the sentiment data
   const [sentimentData, setsentimentData] = useState([
     {
       id: "sentiment",
-      data: [{ x: 0, y: 0 }],
+      data: [{ x: 0, y: 0 }], // x y o t & s?
     },
   ]);
-
+  // State for the call duration
   const [callDuration, setCallDuration] = useState<string>("00:00:00");
 
   // Static classification time
@@ -119,7 +124,7 @@ const CallOverview: React.FunctionComponent = () => {
       if (storedMetrics) {
         const parsedMetrics = JSON.parse(storedMetrics);
         console.log("Parsed metrics:", parsedMetrics); // Mostrar los datos de las métricas analizadas en la consola
-        const interaction = parsedMetrics.find((i: any) => i.state.contactId === activeContactID);
+        const interaction = parsedMetrics.find((i) => i.state.contactId === activeContactID);
         if (interaction && interaction.sentiment.callOverviewAnalytics) {
           setMetrics(interaction.sentiment.callOverviewAnalytics);
         }
@@ -136,7 +141,13 @@ const CallOverview: React.FunctionComponent = () => {
         console.log("Data:", data); // Mostrar los datos en la consola
         const activeUsername = agentInfo?.username;
 
-        if (segment) {
+        const contactIdsToFilter = ["9272a5e8-ac7b-4402-bde9-04ddc3d85d1c", "ac482bb5-cbed-473b-b04c-82f68220515e"];
+          if (segment) {
+            if (contactIdsToFilter.includes(segment.contactId)) {
+              console.log("Filtered out message with contact ID:", segment.contactId);
+              return;
+            }
+
           const { segmentType } = segment;
           if (segmentType === "AGENT_EVENT") {
             // Update metrics or handle AGENT_EVENT
@@ -168,7 +179,7 @@ const CallOverview: React.FunctionComponent = () => {
 
   const usernamePic = agentInfo?.username;
   console.log("UsernamePic:", usernamePic);
-
+  // Get the user's image URL
   useEffect(() => {
     if (agentInfo && agentInfo.username) {
       userService
@@ -191,7 +202,6 @@ const CallOverview: React.FunctionComponent = () => {
     userService
       .GetInfo(role!, username!) // call function that makes axios request
       .then((user) => {
-        setUserInfo(user); // set userInfo state with the result from the request if it is successful
         setUserId(user.connectUserId); // store the user's id in the userId state variable
         console.log('User info:', user); // Print the user info
       })
@@ -214,7 +224,7 @@ const CallOverview: React.FunctionComponent = () => {
       const data = { participantId: userId, contactId: contactId };
       console.log('Sending data:', data); // Print the data
 
-      await axios.post('http://localhost:3000/Supervisor/barge-in', data, config);
+      await axios.post(`${API_URL}/Supervisor/barge-in`, data, config);
       console.log('Barged in successfully');
       navigate('/Supervisor/bargein');
     } catch (error) {
@@ -232,22 +242,33 @@ const CallOverview: React.FunctionComponent = () => {
       console.log('Segment does not match active contact ID, $ {segment.contactId}');
       return;
     }
+
     //format values for sentiment trend chart
     const sentimentValue = segment.Sentiment === "POSITIVE" ? 1 : segment.Sentiment === "NEGATIVE" ? -1 : 0;
     const timeStamp = Math.floor(segment.BeginOffsetMillis / 1000);
 
     setMetrics(prevMetrics => {
+      const existingTrend = prevMetrics.sentimentTrend.find(trend => trend.x === timeStamp);
+      let updatedSentimentTrend = prevMetrics.sentimentTrend;
+  
+      if (!existingTrend) {
+        updatedSentimentTrend = [...prevMetrics.sentimentTrend, { x: timeStamp, y: sentimentValue }];
+      }
+
+
       const updatedMetrics: callOverviewAnalytics = {
         agentTalk: prevMetrics.agentTalk,
         customerTalk: prevMetrics.customerTalk,
         nonTalk: prevMetrics.nonTalk,
-        sentimentTrend: [...prevMetrics.sentimentTrend, { x: timeStamp, y: sentimentValue }],
+        sentimentTrend: updatedSentimentTrend,
         sentimentPercentages: {
           POSITIVE: prevMetrics.sentimentPercentages.POSITIVE,
           NEGATIVE: prevMetrics.sentimentPercentages.NEGATIVE,
           NEUTRAL: prevMetrics.sentimentPercentages.NEUTRAL
         },
-        callDuration: prevMetrics.callDuration
+        callDuration: prevMetrics.callDuration,
+        key: prevMetrics.key, // Ensure you include key
+        contactId: prevMetrics.contactId // Ensure you include contactId
       };
 
       const sentimentKey = segment.Sentiment as 'POSITIVE' | 'NEGATIVE' | 'NEUTRAL';
@@ -383,7 +404,7 @@ const CallOverview: React.FunctionComponent = () => {
               data-tooltip-content="Average Handling Time">
               <h3 className="pb-3 text-lg font-bold text-center text-slategray">Average Handling Time</h3>
               <div className="h-[50%]">
-                <AHT classificationTime={classificationTime} currentTime={callDuration} exceededTime={exceededTime} />
+              <AHT classificationTime={classificationTime} currentTime={callDuration} exceededTime={exceededTime} />
               </div>
               <Tooltip id="tooltipAHT" className="custom-tooltip" />
             </div>

@@ -1,68 +1,74 @@
+/* Reset default margin and padding for the entire page */
 html, body {
-    margin: 0;
-    padding: 0;
-  }
-  
-  * {
-    box-sizing: border-box;
-  }
-  
-  .badge {
-    position: absolute;
-    top: 0;
-    right: 0.5rem;
-    background-color: red;
-    color: white;
-    border-radius: 50%;
-    padding: 3px 7px;
-    font-size: 0.75rem;
-    z-index: 1000;
-  }
+  margin: 0;
+  padding: 0;
+}
 
-  
-  .media-container {
-    width: 100vw;
-    height: 100vh; 
-    position: relative; 
-    overflow: hidden;
-    font-size: 1.25rem; 
-    color: var(--color-primary);
-    font-family: 'Roboto', sans-serif; 
-  }
-  
-  .footer-bar {
-    position: absolute;
-    bottom: 0; 
-    width: 100%; 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.625rem;
-    box-shadow: 0 -4px 4px rgba(0, 0, 0, 0.25);
-  }
-  
-  .font{
-    font-family: 'Roboto', sans-serif;
-    padding: 20px;
-    font-size: 40px; 
-  }
-  
-  .font1{
-    font-family: 'Inter', sans-serif, light;
-    padding: 30px;
-    font-weight: 300;
-    font-size: 40px;
-  
-  }
-  
-  .font2{
-    font-family: 'Inter', sans-serif, light;
-    padding: 20px;
-    font-weight: 100;
-    font-size: 20px;
-  
-  }
-  
-  .ml-auto {
-    margin-left: auto;
-  }
+/* Set box-sizing to border-box for all elements */
+* {
+  box-sizing: border-box;
+}
+
+/* Styles for a badge element */
+.badge {
+  position: absolute; /* Position the badge absolutely */
+  top: 0; /* Align the badge to the top */
+  right: 0.5rem; /* Align the badge to the right with some spacing */
+  background-color: red; /* Set the background color to red */
+  color: white; /* Set the text color to white */
+  border-radius: 50%; /* Make the badge circular */
+  padding: 3px 7px; /* Add some padding */
+  font-size: 0.75rem; /* Set the font size */
+  z-index: 1000; /* Ensure the badge is on top of other elements */
+}
+
+/* Styles for a media container */
+.media-container {
+  width: 100vw; /* Set the width to 100% of the viewport width */
+  height: 100vh; /* Set the height to 100% of the viewport height */
+  position: relative; /* Position the container relatively */
+  overflow: hidden; /* Hide any content that extends beyond the container */
+  font-size: 1.25rem; /* Set the font size */
+  color: var(--color-primary); /* Set the text color using a CSS variable */
+  font-family: 'Roboto', sans-serif; /* Set the font family */
+}
+
+/* Styles for a footer bar */
+.footer-bar {
+  position: absolute; /* Position the footer bar absolutely */
+  bottom: 0; /* Align the footer bar to the bottom */
+  width: 100%; /* Set the width to 100% */
+  display: flex; /* Use flexbox layout */
+  align-items: center; /* Center items vertically */
+  justify-content: center; /* Center items horizontally */
+  padding: 0.625rem; /* Add some padding */
+  box-shadow: 0 -4px 4px rgba(0, 0, 0, 0.25); /* Add a box shadow */
+}
+
+/* Styles for a font class */
+.font {
+  font-family: 'Roboto', sans-serif; /* Set the font family */
+  padding: 20px; /* Add some padding */
+  font-size: 40px; /* Set the font size */
+}
+
+/* Styles for another font class */
+.font1 {
+  font-family: 'Inter', sans-serif, light; /* Set the font family and weight */
+  padding: 30px; /* Add some padding */
+  font-weight: 300; /* Set the font weight */
+  font-size: 40px; /* Set the font size */
+}
+
+/* Styles for another font class */
+.font2 {
+  font-family: 'Inter', sans-serif, light; /* Set the font family and weight */
+  padding: 20px; /* Add some padding */
+  font-weight: 100; /* Set the font weight */
+  font-size: 20px; /* Set the font size */
+}
+
+/* Styles for a margin class */
+.ml-auto {
+  margin-left: auto; /* Push the element to the right side of its container */
+}

@@ -1,12 +1,21 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+// Importing necessary hooks from React
 import React, { useEffect, useState } from "react";
+
+// Importing local components
 import PageStructure from "../components/PageStructure";
 import CellGrid from "../components/CellGrid";
 import GraphAgentStructure from "../components/GraphAgentStructure";
+
+// Importing custom hooks
 import { useWebSocket } from "../hooks/useWebSocket";
+
+// Importing types from local interfaces file
 import { Interaction, SentimentSegment, AgentsOnCall, UnhandledInteractions } from "../utils/interfaces";
+
+// Importing InfoCard component
 import InfoCard from "../components/InfoCard";
 
+// Defining the PieChartDataItem interface
 interface PieChartDataItem {
   id: string | number;
   label: string;
@@ -14,11 +23,13 @@ interface PieChartDataItem {
   color?: string;
 }
 
+// Defining the Action object with a START property
 const Action = {
   START: "START",
   END: "END"
 }
 
+// Defining the OngoingCalls functional component
 const OngoingCalls: React.FunctionComponent = () => {
   const { socket } = useWebSocket(); // get web socket connection
   const [interactions, setInteractions] = useState<Array<Interaction>>([]); // interactions
@@ -28,11 +39,12 @@ const OngoingCalls: React.FunctionComponent = () => {
     { id: "ACW", label: "After Call", value: 0, color: "#e29301" },
     { id: "OFFLINE", label: "Offline", value: 0, color: "#FF0000"},
   ])
-       
+
+  // Define a state to store the agents' availability data
   const [agentsAvailability, setAgentsAvailability] = useState<Array<PieChartDataItem>>([
     {id:"FlightManagement", label: "Flight Rsv", value: 0, color: "#20253F"},
     {id:"CustomerCare", label: "Customer Care", value: 0, color:"#4B4B4B" },
-    {id:"WebsiteAssistance", label: "Booking or Website Issues", value: 0 },
+    {id:"WebsiteAssistance", label: "Booking or Website Issues", value: 0, color:'#FFA500' },
     {id:"TravelInformation", label: "Status Inquiries", value: 0, color: "#4A8B51" },
     {id:"SpecialAssitance", label: "Special Assistance or Docs", value: 0, color:"#6BBF70" },
     {id:"OtherQuestions", label: "Other Questions", value: 0, color:"#ADD8E6" },
@@ -321,16 +333,6 @@ const updateAllAgentStatus = (action: string) => {
         }
       })
 
-      //sessionStorage.removeItem('unhandledInteractions')
-      // const remainingUnhandled = unhandledInteractions.filter(
-      //   unhandled => !unhandled.state.callOverviewAnalytics
-      // )
-
-      // if (remainingUnhandled.length === 0) {
-      //   sessionStorage.removeItem('unhandledInteractions')
-      // } else {
-      //   sessionStorage.setItem('unhandledInteractions', JSON.stringify(remainingUnhandled))
-      // }
     }
   }, [])
 
@@ -338,13 +340,21 @@ const updateAllAgentStatus = (action: string) => {
   // web socket connection to get real time information from ongoing intereaction
   useEffect(() => {
     const ws = socket;
+
     if (ws !== null) {
       // check that the websocket connection exists
-
+      console.log(ws);
       ws.onmessage = (event) => {
+        console.log(event);
         // onmessage event to receive data
         const data = JSON.parse(event.data);
         const segment = data.message;
+        const contactIdsToFilter = ["9272a5e8-ac7b-4402-bde9-04ddc3d85d1c","ac482bb5-cbed-473b-b04c-82f68220515e"];
+        if (contactIdsToFilter.includes(segment.contactId)) {
+          console.log("Filtered out message with contact ID:", contactIdsToFilter);
+          return;
+        }
+
         console.log("data: ", segment);
 
         if (segment) {
@@ -363,7 +373,7 @@ const updateAllAgentStatus = (action: string) => {
       };
     }
   }, [socket]);
-
+// return the ongoing calls page structure
   return (
     <PageStructure title="Ongoing Calls">
       <div className="overflow-y-auto h-full pb-[3%] pt-[2%] pl-[2%]">

@@ -1,61 +1,91 @@
+/*
+ * GraphAgentStructure Component: This component displays various metrics related to agent states and availability, 
+ * as well as queue metrics in a call center environment. It fetches queue metrics periodically and renders charts 
+ * for agent status, agent availability, and contacts queued. Additionally, it includes a button for managing agent queues.
+ */
+
 import React, { useEffect, useState } from 'react';
 import MyPieChart from './Charts/piechart';
 import MyBarChart2 from './Charts/barChart2';
 import userService from '../services/user';
 import InfoCard from './InfoCard';
 
+// Define a type for the metrics
+type Metric = "Flight Management" | "Travel Information" | "Special Assistance" | "Website Assistance" | "Other Questions" | "Customer Service";
+
+// Interface that defines the structure of the data used for the pie chart
 export interface PieChartDataItem {
   id: string | number;
   label: string;
   value: number;
 }
 
+// Interface that defines the structure of the data used for the queue metrics
 interface QueueDataItem {
-  label: string;
+  queue: string; 
   value: number;
 }
 
+// Interface that defines the structure of the data points used for the bar chart
 interface DataPoint {
-  metric: string;
+  metric: Metric;
   value: number;
 }
+
+const queueNames: Record<string, Metric> = {
+  'Flight Management': 'Flight Management',
+  'Customer Service': 'Customer Service',
+  'Other Questions': 'Other Questions',
+  'Special Assistance': 'Special Assistance',
+  'Travel Information': 'Travel Information',
+  'Website Support': 'Website Assistance'
+};
 
 interface GraphAgentStructureProps {
   agentsState: Array<PieChartDataItem>;
   agentsAvailability: Array<PieChartDataItem>;
 }
 
+// Component that displays agent status, agent availability, and contacts queued
 const GraphAgentStructure: React.FunctionComponent<GraphAgentStructureProps> = ({ agentsState, agentsAvailability }) => {
   const [queueData, setQueueData] = useState<QueueDataItem[]>([]);
 
-  //FETCH QUEUE METRICS EVERY 5 SECONDS
+  // FETCH QUEUE METRICS EVERY 5 SECONDS
   const loadMetricsEverySecond = async () => {
     try {
       const queueMetrics = await userService.GetQueueMetrics(); // FETCH QUEUE METRICS
+      console.log('Fetched Queue Metrics:', queueMetrics);
       setQueueData(queueMetrics); // SET QUEUE METRICS
     } catch (error) {
       console.log('Error loading metrics', error);
     }
   };
 
+  // Load queue metrics every 5 seconds
   useEffect(() => {
     const interval = setInterval(loadMetricsEverySecond, 5000);
     return () => clearInterval(interval);
   }, []);
 
+
   const totalCustomersWaiting = queueData.reduce((sum, item) => sum + item.value, 0);
 
-  const data: DataPoint[] = queueData.map(item => ({
-    metric: item.label,
-    value: item.value,
-  }));
+  const data: DataPoint[] = queueData.map(item => {
+    const queueName = queueNames[item.queue] || "Unknown Queue"; 
+    return {
+      metric: queueName,
+      value: item.value,
+    };
+  });
 
+  // Render the GraphAgentStructure component
   return (
     <div className="box-border border-[1px] rounded-lg p-4 border-solid border-marco shadow-lg lg:h-[700px] overflow-y-auto">
       <div className="flex flex-col items-center w-full space-y-8">
         <div className="w-full">
           <h1 className="mb-4 text-3xl text-center font-roboto sm:text-left dark:text-white">Agent Status</h1>
           <div className="flex justify-center">
+            
             <div style={{ width: '100%', height: '300px' }}>
               {agentsState.every(state => state.value === 0) ? (
                 <InfoCard description="Information about agent status will display here" />
@@ -66,7 +96,7 @@ const GraphAgentStructure: React.FunctionComponent<GraphAgentStructureProps> = (
           </div>
         </div>
         <div className="w-full">
-          <h1 className="mb-4 text-3xl text-center font-roboto sm:text-left dark:text-white">Agent Availability</h1>
+          <h1 className="mb-4 text-3xl text-center font-roboto sm:text-left dark:text-white">Call Distribution</h1>
           <div className="flex justify-center">
             <div style={{ width: '100%', height: '300px' }}>
               {agentsAvailability.every(a => a.value === 0) ? (
@@ -113,3 +143,4 @@ const GraphAgentStructure: React.FunctionComponent<GraphAgentStructureProps> = (
 };
 
 export default GraphAgentStructure;
+

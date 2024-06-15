@@ -1,27 +1,32 @@
-import React, { useContext } from 'react';
-import { WorkerCardProps } from '../utils/interfaces';
-import { DarkModeContext } from '../Provider/ThemeProvider';
+import React from 'react';
+import { WorkerCardProps } from '../utils/interfaces'; // Importing WorkerCardProps from interfaces
+import { useDarkMode } from '../hooks/useDarkMode'; // Importing useDarkMode hook
 
+// Define the WorkerCard component as a Functional Component (FC) that accepts the properties defined in WorkerCardProps
 const WorkerCard: React.FC<WorkerCardProps> = ({ imageURL, name, username, position, experience, points, status }) => {
-  const { darkMode } = useContext(DarkModeContext);
-  const statusClass = status === 'Active' ? 'bg-green-500' : 'bg-red-500';
+  const { darkMode } = useDarkMode(); // Using the useDarkMode hook to access dark mode state
+  const statusClass = status === 'Active' ? 'bg-green-500' : 'bg-red-500'; // Determine status class based on 'Active' or 'Inactive' status
 
   return (
     <div>
       {/* Large Device Layout */}
-      <div className="hidden h-[100%] max-w-sm p-4 overflow-hidden border-2 border-gray-400 shadow-lg rounded-xl md:block bg-tertiary dark:bg-gray-900">
+      <div className="hidden h-[100%] max-w-sm p-4 overflow-hidden  shadow-lg rounded-xl md:block bg-tertiary dark:bg-gray-900 card">
         <div className="flex justify-center">
+          {/* User avatar/profilepicture */}
           <img className="w-[65%] h-[65%] rounded-full" src={imageURL} alt="User avatar" />
         </div>
         <div className="items-center px-6 py-4 text-center">
+          {/* User username */}
           <p className="pb-5 text-sm text-gray-600 dark:text-white italic" data-cy="user-login">{username}</p>
+          {/* User name */}
           <h2 className="pb-5 mb-2 dark:text-white">{name}</h2>
+          {/* User position */}
           <p className="pb-1 text-base text-gray-700 dark:text-white">{position}</p>
-          <p className="pb-10 text-sm text-gray-600 dark:text-white">{experience} years</p>
+          <p className="pb-8 text-sm text-gray-600 dark:text-white">{experience} years</p>
           <div className="flex flex-col"> 
-            <h3 className="text-gray-800 text-[30px] font-roboto mr-4 dark:text-white">Experience Points: </h3>
+            <h3 className="text-gray-800 text-[25px] font-roboto mr-4 dark:text-white">Experience Points: </h3>
             <div className="flex items-center justify-center w-full pb-9">
-              <div className="text-gray-800 text-[60px]  text-center font-roboto mr-4 dark:text-gray-400">{points}</div>
+              <div className="text-gray-800 text-[50px]  text-center font-roboto mr-4 dark:text-gray-400">{points}</div>
               <svg
                 width="46"
                 height="47"
@@ -43,7 +48,9 @@ const WorkerCard: React.FC<WorkerCardProps> = ({ imageURL, name, username, posit
       {/* Small Device Layout */}
       <div className="pt-40 overflow-hidden bg-white border border-gray-300 rounded-lg 2sm:p-2 md:hidden">
         <div className="text-center">
+          {/* User name */}
           <p>{name}</p>
+          {/* Status button */}
           <button className={`${statusClass} text-white font-bold py-1 px-2 rounded-lg w-full`}>
             {status}
           </button>
@@ -53,4 +60,4 @@ const WorkerCard: React.FC<WorkerCardProps> = ({ imageURL, name, username, posit
   );
 };
 
-export default WorkerCard;
+export default WorkerCard; 

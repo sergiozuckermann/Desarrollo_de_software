@@ -1,13 +1,20 @@
+/*
+ *  This component integrates Amazon Connect's Contact Control Panel (CCP) into a React application. 
+ * It initializes the CCP inside a specified container and configures various settings for login, softphone, 
+ * and page options. Additionally, it opens a popup window displaying specific contact attributes when a contact is initiated.
+ */
 import { useEffect } from 'react';
 import "amazon-connect-streams";
 
 const CCPComponent = () => {
 
   useEffect(() => {
+    // Retrieve the container div where the CCP will be rendered
     const containerDiv = document.getElementById("ccp-container")!;
     const instanceURL = "https://mexicana-airline.my.connect.aws/ccp-v2/";
 
     const init = () => {
+       // Initialize the CCP with the specified settings
       connect.core.initCCP(containerDiv, {
         ccpUrl: instanceURL,
         loginPopup: true,
@@ -34,12 +41,14 @@ const CCPComponent = () => {
         ccpSynTimeout: 3000,
         ccpLoadTimeout: 10000
       });
+       // Set up an event listener for contact initiation
       connect.contact(contact => {
         const attributes = contact.getAttributes();
         const selectedQueueNameStr = attributes.selectedQueue.value;
         const clientPhoneNumber = attributes.ClientPhoneNumber.value;
         const popupWindow = window.open("", "Contact Attributes", "width=400,height=300");
         if (popupWindow) {
+           // Open a popup window displaying the contact attributes
           popupWindow.document.write(`
             <html>
               <head>
@@ -85,6 +94,7 @@ const CCPComponent = () => {
       });
     };
 
+    // Call the initialization function
     init();
   }, []);
 

@@ -1,8 +1,17 @@
-import { ResponsiveBar } from '@nivo/bar';
+// Bar Chart component
 
-const MyResponsiveBar2 = ({ data }) => {
+// Importing React and necessary components from 'nivo' library
+import { ResponsiveBar, BarDatum } from '@nivo/bar';
+// Defines the properties of the Bar Chart component
+interface DataItem extends BarDatum {
+    queue: string;
+    value: number;
+}
+
+// Bar Chart component
+const MyResponsiveBar2 = ({ data }: { data: DataItem[] }) => {
     // Define your `barColors` mapping
-    const barColors = {
+    const barColors: { [key: string]: string } = {
         "Flight Management": "#F47560",
         "Travel Information": "#E8C1A0",
         "Special Assistance": "#61CDBB",
@@ -12,13 +21,14 @@ const MyResponsiveBar2 = ({ data }) => {
     };
 
     return (
+        // A responsive bar chart that adjusts its size to the parent container
         <ResponsiveBar
             data={data}
             keys={['value']}
             indexBy="queue"
             margin={{ top: 10, right: 30, bottom: 100, left: 60 }}
             padding={0.3}
-            colors={({ indexValue }) => barColors[indexValue]}
+            colors={({ indexValue }) => barColors[indexValue as string]}
             borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
             axisTop={null}
             axisRight={null}
