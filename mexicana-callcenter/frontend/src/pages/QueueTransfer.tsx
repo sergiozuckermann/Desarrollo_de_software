@@ -179,7 +179,7 @@ const AgentRoutingProfile = () => {
           onChange={(e) => setSearchUsername(e.target.value)}
           data-cy="search-username"
         />
-        {/* Render a search button */}
+         {/* Render a search button */}
         <SearchButton clicked={buttonClicked} onClick={handleSearch} data-cy="search-submit">
           Search
         </SearchButton>
